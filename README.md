@@ -2,8 +2,6 @@
 
 Synchronous and natively asynchronous clients for Python 3.10+, with typed responses, automatic pagination, SSE streaming, and file transfer.
 
-Full API reference: [Forward API](docs/forward-api.md) · [Managed API](docs/managed-api.md) — covering initialization, sync and async calls, pagination, SSE, file transfer, and the parameters, return types, and HTTP routes of every resource method.
-
 ## Installation and configuration
 
 ```bash
@@ -250,9 +248,8 @@ src/qca/
     _client.py
     resources/            # agents, deployments, environments/work, and so on
     types/
-tests/                    # resource surface, documentation contracts, common layer, simulated execution
+tests/                    # resource surface, common layer, simulated execution
 examples/                 # one file per scenario; each mode ships 6 sync scenarios, async snippets, and live tests
-docs/                     # complete Forward / Managed API reference
 ```
 
 ## License
