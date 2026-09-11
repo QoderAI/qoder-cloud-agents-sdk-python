@@ -249,3 +249,7 @@ tests/                    # 资源面、文档契约、公共层与模拟执行�
 examples/                 # 每个场景一个文件；各 mode 含 6 个同步场景、异步片段及 live 测试
 docs/                     # Forward / Managed 完整 API 参考
 ```
+
+## 许可证
+
+本项目基于 [MIT License](LICENSE) 开源。

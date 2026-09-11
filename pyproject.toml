@@ -3,7 +3,8 @@ name = "qca"
 version = "0.1.0"
 description = "Typed synchronous and asynchronous clients for Qoder Cloud Agents"
 authors = [{name = "Qoder"}]
-license = "LicenseRef-Proprietary"
+license = "MIT"
+license-files = ["LICENSE"]
 readme = "README.md"
 keywords = ["Qoder", "Cloud Agents", "Forward", "Managed"]
 requires-python = ">=3.10"
@@ -18,7 +19,8 @@ dependencies = [
 dev = ["pytest>=8", "pytest-asyncio>=0.24", "ruff>=0.11", "mypy>=1.15", "build>=1.2"]
 
 [project.urls]
-Repository = "https://gitlab.alibaba-inc.com/cloud-agent/qoder-cloud-agents-sdk-python"
+Repository = "https://github.com/QoderAI/qoder-cloud-agents-sdk-python"
+Issues = "https://github.com/QoderAI/qoder-cloud-agents-sdk-python/issues"
 
 [build-system]
 requires = ["setuptools>=77"]
