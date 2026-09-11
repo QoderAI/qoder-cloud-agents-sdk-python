@@ -1,8 +1,12 @@
 # Qoder Cloud Agents Python SDK
 
-Synchronous and natively asynchronous clients for Python 3.10+, with typed responses, automatic pagination, SSE streaming, and file transfer.
+[![PyPI version](https://img.shields.io/pypi/v/qca.svg)](https://pypi.org/project/qca/)
 
-## Installation and configuration
+The Qoder Cloud Agents Python SDK provides access to the Qoder Cloud Agents API from Python 3.10+. It ships synchronous and natively asynchronous clients, typed request parameters and response models, automatic pagination, SSE streaming, and file transfer.
+
+The API is exposed in two modes, and each has its own client, resources, and types. Forward is multi-tenant: sessions are created from an Identity and a Template, and it adds Schedule, Batch, and Channel. Managed is single-tenant: sessions are created from an Agent and an Environment, and it adds Deployment, Dream, and the Work API for self-hosted environments.
+
+## Installation
 
 ```bash
 python -m pip install qca
@@ -12,32 +16,41 @@ The package is still in pre-release, so the command above resolves to the latest
 
 ```bash
 python -m pip install .
-# Development environment
-python -m pip install -e '.[dev]'
+python -m pip install -e '.[dev]'   # development environment
 ```
 
+## Requirements
+
+Python 3.10 or newer. The runtime dependencies are `httpx`, `pydantic` v2, `anyio`, and `typing-extensions`; the package is typed and ships `py.typed`.
+
+## Usage
+
 ```python
-from qca import Forward, Managed
+from qca import Forward
 
 with Forward() as client:
     for model in client.models.list().data:
         if model.is_enabled:
             print(model.id)
+```
+
+```python
+from qca import Managed
 
 with Managed() as client:
     for agent in client.agents.list(limit=20):
         print(agent.id, agent.name)
 ```
 
-`from qca.forward import Client` and `from qca.managed import Client` are equivalent entry points. The two modes are instantiated independently and use their own resources and types.
+Both clients read their token from the environment. `from qca.forward import Client` and `from qca.managed import Client` are equivalent entry points.
 
 | Setting | Forward | Managed |
 |---|---|---|
 | Token | `QODER_ACCESS_TOKEN` | `QODER_ACCESS_TOKEN` |
-| API base URL | `QODER_FORWARD_BASE_URL` | `QODER_BASE_URL` |
+| Base URL | `QODER_FORWARD_BASE_URL` | `QODER_BASE_URL` |
 | Default base URL | `https://api.qoder.com/api/v1/forward/` | `https://api.qoder.com/api/v1/cloud/` |
 
-Explicit arguments take precedence over environment variables. The clients never read `.env`; only the examples load `.env.live`. The China endpoints have to be configured explicitly:
+Explicit arguments take precedence over environment variables. The clients never read `.env` files; only the examples load `.env.live`. Other regions, including China, have to be configured explicitly:
 
 ```python
 client = Forward(
@@ -48,9 +61,32 @@ client = Forward(
 )
 ```
 
+A client owns an HTTP connection pool, so it should be closed when you are done with it — either through the context manager above or with `client.close()`.
+
+## Async usage
+
+`AsyncForward` and `AsyncManaged` are built on `httpx.AsyncClient`. Requests, retry backoff, and SSE reads are all native async I/O; only local file reads are delegated to a worker thread.
+
+```python
+import asyncio
+from qca import AsyncManaged
+
+async def main() -> None:
+    async with AsyncManaged() as client:
+        async for agent in client.agents.list(limit=20):
+            print(agent.id)
+
+        first_page = await client.sessions.list(limit=10)
+        print(first_page.data)
+
+asyncio.run(main())
+```
+
+Every method shown in this document has an async counterpart with the same name and signature. Async streams are opened with `async with await client.sessions.events.stream(...)`.
+
 ## Sessions
 
-Forward creates a Session from an Identity and a Template; Managed creates one from an Agent and an Environment:
+A session is the unit of agent execution. Forward materializes one from an Identity and a Template:
 
 ```python
 from qca import Forward
@@ -59,7 +95,8 @@ with Forward() as client:
     environment = client.environments.create(name="demo", config={"type": "cloud"})
     identity = client.identities.create(external_id="example-user", name="Example User")
     template = client.templates.create(
-        name="assistant", environment_id=environment.id,
+        name="assistant",
+        environment_id=environment.id,
         model="ultimate",  # use a model enabled for the current account
         system="Answer questions from the material you can read.",
         tools=[{"type": "agent_toolset_20260401"}],
@@ -68,13 +105,16 @@ with Forward() as client:
     print(session.id)
 ```
 
+Managed creates one from an Agent and an Environment:
+
 ```python
 from qca import Managed
 
 with Managed() as client:
     environment = client.environments.create(name="demo", config={"type": "cloud"})
     agent = client.agents.create(
-        name="assistant", model={"id": "ultimate"},
+        name="assistant",
+        model={"id": "ultimate"},
         system="Answer questions from the material you can read.",
         tools=[{"type": "agent_toolset_20260401"}],
     )
@@ -82,11 +122,11 @@ with Managed() as client:
     print(session.id)
 ```
 
-These snippets create real resources. For complete scenarios with execution assertions and cleanup, see the `examples/` directory. Forward additionally offers Schedule, Batch, and Channel; Managed offers Deployment, Dream, and the Work API for self-hosted environments.
+Both snippets create billable resources on the server. Template names are unique within an account, and templates and sessions cannot be deleted — only archived — so give them distinct names rather than reusing one. Runnable scenarios with assertions and cleanup live in the `examples/` directory.
 
-## Messages and SSE
+## Streaming
 
-The code below works with either client. Reuse `session_id` throughout a conversation, and reuse one idempotency key across HTTP retries of the same logical message.
+Send events to a session, then read the server's response as an SSE stream. The code below works with either client.
 
 ```python
 from uuid import uuid4
@@ -94,12 +134,12 @@ from uuid import uuid4
 sent = client.sessions.events.send(
     session_id,
     events=[{"type": "user.message", "content": [{"type": "text", "text": "Hello"}]}],
-    extra_headers={"Idempotency-Key": uuid4().hex},
+    idempotency_key=uuid4().hex,
 )
 
 with client.sessions.events.stream(
     session_id,
-    extra_headers={"Last-Event-ID": sent.data[0].id},
+    last_event_id=sent.data[0].id,
     event_deltas=["agent.message"],
 ) as stream:
     for event in stream:
@@ -112,69 +152,30 @@ with client.sessions.events.stream(
             raise RuntimeError(f"Session stopped: {event.type}")
 ```
 
-The SDK does not reconnect a stream on its own. Persist `stream.last_event_id` and resume through the `Last-Event-ID` header rather than resending messages the server already accepted. `event_start` and `event_delta` are previews: the final event carries the complete content again, and delta events sharing an ID are not deduplicated. An idle status can also mean the session is waiting for a confirmation or has reached its budget, so check `stop_reason` and the final reply before treating a run as successful.
+Reuse one `session_id` for the whole conversation, and reuse one idempotency key across HTTP retries of the same logical message. `event_deltas` opts into incremental events for the listed types; those previews are not deduplicated, and the final event repeats the complete content, so render deltas but treat the final event as the source of truth. An idle status does not by itself mean success — the session may be waiting for a confirmation or have reached its budget, so check `stop_reason` and the final reply.
 
-## Async
+## Resuming a stream
 
-The async clients are built on `httpx.AsyncClient`; requests, retry backoff, and SSE reads are all native async I/O.
-
-```python
-import asyncio
-from qca import AsyncManaged
-
-async def main():
-    async with AsyncManaged() as client:
-        async for agent in client.agents.list(limit=20):
-            print(agent.id)
-        first_page = await client.sessions.list(limit=10)
-        print(first_page.data)
-
-asyncio.run(main())
-```
-
-Async streams use `async with await client.sessions.events.stream(...)`. Complete snippets are in the [Forward async example](examples/forward/async_session.py) and the [Managed async example](examples/managed/async_session.py). Local files are read in a worker thread; network requests go directly through the async HTTP client.
-
-## Parameters and responses
-
-Methods use snake_case names, keyword arguments, and type annotations. The target ID of a nested resource may be positional, while ancestor IDs must be named:
+The SDK does not reconnect a dropped stream on its own. Persist `stream.last_event_id` and pass it back as `last_event_id` on the next call; the server replays from there, so you never have to resend a message it already accepted.
 
 ```python
-credential = client.vaults.credentials.retrieve("credential-id", vault_id="vault-id")
-memory = client.memory_stores.memories.retrieve("memory-id", memory_store_id="store-id")
+from qca import APIConnectionError
+
+last_event_id = None
+try:
+    with client.sessions.events.stream(session_id, last_event_id=last_event_id) as stream:
+        for event in stream:
+            last_event_id = stream.last_event_id
+            print(event.type)
+except APIConnectionError:
+    pass  # reconnect with the last_event_id recorded above
 ```
 
-Requests are described by `TypedDict`s in each mode's `types/*_params.py`. Pass plain dicts for nested parameters, and pass the matching string, dict, or list for unions. Responses are Pydantic models: fields are accessed directly, and unknown fields are preserved.
+Events are also readable after the fact through `client.sessions.events.list(session_id)`, which paginates like any other list method.
 
-```python
-from qca import NOT_GIVEN
+## Handling errors
 
-client.identities.update("identity-id", name=NOT_GIVEN)  # omits name from the request
-client.identities.update("identity-id", name=None)       # sends null
-client.identities.update("identity-id", enabled=False)   # keeps false
-
-identity = client.identities.retrieve("identity-id")
-print(identity.to_dict())
-print(identity.to_json())
-print(identity._request_id)
-print("name" in identity.model_fields_set)  # tells a missing field from null
-```
-
-Whether a field can be cleared is decided by the server. Every method accepts `extra_headers`, `extra_query`, `extra_body`, and `timeout`; extra values take precedence over method arguments. Empty arrays, empty objects, `0`, and `false` are all preserved.
-
-## Pagination
-
-```python
-page = client.sessions.list(limit=20)
-print(page.data)                  # current page
-for session in page:              # fetches subsequent pages automatically
-    print(session.id)
-for page in client.sessions.list().iter_pages():
-    print(len(page.data))
-```
-
-Following the API, the SDK distinguishes `after_id` / `before_id` cursors from `next_page` pagination and carries filters into subsequent requests. It raises if a cursor stops advancing or starts looping. Non-paginated list responses, such as Models, are read through `.data`.
-
-## Errors, timeouts, and retries
+`APIConnectionError` is raised when the request never reached the API; `APITimeoutError` is its timeout subclass. A non-2xx status raises an `APIStatusError` subclass, and a response that cannot be decoded into its declared type raises `APIResponseValidationError`. All of them derive from `qca.APIError`.
 
 ```python
 from qca import APIConnectionError, APIStatusError, APITimeoutError
@@ -186,45 +187,150 @@ except APITimeoutError:
 except APIConnectionError:
     print("The connection failed")
 except APIStatusError as exc:
-    print(exc.status_code, exc.code, exc.type, exc.request_id)
+    print(exc.status_code, exc.message, exc.code, exc.type, exc.request_id)
 ```
 
-HTTP statuses map to `BadRequestError`, `AuthenticationError`, `PermissionDeniedError`, `NotFoundError`, `ConflictError`, `UnprocessableEntityError`, `RateLimitError`, and `InternalServerError`. Non-JSON error bodies are kept in `.body`. When a response cannot be decoded into its declared type, `APIResponseValidationError` is raised.
+| Status | Exception |
+|---|---|
+| 400 | `BadRequestError` |
+| 401 | `AuthenticationError` |
+| 403 | `PermissionDeniedError` |
+| 404 | `NotFoundError` |
+| 409 | `ConflictError` |
+| 422 | `UnprocessableEntityError` |
+| 429 | `RateLimitError` |
+| 5xx | `InternalServerError` |
+| other | `APIStatusError` |
 
-The default connect timeout is 10 seconds, and 60 seconds for the remaining HTTP phases. You can pass a float of seconds, an `httpx.Timeout`, or `None`; timeouts are measured per HTTP phase and per attempt. End-to-end deadlines are the caller's responsibility — async code can use `asyncio.wait_for`.
+`code` and `type` are read from the error body and are `None` when the server omits them, so log `message` and `request_id` as well. A non-JSON error body is kept verbatim in `.body`.
 
-Up to 2 retries by default: GET/HEAD requests and requests carrying an `Idempotency-Key` are retried on connection errors, 408, 429, and 5xx; other requests without an idempotency key are retried on 429 only; 409 is never retried automatically. Within those constraints the SDK honors `x-should-retry` and a valid `Retry-After-Ms` / `Retry-After`, and otherwise backs off exponentially. An SSE stream that has already been established is not retried.
+## Request IDs
 
-`client.with_options(max_retries=0, timeout=20)` returns a separately configured client that shares the same HTTP connection pool; closing either client closes that pool.
+Every response model carries the `x-request-id` of the call that produced it, and errors expose the same value. Include it when reporting a problem.
 
-## Files and custom HTTP
+```python
+identity = client.identities.retrieve("identity-id")
+print(identity._request_id)
+```
+
+## Retries
+
+Certain errors are retried twice by default with exponential backoff. GET and HEAD requests, and any request carrying an idempotency key, are retried on connection errors, 408, 429, and 5xx; other requests are retried on 429 only. A 409 is never retried automatically, and an SSE stream that has already been established is never retried. Within those rules the SDK honors `x-should-retry` and a valid `Retry-After-Ms` or `Retry-After`.
+
+```python
+client = Forward(max_retries=0)                       # disable for all requests
+client.with_options(max_retries=5).sessions.list()    # or override per call site
+```
+
+`with_options` returns a separately configured client that shares the original connection pool, so closing either one closes that pool.
+
+## Timeouts
+
+The default timeout is 10 seconds to connect and 60 seconds for each subsequent phase. Pass a float of seconds, an `httpx.Timeout`, or `None` to disable.
+
+```python
+client = Forward(timeout=30.0)
+client.sessions.retrieve("sess-id", timeout=5.0)   # per request
+```
+
+Timeouts apply per HTTP phase and per attempt, not to the whole call including retries. End-to-end deadlines are the caller's responsibility; async code can wrap a call in `asyncio.wait_for`.
+
+## Long-running sessions
+
+An agent run can take minutes, and the read timeout applies to each read from the stream, not to the stream as a whole. A session that stays silent longer than the read timeout raises `APITimeoutError` even though it is still running, so raise the timeout when you open a long stream and resume with `last_event_id` if the connection drops anyway.
+
+```python
+with client.sessions.events.stream(session_id, timeout=None) as stream:
+    ...
+```
+
+## Auto-pagination
+
+List methods return a page that iterates across page boundaries for you.
+
+```python
+page = client.sessions.list(limit=20)
+print(page.data)             # just this page
+print(page.has_next_page())
+
+for session in page:         # fetches subsequent pages as needed
+    print(session.id)
+
+for page in client.sessions.list().iter_pages():
+    print(len(page.data))
+```
+
+Cursor pagination with `after_id` / `before_id` and page-token pagination with `next_page` are both handled, and filters are carried into subsequent requests. The SDK raises rather than looping forever if a cursor stops advancing. A few endpoints, such as Models, return an unpaginated list; read those through `.data`.
+
+## Nested resources
+
+For a nested resource the target ID may be passed positionally, while ancestor IDs are always keyword arguments.
+
+```python
+credential = client.vaults.credentials.retrieve("credential-id", vault_id="vault-id")
+memory = client.memory_stores.memories.retrieve("memory-id", memory_store_id="store-id")
+```
+
+## File uploads and downloads
+
+Uploads accept `bytes`, a binary file object, a `Path`, or a `(filename, content[, content type])` tuple. Content is buffered so it can be replayed on retry; a file object you open stays yours to close.
 
 ```python
 from pathlib import Path
 
 file = client.files.upload(file=Path("report.txt"))
-skill = client.skills.create(files=[("example/SKILL.md", b"---\nname: example\n---\nExample skill")])
+
+skill = client.skills.create(
+    files=[("example/SKILL.md", b"---\nname: example\n---\nExample skill")]
+)
+
 with client.files.download(file.id) as content:
     content.write_to_file("downloaded.txt")
 ```
 
-Uploads accept bytes, binary file objects, `Path`, and `(filename, content[, MIME type])`. File objects you provide stay yours to close; upload content is buffered so it can be replayed on retry. Metadata is JSON-encoded, and Skill relative paths are preserved in the multipart filename.
+Relative paths are preserved in the multipart filename, which is how a Skill keeps its directory layout. A file download first requests a temporary link and then streams from object storage; API credentials, default headers, and cookies are not sent to the storage host. Async downloads are awaited: `response = await client.files.download(...)`, then `await response.write_to_file(...)`.
 
-A file download first obtains a temporary link and then streams from the storage endpoint; API credentials, default headers, and cookies are not sent to the storage host. A Skill version download returns the API's binary response directly. Async downloads use `await client.files.download(...)` and `await response.write_to_file(...)`.
+## Default headers and query parameters
+
+Headers and query parameters can be set for every request on a client, or for one request.
 
 ```python
-import httpx
-from qca import Forward
+client = Forward(default_headers={"X-Trace-Id": "abc"}, default_query={"debug": "1"})
 
-with Forward(http_client=httpx.Client(proxy="http://localhost:8080")) as client:
-    raw = client.models.with_raw_response.list()
-    print(raw.status_code, raw.headers)
-    models = raw.parse()
+client.sessions.list(extra_headers={"X-Trace-Id": "override"}, extra_query={"debug": "0"})
 ```
 
-Async clients accept an `httpx.AsyncClient`, and async raw responses are parsed with `await raw.parse()`. A dynamic token provider is passed as `credential=` and its `get_token()` is called on every HTTP attempt; async clients also accept an async `get_token()`. A static `access_token` takes precedence over a provider, and an explicit `Authorization` header takes precedence over both.
+Every method accepts `extra_headers`, `extra_query`, `extra_body`, and `timeout`. These values are applied last, so they override anything the method itself would send — including the `Authorization` header.
 
-Use `with_streaming_response` when the response headers have to be inspected before the body is read. The connection is closed when the context exits:
+## Type system
+
+Request parameters are `TypedDict`s, declared per mode in `types/*_params.py`. Pass plain dicts for nested parameters, and pass the matching string, dict, or list for a union. Responses are Pydantic models: read fields as attributes, and unknown fields the server adds are preserved rather than dropped.
+
+```python
+from qca import NOT_GIVEN
+
+client.identities.update("identity-id", name=NOT_GIVEN)  # omit the field
+client.identities.update("identity-id", name=None)       # send null
+client.identities.update("identity-id", enabled=False)   # send false
+
+identity = client.identities.retrieve("identity-id")
+print(identity.to_dict(), identity.to_json())
+print("name" in identity.model_fields_set)  # tells a missing field from an explicit null
+```
+
+An omitted argument is left out of the request body entirely, while `None` is serialized as `null`; empty strings, empty arrays, empty objects, `0`, and `false` are all sent as given. Whether a field can actually be cleared is decided by the server.
+
+## Advanced usage
+
+Prefix any method with `with_raw_response` to get the status code and headers alongside the parsed body.
+
+```python
+raw = client.models.with_raw_response.list()
+print(raw.status_code, raw.headers)
+models = raw.parse()
+```
+
+Use `with_streaming_response` when the headers have to be inspected before the body is read, or when the body should be consumed in chunks. The connection is released when the context exits.
 
 ```python
 with client.models.with_streaming_response.list() as response:
@@ -232,25 +338,41 @@ with client.models.with_streaming_response.list() as response:
     models = response.parse()
 ```
 
-The async form is `async with client.models.with_streaming_response.list()`, with the body parsed through `await response.parse()`; the payload can also be iterated in chunks with `iter_bytes()` / `iter_lines()`.
+The async forms are `await raw.parse()` and `async with client.models.with_streaming_response.list()`; a streaming body can also be iterated with `iter_bytes()` or `iter_lines()`.
 
-## Project layout
+## HTTP client
 
-```text
-src/qca/
-  __init__.py
-  common/                 # HTTP, auth, errors, pagination, upload/download, SSE
-  forward/
-    _client.py
-    resources/            # identities/configs, sessions/events, and so on
-    types/                # request TypedDicts, response models
-  managed/
-    _client.py
-    resources/            # agents, deployments, environments/work, and so on
-    types/
-tests/                    # resource surface, common layer, simulated execution
-examples/                 # one file per scenario; each mode ships 6 sync scenarios, async snippets, and live tests
+Pass your own `httpx.Client` (or `httpx.AsyncClient`) to control proxies, transports, TLS, and connection limits.
+
+```python
+import httpx
+from qca import Forward
+
+with Forward(http_client=httpx.Client(proxy="http://localhost:8080")) as client:
+    print(client.models.list().data)
 ```
+
+For tokens that expire, pass a credential provider instead of a static token. Its `get_token()` is called on every HTTP attempt, so a refreshed token takes effect without rebuilding the client; async clients also accept an async `get_token()`.
+
+```python
+client = Forward(credential=my_credential)
+```
+
+A static `access_token` takes precedence over a provider, and an explicit `Authorization` header takes precedence over both.
+
+## Versioning
+
+This project follows [Semantic Versioning](https://semver.org). It is pre-1.0 and currently published as `0.0.1.devN`, so the public surface may still change between releases. Anything prefixed with an underscore is internal and may change at any time.
+
+```python
+import qca
+
+print(qca.__version__)
+```
+
+## Resources
+
+Runnable scenarios live in `examples/`, organized by mode, with one file per scenario and its run command at the top of the file. Bug reports and feature requests belong in [GitHub Issues](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/issues).
 
 ## License
 
