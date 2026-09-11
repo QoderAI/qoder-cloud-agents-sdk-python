@@ -1,6 +1,6 @@
 [project]
 name = "qca"
-version = "0.0.1.dev1"
+version = "0.0.1.dev2"
 description = "Typed synchronous and asynchronous clients for Qoder Cloud Agents"
 authors = [{name = "Qoder"}]
 license = "MIT"
