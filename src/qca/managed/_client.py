@@ -19,7 +19,7 @@ from .resources.vaults.vaults import AsyncVaults, Vaults
 
 class Managed(SyncAPIClient):
     _default_base_url = "https://api.qoder.com/api/v1/cloud/"
-    _base_url_env = "QODER_BASE_URL"
+    _base_url_env = "QODER_MANAGED_BASE_URL"
 
     @cached_property
     def agents(self) -> Agents:
@@ -68,7 +68,7 @@ class Managed(SyncAPIClient):
 
 class AsyncManaged(AsyncAPIClient):
     _default_base_url = "https://api.qoder.com/api/v1/cloud/"
-    _base_url_env = "QODER_BASE_URL"
+    _base_url_env = "QODER_MANAGED_BASE_URL"
 
     @cached_property
     def agents(self) -> AsyncAgents:

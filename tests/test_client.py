@@ -41,7 +41,7 @@ def make_client(handler, cls=Forward, **kwargs):
 
 
 @pytest.mark.parametrize(
-    "cls,env,suffix", [(Forward, "QODER_FORWARD_BASE_URL", "forward"), (Managed, "QODER_BASE_URL", "cloud")]
+    "cls,env,suffix", [(Forward, "QODER_FORWARD_BASE_URL", "forward"), (Managed, "QODER_MANAGED_BASE_URL", "cloud")]
 )
 def test_environment_defaults_and_explicit_precedence(monkeypatch, cls, env, suffix):
     monkeypatch.setenv("QODER_ACCESS_TOKEN", "from-env")

@@ -70,11 +70,7 @@ class Config:
         if not token:
             raise ValueError(f"Configure {prefix}PAT or QODER_ACCESS_TOKEN")
         suffix = "forward" if mode == "forward" else "cloud"
-        base = (
-            values.get(prefix + "BASE_URL")
-            or (values.get("QODER_BASE_URL") if mode == "managed" else None)
-            or f"https://api.qoder.com.cn/api/v1/{suffix}"
-        )
+        base = values.get(prefix + "BASE_URL") or f"https://api.qoder.com.cn/api/v1/{suffix}"
         url = httpx.URL(base)
         if (
             url.scheme != "https"

@@ -47,7 +47,7 @@ Both clients read their token from the environment. `from qca.forward import Cli
 | Setting | Forward | Managed |
 |---|---|---|
 | Token | `QODER_ACCESS_TOKEN` | `QODER_ACCESS_TOKEN` |
-| Base URL | `QODER_FORWARD_BASE_URL` | `QODER_BASE_URL` |
+| Base URL | `QODER_FORWARD_BASE_URL` | `QODER_MANAGED_BASE_URL` |
 | Default base URL | `https://api.qoder.com/api/v1/forward/` | `https://api.qoder.com/api/v1/cloud/` |
 
 Explicit arguments take precedence over environment variables. The clients never read `.env` files; only the examples load `.env.live`. Other regions, including China, have to be configured explicitly:
