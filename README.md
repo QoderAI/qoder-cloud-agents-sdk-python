@@ -71,6 +71,7 @@ A client owns an HTTP connection pool, so it should be closed when you are done 
 import asyncio
 from qca import AsyncManaged
 
+
 async def main() -> None:
     async with AsyncManaged() as client:
         async for agent in client.agents.list(limit=20):
@@ -78,6 +79,7 @@ async def main() -> None:
 
         first_page = await client.sessions.list(limit=10)
         print(first_page.data)
+
 
 asyncio.run(main())
 ```
@@ -218,8 +220,8 @@ print(identity._request_id)
 Certain errors are retried twice by default with exponential backoff. GET and HEAD requests, and any request carrying an idempotency key, are retried on connection errors, 408, 429, and 5xx; other requests are retried on 429 only. A 409 is never retried automatically, and an SSE stream that has already been established is never retried. Within those rules the SDK honors `x-should-retry` and a valid `Retry-After-Ms` or `Retry-After`.
 
 ```python
-client = Forward(max_retries=0)                       # disable for all requests
-client.with_options(max_retries=5).sessions.list()    # or override per call site
+client = Forward(max_retries=0)  # disable for all requests
+client.with_options(max_retries=5).sessions.list()  # or override per call site
 ```
 
 `with_options` returns a separately configured client that shares the original connection pool, so closing either one closes that pool.
@@ -230,7 +232,7 @@ The default timeout is 10 seconds to connect and 60 seconds for each subsequent 
 
 ```python
 client = Forward(timeout=30.0)
-client.sessions.retrieve("sess-id", timeout=5.0)   # per request
+client.sessions.retrieve("sess-id", timeout=5.0)  # per request
 ```
 
 Timeouts apply per HTTP phase and per attempt, not to the whole call including retries. End-to-end deadlines are the caller's responsibility; async code can wrap a call in `asyncio.wait_for`.
@@ -250,10 +252,10 @@ List methods return a page that iterates across page boundaries for you.
 
 ```python
 page = client.sessions.list(limit=20)
-print(page.data)             # just this page
+print(page.data)  # just this page
 print(page.has_next_page())
 
-for session in page:         # fetches subsequent pages as needed
+for session in page:  # fetches subsequent pages as needed
     print(session.id)
 
 for page in client.sessions.list().iter_pages():
@@ -280,9 +282,7 @@ from pathlib import Path
 
 file = client.files.upload(file=Path("report.txt"))
 
-skill = client.skills.create(
-    files=[("example/SKILL.md", b"---\nname: example\n---\nExample skill")]
-)
+skill = client.skills.create(files=[("example/SKILL.md", b"---\nname: example\n---\nExample skill")])
 
 with client.files.download(file.id) as content:
     content.write_to_file("downloaded.txt")
@@ -310,8 +310,8 @@ Request parameters are `TypedDict`s, declared per mode in `types/*_params.py`. P
 from qca import NOT_GIVEN
 
 client.identities.update("identity-id", name=NOT_GIVEN)  # omit the field
-client.identities.update("identity-id", name=None)       # send null
-client.identities.update("identity-id", enabled=False)   # send false
+client.identities.update("identity-id", name=None)  # send null
+client.identities.update("identity-id", enabled=False)  # send false
 
 identity = client.identities.retrieve("identity-id")
 print(identity.to_dict(), identity.to_json())
