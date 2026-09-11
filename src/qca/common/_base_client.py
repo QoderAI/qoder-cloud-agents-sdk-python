@@ -54,7 +54,7 @@ class BaseClient:
     ) -> None:
         if not isinstance(max_retries, int) or isinstance(max_retries, bool) or max_retries < 0:
             raise ValueError("max_retries must be a non-negative integer")
-        self.access_token = access_token if access_token is not None else os.environ.get("QODER_ACCESS_TOKEN")
+        self.access_token = access_token if access_token is not None else os.environ.get("QODER_PAT")
         self.credential = credential
         self.base_url = httpx.URL(base_url or os.environ.get(self._base_url_env) or self._default_base_url)
         if self.base_url.scheme not in ("http", "https") or not self.base_url.host or self.base_url.userinfo:

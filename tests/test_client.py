@@ -44,7 +44,7 @@ def make_client(handler, cls=Forward, **kwargs):
     "cls,env,suffix", [(Forward, "QODER_FORWARD_BASE_URL", "forward"), (Managed, "QODER_MANAGED_BASE_URL", "cloud")]
 )
 def test_environment_defaults_and_explicit_precedence(monkeypatch, cls, env, suffix):
-    monkeypatch.setenv("QODER_ACCESS_TOKEN", "from-env")
+    monkeypatch.setenv("QODER_PAT", "from-env")
     monkeypatch.setenv(env, f"https://configured.test/api/v1/{suffix}")
     with cls() as client:
         assert client.access_token == "from-env"
@@ -226,7 +226,7 @@ def test_connection_timeout_and_non_json_error(monkeypatch):
 
 
 def test_dynamic_credentials_refresh_and_explicit_headers(monkeypatch):
-    monkeypatch.delenv("QODER_ACCESS_TOKEN", raising=False)
+    monkeypatch.delenv("QODER_PAT", raising=False)
     monkeypatch.setattr("qca.common._base_client.time.sleep", lambda _: None)
 
     class Rotating:

@@ -66,9 +66,9 @@ class Config:
     def load(cls, mode: str, *, env_file: str = ".env.live", region: str | None = None, timeout: float = 300) -> Config:
         values = {**read_env(env_file), **os.environ}
         prefix = f"QODER_{mode.upper()}_"
-        token = values.get(prefix + "PAT") or values.get("QODER_ACCESS_TOKEN", "")
+        token = values.get(prefix + "PAT") or values.get("QODER_PAT", "")
         if not token:
-            raise ValueError(f"Configure {prefix}PAT or QODER_ACCESS_TOKEN")
+            raise ValueError(f"Configure {prefix}PAT or QODER_PAT")
         suffix = "forward" if mode == "forward" else "cloud"
         base = values.get(prefix + "BASE_URL") or f"https://api.qoder.com.cn/api/v1/{suffix}"
         url = httpx.URL(base)

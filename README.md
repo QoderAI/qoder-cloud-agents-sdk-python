@@ -46,7 +46,7 @@ Both clients read their token from the environment. `from qca.forward import Cli
 
 | Setting | Forward | Managed |
 |---|---|---|
-| Token | `QODER_ACCESS_TOKEN` | `QODER_ACCESS_TOKEN` |
+| Token | `QODER_PAT` | `QODER_PAT` |
 | Base URL | `QODER_FORWARD_BASE_URL` | `QODER_MANAGED_BASE_URL` |
 | Default base URL | `https://api.qoder.com/api/v1/forward/` | `https://api.qoder.com/api/v1/cloud/` |
 
