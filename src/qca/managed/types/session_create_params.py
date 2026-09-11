@@ -1,0 +1,31 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Dict, List, Optional, Union
+
+from typing_extensions import Required, TypedDict
+
+if TYPE_CHECKING:
+    from .agent_params import AgentParams
+    from .agent_with_overrides_params import AgentWithOverridesParams
+    from .budget_limit_param import BudgetLimitParam
+    from .file_resource_params import FileResourceParams
+    from .git_hub_repository_resource_params import GitHubRepositoryResourceParams
+    from .memory_store_resource_param import MemoryStoreResourceParam
+    from .user_define_outcome_event_params import UserDefineOutcomeEventParams
+    from .user_message_event_params import UserMessageEventParams
+
+__all__ = ["SessionCreateParams"]
+
+
+class SessionCreateParams(TypedDict, total=False):
+    environment_variables: Dict[str, str]
+    agent: Required[Union[str, AgentParams, AgentWithOverridesParams]]
+    environment_id: Required[str]
+    title: Optional[str]
+    workspace_id: Optional[str]
+    budget: BudgetLimitParam
+    initial_events: List[Union[UserMessageEventParams, UserDefineOutcomeEventParams]]
+    metadata: Dict[str, str]
+    resources: List[Union[GitHubRepositoryResourceParams, FileResourceParams, MemoryStoreResourceParam]]
+    vault_ids: List[str]
+    betas: List[str]
