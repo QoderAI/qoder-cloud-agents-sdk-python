@@ -82,7 +82,7 @@ with Managed() as client:
     print(session.id)
 ```
 
-These snippets create real resources. For complete scenarios with execution assertions and cleanup, see [examples](examples/README.md). Forward additionally offers Schedule, Batch, and Channel; Managed offers Deployment, Dream, and the Work API for self-hosted environments.
+These snippets create real resources. For complete scenarios with execution assertions and cleanup, see the `examples/` directory. Forward additionally offers Schedule, Batch, and Channel; Managed offers Deployment, Dream, and the Work API for self-hosted environments.
 
 ## Messages and SSE
 
