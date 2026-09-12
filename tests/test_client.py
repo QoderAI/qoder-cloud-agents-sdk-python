@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import io
 import json
+import platform
 from datetime import datetime, timezone
 from email.parser import BytesParser
 from email.policy import default
@@ -28,6 +29,7 @@ from qca import (
     PermissionDeniedError,
     RateLimitError,
     UnprocessableEntityError,
+    __version__,
 )
 
 
@@ -98,6 +100,43 @@ def test_query_arrays_and_special_headers():
     assert requests[0].url.params["limit"] == "0"
     assert requests[1].headers["idempotency-key"] == "send-key"
     assert json.loads(requests[1].content) == {"events": []}
+
+
+def test_client_fingerprint_reports_language_version_platform_and_deadline():
+    requests = []
+    with make_client(lambda request: requests.append(request) or httpx.Response(200, json={"data": []})) as client:
+        client.models.list()
+        client.models.list(timeout=7)
+    headers = requests[0].headers
+    assert headers["user-agent"] == f"qca-python/{__version__}"
+    assert headers["x-qoder-lang"] == "python"
+    assert headers["x-qoder-package-version"] == __version__
+    assert headers["x-qoder-runtime"] == platform.python_implementation()
+    assert headers["x-qoder-runtime-version"] == platform.python_version()
+    # Normalized rather than platform.system()/machine() raw, so that the same
+    # machine lands in the same server-side bucket as the Go and TS SDKs.
+    assert headers["x-qoder-os"] in {"MacOS", "Windows", "Linux", "iOS", "Android", "FreeBSD", "OpenBSD"}
+    assert headers["x-qoder-arch"] in {"x32", "x64", "arm", "arm64"}
+    assert headers["x-qoder-retry-count"] == "0"
+    assert headers["x-qoder-timeout"] == "60"
+    assert requests[1].headers["x-qoder-timeout"] == "7"
+
+
+def test_client_fingerprint_yields_to_caller_and_omits_absent_deadline():
+    requests = []
+
+    def handle(request):
+        requests.append(request)
+        return httpx.Response(200, json={"data": []})
+
+    with make_client(handle, default_headers={"X-Qoder-Lang": "cli", "X-Qoder-Timeout": "5"}) as client:
+        client.models.list(extra_headers={"User-Agent": "caller/1.0"})
+    with make_client(handle) as client:
+        client.models.list(timeout=None)
+    assert requests[0].headers["x-qoder-lang"] == "cli"
+    assert requests[0].headers["x-qoder-timeout"] == "5"
+    assert requests[0].headers["user-agent"] == "caller/1.0"
+    assert "x-qoder-timeout" not in requests[1].headers
 
 
 def test_datetime_and_nested_query_serialization():
@@ -210,6 +249,22 @@ def test_retry_after_and_server_retry_directive(monkeypatch):
     assert len(calls) == 1
 
 
+def test_retry_count_header_reports_the_attempt_number(monkeypatch):
+    monkeypatch.setattr("qca.common._base_client.time.sleep", lambda _: None)
+    counts = []
+
+    # Read inside the handler: the request object is reused across attempts, so
+    # inspecting it afterwards would only show the last value.
+    def handle(request):
+        counts.append(request.headers["x-qoder-retry-count"])
+        return httpx.Response(500, json={})
+
+    with make_client(handle) as client:
+        with pytest.raises(APIStatusError):
+            client.models.list()
+    assert counts == ["0", "1", "2"]
+
+
 def test_connection_timeout_and_non_json_error(monkeypatch):
     monkeypatch.setattr("qca.common._base_client.time.sleep", lambda _: None)
     for exc_type, expected in [(httpx.ConnectError, APIConnectionError), (httpx.ReadTimeout, APITimeoutError)]:
@@ -319,7 +374,10 @@ def test_download_does_not_forward_api_headers_cookies_or_auth(tmp_path):
         requests.append(request)
         if request.url.host == "api.test":
             return httpx.Response(200, json={"url": "https://storage.test/asset?signed=true"})
-        assert not any(k in request.headers for k in ("authorization", "cookie", "x-sensitive", "qoder-workspace-id"))
+        assert not any(
+            k in request.headers
+            for k in ("authorization", "cookie", "x-sensitive", "qoder-workspace-id", "x-qoder-lang")
+        )
         return httpx.Response(200, content=b"content")
 
     http = httpx.Client(
@@ -486,3 +544,21 @@ async def test_async_retry_policy_through_public_resources(monkeypatch, cls, ver
     assert len(calls) == count
     assert sleeps == [0.025] * (count - 1)
     assert len({request.content for request in calls}) == 1
+
+
+async def test_async_retry_count_header_reports_the_attempt_number(monkeypatch):
+    async def pause(delay):
+        return None
+
+    monkeypatch.setattr("qca.common._base_client.anyio.sleep", pause)
+    counts = []
+
+    def handle(request):
+        counts.append(request.headers["x-qoder-retry-count"])
+        return httpx.Response(500, json={})
+
+    transport = httpx.MockTransport(handle)
+    async with AsyncForward(access_token="test", http_client=httpx.AsyncClient(transport=transport)) as client:
+        with pytest.raises(APIStatusError):
+            await client.models.list()
+    assert counts == ["0", "1", "2"]

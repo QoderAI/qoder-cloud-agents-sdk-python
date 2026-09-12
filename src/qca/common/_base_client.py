@@ -16,6 +16,7 @@ from qca._version import __version__
 from ._exceptions import APIConnectionError, APIResponseValidationError, APITimeoutError, status_error
 from ._files import multipart_parts
 from ._models import parse_response
+from ._platform import platform_headers
 from ._response import (
     APIResponse,
     AsyncAPIResponse,
@@ -31,6 +32,15 @@ from .credentials import AsyncCredential, Credential
 from .pagination import AsyncPage, SyncPage
 
 DEFAULT_TIMEOUT = httpx.Timeout(60.0, connect=10.0)
+
+
+def _timeout_seconds(timeout: Any) -> int | None:
+    """The deadline the server should expect, in whole seconds like the Go SDK."""
+    if isinstance(timeout, httpx.Timeout):
+        timeout = timeout.read
+    if isinstance(timeout, bool) or not isinstance(timeout, (int, float)):
+        return None
+    return int(timeout)
 
 
 class BaseClient:
@@ -111,7 +121,14 @@ class BaseClient:
         return self._client.is_closed
 
     def _headers(self, options: dict[str, Any], token: str | None) -> httpx.Headers:
-        headers = httpx.Headers({"Accept": "application/json", "User-Agent": f"qca-python/{__version__}"})
+        headers = httpx.Headers(
+            {
+                "Accept": "application/json",
+                "User-Agent": f"qca-python/{__version__}",
+                "X-Qoder-Retry-Count": "0",
+                **platform_headers(),
+            }
+        )
         if token:
             headers["Authorization"] = f"Bearer {token}"
         for source in (self.default_headers, options.get("headers", {})):
@@ -129,12 +146,17 @@ class BaseClient:
     ) -> dict[str, Any]:
         headers = self._headers(options, token)
         timeout = options.get("timeout", NOT_GIVEN)
+        effective_timeout = self.timeout if isinstance(timeout, NotGiven) else timeout
+        if "X-Qoder-Timeout" not in headers:
+            seconds = _timeout_seconds(effective_timeout)
+            if seconds:
+                headers["X-Qoder-Timeout"] = str(seconds)
         args = dict(
             method=method,
             url=self.base_url.join(path.lstrip("/")),
             headers=headers,
             params=query_pairs({**self.default_query, **options.get("query", {})}),
-            timeout=self.timeout if isinstance(timeout, NotGiven) else timeout,
+            timeout=effective_timeout,
         )
         if file_fields:
             args["files"] = multipart_parts(options.get("body", {}), file_fields)
@@ -244,7 +266,10 @@ class SyncAPIClient(BaseClient):
         self._client = http_client or httpx.Client(timeout=timeout, follow_redirects=False)
 
     def _send(self, request: httpx.Request, *, storage: bool = False) -> httpx.Response:
+        track_retries = request.headers.get("X-Qoder-Retry-Count") == "0"
         for attempt in range(self.max_retries + 1):
+            if track_retries and attempt:
+                request.headers["X-Qoder-Retry-Count"] = str(attempt)
             if (
                 not storage
                 and self.credential
@@ -359,7 +384,10 @@ class AsyncAPIClient(BaseClient):
         self._client = http_client or httpx.AsyncClient(timeout=timeout, follow_redirects=False)
 
     async def _send(self, request: httpx.Request, *, storage: bool = False) -> httpx.Response:
+        track_retries = request.headers.get("X-Qoder-Retry-Count") == "0"
         for attempt in range(self.max_retries + 1):
+            if track_retries and attempt:
+                request.headers["X-Qoder-Retry-Count"] = str(attempt)
             if (
                 not storage
                 and self.credential
