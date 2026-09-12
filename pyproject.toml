@@ -1,5 +1,5 @@
 [project]
-name = "qca"
+name = "qca-sdk"
 version = "0.0.1.dev3"
 description = "Typed synchronous and asynchronous clients for Qoder Cloud Agents"
 authors = [{name = "Qoder"}]

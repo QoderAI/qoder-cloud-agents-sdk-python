@@ -1,6 +1,6 @@
 # Qoder Cloud Agents Python SDK
 
-[![PyPI version](https://img.shields.io/pypi/v/qca.svg)](https://pypi.org/project/qca/)
+[![PyPI version](https://img.shields.io/pypi/v/qca-sdk.svg)](https://pypi.org/project/qca-sdk/)
 
 The Qoder Cloud Agents Python SDK provides access to the Qoder Cloud Agents API from Python 3.10+. It ships synchronous and natively asynchronous clients, typed request parameters and response models, automatic pagination, SSE streaming, and file transfer.
 
@@ -9,10 +9,10 @@ The API is exposed in two modes, and each has its own client, resources, and typ
 ## Installation
 
 ```bash
-python -m pip install qca
+python -m pip install qca-sdk
 ```
 
-The package is still in pre-release, so the command above resolves to the latest `0.0.1.devN` build. To work from a checkout of this repository instead:
+The distribution is named `qca-sdk`; the import package is `qca`. The package is still in pre-release, so the command above resolves to the latest `0.0.1.devN` build. To work from a checkout of this repository instead:
 
 ```bash
 python -m pip install .
