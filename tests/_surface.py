@@ -155,7 +155,7 @@ def _endpoint(mode: str, attribute: str, function: Any) -> Endpoint:
 def endpoints() -> list[Endpoint]:
     found = []
     for mode in ("forward", "managed"):
-        client = CLIENTS[mode, False](access_token=TOKEN)
+        client = CLIENTS[mode, False](pat=TOKEN)
         found.extend(_endpoint(mode, attribute, function) for attribute, function in _methods(client))
         client.close()
     return sorted(found, key=lambda endpoint: endpoint.id)
@@ -197,7 +197,7 @@ def client_for(endpoint: Endpoint, async_: bool, handle: Callable[[httpx.Request
     transport = httpx.MockTransport(handle)
     http_client = httpx.AsyncClient(transport=transport) if async_ else httpx.Client(transport=transport)
     return CLIENTS[endpoint.mode, async_](
-        access_token=TOKEN,
+        pat=TOKEN,
         base_url=f"{BASE_URL}/{endpoint.mode}",
         max_retries=0,
         http_client=http_client,
@@ -207,7 +207,7 @@ def client_for(endpoint: Endpoint, async_: bool, handle: Callable[[httpx.Request
 
 def plain_client(mode: str, async_: bool) -> Any:
     """A client for tests that only introspect the resource tree."""
-    return CLIENTS[mode, async_](access_token=TOKEN)
+    return CLIENTS[mode, async_](pat=TOKEN)
 
 
 async def call(endpoint: Endpoint, client: Any, *, raw: bool = False, **overrides: Any) -> Any:

@@ -35,7 +35,7 @@ from qca import (
 
 def make_client(handler, cls=Forward, **kwargs):
     return cls(
-        access_token="test-token",
+        pat="test-token",
         base_url="https://api.test/prefix/",
         http_client=httpx.Client(transport=httpx.MockTransport(handler)),
         **kwargs,
@@ -49,10 +49,10 @@ def test_environment_defaults_and_explicit_precedence(monkeypatch, cls, env, suf
     monkeypatch.setenv("QODER_PAT", "from-env")
     monkeypatch.setenv(env, f"https://configured.test/api/v1/{suffix}")
     with cls() as client:
-        assert client.access_token == "from-env"
+        assert client.pat == "from-env"
         assert str(client.base_url) == f"https://configured.test/api/v1/{suffix}/"
-    with cls(access_token="explicit", base_url="https://explicit.test/root") as client:
-        assert client.access_token == "explicit"
+    with cls(pat="explicit", base_url="https://explicit.test/root") as client:
+        assert client.pat == "explicit"
         assert str(client.base_url) == "https://explicit.test/root/"
 
 
@@ -383,7 +383,7 @@ def test_download_does_not_forward_api_headers_cookies_or_auth(tmp_path):
     http = httpx.Client(
         transport=httpx.MockTransport(handle), headers={"x-sensitive": "secret"}, cookies={"session": "cookie"}
     )
-    with Managed(access_token="api-token", base_url="https://api.test/cloud", http_client=http) as client:
+    with Managed(pat="api-token", base_url="https://api.test/cloud", http_client=http) as client:
         response = client.files.download("file", workspace_id="workspace")
         response.write_to_file(tmp_path / "download.txt")
         assert response.http_response.is_closed
@@ -439,7 +439,7 @@ async def test_async_upload_and_download(tmp_path):
         return httpx.Response(200, json={"url": "https://storage.test/asset"})
 
     async with AsyncManaged(
-        access_token="secret", http_client=httpx.AsyncClient(transport=httpx.MockTransport(handle))
+        pat="secret", http_client=httpx.AsyncClient(transport=httpx.MockTransport(handle))
     ) as client:
         item = await client.files.upload(file=("file.txt", b"hello"))
         result = await client.files.download(item.id)
@@ -533,7 +533,7 @@ async def test_async_retry_policy_through_public_resources(monkeypatch, cls, ver
         calls.append(request)
         return httpx.Response(status, json={"error": {"message": "retry"}}, headers={"retry-after-ms": "25"})
 
-    async with cls(access_token="test", http_client=httpx.AsyncClient(transport=httpx.MockTransport(handle))) as client:
+    async with cls(pat="test", http_client=httpx.AsyncClient(transport=httpx.MockTransport(handle))) as client:
         with pytest.raises(APIStatusError):
             if verb == "GET":
                 await client.models.list()
@@ -558,7 +558,7 @@ async def test_async_retry_count_header_reports_the_attempt_number(monkeypatch):
         return httpx.Response(500, json={})
 
     transport = httpx.MockTransport(handle)
-    async with AsyncForward(access_token="test", http_client=httpx.AsyncClient(transport=transport)) as client:
+    async with AsyncForward(pat="test", http_client=httpx.AsyncClient(transport=transport)) as client:
         with pytest.raises(APIStatusError):
             await client.models.list()
     assert counts == ["0", "1", "2"]

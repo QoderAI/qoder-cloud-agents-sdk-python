@@ -54,7 +54,7 @@ Explicit arguments take precedence over environment variables. The clients never
 
 ```python
 client = Forward(
-    access_token="your-access-token",
+    pat="your-access-token",
     base_url="https://api.qoder.com.cn/api/v1/forward",
     timeout=30.0,
     max_retries=2,
@@ -358,7 +358,7 @@ For tokens that expire, pass a credential provider instead of a static token. It
 client = Forward(credential=my_credential)
 ```
 
-A static `access_token` takes precedence over a provider, and an explicit `Authorization` header takes precedence over both.
+A static `pat` takes precedence over a provider, and an explicit `Authorization` header takes precedence over both.
 
 ## Versioning
 

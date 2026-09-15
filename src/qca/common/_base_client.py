@@ -54,7 +54,7 @@ class BaseClient:
     def _configure(
         self,
         *,
-        access_token: str | None,
+        pat: str | None,
         base_url: str | httpx.URL | None,
         timeout: float | httpx.Timeout | None,
         max_retries: int,
@@ -64,7 +64,7 @@ class BaseClient:
     ) -> None:
         if not isinstance(max_retries, int) or isinstance(max_retries, bool) or max_retries < 0:
             raise ValueError("max_retries must be a non-negative integer")
-        self.access_token = access_token if access_token is not None else os.environ.get("QODER_PAT")
+        self.pat = pat if pat is not None else os.environ.get("QODER_PAT")
         self.credential = credential
         self.base_url = httpx.URL(base_url or os.environ.get(self._base_url_env) or self._default_base_url)
         if self.base_url.scheme not in ("http", "https") or not self.base_url.host or self.base_url.userinfo:
@@ -80,7 +80,7 @@ class BaseClient:
 
     def _copy(self, *, raw: bool = False, streaming: bool = False, **overrides: Any) -> Self:
         options = dict(
-            access_token=self.access_token,
+            pat=self.pat,
             base_url=self.base_url,
             timeout=self.timeout,
             max_retries=self.max_retries,
@@ -98,16 +98,14 @@ class BaseClient:
     def with_options(
         self,
         *,
-        access_token: str | NotGiven = NOT_GIVEN,
+        pat: str | NotGiven = NOT_GIVEN,
         base_url: str | httpx.URL | NotGiven = NOT_GIVEN,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
         max_retries: int | NotGiven = NOT_GIVEN,
         default_headers: Mapping[str, str] | NotGiven = NOT_GIVEN,
         default_query: Mapping[str, Any] | NotGiven = NOT_GIVEN,
     ) -> Self:
-        values: dict[str, Any] = dict(
-            access_token=access_token, base_url=base_url, timeout=timeout, max_retries=max_retries
-        )
+        values: dict[str, Any] = dict(pat=pat, base_url=base_url, timeout=timeout, max_retries=max_retries)
         if not isinstance(default_headers, NotGiven):
             values["default_headers"] = {**self.default_headers, **default_headers}
         if not isinstance(default_query, NotGiven):
@@ -243,7 +241,7 @@ class SyncAPIClient(BaseClient):
     def __init__(
         self,
         *,
-        access_token: str | None = None,
+        pat: str | None = None,
         base_url: str | httpx.URL | None = None,
         timeout: float | httpx.Timeout | None = DEFAULT_TIMEOUT,
         max_retries: int = 2,
@@ -253,7 +251,7 @@ class SyncAPIClient(BaseClient):
         credential: Credential | None = None,
     ) -> None:
         self._configure(
-            access_token=access_token,
+            pat=pat,
             base_url=base_url,
             timeout=timeout,
             max_retries=max_retries,
@@ -270,12 +268,7 @@ class SyncAPIClient(BaseClient):
         for attempt in range(self.max_retries + 1):
             if track_retries and attempt:
                 request.headers["X-Qoder-Retry-Count"] = str(attempt)
-            if (
-                not storage
-                and self.credential
-                and not self.access_token
-                and "Authorization" not in self.default_headers
-            ):
+            if not storage and self.credential and not self.pat and "Authorization" not in self.default_headers:
                 # Dynamic credentials can rotate between retries. Explicit request
                 # headers still take priority and are marked by request().
                 if not request.extensions.get("qca_explicit_auth"):
@@ -315,7 +308,7 @@ class SyncAPIClient(BaseClient):
         download_link: bool = False,
         file_fields: list[str] | None = None,
     ) -> Any:
-        args = self._request_args(method, path, options, self.access_token, file_fields)
+        args = self._request_args(method, path, options, self.pat, file_fields)
         if stream:
             args["headers"]["Accept"] = "text/event-stream"
         request = self._client.build_request(**args)
@@ -361,7 +354,7 @@ class AsyncAPIClient(BaseClient):
     def __init__(
         self,
         *,
-        access_token: str | None = None,
+        pat: str | None = None,
         base_url: str | httpx.URL | None = None,
         timeout: float | httpx.Timeout | None = DEFAULT_TIMEOUT,
         max_retries: int = 2,
@@ -371,7 +364,7 @@ class AsyncAPIClient(BaseClient):
         credential: Credential | AsyncCredential | None = None,
     ) -> None:
         self._configure(
-            access_token=access_token,
+            pat=pat,
             base_url=base_url,
             timeout=timeout,
             max_retries=max_retries,
@@ -388,12 +381,7 @@ class AsyncAPIClient(BaseClient):
         for attempt in range(self.max_retries + 1):
             if track_retries and attempt:
                 request.headers["X-Qoder-Retry-Count"] = str(attempt)
-            if (
-                not storage
-                and self.credential
-                and not self.access_token
-                and not request.extensions.get("qca_explicit_auth")
-            ):
+            if not storage and self.credential and not self.pat and not request.extensions.get("qca_explicit_auth"):
                 token = self.credential.get_token()
                 if inspect.isawaitable(token):
                     token = await token
@@ -436,10 +424,10 @@ class AsyncAPIClient(BaseClient):
         if file_fields:
             # Reading local file objects should not block the event loop.
             args = await anyio.to_thread.run_sync(
-                lambda: self._request_args(method, path, options, self.access_token, file_fields)
+                lambda: self._request_args(method, path, options, self.pat, file_fields)
             )
         else:
-            args = self._request_args(method, path, options, self.access_token, None)
+            args = self._request_args(method, path, options, self.pat, None)
         if stream:
             args["headers"]["Accept"] = "text/event-stream"
         request = self._client.build_request(**args)

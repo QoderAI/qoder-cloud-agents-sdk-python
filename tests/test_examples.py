@@ -327,10 +327,10 @@ def test_config_file_is_data_and_environment_wins(tmp_path, monkeypatch):
     monkeypatch.setenv("QODER_FORWARD_PAT", "env-token")
     monkeypatch.delenv("QODER_FORWARD_BASE_URL", raising=False)
     config = Config.load("forward", env_file=str(path))
-    assert config.access_token == "env-token"
+    assert config.pat == "env-token"
     assert config.model == "ultimate"
     assert "env-token" not in repr(config)
-    assert "env-token" not in safe_error(ValueError("env-token"), config.access_token)
+    assert "env-token" not in safe_error(ValueError("env-token"), config.pat)
 
 
 def test_choose_model_rejects_disabled_preference():
@@ -350,7 +350,7 @@ def test_single_scenario_cli_defaults_to_that_scenario_and_cleans_up(fails, monk
     monkeypatch.setattr(Config, "load", lambda *args, **kwargs: config)
     monkeypatch.setattr(sys, "argv", ["examples.forward.memory", "--output", "json"])
     http_client = httpx.Client(transport=httpx.MockTransport(lambda request: httpx.Response(200)))
-    client = Forward(access_token=config.access_token, http_client=http_client)
+    client = Forward(pat=config.pat, http_client=http_client)
     calls = []
 
     def memory(client, context):
@@ -476,7 +476,7 @@ def test_status_error_shows_server_reason_and_redacts_token_and_signed_url():
     from qca import BadRequestError
 
     with Forward(
-        access_token="test-token",
+        pat="test-token",
         base_url="https://api.test/api/v1/forward",
         http_client=httpx.Client(
             transport=httpx.MockTransport(

@@ -56,7 +56,7 @@ def read_env(path: str | Path) -> dict[str, str]:
 @dataclass
 class Config:
     mode: str
-    access_token: str = field(repr=False)
+    pat: str = field(repr=False)
     base_url: str = ""
     model: str = ""
     timeout: float = 300
@@ -89,7 +89,7 @@ class Config:
         return cls(mode, token, str(url), values.get(prefix + "MODEL", ""), timeout)
 
     def client_options(self) -> dict[str, Any]:
-        return dict(access_token=self.access_token, base_url=self.base_url, max_retries=0, timeout=30)
+        return dict(pat=self.pat, base_url=self.base_url, max_retries=0, timeout=30)
 
 
 def safe_error(error: BaseException, token: str = "") -> str:
@@ -163,7 +163,7 @@ class Run:
             try:
                 action()
             except Exception as error:
-                failures.append(f"{kind} {resource_id}: {safe_error(error, self.config.access_token)}")
+                failures.append(f"{kind} {resource_id}: {safe_error(error, self.config.pat)}")
         self.cleanups.clear()
         if failures:
             raise RuntimeError("Cleanup failed:\n" + "\n".join(failures))
@@ -314,9 +314,9 @@ def run_cli(mode: str, client_type: Any, scenarios: dict[str, Callable[[Any, Run
                     try:
                         context.cleanup()
                     except Exception as error:
-                        errors.append(safe_error(error, config.access_token))
+                        errors.append(safe_error(error, config.pat))
         except Exception as error:
-            errors.insert(0, safe_error(error, config.access_token))
+            errors.insert(0, safe_error(error, config.pat))
         results.append({"scenario": scenario, "passed": not errors, "outputs": context.outputs, "errors": errors})
         if args.output == "text":
             print(f"{scenario}: {'FAIL' if errors else 'PASS'}")

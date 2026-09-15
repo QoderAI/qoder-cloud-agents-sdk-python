@@ -175,7 +175,7 @@ async def test_resource_tree_is_built_once_and_reused(mode, async_):
 
 
 def test_unknown_resource_attributes_fail_loudly():
-    with Forward(access_token=TOKEN, http_client=httpx.Client()) as client:
+    with Forward(pat=TOKEN, http_client=httpx.Client()) as client:
         with pytest.raises(AttributeError):
             client.sessions.no_such_method
         with pytest.raises(AttributeError):
