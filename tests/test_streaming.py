@@ -56,7 +56,7 @@ def test_sse_multiline_utf8_comments_deltas_and_checkpoint():
         assert request.url.params.get_list("event_deltas[]") == ["agent.message"]
         return httpx.Response(200, stream=chunks, headers={"content-type": "text/event-stream"})
 
-    with Forward(http_client=httpx.Client(transport=httpx.MockTransport(handle))) as client:
+    with Forward(pat="test", http_client=httpx.Client(transport=httpx.MockTransport(handle))) as client:
         with client.sessions.events.stream(
             "session", last_event_id="previous", event_deltas=["agent.message"]
         ) as stream:
@@ -78,6 +78,7 @@ def test_sse_multiline_utf8_comments_deltas_and_checkpoint():
 def test_stream_errors_close_response(body, error):
     chunks = Chunks(body.encode())
     with Forward(
+        pat="test",
         http_client=httpx.Client(transport=httpx.MockTransport(lambda _: httpx.Response(200, stream=chunks)))
     ) as client:
         with pytest.raises(error):
@@ -98,6 +99,7 @@ async def test_async_stream_is_incremental_and_context_closes_on_break():
 
     chunks = AsyncChunks()
     async with AsyncManaged(
+        pat="test",
         http_client=httpx.AsyncClient(transport=httpx.MockTransport(lambda _: httpx.Response(200, stream=chunks)))
     ) as client:
         async with await client.sessions.events.stream("session", extra_headers={"Last-Event-ID": "before"}) as stream:

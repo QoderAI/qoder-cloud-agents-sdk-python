@@ -42,6 +42,18 @@ def make_client(handler, cls=Forward, **kwargs):
     )
 
 
+@pytest.mark.parametrize("cls,resource", [(Forward, "templates"), (Managed, "agents")])
+def test_missing_credential_raises_on_first_request(monkeypatch, cls, resource):
+    monkeypatch.delenv("QODER_PAT", raising=False)
+    # Construction succeeds; the error surfaces when we try to build the request.
+    with cls(http_client=httpx.Client(transport=httpx.MockTransport(lambda _: httpx.Response(200, json={"data": [], "has_more": False})))) as client:
+        with pytest.raises(TypeError, match="Could not resolve authentication method"):
+            getattr(client, resource).list()
+    # An explicit PAT lets the same call go through.
+    with cls(pat="explicit", http_client=httpx.Client(transport=httpx.MockTransport(lambda _: httpx.Response(200, json={"data": [], "has_more": False})))) as client:
+        getattr(client, resource).list()
+
+
 @pytest.mark.parametrize(
     "cls,env,suffix", [(Forward, "QODER_FORWARD_BASE_URL", "forward"), (Managed, "QODER_MANAGED_BASE_URL", "cloud")]
 )
@@ -416,7 +428,7 @@ async def test_native_async_concurrency_cancellation_and_raw_response():
         await asyncio.wait_for(both.wait(), timeout=1)
         return httpx.Response(200, json={"id": "identity", "data": []})
 
-    async with AsyncForward(http_client=httpx.AsyncClient(transport=httpx.MockTransport(handle))) as client:
+    async with AsyncForward(pat="test", http_client=httpx.AsyncClient(transport=httpx.MockTransport(handle))) as client:
         first, second = await asyncio.gather(client.identities.retrieve("first"), client.identities.retrieve("second"))
         assert first.id == second.id == "identity"
         raw = await client.identities.with_raw_response.retrieve("third")
@@ -483,6 +495,7 @@ async def test_async_streaming_response_defers_body_read_and_closes():
 
     body = Body()
     async with AsyncForward(
+        pat="test",
         http_client=httpx.AsyncClient(transport=httpx.MockTransport(lambda _: httpx.Response(200, stream=body)))
     ) as client:
         async with client.models.with_streaming_response.list() as response:

@@ -118,6 +118,17 @@ class BaseClient:
     def is_closed(self) -> bool:
         return self._client.is_closed
 
+    def _validate_headers(self, headers: httpx.Headers) -> None:
+        if headers.get("Authorization"):
+            return
+        if self.credential is not None:
+            return
+
+        raise TypeError(
+            "Could not resolve authentication method. Expected one of pat or credential to be set, "
+            "or the QODER_PAT environment variable to be configured."
+        )
+
     def _headers(self, options: dict[str, Any], token: str | None) -> httpx.Headers:
         headers = httpx.Headers(
             {
@@ -132,6 +143,7 @@ class BaseClient:
         for source in (self.default_headers, options.get("headers", {})):
             for key, value in source.items():
                 headers[key] = ",".join(str(v) for v in value) if isinstance(value, (list, tuple)) else str(value)
+        self._validate_headers(headers)
         return headers
 
     def _request_args(
