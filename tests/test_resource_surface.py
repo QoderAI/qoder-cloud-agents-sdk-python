@@ -16,6 +16,7 @@ from qca.common._types import NOT_GIVEN
 
 from ._surface import (
     ENDPOINTS,
+    HANDWRITTEN_RESOURCE_METHODS,
     TOKEN,
     call,
     carriers,
@@ -113,7 +114,7 @@ async def test_sync_and_async_clients_expose_the_same_methods(mode):
     client, async_client = plain_client(mode, False), plain_client(mode, True)
     try:
         assert method_names(client) == method_names(async_client)
-        assert {e.attribute for e in ENDPOINTS if e.mode == mode} == method_names(client)
+        assert {e.attribute for e in ENDPOINTS if e.mode == mode} | HANDWRITTEN_RESOURCE_METHODS == method_names(client)
     finally:
         await close_client(client, False)
         await close_client(async_client, True)

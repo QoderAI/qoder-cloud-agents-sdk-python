@@ -158,20 +158,28 @@ Reuse one `session_id` for the whole conversation, and reuse one idempotency key
 
 ## Resuming a stream
 
-The SDK does not reconnect a dropped stream on its own. Persist `stream.last_event_id` and pass it back as `last_event_id` on the next call; the server replays from there, so you never have to resend a message it already accepted.
+The low-level `stream()` method exposes `stream.last_event_id` but does not reconnect. Use the handwritten `resumable_stream()` helper to reconnect automatically after EOF, timeouts, transient transport failures, and retryable HTTP statuses. It checkpoints only complete events and sends the latest checkpoint as `Last-Event-ID`; close it with a context manager when finished.
 
 ```python
-from qca import APIConnectionError
-
-last_event_id = None
-try:
-    with client.sessions.events.stream(session_id, last_event_id=last_event_id) as stream:
-        for event in stream:
-            last_event_id = stream.last_event_id
-            print(event.type)
-except APIConnectionError:
-    pass  # reconnect with the last_event_id recorded above
+with client.sessions.events.resumable_stream(
+    session_id,
+    last_event_id=saved_event_id,
+    event_deltas=["agent.message"],
+) as stream:
+    for event in stream:
+        saved_event_id = stream.last_event_id
+        print(event.type)
 ```
+
+The async form is a native async iterator and context manager; unlike `stream()`, constructing it does not require `await`:
+
+```python
+async with client.sessions.events.resumable_stream(session_id) as stream:
+    async for event in stream:
+        print(event.type)
+```
+
+The helper retries until closed, cancelled, or it receives `session.status_terminated` / `session.deleted`. It uses jittered exponential backoff and the same HTTP retry classification as the client (in particular, `409` is not retried). It does not query event history, discard an invalid cursor, or deduplicate event IDs because multiple preview deltas may share one ID.
 
 Events are also readable after the fact through `client.sessions.events.list(session_id)`, which paginates like any other list method.
 

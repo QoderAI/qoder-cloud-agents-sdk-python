@@ -11,3 +11,4 @@ class SessionEventStreamParams(TypedDict, total=False):
     workspace_id: Optional[str]
     event_deltas: List[Literal["agent.message", "agent.thinking"]]
     betas: List[str]
+    last_event_id: Optional[str]

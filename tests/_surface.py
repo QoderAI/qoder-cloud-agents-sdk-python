@@ -24,6 +24,7 @@ from qca.common.pagination import AsyncPage, SyncPage
 
 DECLARATION = re.compile(r"^(GET|POST|PUT|PATCH|DELETE) (/[^\s.]*)\.")
 CONTROL_PARAMS = ("extra_headers", "extra_query", "extra_body", "timeout")
+HANDWRITTEN_RESOURCE_METHODS = {"sessions.events.resumable_stream"}
 CLIENTS = {
     ("forward", False): Forward,
     ("forward", True): AsyncForward,
@@ -156,7 +157,11 @@ def endpoints() -> list[Endpoint]:
     found = []
     for mode in ("forward", "managed"):
         client = CLIENTS[mode, False](pat=TOKEN)
-        found.extend(_endpoint(mode, attribute, function) for attribute, function in _methods(client))
+        found.extend(
+            _endpoint(mode, attribute, function)
+            for attribute, function in _methods(client)
+            if attribute not in HANDWRITTEN_RESOURCE_METHODS
+        )
         client.close()
     return sorted(found, key=lambda endpoint: endpoint.id)
 
