@@ -12,7 +12,7 @@ The API is exposed in two modes, and each has its own client, resources, and typ
 python -m pip install qca-sdk
 ```
 
-The distribution is named `qca-sdk`; the import package is `qca`. The package is still in pre-release, so the command above resolves to the latest `0.0.1.devN` build. To work from a checkout of this repository instead:
+The distribution is named `qca-sdk`; the import package is `qca`. The package is pre-1.0, so the command above resolves to the latest `0.1.x` release. To work from a checkout of this repository instead:
 
 ```bash
 python -m pip install .
@@ -370,7 +370,7 @@ A static `pat` takes precedence over a provider, and an explicit `Authorization`
 
 ## Versioning
 
-This project follows [Semantic Versioning](https://semver.org). It is pre-1.0 and currently published as `0.0.1.devN`, so the public surface may still change between releases. Anything prefixed with an underscore is internal and may change at any time.
+This project follows [Semantic Versioning](https://semver.org). It is pre-1.0 and currently published as `0.1.0`, so the public surface may still change between releases. Anything prefixed with an underscore is internal and may change at any time.
 
 ```python
 import qca
