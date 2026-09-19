@@ -46,11 +46,20 @@ def make_client(handler, cls=Forward, **kwargs):
 def test_missing_credential_raises_on_first_request(monkeypatch, cls, resource):
     monkeypatch.delenv("QODER_PAT", raising=False)
     # Construction succeeds; the error surfaces when we try to build the request.
-    with cls(http_client=httpx.Client(transport=httpx.MockTransport(lambda _: httpx.Response(200, json={"data": [], "has_more": False})))) as client:
+    with cls(
+        http_client=httpx.Client(
+            transport=httpx.MockTransport(lambda _: httpx.Response(200, json={"data": [], "has_more": False}))
+        )
+    ) as client:
         with pytest.raises(TypeError, match="Could not resolve authentication method"):
             getattr(client, resource).list()
     # An explicit PAT lets the same call go through.
-    with cls(pat="explicit", http_client=httpx.Client(transport=httpx.MockTransport(lambda _: httpx.Response(200, json={"data": [], "has_more": False})))) as client:
+    with cls(
+        pat="explicit",
+        http_client=httpx.Client(
+            transport=httpx.MockTransport(lambda _: httpx.Response(200, json={"data": [], "has_more": False}))
+        ),
+    ) as client:
         getattr(client, resource).list()
 
 
@@ -496,7 +505,7 @@ async def test_async_streaming_response_defers_body_read_and_closes():
     body = Body()
     async with AsyncForward(
         pat="test",
-        http_client=httpx.AsyncClient(transport=httpx.MockTransport(lambda _: httpx.Response(200, stream=body)))
+        http_client=httpx.AsyncClient(transport=httpx.MockTransport(lambda _: httpx.Response(200, stream=body))),
     ) as client:
         async with client.models.with_streaming_response.list() as response:
             assert not body.read

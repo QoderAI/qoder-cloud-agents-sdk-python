@@ -50,7 +50,7 @@ def test_repeated_pagination_cursor_raises_instead_of_looping():
             transport=httpx.MockTransport(
                 lambda _: httpx.Response(200, json={"data": [{"id": "one"}], "next_page": "same", "has_more": True})
             )
-        )
+        ),
     ) as client:
         with pytest.raises(RuntimeError, match="did not advance"):
             list(client.agents.list())
