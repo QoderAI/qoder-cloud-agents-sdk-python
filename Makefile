@@ -2,10 +2,13 @@ PYTHON ?= python3
 LIVE_ENV_FILE ?= .env.live
 .DEFAULT_GOAL := test
 
-.PHONY: test lint typecheck build test-live test-live-managed test-live-all
+.PHONY: test lint typecheck build docs docs-check test-live test-live-managed test-live-all
 
 test:
 	$(PYTHON) -m pytest -q
+
+docs:
+	uv run --python 3.12 --extra dev --locked python scripts/generate-docs.py
 
 lint:
 	$(PYTHON) -m ruff check src tests examples
