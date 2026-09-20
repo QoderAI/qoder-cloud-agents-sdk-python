@@ -30,3 +30,27 @@ def test_strip_nondeterminism_removes_local_paths():
     out = generate_docs.strip_nondeterminism(raw, repo_root="/Users/someone/checkout")
     assert "/Users/someone/checkout" not in out
     assert "2026-01-01T00:00:00Z" not in out
+
+
+def test_sort_module_sections_uses_qualified_module_name():
+    raw = """<a id="qca.zeta"></a>
+
+# qca.zeta
+
+<a id="qca.zeta.Client"></a>
+
+## Client
+
+<a id="qca.alpha"></a>
+
+# qca.alpha
+
+<a id="qca.alpha.Model"></a>
+
+## Model
+"""
+
+    out = generate_docs.sort_module_sections(raw)
+
+    assert out.index("# qca.alpha") < out.index("# qca.zeta")
+    assert out.index('id="qca.alpha.Model"') < out.index("# qca.zeta")

@@ -23,12 +23,27 @@ CONFIG = REPO_ROOT / "pydoc-markdown.yml"
 _SHA_BLOB = re.compile(r"(/blob/)[0-9a-fA-F]{7,40}(/)")
 _LINE_ANCHOR = re.compile(r"(\.py)#L\d+(?:-L\d+)?")
 _ISO_TS = re.compile(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z?")
+_MODULE_SECTION_START = re.compile(r'^<a id="(qca(?:\.[^"]+)*)"></a>\n\n# ', re.MULTILINE)
 
 
 def normalize_source_links(text: str) -> str:
     text = _SHA_BLOB.sub(r"\1main\2", text)
     text = _LINE_ANCHOR.sub(r"\1", text)
     return text
+
+
+def sort_module_sections(text: str) -> str:
+    starts = list(_MODULE_SECTION_START.finditer(text))
+    if not starts:
+        return text
+
+    prefix = text[: starts[0].start()].rstrip()
+    sections = [
+        (match.group(1), text[match.start() : next_start])
+        for match, next_start in zip(starts, [m.start() for m in starts[1:]] + [len(text)])
+    ]
+    body = "\n\n".join(section.rstrip() for _, section in sorted(sections))
+    return f"{prefix}\n\n{body}\n" if prefix else f"{body}\n"
 
 
 def strip_nondeterminism(text: str, repo_root: str) -> str:
@@ -54,7 +69,8 @@ def _run_pydoc_markdown() -> None:
 def _post_process() -> None:
     for md in sorted(DOCS_API.rglob("*.md")):
         original = md.read_text(encoding="utf-8")
-        fixed = strip_nondeterminism(normalize_source_links(original), str(REPO_ROOT)).rstrip() + "\n"
+        fixed = sort_module_sections(normalize_source_links(original))
+        fixed = strip_nondeterminism(fixed, str(REPO_ROOT)).rstrip() + "\n"
         if fixed != original:
             md.write_text(fixed, encoding="utf-8")
 
