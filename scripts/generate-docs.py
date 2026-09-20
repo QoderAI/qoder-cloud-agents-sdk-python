@@ -54,7 +54,7 @@ def _run_pydoc_markdown() -> None:
 def _post_process() -> None:
     for md in sorted(DOCS_API.rglob("*.md")):
         original = md.read_text(encoding="utf-8")
-        fixed = strip_nondeterminism(normalize_source_links(original), str(REPO_ROOT))
+        fixed = strip_nondeterminism(normalize_source_links(original), str(REPO_ROOT)).rstrip() + "\n"
         if fixed != original:
             md.write_text(fixed, encoding="utf-8")
 
