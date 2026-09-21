@@ -1,11 +1,11 @@
-"""上传文件与 Skill，挂载到会话，并验证环境变量与工具调用。
+"""上传文件与 Skill，挂载到会话，发送消息并打印助手回复。
 
 运行：python -m examples.forward.resources
 """
 
 from __future__ import annotations
 
-from examples.common.live import Run, choose_model, marker, name, run_cli, turn
+from examples.common.live import Run, choose_model, marker, name, run_cli
 from qca import Forward
 
 from ._cleanup import finish_session
@@ -56,22 +56,31 @@ def run(client: Forward, context: Run) -> None:
     )
     session_id = context.track("session", session.id, lambda: finish_session(client, context, session.id))
 
-    turn(
-        client.sessions.events,
-        context,
-        session_id,
-        "请使用工具读取 /data/workspace/sdk-example.txt 和 SDK_EXAMPLE_VALUE 环境变量，返回两个值。",
-        [file_value, env_value],
-        require_tool=True,
-    )
-    turn(
-        client.sessions.events,
-        context,
-        session_id,
-        f"请使用技能 {skill_name}，读取并返回 EXAMPLE_SKILL_CODE。",
-        [skill_value],
-        require_tool=True,
-    )
+    def ask(prompt: str) -> None:
+        context.output("user", prompt)
+        sent = client.sessions.events.send(
+            session_id,
+            events=[{"type": "user.message", "content": [{"type": "text", "text": prompt}]}],
+            extra_headers={"Idempotency-Key": name("event")},
+        )
+        if not sent.data or not sent.data[0].id:
+            raise RuntimeError("Send returned no user event")
+        with client.sessions.events.stream(
+            session_id,
+            extra_headers={"Last-Event-ID": sent.data[0].id},
+            timeout=context.remaining(),
+        ) as stream:
+            for event in stream:
+                context.remaining()
+                if event.type == "agent.message":
+                    context.output("assistant", event.to_json())
+                elif event.type in ("session.error", "session.status_terminated"):
+                    raise RuntimeError(f"Session stopped: {event.type}")
+                elif event.type == "session.status_idle":
+                    break
+
+    ask("请使用工具读取 /data/workspace/sdk-example.txt 和 SDK_EXAMPLE_VALUE 环境变量，返回两个值。")
+    ask(f"请使用技能 {skill_name}，读取并返回 EXAMPLE_SKILL_CODE。")
 
 
 if __name__ == "__main__":

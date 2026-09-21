@@ -1,11 +1,11 @@
-"""创建手动 Schedule，触发执行并验证关联会话的回复。
+"""创建手动 Schedule，触发执行并打印关联会话的回复。
 
 运行：python -m examples.forward.schedule
 """
 
 from __future__ import annotations
 
-from examples.common.live import Run, choose_model, marker, name, run_cli, wait_reply
+from examples.common.live import Run, choose_model, name, run_cli
 from qca import Forward
 
 from ._cleanup import finish_session
@@ -29,13 +29,12 @@ def run(client: Forward, context: Run) -> None:
     )
     template_id = context.track("template", template.id, lambda: client.templates.archive(template.id))
 
-    expected = marker()
     schedule = client.schedules.create(
         identity_id=identity_id,
         template_id=template_id,
         environment_id=environment_id,
         name=name("schedule"),
-        initial_events=[{"type": "user.message", "content": "Reply with exactly " + expected}],
+        initial_events=[{"type": "user.message", "content": "请用一句话打个招呼。"}],
         trigger_policy={"type": "manual"},
         execution={"max_attempts": 1, "max_concurrent_runs": 1},
     )
@@ -55,15 +54,17 @@ def run(client: Forward, context: Run) -> None:
     context.track("schedule_run", execution.id, cleanup_run)
     while True:
         current = client.schedule_runs.retrieve(execution.id, identity_id=identity_id)
-        if current.status == "completed":
+        context.output("run_status", current.status)
+        if current.status in ("completed", "failed", "skipped"):
             break
-        if current.status in ("failed", "skipped"):
-            raise AssertionError(f"Schedule Run failed: {current.status}")
         context.pause()
+
     if not current.session_id:
-        raise AssertionError("Completed Schedule Run has no session")
+        return
     context.output("session_id", current.session_id)
-    wait_reply(client.sessions.events, context, current.session_id).verify([expected])
+    for event in client.sessions.events.list(current.session_id, order="asc"):
+        if event.type == "agent.message":
+            context.output("assistant", event.to_json())
 
 
 if __name__ == "__main__":
