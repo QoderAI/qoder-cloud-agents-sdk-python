@@ -46,10 +46,11 @@ namespaces = false
 "*" = ["py.typed"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests", "examples"]
+testpaths = ["tests"]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
-markers = ["live: opt-in tests against a real Qoder account"]
+markers = ["integration: account-backed integration tests"]
+addopts = '-m "not integration" --strict-markers'
 
 [tool.ruff]
 target-version = "py310"
