@@ -1,11 +1,11 @@
-"""创建会话、发送用户消息，通过 SSE 读取最终回复。
+"""创建会话、发送用户消息，通过 SSE 读取并打印助手回复。
 
 运行：python -m examples.forward.session
 """
 
 from __future__ import annotations
 
-from examples.common.live import Run, TurnResult, choose_model, marker, name, run_cli
+from examples.common.live import Run, choose_model, name, run_cli
 from qca import Forward
 
 from ._cleanup import finish_session
@@ -35,23 +35,17 @@ def run(client: Forward, context: Run) -> None:
     )
     session_id = context.track("session", session.id, lambda: finish_session(client, context, session.id))
 
-    expected = marker()
-    prompt = "请用一句话介绍你能提供什么帮助，并在末尾原样附上：" + expected
+    prompt = "请用一句话介绍你能提供什么帮助。"
     context.output("user", prompt)
     sent = client.sessions.events.send(
         session_id,
-        events=[
-            {
-                "type": "user.message",
-                "content": [{"type": "text", "text": prompt}],
-            }
-        ],
+        events=[{"type": "user.message", "content": [{"type": "text", "text": prompt}]}],
         extra_headers={"Idempotency-Key": name("event")},
     )
-    if len(sent.data) != 1 or not sent.data[0].id:
-        raise AssertionError("Send must return exactly one user event ID")
+    if not sent.data or not sent.data[0].id:
+        raise RuntimeError("Send returned no user event")
 
-    reply = TurnResult(last_id=sent.data[0].id)
+    # 从刚发送的用户事件之后开始订阅，打印助手消息，遇到 idle 即停。
     with client.sessions.events.stream(
         session_id,
         extra_headers={"Last-Event-ID": sent.data[0].id},
@@ -59,11 +53,12 @@ def run(client: Forward, context: Run) -> None:
     ) as stream:
         for event in stream:
             context.remaining()
-            reply.observe(event)
-            if reply.complete:
+            if event.type == "agent.message":
+                context.output("assistant", event.to_json())
+            elif event.type in ("session.error", "session.status_terminated"):
+                raise RuntimeError(f"Session stopped: {event.type}")
+            elif event.type == "session.status_idle":
                 break
-    context.output("assistant", reply.text)
-    reply.verify([expected])
 
 
 if __name__ == "__main__":

@@ -2,8 +2,8 @@ import os
 
 import pytest
 
-from examples.common.live import Config, Run
 from qca import Forward, Managed
+from tests.support.harness import Config, Run
 
 
 @pytest.fixture

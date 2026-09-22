@@ -1,8 +1,8 @@
 import pytest
 
-from .__main__ import SCENARIOS
+from tests.support.scenarios.forward import SCENARIOS
 
-pytestmark = pytest.mark.live
+pytestmark = pytest.mark.integration
 
 
 @pytest.mark.parametrize("live_example", ["forward"], indirect=True)

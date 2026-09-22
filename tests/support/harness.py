@@ -1,10 +1,13 @@
+"""测试专用的运行时基元（Config/Run/choose_model/safe_error/read_env/name/marker）。
+
+这是 examples/common/live.py 运行时基元的测试侧副本；examples 与 tests 各存一份、互不 import。
+"""
+
 from __future__ import annotations
 
-import argparse
 import json
 import os
 import re
-import sys
 import time
 from collections.abc import Callable
 from dataclasses import dataclass, field
@@ -179,42 +182,3 @@ def choose_model(models: Any, requested: str) -> str:
     if not enabled:
         raise AssertionError("Account has no enabled models")
     return "ultimate" if "ultimate" in enabled else sorted(enabled)[0]
-
-
-def run_cli(mode: str, client_type: Any, scenarios: dict[str, Callable[[Any, Run], None]]) -> None:
-    parser = argparse.ArgumentParser(description=f"Qoder {mode} SDK examples")
-    parser.add_argument("--env", default=".env.live")
-    parser.add_argument("--region", choices=["cn", "international"])
-    parser.add_argument("--scenario", choices=[*scenarios, "all"], default=next(iter(scenarios)))
-    parser.add_argument("--timeout", type=float, default=300)
-    parser.add_argument("--output", choices=["text", "json"], default="text")
-    args = parser.parse_args()
-    try:
-        config = Config.load(mode, env_file=args.env, region=args.region, timeout=args.timeout)
-    except Exception as error:
-        parser.exit(2, safe_error(error) + "\n")
-    results = []
-    for scenario in scenarios if args.scenario == "all" else [args.scenario]:
-        context = Run(config, verbose=args.output == "text")
-        if args.output == "text":
-            print(f"[{mode}.{scenario}]", flush=True)
-        errors = []
-        try:
-            with client_type(**config.client_options()) as client:
-                try:
-                    scenarios[scenario](client, context)
-                finally:
-                    try:
-                        context.cleanup()
-                    except Exception as error:
-                        errors.append(safe_error(error, config.pat))
-        except Exception as error:
-            errors.insert(0, safe_error(error, config.pat))
-        results.append({"scenario": scenario, "passed": not errors, "outputs": context.outputs, "errors": errors})
-        if args.output == "text":
-            print(f"{scenario}: {'FAIL' if errors else 'PASS'}")
-            for error in errors:
-                print(error, file=sys.stderr)
-    if args.output == "json":
-        print(json.dumps(results, ensure_ascii=False, indent=2))
-    raise SystemExit(1 if any(not result["passed"] for result in results) else 0)

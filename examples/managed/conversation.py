@@ -1,6 +1,6 @@
-"""上传文件与 Skill，挂载到会话，发送消息并打印助手回复。
+"""复用同一个 Session 进行多轮对话，并分页读取会话历史。
 
-运行：python -m examples.managed.resources
+运行：python -m examples.managed.conversation
 """
 
 from __future__ import annotations
@@ -15,19 +15,6 @@ def run(client: Managed, context: Run) -> None:
     environment = client.environments.create(name=name("env"), config={"type": "cloud"})
     environment_id = context.track("environment", environment.id, lambda: client.environments.archive(environment.id))
 
-    file_value, env_value, skill_value = marker(), marker(), marker()
-    file = client.files.upload(file=("sdk-example.txt", file_value.encode()))
-    context.track("file", file.id, lambda: client.files.delete(file.id))
-    skill_name = name("skill")
-    skill = client.skills.create(
-        files=[
-            (
-                f"{skill_name}/SKILL.md",
-                f"---\nname: {skill_name}\ndescription: SDK example verification code.\n---\nEXAMPLE_SKILL_CODE: {skill_value}\n".encode(),
-            )
-        ]
-    )
-    context.track("skill", skill.id, lambda: client.skills.delete(skill.id))
     model = choose_model(client.models.list(), context.config.model)
     context.output("selected_model", model)
     agent = client.agents.create(
@@ -35,16 +22,10 @@ def run(client: Managed, context: Run) -> None:
         model={"id": model},
         system="你是一个 SDK 示例助手。必要时调用工具，只使用可实际读取的数据回答问题。",
         tools=[{"type": "agent_toolset_20260401"}],
-        skills=[{"type": "custom", "skill_id": skill.id, "version": skill.latest_version}],
     )
     agent_id = context.track("agent", agent.id, lambda: client.agents.archive(agent.id))
 
-    session = client.sessions.create(
-        environment_id=environment_id,
-        agent=agent_id,
-        environment_variables={"SDK_EXAMPLE_VALUE": env_value},
-        resources=[{"type": "file", "file_id": file.id, "mount_path": "/data/workspace/sdk-example.txt"}],
-    )
+    session = client.sessions.create(environment_id=environment_id, agent=agent_id)
     session_id = context.track("session", session.id, lambda: finish_session(client, context, session.id))
 
     def ask(prompt: str) -> None:
@@ -70,9 +51,16 @@ def run(client: Managed, context: Run) -> None:
                 elif event.type == "session.status_idle":
                     break
 
-    ask("请使用工具读取 /data/workspace/sdk-example.txt 和 SDK_EXAMPLE_VALUE 环境变量，返回两个值。")
-    ask(f"请使用技能 {skill_name}，读取并返回 EXAMPLE_SKILL_CODE。")
+    # 同一个 Session 支持多轮：服务端在 session_id 下保留完整历史，无需客户端携带上文。
+    code = "project-" + marker()
+    ask(f"这次项目代号是 {code}。请在本次对话中记住它，不要使用工具或写入记忆库。现在只回复：已记住。")
+    ask("只根据本次会话上文，告诉我刚才约定的项目代号。只回复代号，不要使用工具。")
+
+    # 分页读取已有的用户消息和助手回复，重建对话文字记录。
+    for event in client.sessions.events.list(session_id, order="asc", limit=100):
+        if event.type in ("user.message", "agent.message"):
+            context.output(f"history.{event.type}", event.to_json())
 
 
 if __name__ == "__main__":
-    run_cli("managed", Managed, {"resources": run})
+    run_cli("managed", Managed, {"conversation": run})

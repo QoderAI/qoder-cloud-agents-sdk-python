@@ -1,4 +1,4 @@
-"""上传 JSONL 批量任务，等待完成并核对任务、输出与会话回复。
+"""上传 JSONL 批量任务，等待完成并打印任务状态与输出。
 
 运行：python -m examples.forward.batch
 """
@@ -10,7 +10,7 @@ from typing import Any
 
 import httpx
 
-from examples.common.live import Run, choose_model, marker, name, run_cli, wait_reply
+from examples.common.live import Run, choose_model, name, run_cli
 from qca import Forward
 
 from ._cleanup import finish_session
@@ -34,12 +34,12 @@ def run(client: Forward, context: Run) -> None:
     )
     template_id = context.track("template", template.id, lambda: client.templates.archive(template.id))
 
-    expected, custom_id = marker(), name("task")
+    custom_id = name("task")
     data = {
         "custom_id": custom_id,
         "template_id": template_id,
         "identity_id": identity_id,
-        "body": {"input": "Reply with exactly " + expected},
+        "body": {"input": "请用一句话打个招呼。"},
     }
     input_file = client.files.upload(
         file=("input.jsonl", (json.dumps(data) + "\n").encode()), purpose="session_resource"
@@ -60,60 +60,32 @@ def run(client: Forward, context: Run) -> None:
         while current.status not in terminal:
             context.pause()
             current = client.batches.retrieve(batch.id)
-        if not current.output_file_id:
-            if current.request_counts and current.request_counts.total == 0:
-                return
-            raise AssertionError("Batch has no output for session cleanup")
-        rows = batch_rows(client, batch.id)
-        if (
-            len(rows) != 1
-            or rows[0].get("custom_id") != custom_id
-            or rows[0].get("identity_id") != identity_id
-            or rows[0].get("template_id") != template_id
-        ):
-            raise AssertionError("Batch cleanup output does not match this run")
-        if rows[0].get("session_id"):
-            finish_session(client, context, rows[0]["session_id"])
+        if current.output_file_id:
+            for row in batch_rows(client, batch.id):
+                if row.get("session_id"):
+                    finish_session(client, context, row["session_id"])
 
     context.track("batch", batch.id, cleanup_batch)
     while batch.status not in terminal:
         context.pause()
         batch = client.batches.retrieve(batch.id)
-    if (
-        batch.status != "completed"
-        or not batch.request_counts
-        or batch.request_counts.completed != 1
-        or batch.request_counts.failed != 0
-        or not batch.output_file_id
-    ):
-        raise AssertionError("Batch did not complete exactly one successful task")
+    context.output("batch_status", batch.status)
+    if batch.request_counts:
+        context.output(
+            "request_counts",
+            {"completed": batch.request_counts.completed, "failed": batch.request_counts.failed},
+        )
     tasks = client.batches.tasks.list(batch.id)
-    if len(tasks.data) != 1 or tasks.data[0].custom_id != custom_id:
-        raise AssertionError("Batch task did not round trip")
-    rows = batch_rows(client, batch.id)
-    if len(rows) != 1:
-        raise AssertionError("Expected one Batch output row")
-    row = rows[0]
-    context.output("batch_output", row)
-    if (
-        row.get("custom_id") != custom_id
-        or row.get("identity_id") != identity_id
-        or row.get("template_id") != template_id
-        or row.get("status") != "completed"
-        or row.get("error")
-        or not row.get("session_id")
-    ):
-        raise AssertionError("Batch output ownership or status mismatch")
-    if expected not in json.dumps(row.get("response")):
-        raise AssertionError("Batch response does not contain expected output")
-    wait_reply(client.sessions.events, context, row["session_id"]).verify([expected])
+    context.output("tasks", [task.custom_id for task in tasks.data])
+    if batch.output_file_id:
+        context.output("batch_output", batch_rows(client, batch.id))
 
 
 def batch_rows(client: Forward, batch_id: str) -> list[dict[str, Any]]:
     link = client.batches.retrieve_output(batch_id)
     url = httpx.URL(link.url)
     if url.scheme not in ("http", "https") or not url.host or url.userinfo:
-        raise AssertionError("Invalid Batch output URL")
+        raise RuntimeError("Invalid Batch output URL")
     # A separate HTTP client prevents API credentials from reaching storage.
     with httpx.Client(timeout=30, follow_redirects=True) as download:
         with download.stream("GET", url) as response:
@@ -122,7 +94,7 @@ def batch_rows(client: Forward, batch_id: str) -> list[dict[str, Any]]:
             for chunk in response.iter_bytes():
                 content.extend(chunk)
                 if len(content) > 4 * 1024 * 1024:
-                    raise AssertionError("Batch output exceeds the example's 4 MiB limit")
+                    raise RuntimeError("Batch output exceeds the example's 4 MiB limit")
     return [json.loads(line) for line in content.splitlines() if line.strip()]
 
 

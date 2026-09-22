@@ -1,11 +1,11 @@
-"""创建 Deployment，手动运行并验证关联会话的回复。
+"""创建 Deployment，手动运行并打印关联会话的回复。
 
 运行：python -m examples.managed.deployment
 """
 
 from __future__ import annotations
 
-from examples.common.live import Run, choose_model, marker, name, run_cli, wait_reply
+from examples.common.live import Run, choose_model, name, run_cli
 from qca import Managed
 
 from ._cleanup import finish_session
@@ -25,24 +25,21 @@ def run(client: Managed, context: Run) -> None:
     )
     agent_id = context.track("agent", agent.id, lambda: client.agents.archive(agent.id))
 
-    expected = marker()
     deployment = client.deployments.create(
         name=name("deployment"),
         environment_id=environment_id,
         agent=agent_id,
-        initial_events=[
-            {"type": "user.message", "content": [{"type": "text", "text": "Reply with exactly " + expected}]}
-        ],
+        initial_events=[{"type": "user.message", "content": [{"type": "text", "text": "请用一句话打个招呼。"}]}],
     )
     context.track("deployment", deployment.id, lambda: client.deployments.archive(deployment.id))
     execution = client.deployments.run(deployment.id)
     if not execution.session_id:
-        raise AssertionError("Deployment Run returned no session")
+        return
     context.track("session", execution.session_id, lambda: finish_session(client, context, execution.session_id))
-    saved = client.deployment_runs.retrieve(execution.id)
-    if saved.session_id != execution.session_id:
-        raise AssertionError("Deployment Run session ID changed")
-    wait_reply(client.sessions.events, context, execution.session_id).verify([expected])
+    context.output("session_id", execution.session_id)
+    for event in client.sessions.events.list(execution.session_id, order="asc"):
+        if event.type == "agent.message":
+            context.output("assistant", event.to_json())
 
 
 if __name__ == "__main__":
