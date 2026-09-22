@@ -1,8 +1,8 @@
 """Introspection over the public client surface.
 
-Every resource method declares its HTTP verb and path template on the first line
-of its docstring, and its inputs in its signature. These helpers read both so the
-suite can exercise all endpoints without checked-in snapshots.
+HTTP verbs, paths, required inputs, and response kinds come from a frozen fixture.
+Method signatures and docstrings are checked against that independent contract so
+an implementation and its documentation cannot drift together unnoticed.
 """
 
 from __future__ import annotations
@@ -13,6 +13,7 @@ import re
 from dataclasses import dataclass
 from functools import cached_property
 from importlib import import_module
+from pathlib import Path
 from typing import Any, Callable, Iterator
 
 import httpx
@@ -25,6 +26,10 @@ from qca.common.pagination import AsyncPage, SyncPage
 DECLARATION = re.compile(r"^(GET|POST|PUT|PATCH|DELETE) (/[^\s.]*)\.")
 CONTROL_PARAMS = ("extra_headers", "extra_query", "extra_body", "timeout")
 HANDWRITTEN_RESOURCE_METHODS = {"sessions.events.resumable_stream"}
+CONTRACT_FIXTURE = json.loads((Path(__file__).parent / "fixtures" / "api-contracts.json").read_text())
+CONTRACT_ROWS = CONTRACT_FIXTURE["contracts"]
+CONTRACTS = {row["id"]: row for row in CONTRACT_ROWS}
+assert len(CONTRACTS) == len(CONTRACT_ROWS), "duplicate API contract fixture ID"
 CLIENTS = {
     ("forward", False): Forward,
     ("forward", True): AsyncForward,
@@ -129,28 +134,30 @@ def method_names(client: Any) -> set[str]:
 
 
 def _endpoint(mode: str, attribute: str, function: Any) -> Endpoint:
-    summary = (function.__doc__ or "").strip()
-    declaration = DECLARATION.match(summary)
-    assert declaration, f"{mode}.{attribute} must document its route on the first docstring line: {summary!r}"
-    verb, template = declaration.groups()
+    endpoint_id = f"{mode}.{attribute}"
+    contract = CONTRACTS.get(endpoint_id)
+    assert contract, f"{endpoint_id} is missing from tests/fixtures/api-contracts.json"
     signature = inspect.signature(function)
     arguments = {
         name: _value(name, str(parameter.annotation))
         for name, parameter in signature.parameters.items()
         if name not in ("self", *CONTROL_PARAMS) and parameter.default is inspect.Parameter.empty
     }
-    placeholders = tuple(re.findall(r"\{(\w+)\}", template))
+    assert sorted(arguments) == contract["required"], f"{endpoint_id} required parameters drifted"
+    placeholders = tuple(re.findall(r"\{(\w+)\}", contract["path"]))
     missing = [name for name in placeholders if name not in arguments]
-    assert not missing, f"{mode}.{attribute} does not accept path parameters {missing}"
-    return Endpoint(
+    assert not missing, f"{endpoint_id} does not accept path parameters {missing}"
+    endpoint = Endpoint(
         mode=mode,
         attribute=attribute,
-        verb=verb,
-        template=template,
+        verb=contract["method"],
+        template=contract["path"],
         returns=str(signature.return_annotation),
         arguments=arguments,
         path_params=placeholders,
     )
+    assert endpoint.kind == contract["kind"], f"{endpoint_id} response kind drifted"
+    return endpoint
 
 
 def endpoints() -> list[Endpoint]:
@@ -163,6 +170,11 @@ def endpoints() -> list[Endpoint]:
             if attribute not in HANDWRITTEN_RESOURCE_METHODS
         )
         client.close()
+    actual_ids = {endpoint.id for endpoint in found}
+    assert actual_ids == set(CONTRACTS), (
+        f"API contract fixture drift: missing={sorted(actual_ids - set(CONTRACTS))}, "
+        f"orphaned={sorted(set(CONTRACTS) - actual_ids)}"
+    )
     return sorted(found, key=lambda endpoint: endpoint.id)
 
 
