@@ -5,7 +5,6 @@ import importlib.metadata
 import httpx
 import pytest
 
-import qca
 from qca import (
     NOT_GIVEN,
     APIConnectionError,
