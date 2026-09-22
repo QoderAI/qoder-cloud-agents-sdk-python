@@ -15,6 +15,7 @@ from qca import Forward, NotFoundError
 from qca.common._types import NOT_GIVEN
 
 from ._surface import (
+    CONTRACT_FIXTURE,
     ENDPOINTS,
     HANDWRITTEN_RESOURCE_METHODS,
     TOKEN,
@@ -30,6 +31,15 @@ from ._surface import (
 )
 
 MODES = ("forward", "managed")
+
+
+def test_contract_fixture_has_pinned_provenance():
+    assert CONTRACT_FIXTURE["source"] == {
+        "repository": "QoderAI/qoder-cloud-agents-sdk-python",
+        "commit": "bc5bc655d70b67fcd88623320ac01896a7360d8a",
+        "captured_at": "2026-09-22",
+    }
+    assert len(CONTRACT_FIXTURE["contracts"]) == 205
 
 
 @pytest.mark.parametrize("endpoint", ENDPOINTS, ids=endpoint_id)

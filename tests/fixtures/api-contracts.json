@@ -1,0 +1,1881 @@
+{
+  "source": {
+    "repository": "QoderAI/qoder-cloud-agents-sdk-python",
+    "commit": "bc5bc655d70b67fcd88623320ac01896a7360d8a",
+    "captured_at": "2026-09-22"
+  },
+  "contracts": [
+    {
+      "id": "forward.batches.cancel",
+      "method": "POST",
+      "path": "/batches/{batch_id}/cancel",
+      "required": [
+        "batch_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.batches.create",
+      "method": "POST",
+      "path": "/batches",
+      "required": [
+        "completion_window",
+        "input_file_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.batches.list",
+      "method": "GET",
+      "path": "/batches",
+      "required": [],
+      "kind": "page"
+    },
+    {
+      "id": "forward.batches.retrieve",
+      "method": "GET",
+      "path": "/batches/{batch_id}",
+      "required": [
+        "batch_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.batches.retrieve_error",
+      "method": "GET",
+      "path": "/batches/{batch_id}/error",
+      "required": [
+        "batch_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.batches.retrieve_output",
+      "method": "GET",
+      "path": "/batches/{batch_id}/output",
+      "required": [
+        "batch_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.batches.tasks.list",
+      "method": "GET",
+      "path": "/batches/{batch_id}/tasks",
+      "required": [
+        "batch_id"
+      ],
+      "kind": "page"
+    },
+    {
+      "id": "forward.channel_pairings.create",
+      "method": "POST",
+      "path": "/channel_pairings",
+      "required": [
+        "code",
+        "identity_id",
+        "template_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.channel_pairings.delete",
+      "method": "DELETE",
+      "path": "/channel_pairings/{pairing_id}",
+      "required": [
+        "pairing_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.channels.create",
+      "method": "POST",
+      "path": "/channels",
+      "required": [
+        "channel_type"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.channels.delete",
+      "method": "DELETE",
+      "path": "/channels/{channel_id}",
+      "required": [
+        "channel_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.channels.list",
+      "method": "GET",
+      "path": "/channels",
+      "required": [],
+      "kind": "page"
+    },
+    {
+      "id": "forward.channels.qr_sessions.create",
+      "method": "POST",
+      "path": "/channels/{channel_id}/qr_sessions",
+      "required": [
+        "channel_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.channels.qr_sessions.retrieve",
+      "method": "GET",
+      "path": "/qr_sessions/{session_key}",
+      "required": [
+        "session_key"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.channels.retrieve",
+      "method": "GET",
+      "path": "/channels/{channel_id}",
+      "required": [
+        "channel_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.channels.update",
+      "method": "POST",
+      "path": "/channels/{channel_id}",
+      "required": [
+        "channel_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.environments.archive",
+      "method": "POST",
+      "path": "/environments/{environment_id}/archive",
+      "required": [
+        "environment_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.environments.create",
+      "method": "POST",
+      "path": "/environments",
+      "required": [
+        "name"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.environments.delete",
+      "method": "DELETE",
+      "path": "/environments/{environment_id}",
+      "required": [
+        "environment_id"
+      ],
+      "kind": "empty"
+    },
+    {
+      "id": "forward.environments.list",
+      "method": "GET",
+      "path": "/environments",
+      "required": [],
+      "kind": "page"
+    },
+    {
+      "id": "forward.environments.retrieve",
+      "method": "GET",
+      "path": "/environments/{environment_id}",
+      "required": [
+        "environment_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.environments.update",
+      "method": "POST",
+      "path": "/environments/{environment_id}",
+      "required": [
+        "environment_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.files.delete",
+      "method": "DELETE",
+      "path": "/files/{file_id}",
+      "required": [
+        "file_id"
+      ],
+      "kind": "empty"
+    },
+    {
+      "id": "forward.files.download",
+      "method": "GET",
+      "path": "/files/{file_id}/content",
+      "required": [
+        "file_id"
+      ],
+      "kind": "binary"
+    },
+    {
+      "id": "forward.files.list",
+      "method": "GET",
+      "path": "/files",
+      "required": [],
+      "kind": "page"
+    },
+    {
+      "id": "forward.files.retrieve_metadata",
+      "method": "GET",
+      "path": "/files/{file_id}",
+      "required": [
+        "file_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.files.upload",
+      "method": "POST",
+      "path": "/files",
+      "required": [
+        "file"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.identities.clear",
+      "method": "POST",
+      "path": "/identities/{identity_id}/clear",
+      "required": [
+        "identity_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.identities.configs.list",
+      "method": "GET",
+      "path": "/identities/{identity_id}/templates",
+      "required": [
+        "identity_id"
+      ],
+      "kind": "page"
+    },
+    {
+      "id": "forward.identities.configs.retrieve",
+      "method": "GET",
+      "path": "/identities/{identity_id}/templates/{template_id}/config",
+      "required": [
+        "identity_id",
+        "template_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.identities.configs.retrieve_effective",
+      "method": "GET",
+      "path": "/identities/{identity_id}/templates/{template_id}/effective",
+      "required": [
+        "identity_id",
+        "template_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.identities.configs.upsert",
+      "method": "POST",
+      "path": "/identities/{identity_id}/templates/{template_id}/config",
+      "required": [
+        "identity_config",
+        "identity_id",
+        "template_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.identities.create",
+      "method": "POST",
+      "path": "/identities",
+      "required": [
+        "external_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.identities.delete",
+      "method": "DELETE",
+      "path": "/identities/{identity_id}",
+      "required": [
+        "identity_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.identities.disable",
+      "method": "POST",
+      "path": "/identities/{identity_id}/disable",
+      "required": [
+        "identity_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.identities.enable",
+      "method": "POST",
+      "path": "/identities/{identity_id}/enable",
+      "required": [
+        "identity_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.identities.ensure_admin",
+      "method": "POST",
+      "path": "/identities/admin/ensure",
+      "required": [],
+      "kind": "model"
+    },
+    {
+      "id": "forward.identities.list",
+      "method": "GET",
+      "path": "/identities",
+      "required": [],
+      "kind": "page"
+    },
+    {
+      "id": "forward.identities.list_templates",
+      "method": "GET",
+      "path": "/identities/{identity_id}/agents",
+      "required": [
+        "identity_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.identities.memory_stores.detach",
+      "method": "DELETE",
+      "path": "/identities/{identity_id}/templates/{template_id}/memory_stores/{memory_store_id}",
+      "required": [
+        "identity_id",
+        "memory_store_id",
+        "template_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.identities.memory_stores.list",
+      "method": "GET",
+      "path": "/identities/{identity_id}/templates/{template_id}/memory_stores",
+      "required": [
+        "identity_id",
+        "template_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.identities.memory_stores.mount",
+      "method": "POST",
+      "path": "/identities/{identity_id}/templates/{template_id}/memory_stores",
+      "required": [
+        "identity_id",
+        "memory_store_id",
+        "template_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.identities.retrieve",
+      "method": "GET",
+      "path": "/identities/{identity_id}",
+      "required": [
+        "identity_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.identities.stats",
+      "method": "GET",
+      "path": "/identities/stats",
+      "required": [],
+      "kind": "model"
+    },
+    {
+      "id": "forward.identities.update",
+      "method": "POST",
+      "path": "/identities/{identity_id}",
+      "required": [
+        "identity_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.memory_stores.archive",
+      "method": "POST",
+      "path": "/memory_stores/{memory_store_id}/archive",
+      "required": [
+        "memory_store_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.memory_stores.create",
+      "method": "POST",
+      "path": "/memory_stores",
+      "required": [
+        "idempotency_key",
+        "name"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.memory_stores.delete",
+      "method": "DELETE",
+      "path": "/memory_stores/{memory_store_id}",
+      "required": [
+        "memory_store_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.memory_stores.list",
+      "method": "GET",
+      "path": "/memory_stores",
+      "required": [],
+      "kind": "page"
+    },
+    {
+      "id": "forward.memory_stores.memories.create",
+      "method": "POST",
+      "path": "/memory_stores/{memory_store_id}/memories",
+      "required": [
+        "content",
+        "memory_store_id",
+        "path"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.memory_stores.memories.delete",
+      "method": "DELETE",
+      "path": "/memory_stores/{memory_store_id}/memories/{memory_id}",
+      "required": [
+        "memory_id",
+        "memory_store_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.memory_stores.memories.list",
+      "method": "GET",
+      "path": "/memory_stores/{memory_store_id}/memories",
+      "required": [
+        "memory_store_id"
+      ],
+      "kind": "page"
+    },
+    {
+      "id": "forward.memory_stores.memories.retrieve",
+      "method": "GET",
+      "path": "/memory_stores/{memory_store_id}/memories/{memory_id}",
+      "required": [
+        "memory_id",
+        "memory_store_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.memory_stores.memories.update",
+      "method": "POST",
+      "path": "/memory_stores/{memory_store_id}/memories/{memory_id}",
+      "required": [
+        "content",
+        "memory_id",
+        "memory_store_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.memory_stores.memory_versions.list",
+      "method": "GET",
+      "path": "/memory_stores/{memory_store_id}/memory_versions",
+      "required": [
+        "memory_store_id"
+      ],
+      "kind": "page"
+    },
+    {
+      "id": "forward.memory_stores.memory_versions.redact",
+      "method": "POST",
+      "path": "/memory_stores/{memory_store_id}/memory_versions/{memory_version_id}/redact",
+      "required": [
+        "memory_store_id",
+        "memory_version_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.memory_stores.memory_versions.retrieve",
+      "method": "GET",
+      "path": "/memory_stores/{memory_store_id}/memory_versions/{memory_version_id}",
+      "required": [
+        "memory_store_id",
+        "memory_version_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.memory_stores.retrieve",
+      "method": "GET",
+      "path": "/memory_stores/{memory_store_id}",
+      "required": [
+        "memory_store_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.memory_stores.update",
+      "method": "POST",
+      "path": "/memory_stores/{memory_store_id}",
+      "required": [
+        "memory_store_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.models.list",
+      "method": "GET",
+      "path": "/models",
+      "required": [],
+      "kind": "model"
+    },
+    {
+      "id": "forward.schedule_runs.list",
+      "method": "GET",
+      "path": "/schedule_runs",
+      "required": [],
+      "kind": "page"
+    },
+    {
+      "id": "forward.schedule_runs.retrieve",
+      "method": "GET",
+      "path": "/schedule_runs/{run_id}",
+      "required": [
+        "run_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.schedules.archive",
+      "method": "POST",
+      "path": "/schedules/{schedule_id}/archive",
+      "required": [
+        "schedule_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.schedules.archive_many",
+      "method": "POST",
+      "path": "/schedules/archive",
+      "required": [
+        "schedule_ids"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.schedules.create",
+      "method": "POST",
+      "path": "/schedules",
+      "required": [
+        "environment_id",
+        "identity_id",
+        "initial_events",
+        "name",
+        "template_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.schedules.list",
+      "method": "GET",
+      "path": "/schedules",
+      "required": [],
+      "kind": "page"
+    },
+    {
+      "id": "forward.schedules.pause",
+      "method": "POST",
+      "path": "/schedules/{schedule_id}/pause",
+      "required": [
+        "schedule_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.schedules.retrieve",
+      "method": "GET",
+      "path": "/schedules/{schedule_id}",
+      "required": [
+        "schedule_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.schedules.run",
+      "method": "POST",
+      "path": "/schedules/{schedule_id}/run",
+      "required": [
+        "schedule_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.schedules.unpause",
+      "method": "POST",
+      "path": "/schedules/{schedule_id}/unpause",
+      "required": [
+        "schedule_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.schedules.update",
+      "method": "POST",
+      "path": "/schedules/{schedule_id}",
+      "required": [
+        "schedule_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.sessions.archive",
+      "method": "POST",
+      "path": "/sessions/{session_id}/archive",
+      "required": [
+        "session_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.sessions.cancel",
+      "method": "POST",
+      "path": "/sessions/{session_id}/cancel",
+      "required": [
+        "session_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.sessions.create",
+      "method": "POST",
+      "path": "/sessions",
+      "required": [
+        "identity_id",
+        "template_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.sessions.events.list",
+      "method": "GET",
+      "path": "/sessions/{session_id}/events",
+      "required": [
+        "session_id"
+      ],
+      "kind": "page"
+    },
+    {
+      "id": "forward.sessions.events.send",
+      "method": "POST",
+      "path": "/sessions/{session_id}/events",
+      "required": [
+        "events",
+        "session_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.sessions.events.stream",
+      "method": "GET",
+      "path": "/sessions/{session_id}/events/stream",
+      "required": [
+        "session_id"
+      ],
+      "kind": "stream"
+    },
+    {
+      "id": "forward.sessions.list",
+      "method": "GET",
+      "path": "/sessions",
+      "required": [],
+      "kind": "page"
+    },
+    {
+      "id": "forward.sessions.resources.add",
+      "method": "POST",
+      "path": "/sessions/{session_id}/resources",
+      "required": [
+        "file_id",
+        "session_id",
+        "type"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.sessions.retrieve",
+      "method": "GET",
+      "path": "/sessions/{session_id}",
+      "required": [
+        "session_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.sessions.threads.archive",
+      "method": "POST",
+      "path": "/sessions/{session_id}/threads/{thread_id}/archive",
+      "required": [
+        "session_id",
+        "thread_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.sessions.threads.events.list",
+      "method": "GET",
+      "path": "/sessions/{session_id}/threads/{thread_id}/events",
+      "required": [
+        "session_id",
+        "thread_id"
+      ],
+      "kind": "page"
+    },
+    {
+      "id": "forward.sessions.threads.events.stream",
+      "method": "GET",
+      "path": "/sessions/{session_id}/threads/{thread_id}/stream",
+      "required": [
+        "session_id",
+        "thread_id"
+      ],
+      "kind": "stream"
+    },
+    {
+      "id": "forward.sessions.threads.list",
+      "method": "GET",
+      "path": "/sessions/{session_id}/threads",
+      "required": [
+        "session_id"
+      ],
+      "kind": "page"
+    },
+    {
+      "id": "forward.sessions.threads.retrieve",
+      "method": "GET",
+      "path": "/sessions/{session_id}/threads/{thread_id}",
+      "required": [
+        "session_id",
+        "thread_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.sessions.update",
+      "method": "POST",
+      "path": "/sessions/{session_id}",
+      "required": [
+        "session_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.skills.create",
+      "method": "POST",
+      "path": "/skills",
+      "required": [],
+      "kind": "model"
+    },
+    {
+      "id": "forward.skills.delete",
+      "method": "DELETE",
+      "path": "/skills/{skill_id}",
+      "required": [
+        "skill_id"
+      ],
+      "kind": "empty"
+    },
+    {
+      "id": "forward.skills.list",
+      "method": "GET",
+      "path": "/skills",
+      "required": [],
+      "kind": "page"
+    },
+    {
+      "id": "forward.skills.retrieve",
+      "method": "GET",
+      "path": "/skills/{skill_id}",
+      "required": [
+        "skill_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.skills.update",
+      "method": "PUT",
+      "path": "/skills/{skill_id}",
+      "required": [
+        "skill_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.skills.versions.create",
+      "method": "POST",
+      "path": "/skills/{skill_id}/versions",
+      "required": [
+        "files",
+        "skill_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.skills.versions.delete",
+      "method": "DELETE",
+      "path": "/skills/{skill_id}/versions/{version}",
+      "required": [
+        "skill_id",
+        "version"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.skills.versions.download",
+      "method": "GET",
+      "path": "/skills/{skill_id}/versions/{version}/content",
+      "required": [
+        "skill_id",
+        "version"
+      ],
+      "kind": "binary"
+    },
+    {
+      "id": "forward.skills.versions.list",
+      "method": "GET",
+      "path": "/skills/{skill_id}/versions",
+      "required": [
+        "skill_id"
+      ],
+      "kind": "page"
+    },
+    {
+      "id": "forward.skills.versions.retrieve",
+      "method": "GET",
+      "path": "/skills/{skill_id}/versions/{version}",
+      "required": [
+        "skill_id",
+        "version"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.templates.archive",
+      "method": "POST",
+      "path": "/templates/{template_id}/archive",
+      "required": [
+        "template_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.templates.clone",
+      "method": "POST",
+      "path": "/templates/{template_id}/clone",
+      "required": [
+        "template_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.templates.create",
+      "method": "POST",
+      "path": "/templates",
+      "required": [
+        "environment_id",
+        "model",
+        "name"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.templates.list",
+      "method": "GET",
+      "path": "/templates",
+      "required": [],
+      "kind": "page"
+    },
+    {
+      "id": "forward.templates.retrieve",
+      "method": "GET",
+      "path": "/templates/{template_id}",
+      "required": [
+        "template_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.templates.update",
+      "method": "POST",
+      "path": "/templates/{template_id}",
+      "required": [
+        "template_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.vaults.create",
+      "method": "POST",
+      "path": "/vaults",
+      "required": [
+        "display_name"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.vaults.credentials.create",
+      "method": "POST",
+      "path": "/vaults/{vault_id}/credentials",
+      "required": [
+        "auth",
+        "vault_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.vaults.credentials.delete",
+      "method": "DELETE",
+      "path": "/vaults/{vault_id}/credentials/{credential_id}",
+      "required": [
+        "credential_id",
+        "vault_id"
+      ],
+      "kind": "empty"
+    },
+    {
+      "id": "forward.vaults.credentials.list",
+      "method": "GET",
+      "path": "/vaults/{vault_id}/credentials",
+      "required": [
+        "vault_id"
+      ],
+      "kind": "page"
+    },
+    {
+      "id": "forward.vaults.credentials.retrieve",
+      "method": "GET",
+      "path": "/vaults/{vault_id}/credentials/{credential_id}",
+      "required": [
+        "credential_id",
+        "vault_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.vaults.delete",
+      "method": "DELETE",
+      "path": "/vaults/{vault_id}",
+      "required": [
+        "vault_id"
+      ],
+      "kind": "empty"
+    },
+    {
+      "id": "forward.vaults.list",
+      "method": "GET",
+      "path": "/vaults",
+      "required": [],
+      "kind": "page"
+    },
+    {
+      "id": "forward.vaults.retrieve",
+      "method": "GET",
+      "path": "/vaults/{vault_id}",
+      "required": [
+        "vault_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.agents.archive",
+      "method": "POST",
+      "path": "/agents/{agent_id}/archive",
+      "required": [
+        "agent_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.agents.create",
+      "method": "POST",
+      "path": "/agents",
+      "required": [
+        "model",
+        "name"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.agents.list",
+      "method": "GET",
+      "path": "/agents",
+      "required": [],
+      "kind": "page"
+    },
+    {
+      "id": "managed.agents.retrieve",
+      "method": "GET",
+      "path": "/agents/{agent_id}",
+      "required": [
+        "agent_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.agents.update",
+      "method": "POST",
+      "path": "/agents/{agent_id}",
+      "required": [
+        "agent_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.agents.versions.list",
+      "method": "GET",
+      "path": "/agents/{agent_id}/versions",
+      "required": [
+        "agent_id"
+      ],
+      "kind": "page"
+    },
+    {
+      "id": "managed.deployment_runs.list",
+      "method": "GET",
+      "path": "/deployment_runs",
+      "required": [],
+      "kind": "page"
+    },
+    {
+      "id": "managed.deployment_runs.retrieve",
+      "method": "GET",
+      "path": "/deployment_runs/{deployment_run_id}",
+      "required": [
+        "deployment_run_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.deployments.archive",
+      "method": "POST",
+      "path": "/deployments/{deployment_id}/archive",
+      "required": [
+        "deployment_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.deployments.create",
+      "method": "POST",
+      "path": "/deployments",
+      "required": [
+        "agent",
+        "environment_id",
+        "initial_events",
+        "name"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.deployments.list",
+      "method": "GET",
+      "path": "/deployments",
+      "required": [],
+      "kind": "page"
+    },
+    {
+      "id": "managed.deployments.pause",
+      "method": "POST",
+      "path": "/deployments/{deployment_id}/pause",
+      "required": [
+        "deployment_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.deployments.retrieve",
+      "method": "GET",
+      "path": "/deployments/{deployment_id}",
+      "required": [
+        "deployment_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.deployments.run",
+      "method": "POST",
+      "path": "/deployments/{deployment_id}/run",
+      "required": [
+        "deployment_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.deployments.unpause",
+      "method": "POST",
+      "path": "/deployments/{deployment_id}/unpause",
+      "required": [
+        "deployment_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.deployments.update",
+      "method": "POST",
+      "path": "/deployments/{deployment_id}",
+      "required": [
+        "deployment_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.dreams.archive",
+      "method": "POST",
+      "path": "/dreams/{dream_id}/archive",
+      "required": [
+        "dream_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.dreams.cancel",
+      "method": "POST",
+      "path": "/dreams/{dream_id}/cancel",
+      "required": [
+        "dream_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.dreams.create",
+      "method": "POST",
+      "path": "/dreams",
+      "required": [
+        "inputs",
+        "model"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.dreams.list",
+      "method": "GET",
+      "path": "/dreams",
+      "required": [],
+      "kind": "page"
+    },
+    {
+      "id": "managed.dreams.retrieve",
+      "method": "GET",
+      "path": "/dreams/{dream_id}",
+      "required": [
+        "dream_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.environments.archive",
+      "method": "POST",
+      "path": "/environments/{environment_id}/archive",
+      "required": [
+        "environment_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.environments.create",
+      "method": "POST",
+      "path": "/environments",
+      "required": [
+        "name"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.environments.delete",
+      "method": "DELETE",
+      "path": "/environments/{environment_id}",
+      "required": [
+        "environment_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.environments.list",
+      "method": "GET",
+      "path": "/environments",
+      "required": [],
+      "kind": "page"
+    },
+    {
+      "id": "managed.environments.retrieve",
+      "method": "GET",
+      "path": "/environments/{environment_id}",
+      "required": [
+        "environment_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.environments.update",
+      "method": "POST",
+      "path": "/environments/{environment_id}",
+      "required": [
+        "environment_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.environments.work.ack",
+      "method": "POST",
+      "path": "/environments/{environment_id}/work/{work_id}/ack",
+      "required": [
+        "environment_id",
+        "work_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.environments.work.heartbeat",
+      "method": "POST",
+      "path": "/environments/{environment_id}/work/{work_id}/heartbeat",
+      "required": [
+        "environment_id",
+        "work_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.environments.work.list",
+      "method": "GET",
+      "path": "/environments/{environment_id}/work",
+      "required": [
+        "environment_id"
+      ],
+      "kind": "page"
+    },
+    {
+      "id": "managed.environments.work.poll",
+      "method": "GET",
+      "path": "/environments/{environment_id}/work/poll",
+      "required": [
+        "environment_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.environments.work.retrieve",
+      "method": "GET",
+      "path": "/environments/{environment_id}/work/{work_id}",
+      "required": [
+        "environment_id",
+        "work_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.environments.work.stats",
+      "method": "GET",
+      "path": "/environments/{environment_id}/work/stats",
+      "required": [
+        "environment_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.environments.work.stop",
+      "method": "POST",
+      "path": "/environments/{environment_id}/work/{work_id}/stop",
+      "required": [
+        "environment_id",
+        "work_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.environments.work.update",
+      "method": "POST",
+      "path": "/environments/{environment_id}/work/{work_id}",
+      "required": [
+        "environment_id",
+        "metadata",
+        "work_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.files.delete",
+      "method": "DELETE",
+      "path": "/files/{file_id}",
+      "required": [
+        "file_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.files.download",
+      "method": "GET",
+      "path": "/files/{file_id}/content",
+      "required": [
+        "file_id"
+      ],
+      "kind": "binary"
+    },
+    {
+      "id": "managed.files.list",
+      "method": "GET",
+      "path": "/files",
+      "required": [],
+      "kind": "page"
+    },
+    {
+      "id": "managed.files.retrieve_metadata",
+      "method": "GET",
+      "path": "/files/{file_id}",
+      "required": [
+        "file_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.files.upload",
+      "method": "POST",
+      "path": "/files",
+      "required": [
+        "file"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.memory_stores.archive",
+      "method": "POST",
+      "path": "/memory_stores/{memory_store_id}/archive",
+      "required": [
+        "memory_store_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.memory_stores.create",
+      "method": "POST",
+      "path": "/memory_stores",
+      "required": [
+        "name"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.memory_stores.delete",
+      "method": "DELETE",
+      "path": "/memory_stores/{memory_store_id}",
+      "required": [
+        "memory_store_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.memory_stores.list",
+      "method": "GET",
+      "path": "/memory_stores",
+      "required": [],
+      "kind": "page"
+    },
+    {
+      "id": "managed.memory_stores.memories.create",
+      "method": "POST",
+      "path": "/memory_stores/{memory_store_id}/memories",
+      "required": [
+        "content",
+        "memory_store_id",
+        "path"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.memory_stores.memories.delete",
+      "method": "DELETE",
+      "path": "/memory_stores/{memory_store_id}/memories/{memory_id}",
+      "required": [
+        "memory_id",
+        "memory_store_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.memory_stores.memories.list",
+      "method": "GET",
+      "path": "/memory_stores/{memory_store_id}/memories",
+      "required": [
+        "memory_store_id"
+      ],
+      "kind": "page"
+    },
+    {
+      "id": "managed.memory_stores.memories.retrieve",
+      "method": "GET",
+      "path": "/memory_stores/{memory_store_id}/memories/{memory_id}",
+      "required": [
+        "memory_id",
+        "memory_store_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.memory_stores.memories.update",
+      "method": "POST",
+      "path": "/memory_stores/{memory_store_id}/memories/{memory_id}",
+      "required": [
+        "memory_id",
+        "memory_store_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.memory_stores.memory_versions.list",
+      "method": "GET",
+      "path": "/memory_stores/{memory_store_id}/memory_versions",
+      "required": [
+        "memory_store_id"
+      ],
+      "kind": "page"
+    },
+    {
+      "id": "managed.memory_stores.memory_versions.redact",
+      "method": "POST",
+      "path": "/memory_stores/{memory_store_id}/memory_versions/{memory_version_id}/redact",
+      "required": [
+        "memory_store_id",
+        "memory_version_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.memory_stores.memory_versions.retrieve",
+      "method": "GET",
+      "path": "/memory_stores/{memory_store_id}/memory_versions/{memory_version_id}",
+      "required": [
+        "memory_store_id",
+        "memory_version_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.memory_stores.retrieve",
+      "method": "GET",
+      "path": "/memory_stores/{memory_store_id}",
+      "required": [
+        "memory_store_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.memory_stores.update",
+      "method": "POST",
+      "path": "/memory_stores/{memory_store_id}",
+      "required": [
+        "memory_store_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.models.list",
+      "method": "GET",
+      "path": "/models",
+      "required": [],
+      "kind": "page"
+    },
+    {
+      "id": "managed.sessions.archive",
+      "method": "POST",
+      "path": "/sessions/{session_id}/archive",
+      "required": [
+        "session_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.sessions.create",
+      "method": "POST",
+      "path": "/sessions",
+      "required": [
+        "agent",
+        "environment_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.sessions.delete",
+      "method": "DELETE",
+      "path": "/sessions/{session_id}",
+      "required": [
+        "session_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.sessions.events.list",
+      "method": "GET",
+      "path": "/sessions/{session_id}/events",
+      "required": [
+        "session_id"
+      ],
+      "kind": "page"
+    },
+    {
+      "id": "managed.sessions.events.send",
+      "method": "POST",
+      "path": "/sessions/{session_id}/events",
+      "required": [
+        "events",
+        "session_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.sessions.events.stream",
+      "method": "GET",
+      "path": "/sessions/{session_id}/events/stream",
+      "required": [
+        "session_id"
+      ],
+      "kind": "stream"
+    },
+    {
+      "id": "managed.sessions.list",
+      "method": "GET",
+      "path": "/sessions",
+      "required": [],
+      "kind": "page"
+    },
+    {
+      "id": "managed.sessions.resources.add",
+      "method": "POST",
+      "path": "/sessions/{session_id}/resources",
+      "required": [
+        "file_id",
+        "session_id",
+        "type"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.sessions.resources.delete",
+      "method": "DELETE",
+      "path": "/sessions/{session_id}/resources/{resource_id}",
+      "required": [
+        "resource_id",
+        "session_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.sessions.resources.list",
+      "method": "GET",
+      "path": "/sessions/{session_id}/resources",
+      "required": [
+        "session_id"
+      ],
+      "kind": "page"
+    },
+    {
+      "id": "managed.sessions.resources.retrieve",
+      "method": "GET",
+      "path": "/sessions/{session_id}/resources/{resource_id}",
+      "required": [
+        "resource_id",
+        "session_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.sessions.resources.update",
+      "method": "POST",
+      "path": "/sessions/{session_id}/resources/{resource_id}",
+      "required": [
+        "resource_id",
+        "session_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.sessions.retrieve",
+      "method": "GET",
+      "path": "/sessions/{session_id}",
+      "required": [
+        "session_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.sessions.threads.archive",
+      "method": "POST",
+      "path": "/sessions/{session_id}/threads/{thread_id}/archive",
+      "required": [
+        "session_id",
+        "thread_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.sessions.threads.events.list",
+      "method": "GET",
+      "path": "/sessions/{session_id}/threads/{thread_id}/events",
+      "required": [
+        "session_id",
+        "thread_id"
+      ],
+      "kind": "page"
+    },
+    {
+      "id": "managed.sessions.threads.events.stream",
+      "method": "GET",
+      "path": "/sessions/{session_id}/threads/{thread_id}/stream",
+      "required": [
+        "session_id",
+        "thread_id"
+      ],
+      "kind": "stream"
+    },
+    {
+      "id": "managed.sessions.threads.list",
+      "method": "GET",
+      "path": "/sessions/{session_id}/threads",
+      "required": [
+        "session_id"
+      ],
+      "kind": "page"
+    },
+    {
+      "id": "managed.sessions.threads.retrieve",
+      "method": "GET",
+      "path": "/sessions/{session_id}/threads/{thread_id}",
+      "required": [
+        "session_id",
+        "thread_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.sessions.update",
+      "method": "POST",
+      "path": "/sessions/{session_id}",
+      "required": [
+        "session_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.skills.create",
+      "method": "POST",
+      "path": "/skills",
+      "required": [
+        "files"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.skills.delete",
+      "method": "DELETE",
+      "path": "/skills/{skill_id}",
+      "required": [
+        "skill_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.skills.list",
+      "method": "GET",
+      "path": "/skills",
+      "required": [],
+      "kind": "page"
+    },
+    {
+      "id": "managed.skills.retrieve",
+      "method": "GET",
+      "path": "/skills/{skill_id}",
+      "required": [
+        "skill_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.skills.versions.create",
+      "method": "POST",
+      "path": "/skills/{skill_id}/versions",
+      "required": [
+        "files",
+        "skill_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.skills.versions.delete",
+      "method": "DELETE",
+      "path": "/skills/{skill_id}/versions/{version}",
+      "required": [
+        "skill_id",
+        "version"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.skills.versions.download",
+      "method": "GET",
+      "path": "/skills/{skill_id}/versions/{version}/content",
+      "required": [
+        "skill_id",
+        "version"
+      ],
+      "kind": "binary"
+    },
+    {
+      "id": "managed.skills.versions.list",
+      "method": "GET",
+      "path": "/skills/{skill_id}/versions",
+      "required": [
+        "skill_id"
+      ],
+      "kind": "page"
+    },
+    {
+      "id": "managed.skills.versions.retrieve",
+      "method": "GET",
+      "path": "/skills/{skill_id}/versions/{version}",
+      "required": [
+        "skill_id",
+        "version"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.vaults.archive",
+      "method": "POST",
+      "path": "/vaults/{vault_id}/archive",
+      "required": [
+        "vault_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.vaults.create",
+      "method": "POST",
+      "path": "/vaults",
+      "required": [
+        "display_name"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.vaults.credentials.archive",
+      "method": "POST",
+      "path": "/vaults/{vault_id}/credentials/{credential_id}/archive",
+      "required": [
+        "credential_id",
+        "vault_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.vaults.credentials.create",
+      "method": "POST",
+      "path": "/vaults/{vault_id}/credentials",
+      "required": [
+        "auth",
+        "vault_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.vaults.credentials.delete",
+      "method": "DELETE",
+      "path": "/vaults/{vault_id}/credentials/{credential_id}",
+      "required": [
+        "credential_id",
+        "vault_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.vaults.credentials.list",
+      "method": "GET",
+      "path": "/vaults/{vault_id}/credentials",
+      "required": [
+        "vault_id"
+      ],
+      "kind": "page"
+    },
+    {
+      "id": "managed.vaults.credentials.mcp_oauth_validate",
+      "method": "POST",
+      "path": "/vaults/{vault_id}/credentials/{credential_id}/mcp_oauth_validate",
+      "required": [
+        "credential_id",
+        "vault_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.vaults.credentials.retrieve",
+      "method": "GET",
+      "path": "/vaults/{vault_id}/credentials/{credential_id}",
+      "required": [
+        "credential_id",
+        "vault_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.vaults.credentials.update",
+      "method": "POST",
+      "path": "/vaults/{vault_id}/credentials/{credential_id}",
+      "required": [
+        "credential_id",
+        "vault_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.vaults.delete",
+      "method": "DELETE",
+      "path": "/vaults/{vault_id}",
+      "required": [
+        "vault_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.vaults.list",
+      "method": "GET",
+      "path": "/vaults",
+      "required": [],
+      "kind": "page"
+    },
+    {
+      "id": "managed.vaults.retrieve",
+      "method": "GET",
+      "path": "/vaults/{vault_id}",
+      "required": [
+        "vault_id"
+      ],
+      "kind": "model"
+    }
+  ]
+}
