@@ -1,0 +1,31 @@
+# API reference generation config for pydoc-markdown (pinned from the Task 1 spike).
+#
+# Determinism contract: on a fixed commit + this pinned pydoc-markdown version,
+# `pydoc-markdown pydoc-markdown.yml` writes a byte-identical docs/api/reference.md,
+# except for the source_linker commit SHA / line anchors which scripts/generate-docs.py
+# normalizes to a main-ref, file-level URL. Static docspec parsing (loader=python) is
+# used so TYPE_CHECKING forward-ref field types never trigger runtime import errors.
+loaders:
+  - type: python
+    search_path: [src]
+    packages: [qca]
+processors:
+  # documented_only:false keeps the real surface (Stainless client classes and the
+  # field-only pydantic models carry no class docstring); the expression drops the
+  # imported-name Indirections (datetime/Optional/TYPE_CHECKING/...) that would
+  # otherwise render as spurious `## <name>` headers on every module page.
+  - type: filter
+    documented_only: false
+    skip_empty_modules: true
+    expression: "default() and obj.__class__.__name__ != 'Indirection'"
+  - type: crossref
+renderer:
+  type: markdown
+  descriptive_class_title: false
+  render_toc: false
+  filename: docs/api/reference.md
+  # Native output is blob/<HEAD-sha>/<path>#L<line>; scripts/generate-docs.py rewrites
+  # it to blob/main/<path> (no SHA, no line anchor) for a stable, drift-friendly diff.
+  source_linker:
+    type: github
+    repo: QoderAI/qoder-cloud-agents-sdk-python

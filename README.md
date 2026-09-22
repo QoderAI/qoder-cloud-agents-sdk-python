@@ -23,6 +23,22 @@ python -m pip install -e '.[dev]'   # development environment
 
 Python 3.10 or newer. The runtime dependencies are `httpx`, `pydantic` v2, `anyio`, and `typing-extensions`; the package is typed and ships `py.typed`.
 
+## Generating documentation
+
+The API reference under `docs/api/` is generated from the public source and
+committed. Regenerate and verify it with:
+
+```bash
+make docs          # regenerate docs/api/ from src/qca
+make docs-check    # regenerate + drift/link/snippet checks (offline)
+```
+
+Under the hood these run `pydoc-markdown` via `uv` on a pinned Python 3.12:
+
+```bash
+uv run --python 3.12 --extra dev --locked pydoc-markdown pydoc-markdown.yml
+```
+
 ## Usage
 
 ```python
