@@ -26,14 +26,15 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest>=8", "pytest-asyncio>=0.24", "ruff>=0.11", "mypy>=1.15", "build>=1.2", "pydoc-markdown>=4,<5"]
+dev = ["pytest>=8", "pytest-asyncio>=0.24", "ruff>=0.11", "mypy>=1.15", "build==1.6.1", "pydoc-markdown>=4,<5"]
+release = ["twine==7.0.0"]
 
 [project.urls]
 Repository = "https://github.com/QoderAI/qoder-cloud-agents-sdk-python"
 Issues = "https://github.com/QoderAI/qoder-cloud-agents-sdk-python/issues"
 
 [build-system]
-requires = ["setuptools>=77"]
+requires = ["setuptools==84.0.0"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
