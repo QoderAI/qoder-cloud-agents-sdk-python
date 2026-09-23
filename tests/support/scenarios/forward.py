@@ -49,7 +49,7 @@ def session(client: Forward, context: Run) -> None:
     session_id = context.track("session", session.id, lambda: finish_session(client, context, session.id))
 
     expected = marker()
-    prompt = "请用一句话介绍你能提供什么帮助，并在末尾原样附上：" + expected
+    prompt = "Reply with exactly " + expected
     context.output("user", prompt)
     sent = client.sessions.events.send(
         session_id,
