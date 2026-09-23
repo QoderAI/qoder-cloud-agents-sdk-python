@@ -24,6 +24,7 @@ Commands and results:
 ## Impact
 
 - [ ] Public API or behavior changed
+- [ ] User-facing changes added to `CHANGELOG.md` under `Unreleased`, or not applicable (explain below)
 - [ ] Synchronous and asynchronous clients remain aligned
 - [ ] Generated API documentation updated
 - [ ] Contract fixtures updated
