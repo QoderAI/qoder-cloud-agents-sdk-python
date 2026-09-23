@@ -50,6 +50,24 @@ Contract fixtures are maintained manually. A passing fixture test proves consist
 
 The SDK intentionally keeps Qoder-branded `X-Qoder-*` metadata headers, resumable session-event streams, and Python-native synchronous and asynchronous clients. Preserve those extensions unless the change explicitly revises the public contract. Breaking public API changes require a minor-version release while the SDK remains pre-1.0 and must include migration notes.
 
+## Release
+
+Before the first release, create the GitHub `release` Environment with required reviewers and a deployment-branch rule limited to `main`. Add a tag ruleset for `refs/tags/v*` that blocks updates and deletions and allows creation only by the release automation identity. Update the PyPI Trusted Publisher for `QoderAI/qoder-cloud-agents-sdk-python` and `release.yml` to require the same `release` Environment. Do not dispatch the workflow until all settings are active.
+
+1. Merge a release pull request that updates `project.version` in `pyproject.toml`, refreshes `uv.lock`, and passes all normal checks.
+2. From the resulting `origin/main`, record the full lowercase 40-character commit SHA and dispatch the workflow from `main`. Use a 1-64 character `batch_id` that starts with a letter or digit and otherwise contains only letters, digits, `.`, `_`, or `-`:
+
+   ```bash
+   gh workflow run release.yml --ref main \
+     -f version=0.1.1 \
+     -f commit_sha=<40-character-main-sha> \
+     -f batch_id=<safe-audit-token>
+   ```
+
+3. After approval, the workflow creates or reuses the annotated `v<version>` tag, publishes the approved wheel and sdist with PyPI Trusted Publishing, verifies their public digests, and performs a no-cache installation of the exact version and its synchronous and asynchronous imports.
+
+PyPI versions are immutable. Never reuse or overwrite one: fix forward with a new release pull request and version, and yank an unusable version when necessary. A safe rerun must use the same SHA, version, and `batch_id`; it verifies the existing PyPI files without uploading them again.
+
 ## Pull requests
 
 Complete the pull request template, include exact verification commands and results, and identify public API, documentation, integration-test, and cross-SDK effects. Do not combine unrelated refactors with behavior changes.

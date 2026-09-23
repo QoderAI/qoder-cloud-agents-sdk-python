@@ -1,31 +1,496 @@
 name: Release
 
-# 打 v* tag 或手动触发时构建并发布到 PyPI。
-# 通过 PyPI Trusted Publishing 授权，仓库里不保存任何长期凭证。
 on:
-  push:
-    tags:
-      - "v*"
   workflow_dispatch:
+    inputs:
+      version:
+        description: Canonical PyPI version without the v prefix
+        required: true
+        type: string
+      commit_sha:
+        description: Full 40-character lowercase SHA of the current main commit
+        required: true
+        type: string
+      batch_id:
+        description: '1-64 characters; start with a letter or digit; use only letters, digits, ., _, or -'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+env:
+  PACKAGE_NAME: qca-sdk
+  PYPI_INDEX_URL: https://pypi.org/simple/
+  PYPI_JSON_BASE_URL: https://pypi.org/pypi
+  PYTHON_VERSION: "3.12"
 
 jobs:
-  publish:
+  preflight:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write # Trusted Publishing 换取短期令牌所必需
+    env:
+      RELEASE_VERSION: ${{ inputs.version }}
+      RELEASE_COMMIT_SHA: ${{ inputs.commit_sha }}
+      RELEASE_BATCH_ID: ${{ inputs.batch_id }}
+    outputs:
+      artifact_name: ${{ steps.artifact.outputs.artifact_name }}
+      wheel_name: ${{ steps.artifact.outputs.wheel_name }}
+      wheel_sha256: ${{ steps.artifact.outputs.wheel_sha256 }}
+      sdist_name: ${{ steps.artifact.outputs.sdist_name }}
+      sdist_sha256: ${{ steps.artifact.outputs.sdist_sha256 }}
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.10"
-
-      - name: Build sdist and wheel
+      - name: Validate dispatch metadata
         run: |
-          python -m pip install --upgrade build twine
-          python -m build
-          twine check dist/*
+          set -euo pipefail
+          if [[ "$GITHUB_REF" != refs/heads/main || "$GITHUB_WORKFLOW_REF" != *@refs/heads/main ]]; then
+            echo "Releases must be dispatched from the main workflow ref." >&2
+            exit 1
+          fi
+          if [[ ! "$RELEASE_COMMIT_SHA" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "commit_sha must be a full 40-character lowercase Git SHA." >&2
+            exit 1
+          fi
+          if [[ ! "$RELEASE_BATCH_ID" =~ ^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$ ]]; then
+            echo "batch_id must contain 1-64 safe audit-token characters." >&2
+            exit 1
+          fi
 
-      - name: Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@v1.14.2
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ inputs.commit_sha }}
+          fetch-depth: 0
+
+      - name: Validate current main before executing repository code
+        run: |
+          set -euo pipefail
+          git fetch --force --prune --prune-tags origin \
+            '+refs/heads/main:refs/remotes/origin/main' \
+            '+refs/tags/*:refs/tags/*'
+          checked_out_sha=$(git rev-parse 'HEAD^{commit}')
+          requested_sha=$(git rev-parse "$RELEASE_COMMIT_SHA^{commit}")
+          main_sha=$(git rev-parse 'refs/remotes/origin/main^{commit}')
+          tag="v$RELEASE_VERSION"
+          tag_sha=$(git rev-parse -q --verify "refs/tags/$tag^{commit}" || true)
+          if [[ "$checked_out_sha" != "$requested_sha" ]]; then
+            echo "Checked out $checked_out_sha instead of requested $requested_sha." >&2
+            exit 1
+          fi
+          if [[ "$requested_sha" != "$main_sha" && "$tag_sha" != "$requested_sha" ]]; then
+            echo "commit_sha is neither current origin/main ($main_sha) nor an existing matching release tag." >&2
+            exit 1
+          fi
+          if [[ "$tag_sha" == "$requested_sha" ]]; then
+            if [[ "$(git cat-file -t "refs/tags/$tag")" != tag ]]; then
+              echo "$tag must be an annotated release tag." >&2
+              exit 1
+            fi
+            tag_message=$(git for-each-ref --format='%(contents)' "refs/tags/$tag")
+            if [[ "$tag_message" != "Release $PACKAGE_NAME==$RELEASE_VERSION (batch $RELEASE_BATCH_ID)" ]]; then
+              echo "$tag does not have the expected release annotation." >&2
+              exit 1
+            fi
+          fi
+
+      - uses: astral-sh/setup-uv@d4b2f3b6ecc6e67c4457f6d3e41ec42d3d0fcb86 # v5
+        with:
+          version: "0.11.19"
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install locked release dependencies
+        run: uv sync --extra dev --extra release --locked
+
+      - name: Validate release version and commit
+        run: |
+          set -euo pipefail
+          git fetch --force --prune --prune-tags origin \
+            '+refs/heads/main:refs/remotes/origin/main' \
+            '+refs/tags/*:refs/tags/*'
+
+          checked_out_sha=$(git rev-parse 'HEAD^{commit}')
+          requested_sha=$(git rev-parse "$RELEASE_COMMIT_SHA^{commit}")
+          main_sha=$(git rev-parse 'refs/remotes/origin/main^{commit}')
+          tag_sha=$(git rev-parse -q --verify "refs/tags/v$RELEASE_VERSION^{commit}" || true)
+          if [[ "$checked_out_sha" != "$requested_sha" ]]; then
+            echo "Checked out $checked_out_sha instead of requested $requested_sha." >&2
+            exit 1
+          fi
+          if [[ "$requested_sha" != "$main_sha" && "$tag_sha" != "$requested_sha" ]]; then
+            echo "commit_sha is neither current origin/main ($main_sha) nor an existing matching release tag." >&2
+            exit 1
+          fi
+
+          canonical_version=$(uv run --no-sync python - <<'PY'
+          import os
+          from packaging.version import InvalidVersion, Version
+
+          raw = os.environ["RELEASE_VERSION"]
+          try:
+              parsed = Version(raw)
+          except InvalidVersion as exc:
+              raise SystemExit(f"invalid PEP 440 version: {raw}: {exc}") from exc
+          if parsed.local is not None or str(parsed) != raw:
+              raise SystemExit(f"version must be canonical public PEP 440: {raw} (canonical: {parsed})")
+          print(parsed)
+          PY
+          )
+          project_version=$(uv run --no-sync python - <<'PY'
+          import tomllib
+          from pathlib import Path
+
+          print(tomllib.loads(Path("pyproject.toml").read_text())["project"]["version"])
+          PY
+          )
+          if [[ "$canonical_version" != "$RELEASE_VERSION" || "$project_version" != "$RELEASE_VERSION" ]]; then
+            echo "pyproject.toml version $project_version does not match $RELEASE_VERSION." >&2
+            exit 1
+          fi
+          echo "SOURCE_DATE_EPOCH=$(git show -s --format=%ct "$RELEASE_COMMIT_SHA")" >> "$GITHUB_ENV"
+
+      - id: state
+        name: Inspect tag and PyPI state
+        run: |
+          set -euo pipefail
+          release_sha=$(git rev-parse "$RELEASE_COMMIT_SHA^{commit}")
+          tag="v$RELEASE_VERSION"
+          tag_sha=$(git rev-parse -q --verify "refs/tags/$tag^{commit}" || true)
+          if [[ -n "$tag_sha" ]]; then
+            if [[ "$tag_sha" != "$release_sha" ]]; then
+              echo "$tag already points to $tag_sha, not $release_sha." >&2
+              exit 1
+            fi
+            if [[ "$(git cat-file -t "refs/tags/$tag")" != tag ]]; then
+              echo "$tag must be an annotated release tag." >&2
+              exit 1
+            fi
+            tag_message=$(git for-each-ref --format='%(contents)' "refs/tags/$tag")
+            if [[ "$tag_message" != "Release $PACKAGE_NAME==$RELEASE_VERSION (batch $RELEASE_BATCH_ID)" ]]; then
+              echo "$tag does not have the expected release annotation." >&2
+              exit 1
+            fi
+          fi
+          tag_exists=false
+          [[ -n "$tag_sha" ]] && tag_exists=true
+
+          response_file=$(mktemp)
+          registry_url="$PYPI_JSON_BASE_URL/$PACKAGE_NAME/$RELEASE_VERSION/json"
+          if ! registry_status=$(curl --silent --show-error --output "$response_file" --write-out '%{http_code}' "$registry_url"); then
+            echo "Unable to query PyPI." >&2
+            exit 1
+          fi
+          case "$registry_status" in
+            200) registry_exists=true ;;
+            404) registry_exists=false ;;
+            *)
+              echo "PyPI returned HTTP $registry_status." >&2
+              cat "$response_file" >&2
+              exit 1
+              ;;
+          esac
+          rm -f "$response_file"
+
+          if [[ "$registry_exists" == true && "$tag_exists" == false ]]; then
+            echo "$PACKAGE_NAME==$RELEASE_VERSION exists without matching tag $tag." >&2
+            exit 1
+          fi
+          echo "tag_exists=$tag_exists" >> "$GITHUB_OUTPUT"
+          echo "registry_exists=$registry_exists" >> "$GITHUB_OUTPUT"
+
+      - name: Lint
+        run: uv run --no-sync make lint
+      - name: Typecheck
+        run: uv run --no-sync make typecheck
+      - name: Test
+        run: uv run --no-sync make test
+      - name: Check generated documentation
+        run: uv run --no-sync make docs-check
+
+      - name: Build and inspect wheel and sdist
+        run: |
+          set -euo pipefail
+          rm -rf dist
+          uv run --no-sync python -m build
+          sdist=$(find dist -maxdepth 1 -type f -name '*.tar.gz' -print -quit)
+          uv run --no-sync python scripts/normalize-sdist.py "$sdist" --epoch "$SOURCE_DATE_EPOCH"
+          uv run --no-sync python -m twine check dist/*
+
+      - id: artifact
+        name: Record release artifact
+        run: |
+          set -euo pipefail
+          mapfile -t wheels < <(find dist -maxdepth 1 -type f -name '*.whl' -print)
+          mapfile -t sdists < <(find dist -maxdepth 1 -type f -name '*.tar.gz' -print)
+          if [[ ${#wheels[@]} -ne 1 || ${#sdists[@]} -ne 1 ]]; then
+            echo "Expected one wheel and one sdist." >&2
+            exit 1
+          fi
+          wheel_name=$(basename "${wheels[0]}")
+          sdist_name=$(basename "${sdists[0]}")
+          wheel_sha256=$(sha256sum "${wheels[0]}" | cut -d ' ' -f 1)
+          sdist_sha256=$(sha256sum "${sdists[0]}" | cut -d ' ' -f 1)
+          echo "artifact_name=$PACKAGE_NAME-$RELEASE_VERSION" >> "$GITHUB_OUTPUT"
+          echo "wheel_name=$wheel_name" >> "$GITHUB_OUTPUT"
+          echo "wheel_sha256=$wheel_sha256" >> "$GITHUB_OUTPUT"
+          echo "sdist_name=$sdist_name" >> "$GITHUB_OUTPUT"
+          echo "sdist_sha256=$sdist_sha256" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: ${{ steps.artifact.outputs.artifact_name }}
+          path: |
+            dist/*.whl
+            dist/*.tar.gz
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    needs: preflight
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      contents: write
+      id-token: write
+    env:
+      RELEASE_VERSION: ${{ inputs.version }}
+      RELEASE_COMMIT_SHA: ${{ inputs.commit_sha }}
+      RELEASE_BATCH_ID: ${{ inputs.batch_id }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ inputs.commit_sha }}
+          fetch-depth: 0
+
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: ${{ needs.preflight.outputs.artifact_name }}
+          path: dist
+
+      - name: Verify downloaded artifact
+        env:
+          WHEEL_NAME: ${{ needs.preflight.outputs.wheel_name }}
+          WHEEL_SHA256: ${{ needs.preflight.outputs.wheel_sha256 }}
+          SDIST_NAME: ${{ needs.preflight.outputs.sdist_name }}
+          SDIST_SHA256: ${{ needs.preflight.outputs.sdist_sha256 }}
+        run: |
+          set -euo pipefail
+          for entry in "$WHEEL_NAME:$WHEEL_SHA256" "$SDIST_NAME:$SDIST_SHA256"; do
+            name=${entry%%:*}
+            expected=${entry#*:}
+            path="$GITHUB_WORKSPACE/dist/$name"
+            if [[ ! -f "$path" ]]; then
+              echo "Downloaded artifact is missing $name." >&2
+              exit 1
+            fi
+            actual=$(sha256sum "$path" | cut -d ' ' -f 1)
+            if [[ "$actual" != "$expected" ]]; then
+              echo "Downloaded artifact checksum does not match preflight for $name." >&2
+              exit 1
+            fi
+          done
+
+      - id: state
+        name: Revalidate main, tag, and PyPI
+        run: |
+          set -euo pipefail
+          git fetch --force --prune --prune-tags origin \
+            '+refs/heads/main:refs/remotes/origin/main' \
+            '+refs/tags/*:refs/tags/*'
+
+          checked_out_sha=$(git rev-parse 'HEAD^{commit}')
+          release_sha=$(git rev-parse "$RELEASE_COMMIT_SHA^{commit}")
+          main_sha=$(git rev-parse 'refs/remotes/origin/main^{commit}')
+          tag="v$RELEASE_VERSION"
+          tag_sha=$(git rev-parse -q --verify "refs/tags/$tag^{commit}" || true)
+          if [[ "$checked_out_sha" != "$release_sha" ]]; then
+            echo "Checked out $checked_out_sha instead of requested $release_sha." >&2
+            exit 1
+          fi
+          if [[ "$main_sha" != "$release_sha" && "$tag_sha" != "$release_sha" ]]; then
+            echo "origin/main moved to $main_sha before the release tag was created; dispatch a new release." >&2
+            exit 1
+          fi
+
+          if [[ -n "$tag_sha" ]]; then
+            if [[ "$tag_sha" != "$release_sha" ]]; then
+              echo "$tag now points to $tag_sha, not $release_sha." >&2
+              exit 1
+            fi
+            if [[ "$(git cat-file -t "refs/tags/$tag")" != tag ]]; then
+              echo "$tag must be an annotated release tag." >&2
+              exit 1
+            fi
+            tag_message=$(git for-each-ref --format='%(contents)' "refs/tags/$tag")
+            if [[ "$tag_message" != "Release $PACKAGE_NAME==$RELEASE_VERSION (batch $RELEASE_BATCH_ID)" ]]; then
+              echo "$tag does not have the expected release annotation." >&2
+              exit 1
+            fi
+          fi
+          tag_exists=false
+          [[ -n "$tag_sha" ]] && tag_exists=true
+
+          response_file=$(mktemp)
+          registry_url="$PYPI_JSON_BASE_URL/$PACKAGE_NAME/$RELEASE_VERSION/json"
+          if ! registry_status=$(curl --silent --show-error --output "$response_file" --write-out '%{http_code}' "$registry_url"); then
+            echo "Unable to query PyPI." >&2
+            exit 1
+          fi
+          case "$registry_status" in
+            200) registry_exists=true ;;
+            404) registry_exists=false ;;
+            *)
+              echo "PyPI returned HTTP $registry_status." >&2
+              cat "$response_file" >&2
+              exit 1
+              ;;
+          esac
+          rm -f "$response_file"
+
+          if [[ "$registry_exists" == true && "$tag_exists" == false ]]; then
+            echo "$PACKAGE_NAME==$RELEASE_VERSION exists without matching tag $tag." >&2
+            exit 1
+          fi
+          echo "tag_exists=$tag_exists" >> "$GITHUB_OUTPUT"
+          echo "registry_exists=$registry_exists" >> "$GITHUB_OUTPUT"
+
+      - name: Validate existing PyPI files
+        if: steps.state.outputs.registry_exists == 'true'
+        env:
+          WHEEL_NAME: ${{ needs.preflight.outputs.wheel_name }}
+          WHEEL_SHA256: ${{ needs.preflight.outputs.wheel_sha256 }}
+          SDIST_NAME: ${{ needs.preflight.outputs.sdist_name }}
+          SDIST_SHA256: ${{ needs.preflight.outputs.sdist_sha256 }}
+        run: |
+          set -euo pipefail
+          response_file=$(mktemp)
+          curl --connect-timeout 10 --max-time 30 --fail --silent --show-error \
+            --output "$response_file" "$PYPI_JSON_BASE_URL/$PACKAGE_NAME/$RELEASE_VERSION/json"
+          python3 - "$response_file" <<'PY'
+          import json
+          import os
+          import sys
+
+          payload = json.load(open(sys.argv[1]))
+          urls = {item["filename"]: item for item in payload["urls"]}
+          expected = {
+              os.environ["WHEEL_NAME"]: os.environ["WHEEL_SHA256"],
+              os.environ["SDIST_NAME"]: os.environ["SDIST_SHA256"],
+          }
+          if not urls or not set(urls).issubset(expected):
+              raise SystemExit(f"PyPI contains unexpected release files: {set(urls)}")
+          for filename, item in urls.items():
+              if item["digests"]["sha256"] != expected[filename]:
+                  raise SystemExit(f"Existing PyPI file does not match the approved artifact: {filename}")
+          PY
+
+      - name: Create or reuse release tag
+        env:
+          TAG_EXISTS: ${{ steps.state.outputs.tag_exists }}
+        run: |
+          set -euo pipefail
+          tag="v$RELEASE_VERSION"
+          if [[ "$TAG_EXISTS" == true ]]; then
+            echo "Reusing $tag at $RELEASE_COMMIT_SHA."
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git tag --annotate "$tag" "$RELEASE_COMMIT_SHA" \
+            --message "Release $PACKAGE_NAME==$RELEASE_VERSION (batch $RELEASE_BATCH_ID)"
+          git push --atomic --force-with-lease="refs/heads/main:$RELEASE_COMMIT_SHA" origin \
+            "${RELEASE_COMMIT_SHA}:refs/heads/main" "refs/tags/$tag"
+
+      - name: Publish missing files to PyPI with trusted publishing
+        uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2
+        with:
+          packages-dir: dist/
+          skip-existing: true
+
+      - name: Record publish result
+        run: echo "Published or confirmed $PACKAGE_NAME==$RELEASE_VERSION." >> "$GITHUB_STEP_SUMMARY"
+
+  verify:
+    needs: [preflight, publish]
+    runs-on: ubuntu-latest
+    env:
+      RELEASE_VERSION: ${{ inputs.version }}
+    steps:
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Wait for and verify PyPI artifacts
+        env:
+          WHEEL_NAME: ${{ needs.preflight.outputs.wheel_name }}
+          WHEEL_SHA256: ${{ needs.preflight.outputs.wheel_sha256 }}
+          SDIST_NAME: ${{ needs.preflight.outputs.sdist_name }}
+          SDIST_SHA256: ${{ needs.preflight.outputs.sdist_sha256 }}
+        run: |
+          set -euo pipefail
+          registry_url="$PYPI_JSON_BASE_URL/$PACKAGE_NAME/$RELEASE_VERSION/json"
+          response_file=$(mktemp)
+          verified=false
+          for attempt in $(seq 1 20); do
+            status=$(curl --connect-timeout 10 --max-time 30 --silent --show-error --output "$response_file" --write-out '%{http_code}' "$registry_url" || true)
+            if [[ "$status" == 200 ]]; then
+              if python - "$response_file" <<'PY'
+          import json
+          import os
+          import sys
+
+          payload = json.load(open(sys.argv[1]))
+          urls = {item["filename"]: item for item in payload["urls"]}
+          expected = {
+              os.environ["WHEEL_NAME"]: os.environ["WHEEL_SHA256"],
+              os.environ["SDIST_NAME"]: os.environ["SDIST_SHA256"],
+          }
+          actual_names = set(urls)
+          if not actual_names.issubset(expected):
+              raise SystemExit(f"PyPI contains unexpected release files: {actual_names}")
+          if actual_names != set(expected):
+              raise SystemExit(75)
+          for filename, item in urls.items():
+              if item["digests"]["sha256"] != expected[filename]:
+                  raise SystemExit(f"PyPI file does not match the approved artifact: {filename}")
+          PY
+              then
+                verified=true
+                break
+              elif [[ $? -ne 75 ]]; then
+                exit 1
+              fi
+            elif [[ "$status" != 404 && "$status" != 000 ]]; then
+              echo "PyPI returned HTTP $status." >&2
+              exit 1
+            fi
+            if [[ "$attempt" == 20 ]]; then
+              echo "$PACKAGE_NAME==$RELEASE_VERSION did not expose the complete approved file set after 20 attempts." >&2
+              exit 1
+            fi
+            sleep 15
+          done
+          [[ "$verified" == true ]]
+
+      - name: Verify the installed public package
+        run: |
+          set -euo pipefail
+          venv_dir=$(mktemp -d)
+          trap 'rm -rf "$venv_dir"' EXIT
+          python -m venv "$venv_dir"
+          "$venv_dir/bin/python" -m pip install --disable-pip-version-check --no-cache-dir \
+            --index-url "$PYPI_INDEX_URL" "$PACKAGE_NAME==$RELEASE_VERSION"
+          "$venv_dir/bin/python" - <<'PY'
+          import os
+          from importlib.metadata import version
+
+          import qca
+          from qca import AsyncForward, AsyncManaged, Forward, Managed
+
+          expected = os.environ["RELEASE_VERSION"]
+          assert version("qca-sdk") == expected
+          assert qca.__version__ == expected
+          assert all((Forward, Managed, AsyncForward, AsyncManaged))
+          PY
+          echo "Verified clean installation and public imports for $PACKAGE_NAME==$RELEASE_VERSION." >> "$GITHUB_STEP_SUMMARY"
