@@ -31,7 +31,7 @@ from ._utils import query_pairs, strip_not_given
 from .credentials import AsyncCredential, Credential
 from .pagination import AsyncPage, SyncPage
 
-DEFAULT_TIMEOUT = httpx.Timeout(60.0, connect=10.0)
+DEFAULT_TIMEOUT = httpx.Timeout(600.0, connect=5.0)
 
 
 def _timeout_seconds(timeout: Any) -> int | None:

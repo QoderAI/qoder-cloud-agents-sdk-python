@@ -139,7 +139,7 @@ def test_client_fingerprint_reports_language_version_platform_and_deadline():
     assert headers["x-qoder-os"] in {"MacOS", "Windows", "Linux", "iOS", "Android", "FreeBSD", "OpenBSD"}
     assert headers["x-qoder-arch"] in {"x32", "x64", "arm", "arm64"}
     assert headers["x-qoder-retry-count"] == "0"
-    assert headers["x-qoder-timeout"] == "60"
+    assert headers["x-qoder-timeout"] == "600"
     assert requests[1].headers["x-qoder-timeout"] == "7"
 
 

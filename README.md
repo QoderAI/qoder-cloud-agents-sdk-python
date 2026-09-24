@@ -254,7 +254,7 @@ client.with_options(max_retries=5).sessions.list()  # or override per call site
 
 ## Timeouts
 
-The default timeout is 10 seconds to connect and 60 seconds for each subsequent phase. Pass a float of seconds, an `httpx.Timeout`, or `None` to disable.
+The default timeout is 5 seconds to connect and 600 seconds each for reading data, writing data, and acquiring a connection from the pool, matching Anthropic's Python SDK. These are phase timeouts, not a total request deadline. Pass a float of seconds, an `httpx.Timeout`, or `None` to disable.
 
 ```python
 client = Forward(timeout=30.0)
