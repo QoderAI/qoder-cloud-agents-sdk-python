@@ -66,7 +66,8 @@ def __init__(*,
              default_headers: Mapping[str, str] | None = None,
              default_query: Mapping[str, Any] | None = None,
              http_client: httpx.Client | None = None,
-             credential: Credential | None = None) -> None
+             credential: Credential | None = None,
+             _strict_response_validation: bool = False) -> None
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/_base_client.py)
@@ -143,7 +144,8 @@ def __init__(*,
              default_headers: Mapping[str, str] | None = None,
              default_query: Mapping[str, Any] | None = None,
              http_client: httpx.AsyncClient | None = None,
-             credential: Credential | AsyncCredential | None = None) -> None
+             credential: Credential | AsyncCredential | None = None,
+             _strict_response_validation: bool = False) -> None
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/_base_client.py)
@@ -356,6 +358,16 @@ class ConflictError(APIStatusError)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/_exceptions.py)
 
+<a id="qca.common._exceptions.RequestTooLargeError"></a>
+
+## RequestTooLargeError
+
+```python
+class RequestTooLargeError(APIStatusError)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/_exceptions.py)
+
 <a id="qca.common._exceptions.UnprocessableEntityError"></a>
 
 ## UnprocessableEntityError
@@ -382,6 +394,16 @@ class RateLimitError(APIStatusError)
 
 ```python
 class InternalServerError(APIStatusError)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/_exceptions.py)
+
+<a id="qca.common._exceptions.OverloadedError"></a>
+
+## OverloadedError
+
+```python
+class OverloadedError(APIStatusError)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/_exceptions.py)
@@ -470,7 +492,11 @@ def to_json(*,
 #### parse\_response
 
 ```python
-def parse_response(cast_to: Any, data: Any, response: Any) -> Any
+def parse_response(cast_to: Any,
+                   data: Any,
+                   response: Any,
+                   *,
+                   strict: bool = False) -> Any
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/_models.py)
@@ -1314,7 +1340,10 @@ class BaseStream(Generic[T])
 #### \_\_init\_\_
 
 ```python
-def __init__(response: httpx.Response, cast_to: Any) -> None
+def __init__(response: httpx.Response,
+             cast_to: Any,
+             *,
+             strict: bool = False) -> None
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/_streaming.py)
@@ -1345,7 +1374,10 @@ class Stream(BaseStream[T], Iterator[T])
 #### \_\_init\_\_
 
 ```python
-def __init__(response: httpx.Response, cast_to: Any) -> None
+def __init__(response: httpx.Response,
+             cast_to: Any,
+             *,
+             strict: bool = False) -> None
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/_streaming.py)
@@ -1405,7 +1437,10 @@ class AsyncStream(BaseStream[T], AsyncIterator[T])
 #### \_\_init\_\_
 
 ```python
-def __init__(response: httpx.Response, cast_to: Any) -> None
+def __init__(response: httpx.Response,
+             cast_to: Any,
+             *,
+             strict: bool = False) -> None
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/_streaming.py)

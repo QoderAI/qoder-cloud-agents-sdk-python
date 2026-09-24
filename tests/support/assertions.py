@@ -8,7 +8,23 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-from tests.support.harness import Run, name
+from qca import APIError, Forward, Managed
+from qca.common import BaseModel
+from tests.support.harness import Run, name, safe_error
+
+
+def assert_readonly_list_response(client: Forward | Managed, resource: str) -> None:
+    # Forward's model catalog has no limit parameter; other lists inspect only the first page.
+    options = {} if isinstance(client, Forward) and resource == "models" else {"limit": 1}
+    try:
+        result = getattr(client, resource).list(**options)
+    except APIError as error:
+        raise AssertionError(safe_error(error, client.pat or "")) from None
+    assert isinstance(result, BaseModel), f"{resource} must return a response model"
+    assert "data" in result.model_fields_set, f"{resource} response must include data"
+    assert isinstance(result.data, list), f"{resource} data must be a list"
+    for item in result.data:
+        assert isinstance(item.id, str) and item.id, f"{resource} item must have a non-empty string id"
 
 
 @dataclass

@@ -20,8 +20,10 @@ from qca import (
     Managed,
     NotFoundError,
     NotGiven,
+    OverloadedError,
     PermissionDeniedError,
     RateLimitError,
+    RequestTooLargeError,
     UnprocessableEntityError,
     __version__,
 )
@@ -48,9 +50,11 @@ PUBLIC_STATUS_ERRORS = [
     PermissionDeniedError,
     NotFoundError,
     ConflictError,
+    RequestTooLargeError,
     UnprocessableEntityError,
     RateLimitError,
     InternalServerError,
+    OverloadedError,
 ]
 
 

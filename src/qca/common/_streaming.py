@@ -39,9 +39,10 @@ class SSEDecoder:
 
 
 class BaseStream(Generic[T]):
-    def __init__(self, response: httpx.Response, cast_to: Any) -> None:
+    def __init__(self, response: httpx.Response, cast_to: Any, *, strict: bool = False) -> None:
         self.response = response
         self._cast_to = cast_to
+        self._strict = strict
         self._decoder = SSEDecoder()
         self._last_event_id: str | None = None
 
@@ -65,15 +66,15 @@ class BaseStream(Generic[T]):
                 data.setdefault("type", event_type)
             if self._decoder.last_event_id:
                 data.setdefault("id", self._decoder.last_event_id)
-        result = parse_response(self._cast_to, data, self.response)
+        result = parse_response(self._cast_to, data, self.response, strict=self._strict)
         # Checkpoint only after a complete frame is parsed, never on a partial ID.
         self._last_event_id = self._decoder.last_event_id
         return result
 
 
 class Stream(BaseStream[T], Iterator[T]):
-    def __init__(self, response: httpx.Response, cast_to: Any) -> None:
-        super().__init__(response, cast_to)
+    def __init__(self, response: httpx.Response, cast_to: Any, *, strict: bool = False) -> None:
+        super().__init__(response, cast_to, strict=strict)
         self._iterator = self._iter_events()
 
     def __next__(self) -> T:
@@ -108,8 +109,8 @@ class Stream(BaseStream[T], Iterator[T]):
 
 
 class AsyncStream(BaseStream[T], AsyncIterator[T]):
-    def __init__(self, response: httpx.Response, cast_to: Any) -> None:
-        super().__init__(response, cast_to)
+    def __init__(self, response: httpx.Response, cast_to: Any, *, strict: bool = False) -> None:
+        super().__init__(response, cast_to, strict=strict)
         self._iterator = self._iter_events()
 
     async def __anext__(self) -> T:

@@ -203,7 +203,7 @@ Events are also readable after the fact through `client.sessions.events.list(ses
 
 ## Handling errors
 
-`APIConnectionError` is raised when the request never reached the API; `APITimeoutError` is its timeout subclass. A non-2xx status raises an `APIStatusError` subclass, and a response that cannot be decoded into its declared type raises `APIResponseValidationError`. All of them derive from `qca.APIError`.
+`APIConnectionError` is raised when the request never reached the API; `APITimeoutError` is its timeout subclass. A non-2xx status raises an `APIStatusError` subclass. Invalid JSON, invalid download URLs, and response schema mismatches when strict response validation is enabled raise `APIResponseValidationError`. All of them derive from `qca.APIError`.
 
 ```python
 from qca import APIConnectionError, APIStatusError, APITimeoutError
@@ -225,12 +225,28 @@ except APIStatusError as exc:
 | 403 | `PermissionDeniedError` |
 | 404 | `NotFoundError` |
 | 409 | `ConflictError` |
+| 413 | `RequestTooLargeError` |
 | 422 | `UnprocessableEntityError` |
 | 429 | `RateLimitError` |
-| 5xx | `InternalServerError` |
+| 529 | `OverloadedError` |
+| other 5xx | `InternalServerError` |
 | other | `APIStatusError` |
 
 `code` and `type` are read from the error body and are `None` when the server omits them, so log `message` and `request_id` as well. A non-JSON error body is kept verbatim in `.body`.
+
+`RequestTooLargeError` and `OverloadedError` inherit directly from `APIStatusError`, matching Anthropic. Code that previously caught `InternalServerError` for status 529 should now catch `OverloadedError` as well, or catch `APIStatusError` for all HTTP errors.
+
+## Response validation
+
+By default, responses are constructed into models without requiring every field to match the declared schema, matching Anthropic's Python SDK. Nested objects are still converted to models and unknown fields are retained. Unexpected field values may keep their original type, so type annotations describe the expected API schema rather than guaranteeing the runtime value.
+
+To require Pydantic response validation and raise `APIResponseValidationError` on a schema mismatch, enable the constructor option:
+
+```python
+client = Forward(_strict_response_validation=True)
+```
+
+The option is available on `Forward`, `Managed`, `AsyncForward`, and `AsyncManaged`, and is preserved by `with_options`, raw and streaming response views, pagination, and SSE parsing. Invalid JSON and invalid download URLs still raise `APIResponseValidationError` in either mode. Direct construction or validation of model classes continues to use Pydantic validation.
 
 ## Request IDs
 
@@ -244,6 +260,8 @@ print(identity._request_id)
 ## Retries
 
 Certain errors are retried twice by default with exponential backoff. GET and HEAD requests, and any request carrying an idempotency key, are retried on connection errors, 408, 429, and 5xx; other requests are retried on 429 only. A 409 is never retried automatically, and an SSE stream that has already been established is never retried. Within those rules the SDK honors `x-should-retry` and a valid `Retry-After-Ms` or `Retry-After`.
+
+Positive server-requested delays, including values over 60 seconds, are honored up to 4,294,967 seconds, matching Anthropic's Python SDK. A numeric `Retry-After-Ms` takes precedence over `Retry-After`, which accepts seconds or an HTTP date. Zero, negative, or invalid delays fall back to exponential backoff. A server-requested wait can therefore exceed the timeout configured for an individual HTTP attempt.
 
 ```python
 client = Forward(max_retries=0)  # disable for all requests
