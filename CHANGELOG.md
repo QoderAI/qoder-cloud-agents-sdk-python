@@ -5,6 +5,8 @@ existing `0.1.0` release; earlier development prereleases are not listed.
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-09-24
+
 ### Added
 
 - Export `RequestTooLargeError` for HTTP 413 and `OverloadedError` for HTTP 529 from `qca` and `qca.common`, matching Anthropic's Python SDK.

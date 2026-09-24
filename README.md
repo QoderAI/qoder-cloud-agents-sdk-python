@@ -406,7 +406,7 @@ A static `pat` takes precedence over a provider, and an explicit `Authorization`
 
 ## Versioning
 
-This project follows [Semantic Versioning](https://semver.org). It is pre-1.0 and currently published as `0.1.0`, so the public surface may still change between releases. Anything prefixed with an underscore is internal and may change at any time.
+This project follows [Semantic Versioning](https://semver.org). It is pre-1.0, so the public surface may still change between releases. Anything prefixed with an underscore is internal and may change at any time.
 
 ```python
 import qca
