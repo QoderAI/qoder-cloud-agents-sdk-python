@@ -37,6 +37,7 @@ jobs:
       RELEASE_COMMIT_SHA: ${{ inputs.commit_sha }}
       RELEASE_BATCH_ID: ${{ inputs.batch_id }}
     outputs:
+      prerelease: ${{ steps.version.outputs.prerelease }}
       artifact_name: ${{ steps.artifact.outputs.artifact_name }}
       wheel_name: ${{ steps.artifact.outputs.wheel_name }}
       wheel_sha256: ${{ steps.artifact.outputs.wheel_sha256 }}
@@ -103,7 +104,8 @@ jobs:
       - name: Install locked release dependencies
         run: uv sync --extra dev --extra release --locked
 
-      - name: Validate release version and commit
+      - id: version
+        name: Validate release version and commit
         run: |
           set -euo pipefail
           git fetch --force --prune --prune-tags origin \
@@ -134,6 +136,8 @@ jobs:
               raise SystemExit(f"invalid PEP 440 version: {raw}: {exc}") from exc
           if parsed.local is not None or str(parsed) != raw:
               raise SystemExit(f"version must be canonical public PEP 440: {raw} (canonical: {parsed})")
+          with open(os.environ["GITHUB_OUTPUT"], "a") as output:
+              print(f"prerelease={str(parsed.is_prerelease).lower()}", file=output)
           print(parsed)
           PY
           )
@@ -149,6 +153,16 @@ jobs:
             exit 1
           fi
           echo "SOURCE_DATE_EPOCH=$(git show -s --format=%ct "$RELEASE_COMMIT_SHA")" >> "$GITHUB_ENV"
+
+      - name: Validate and preview release notes
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/release_notes.py extract \
+            --version "$RELEASE_VERSION" --output "$RUNNER_TEMP/release-notes.md"
+          echo "## Changelog for v$RELEASE_VERSION" >> "$GITHUB_STEP_SUMMARY"
+          cat "$RUNNER_TEMP/release-notes.md" >> "$GITHUB_STEP_SUMMARY"
 
       - id: state
         name: Inspect tag and PyPI state
@@ -494,3 +508,28 @@ jobs:
           assert all((Forward, Managed, AsyncForward, AsyncManaged))
           PY
           echo "Verified clean installation and public imports for $PACKAGE_NAME==$RELEASE_VERSION." >> "$GITHUB_STEP_SUMMARY"
+
+  github-release:
+    name: publish release notes
+    needs: [preflight, verify]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      RELEASE_VERSION: ${{ inputs.version }}
+      RELEASE_COMMIT_SHA: ${{ inputs.commit_sha }}
+      RELEASE_PRERELEASE: ${{ needs.preflight.outputs.prerelease }}
+    steps:
+      - name: Check out the approved commit
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ inputs.commit_sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Create or verify GitHub Release
+        run: |
+          python3 .github/scripts/release_notes.py publish \
+            --version "$RELEASE_VERSION" \
+            --commit-sha "$RELEASE_COMMIT_SHA" \
+            --prerelease "$RELEASE_PRERELEASE"

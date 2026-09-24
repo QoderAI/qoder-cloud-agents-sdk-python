@@ -54,6 +54,44 @@ PUBLIC_STATUS_ERRORS = [
 ]
 
 
+@pytest.mark.parametrize("client_cls", SYNC_CLIENTS)
+def test_default_and_explicit_timeouts_reach_sync_transport(client_cls):
+    requests = []
+    http = httpx.Client(
+        transport=httpx.MockTransport(lambda r: requests.append(r) or httpx.Response(200, json={"data": []}))
+    )
+    with client_cls(pat="test-token", http_client=http) as client:
+        client.models.list()
+        client.with_options(timeout=30).models.list()
+        client.models.list(timeout=httpx.Timeout(20, connect=2, write=3, pool=4))
+        client.models.list(timeout=None)
+    assert [r.extensions["timeout"] for r in requests] == [
+        {"connect": 5.0, "read": 600.0, "write": 600.0, "pool": 600.0},
+        {"connect": 30, "read": 30, "write": 30, "pool": 30},
+        {"connect": 2, "read": 20, "write": 3, "pool": 4},
+        {"connect": None, "read": None, "write": None, "pool": None},
+    ]
+
+
+@pytest.mark.parametrize("client_cls", ASYNC_CLIENTS)
+async def test_default_and_explicit_timeouts_reach_async_transport(client_cls):
+    requests = []
+    http = httpx.AsyncClient(
+        transport=httpx.MockTransport(lambda r: requests.append(r) or httpx.Response(200, json={"data": []}))
+    )
+    async with client_cls(pat="test-token", http_client=http) as client:
+        await client.models.list()
+        await client.with_options(timeout=30).models.list()
+        await client.models.list(timeout=httpx.Timeout(20, connect=2, write=3, pool=4))
+        await client.models.list(timeout=None)
+    assert [r.extensions["timeout"] for r in requests] == [
+        {"connect": 5.0, "read": 600.0, "write": 600.0, "pool": 600.0},
+        {"connect": 30, "read": 30, "write": 30, "pool": 30},
+        {"connect": 2, "read": 20, "write": 3, "pool": 4},
+        {"connect": None, "read": None, "write": None, "pool": None},
+    ]
+
+
 def test_top_level_clients_sentinel_version_and_exceptions_are_public():
     # (1) The four clients, the missing-argument sentinel and its type, the
     # version and the shared public exceptions are importable from qca.
