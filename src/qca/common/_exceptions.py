@@ -66,6 +66,10 @@ class ConflictError(APIStatusError):
     pass
 
 
+class RequestTooLargeError(APIStatusError):
+    pass
+
+
 class UnprocessableEntityError(APIStatusError):
     pass
 
@@ -75,6 +79,10 @@ class RateLimitError(APIStatusError):
 
 
 class InternalServerError(APIStatusError):
+    pass
+
+
+class OverloadedError(APIStatusError):
     pass
 
 
@@ -91,7 +99,9 @@ def status_error(response: httpx.Response) -> APIStatusError:
         403: PermissionDeniedError,
         404: NotFoundError,
         409: ConflictError,
+        413: RequestTooLargeError,
         422: UnprocessableEntityError,
         429: RateLimitError,
+        529: OverloadedError,
     }.get(response.status_code, InternalServerError if response.status_code >= 500 else APIStatusError)
     return cls(f"Error code: {response.status_code} - {message}", response=response, body=body)

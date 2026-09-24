@@ -34,6 +34,16 @@ The default test command excludes account-backed integration tests and must not 
 
 Never commit `.env.live`, tokens, credentials, generated logs, or test output. Integration scenarios must register cleanup immediately after creating a resource. Run them explicitly with `QODER_RUN_LIVE=1`; they are not part of public pull-request CI.
 
+The Forward and Managed integration files also include six `strict_response_contract` checks using a separate client with `_strict_response_validation=True`: model, template/agent, and session lists. They send only GET requests, inspect the first page with `limit=1` where supported, and allow empty lists. An empty list checks the response envelope; item schemas are checked when items exist. Returned items must have a non-empty string ID, and `data` must be present even when empty. Existing business scenarios continue to use the default lenient response parsing.
+
+To run only these read-only checks:
+
+```bash
+QODER_RUN_LIVE=1 QODER_LIVE_ENV_FILE=.env.live uv run pytest tests/integration -m integration -k strict_response_contract -v
+```
+
+These checks are included in the existing `test-live`, `test-live-managed`, and `test-live-all` targets. Offline regression tests use the same strict-client fixture and assertions with a mock HTTP transport to verify schema failures without credentials or network access.
+
 ## API and contract changes
 
 When adding or changing an endpoint:

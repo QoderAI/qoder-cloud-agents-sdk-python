@@ -4,7 +4,7 @@ import inspect
 import os
 import random
 import time
-from email.utils import parsedate_to_datetime
+from email.utils import mktime_tz, parsedate_tz
 from typing import Any, Mapping
 
 import anyio
@@ -61,6 +61,7 @@ class BaseClient:
         default_headers: Mapping[str, str] | None,
         default_query: Mapping[str, Any] | None,
         credential: Credential | AsyncCredential | None,
+        _strict_response_validation: bool,
     ) -> None:
         if not isinstance(max_retries, int) or isinstance(max_retries, bool) or max_retries < 0:
             raise ValueError("max_retries must be a non-negative integer")
@@ -77,6 +78,7 @@ class BaseClient:
         self.max_retries = max_retries
         self.default_headers = dict(default_headers or {})
         self.default_query = dict(default_query or {})
+        self._strict_response_validation = _strict_response_validation
 
     def _copy(self, *, raw: bool = False, streaming: bool = False, **overrides: Any) -> Self:
         options = dict(
@@ -88,6 +90,7 @@ class BaseClient:
             default_query=self.default_query,
             credential=self.credential,
             http_client=self._client,
+            _strict_response_validation=self._strict_response_validation,
         )
         options.update(overrides)
         client = type(self)(**options)
@@ -191,19 +194,20 @@ class BaseClient:
 
     def _retry_delay(self, retry: int, response: httpx.Response | None) -> float:
         if response is not None:
-            for header, divisor in (("retry-after-ms", 1000), ("retry-after", 1)):
-                value = response.headers.get(header)
-                if value is None:
-                    continue
+            delay = None
+            try:
+                delay = float(response.headers["retry-after-ms"]) / 1000
+            except (KeyError, ValueError):
+                value = response.headers.get("retry-after", "")
                 try:
-                    delay = float(value) / divisor
+                    delay = float(value)
                 except ValueError:
-                    try:
-                        delay = parsedate_to_datetime(value).timestamp() - time.time()
-                    except (ValueError, TypeError, OverflowError):
-                        continue
-                if 0 <= delay <= 60:
-                    return delay
+                    retry_date = parsedate_tz(value)
+                    if retry_date is not None:
+                        delay = mktime_tz(retry_date) - time.time()
+            if delay is not None and delay > 0:
+                # Anthropic caps server-requested waits at the portable sleep limit.
+                return min(delay, 4_294_967.0)
         return min(0.5 * (2 ** min(retry, 10)), 8.0) * (1 - 0.25 * random.random())
 
     def _download_request(self, response: httpx.Response, data: Any) -> httpx.Request:
@@ -237,9 +241,9 @@ class BaseClient:
             return None
         data = self._data(response)
         if not page_style:
-            return parse_response(cast_to, data, response)
+            return parse_response(cast_to, data, response, strict=self._strict_response_validation)
         page_cls = AsyncPage if self._is_async else SyncPage
-        page = parse_response(page_cls[cast_to], data, response)
+        page = parse_response(page_cls[cast_to], data, response, strict=self._strict_response_validation)
         page._style = page_style
         page._query = {**self.default_query, **options.get("query", {})}
         client = self._copy() if self._raw_response else self
@@ -261,6 +265,7 @@ class SyncAPIClient(BaseClient):
         default_query: Mapping[str, Any] | None = None,
         http_client: httpx.Client | None = None,
         credential: Credential | None = None,
+        _strict_response_validation: bool = False,
     ) -> None:
         self._configure(
             pat=pat,
@@ -270,6 +275,7 @@ class SyncAPIClient(BaseClient):
             default_headers=default_headers,
             default_query=default_query,
             credential=credential,
+            _strict_response_validation=_strict_response_validation,
         )
         if http_client is not None and not isinstance(http_client, httpx.Client):
             raise TypeError("http_client must be an httpx.Client")
@@ -331,7 +337,7 @@ class SyncAPIClient(BaseClient):
         request.read()
         response = self._send(request)
         if stream:
-            return Stream(response, cast_to)
+            return Stream(response, cast_to, strict=self._strict_response_validation)
         if binary and not download_link:
             return BinaryAPIResponse(response)
 
@@ -374,6 +380,7 @@ class AsyncAPIClient(BaseClient):
         default_query: Mapping[str, Any] | None = None,
         http_client: httpx.AsyncClient | None = None,
         credential: Credential | AsyncCredential | None = None,
+        _strict_response_validation: bool = False,
     ) -> None:
         self._configure(
             pat=pat,
@@ -383,6 +390,7 @@ class AsyncAPIClient(BaseClient):
             default_headers=default_headers,
             default_query=default_query,
             credential=credential,
+            _strict_response_validation=_strict_response_validation,
         )
         if http_client is not None and not isinstance(http_client, httpx.AsyncClient):
             raise TypeError("http_client must be an httpx.AsyncClient")
@@ -449,7 +457,7 @@ class AsyncAPIClient(BaseClient):
         await request.aread()
         response = await self._send(request)
         if stream:
-            return AsyncStream(response, cast_to)
+            return AsyncStream(response, cast_to, strict=self._strict_response_validation)
         if binary and not download_link:
             return AsyncBinaryAPIResponse(response)
 

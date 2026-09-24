@@ -1,6 +1,8 @@
 from __future__ import annotations
 
-from typing import Any
+from datetime import date, datetime
+from types import UnionType
+from typing import Annotated, Any, Union, get_args, get_origin
 
 from pydantic import BaseModel as PydanticBaseModel
 from pydantic import ConfigDict, PrivateAttr, TypeAdapter, ValidationError
@@ -21,11 +23,55 @@ class BaseModel(PydanticBaseModel):
         return self.model_dump_json(indent=indent, by_alias=use_api_names, exclude_unset=exclude_unset)
 
 
-def parse_response(cast_to: Any, data: Any, response: Any) -> Any:
-    if cast_to is None or cast_to is type(None):
+def _construct_response(cast_to: Any, data: Any) -> Any:
+    """Build nested response models, preserving values that don't fit the schema."""
+    origin = get_origin(cast_to) or cast_to
+    args = get_args(cast_to)
+    if origin is Annotated:
+        return _construct_response(args[0], data)
+    if origin in (Union, UnionType):
+        try:
+            return TypeAdapter(cast_to).validate_python(data)
+        except (ValidationError, ValueError):
+            return _construct_response(args[0], data)
+    if origin is dict and isinstance(data, dict):
+        return {key: _construct_response(args[1] if args else Any, value) for key, value in data.items()}
+    if origin is list and isinstance(data, list):
+        return [_construct_response(args[0] if args else Any, item) for item in data]
+    if isinstance(origin, type) and issubclass(origin, BaseModel):
+        if isinstance(data, list):
+            return [_construct_response(cast_to, item) if isinstance(item, dict) else item for item in data]
+        if isinstance(data, dict):
+            origin.model_rebuild()
+            values = dict(data)
+            missing = []
+            for name, field in origin.model_fields.items():
+                key = field.alias if field.alias in data else name
+                if key in data:
+                    values[key] = _construct_response(field.annotation, data[key])
+                elif field.is_required():
+                    missing.append(name)
+            result = origin.model_construct(**values)
+            # Missing required fields have a usable default but remain absent from fields_set.
+            for name in missing:
+                result.__dict__[name] = None
+            return result
+    if origin is float and isinstance(data, int):
+        value = float(data)
+        return value if value == data else data
+    if origin in (datetime, date):
+        try:
+            return TypeAdapter(cast_to).validate_python(data)
+        except (ValidationError, ValueError):
+            pass
+    return data
+
+
+def parse_response(cast_to: Any, data: Any, response: Any, *, strict: bool = False) -> Any:
+    if data is None or cast_to is None or cast_to is type(None):
         return None
     try:
-        result = TypeAdapter(cast_to).validate_python(data)
+        result = TypeAdapter(cast_to).validate_python(data) if strict else _construct_response(cast_to, data)
     except (ValidationError, ValueError) as exc:
         raise APIResponseValidationError(response=response, body=data) from exc
     if isinstance(result, BaseModel):

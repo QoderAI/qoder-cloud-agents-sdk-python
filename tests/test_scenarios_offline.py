@@ -138,6 +138,7 @@ def test_validation_error_identifies_field_without_response_contents():
 
     with Forward(
         pat="test-token",
+        _strict_response_validation=True,
         base_url="https://api.test/api/v1/forward",
         http_client=httpx.Client(
             transport=httpx.MockTransport(
