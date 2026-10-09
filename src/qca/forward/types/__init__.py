@@ -77,6 +77,7 @@ from .identity_memory_store_mount_params import IdentityMemoryStoreMountParams a
 from .identity_stats import IdentityStats as IdentityStats
 from .identity_template import IdentityTemplate as IdentityTemplate
 from .identity_update_params import IdentityUpdateParams as IdentityUpdateParams
+from .identity_usage import IdentityUsage as IdentityUsage
 from .image_source_param import ImageSourceParam as ImageSourceParam
 from .mcp_server import MCPServer as MCPServer
 from .mcp_server_override import MCPServerOverride as MCPServerOverride
@@ -174,18 +175,26 @@ from .template_clone_params import TemplateCloneParams as TemplateCloneParams
 from .template_create_params import TemplateCreateParams as TemplateCreateParams
 from .template_list_params import TemplateListParams as TemplateListParams
 from .template_update_params import TemplateUpdateParams as TemplateUpdateParams
+from .template_usage import TemplateUsage as TemplateUsage
 from .tool import Tool as Tool
 from .tool_config import ToolConfig as ToolConfig
 from .tool_config_param import ToolConfigParam as ToolConfigParam
 from .tool_override import ToolOverride as ToolOverride
 from .tool_override_param import ToolOverrideParam as ToolOverrideParam
 from .tool_param import ToolParam as ToolParam
+from .usage_list_params import UsageListParams as UsageListParams
 from .vault import Vault as Vault
 from .vault_create_params import VaultCreateParams as VaultCreateParams
 from .vault_credential import VaultCredential as VaultCredential
 from .vault_credential_auth import VaultCredentialAuth as VaultCredentialAuth
 from .vault_credential_create_params import VaultCredentialCreateParams as VaultCredentialCreateParams
 from .vault_credential_list_params import VaultCredentialListParams as VaultCredentialListParams
+from .vault_credential_update_params import EnvironmentVariableUpdate as EnvironmentVariableUpdate
+from .vault_credential_update_params import MCPOAuthRefreshUpdate as MCPOAuthRefreshUpdate
+from .vault_credential_update_params import MCPOAuthUpdate as MCPOAuthUpdate
+from .vault_credential_update_params import StaticBearerUpdate as StaticBearerUpdate
+from .vault_credential_update_params import VaultCredentialUpdateAuth as VaultCredentialUpdateAuth
+from .vault_credential_update_params import VaultCredentialUpdateParams as VaultCredentialUpdateParams
 from .vault_list_params import VaultListParams as VaultListParams
 
 _namespace = dict(

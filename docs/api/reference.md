@@ -1981,6 +1981,17 @@ def memory_stores() -> MemoryStores
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/_client.py)
 
+<a id="qca.forward._client.Forward.usage"></a>
+
+#### usage
+
+```python
+@cached_property
+def usage() -> Usage
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/_client.py)
+
 <a id="qca.forward._client.Forward.models"></a>
 
 #### models
@@ -2141,6 +2152,17 @@ def vaults() -> AsyncVaults
 ```python
 @cached_property
 def memory_stores() -> AsyncMemoryStores
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/_client.py)
+
+<a id="qca.forward._client.AsyncForward.usage"></a>
+
+#### usage
+
+```python
+@cached_property
+def usage() -> AsyncUsage
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/_client.py)
@@ -7454,6 +7476,146 @@ async def clone(
 
 POST /templates/{template_id}/clone.
 
+<a id="qca.forward.resources.usage"></a>
+
+# qca.forward.resources.usage
+
+<a id="qca.forward.resources.usage.Usage"></a>
+
+## Usage
+
+```python
+class Usage(SyncAPIResource)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/usage.py)
+
+<a id="qca.forward.resources.usage.Usage.list_identities"></a>
+
+#### list\_identities
+
+```python
+def list_identities(
+    *,
+    start_at: str,
+    end_at: str,
+    limit: Union[int, None, NotGiven] = NOT_GIVEN,
+    after_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    before_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    identity_ids: Union[str, List[str], None, NotGiven] = NOT_GIVEN,
+    template_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    template_ids: Union[str, List[str], None, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> SyncPage[IdentityUsage]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/usage.py)
+
+GET /usage/identities.
+
+PAT or Admin SAT. YYYY-MM-DDTHH:00:00 in Asia/Shanghai, start inclusive, end exclusive; maximum 744 hours. Only hourly parameters are supported.
+
+<a id="qca.forward.resources.usage.Usage.list_templates"></a>
+
+#### list\_templates
+
+```python
+def list_templates(
+    *,
+    start_at: str,
+    end_at: str,
+    limit: Union[int, None, NotGiven] = NOT_GIVEN,
+    after_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    before_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    identity_ids: Union[str, List[str], None, NotGiven] = NOT_GIVEN,
+    template_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    template_ids: Union[str, List[str], None, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> SyncPage[TemplateUsage]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/usage.py)
+
+GET /usage/templates.
+
+PAT or Admin SAT. YYYY-MM-DDTHH:00:00 in Asia/Shanghai, start inclusive, end exclusive; maximum 744 hours. Only hourly parameters are supported.
+
+<a id="qca.forward.resources.usage.AsyncUsage"></a>
+
+## AsyncUsage
+
+```python
+class AsyncUsage(AsyncAPIResource)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/usage.py)
+
+<a id="qca.forward.resources.usage.AsyncUsage.list_identities"></a>
+
+#### list\_identities
+
+```python
+def list_identities(
+    *,
+    start_at: str,
+    end_at: str,
+    limit: Union[int, None, NotGiven] = NOT_GIVEN,
+    after_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    before_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    identity_ids: Union[str, List[str], None, NotGiven] = NOT_GIVEN,
+    template_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    template_ids: Union[str, List[str], None, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> AsyncPaginator[IdentityUsage]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/usage.py)
+
+GET /usage/identities.
+
+PAT or Admin SAT. YYYY-MM-DDTHH:00:00 in Asia/Shanghai, start inclusive, end exclusive; maximum 744 hours. Only hourly parameters are supported.
+
+<a id="qca.forward.resources.usage.AsyncUsage.list_templates"></a>
+
+#### list\_templates
+
+```python
+def list_templates(
+    *,
+    start_at: str,
+    end_at: str,
+    limit: Union[int, None, NotGiven] = NOT_GIVEN,
+    after_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    before_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    identity_ids: Union[str, List[str], None, NotGiven] = NOT_GIVEN,
+    template_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    template_ids: Union[str, List[str], None, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> AsyncPaginator[TemplateUsage]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/usage.py)
+
+GET /usage/templates.
+
+PAT or Admin SAT. YYYY-MM-DDTHH:00:00 in Asia/Shanghai, start inclusive, end exclusive; maximum 744 hours. Only hourly parameters are supported.
+
 <a id="qca.forward.resources.vaults.credentials"></a>
 
 # qca.forward.resources.vaults.credentials
@@ -7467,6 +7629,31 @@ class Credentials(SyncAPIResource)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/vaults/credentials.py)
+
+<a id="qca.forward.resources.vaults.credentials.Credentials.update"></a>
+
+#### update
+
+```python
+def update(
+    credential_id: str,
+    *,
+    vault_id: str,
+    auth: Union[VaultCredentialUpdateAuth, None, NotGiven] = NOT_GIVEN,
+    metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> VaultCredential
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/vaults/credentials.py)
+
+POST /vaults/{vault_id}/credentials/{credential_id}.
+
+Merge auth or metadata. Write-only secret updates are never automatically retried.
 
 <a id="qca.forward.resources.vaults.credentials.Credentials.list"></a>
 
@@ -7563,6 +7750,31 @@ class AsyncCredentials(AsyncAPIResource)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/vaults/credentials.py)
+
+<a id="qca.forward.resources.vaults.credentials.AsyncCredentials.update"></a>
+
+#### update
+
+```python
+async def update(
+    credential_id: str,
+    *,
+    vault_id: str,
+    auth: Union[VaultCredentialUpdateAuth, None, NotGiven] = NOT_GIVEN,
+    metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> VaultCredential
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/vaults/credentials.py)
+
+POST /vaults/{vault_id}/credentials/{credential_id}.
+
+Merge auth or metadata. Write-only secret updates are never automatically retried.
 
 <a id="qca.forward.resources.vaults.credentials.AsyncCredentials.list"></a>
 
@@ -10071,6 +10283,40 @@ class IdentityUpdateParams(TypedDict)
 <a id="qca.forward.types.identity_update_params.IdentityUpdateParams.idempotency_key"></a>
 
 #### idempotency\_key
+
+<a id="qca.forward.types.identity_usage"></a>
+
+# qca.forward.types.identity\_usage
+
+<a id="qca.forward.types.identity_usage.IdentityUsage"></a>
+
+## IdentityUsage
+
+```python
+class IdentityUsage(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/identity_usage.py)
+
+<a id="qca.forward.types.identity_usage.IdentityUsage.type"></a>
+
+#### type
+
+<a id="qca.forward.types.identity_usage.IdentityUsage.identity_id"></a>
+
+#### identity\_id
+
+<a id="qca.forward.types.identity_usage.IdentityUsage.session_count"></a>
+
+#### session\_count
+
+<a id="qca.forward.types.identity_usage.IdentityUsage.active_seconds"></a>
+
+#### active\_seconds
+
+<a id="qca.forward.types.identity_usage.IdentityUsage.credits"></a>
+
+#### credits
 
 <a id="qca.forward.types.image_source_param"></a>
 
@@ -13418,6 +13664,44 @@ class TemplateUpdateParams(TypedDict)
 
 #### beta
 
+<a id="qca.forward.types.template_usage"></a>
+
+# qca.forward.types.template\_usage
+
+<a id="qca.forward.types.template_usage.TemplateUsage"></a>
+
+## TemplateUsage
+
+```python
+class TemplateUsage(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/template_usage.py)
+
+<a id="qca.forward.types.template_usage.TemplateUsage.type"></a>
+
+#### type
+
+<a id="qca.forward.types.template_usage.TemplateUsage.template_id"></a>
+
+#### template\_id
+
+<a id="qca.forward.types.template_usage.TemplateUsage.active_identities"></a>
+
+#### active\_identities
+
+<a id="qca.forward.types.template_usage.TemplateUsage.session_count"></a>
+
+#### session\_count
+
+<a id="qca.forward.types.template_usage.TemplateUsage.active_seconds"></a>
+
+#### active\_seconds
+
+<a id="qca.forward.types.template_usage.TemplateUsage.credits"></a>
+
+#### credits
+
 <a id="qca.forward.types.tool"></a>
 
 # qca.forward.types.tool
@@ -13606,6 +13890,58 @@ class ToolParam(TypedDict)
 
 #### input\_schema
 
+<a id="qca.forward.types.usage_list_params"></a>
+
+# qca.forward.types.usage\_list\_params
+
+<a id="qca.forward.types.usage_list_params.UsageListParams"></a>
+
+## UsageListParams
+
+```python
+class UsageListParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/usage_list_params.py)
+
+Hourly Asia/Shanghai window, including CN and Global. No legacy timestamp parameters.
+
+<a id="qca.forward.types.usage_list_params.UsageListParams.start_at"></a>
+
+#### start\_at
+
+<a id="qca.forward.types.usage_list_params.UsageListParams.end_at"></a>
+
+#### end\_at
+
+<a id="qca.forward.types.usage_list_params.UsageListParams.limit"></a>
+
+#### limit
+
+<a id="qca.forward.types.usage_list_params.UsageListParams.after_id"></a>
+
+#### after\_id
+
+<a id="qca.forward.types.usage_list_params.UsageListParams.before_id"></a>
+
+#### before\_id
+
+<a id="qca.forward.types.usage_list_params.UsageListParams.identity_id"></a>
+
+#### identity\_id
+
+<a id="qca.forward.types.usage_list_params.UsageListParams.identity_ids"></a>
+
+#### identity\_ids
+
+<a id="qca.forward.types.usage_list_params.UsageListParams.template_id"></a>
+
+#### template\_id
+
+<a id="qca.forward.types.usage_list_params.UsageListParams.template_ids"></a>
+
+#### template\_ids
+
 <a id="qca.forward.types.vault"></a>
 
 # qca.forward.types.vault
@@ -13712,6 +14048,10 @@ class VaultCredential(BaseModel)
 
 #### metadata
 
+<a id="qca.forward.types.vault_credential.VaultCredential.archived_at"></a>
+
+#### archived\_at
+
 <a id="qca.forward.types.vault_credential.VaultCredential.created_at"></a>
 
 #### created\_at
@@ -13741,6 +14081,10 @@ class VaultCredentialAuth(BaseModel)
 <a id="qca.forward.types.vault_credential_auth.VaultCredentialAuth.mcp_server_url"></a>
 
 #### mcp\_server\_url
+
+<a id="qca.forward.types.vault_credential_auth.VaultCredentialAuth.secret_name"></a>
+
+#### secret\_name
 
 <a id="qca.forward.types.vault_credential_create_params"></a>
 
@@ -13805,6 +14149,122 @@ class VaultCredentialListParams(TypedDict)
 <a id="qca.forward.types.vault_credential_list_params.VaultCredentialListParams.name"></a>
 
 #### name
+
+<a id="qca.forward.types.vault_credential_update_params"></a>
+
+# qca.forward.types.vault\_credential\_update\_params
+
+<a id="qca.forward.types.vault_credential_update_params.StaticBearerUpdate"></a>
+
+## StaticBearerUpdate
+
+```python
+class StaticBearerUpdate(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/vault_credential_update_params.py)
+
+<a id="qca.forward.types.vault_credential_update_params.StaticBearerUpdate.type"></a>
+
+#### type
+
+<a id="qca.forward.types.vault_credential_update_params.StaticBearerUpdate.token"></a>
+
+#### token
+
+<a id="qca.forward.types.vault_credential_update_params.EnvironmentVariableUpdate"></a>
+
+## EnvironmentVariableUpdate
+
+```python
+class EnvironmentVariableUpdate(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/vault_credential_update_params.py)
+
+<a id="qca.forward.types.vault_credential_update_params.EnvironmentVariableUpdate.type"></a>
+
+#### type
+
+<a id="qca.forward.types.vault_credential_update_params.EnvironmentVariableUpdate.secret_value"></a>
+
+#### secret\_value
+
+<a id="qca.forward.types.vault_credential_update_params.MCPOAuthRefreshUpdate"></a>
+
+## MCPOAuthRefreshUpdate
+
+```python
+class MCPOAuthRefreshUpdate(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/vault_credential_update_params.py)
+
+<a id="qca.forward.types.vault_credential_update_params.MCPOAuthRefreshUpdate.refresh_token"></a>
+
+#### refresh\_token
+
+<a id="qca.forward.types.vault_credential_update_params.MCPOAuthRefreshUpdate.scope"></a>
+
+#### scope
+
+<a id="qca.forward.types.vault_credential_update_params.MCPOAuthRefreshUpdate.token_endpoint_auth"></a>
+
+#### token\_endpoint\_auth
+
+<a id="qca.forward.types.vault_credential_update_params.MCPOAuthUpdate"></a>
+
+## MCPOAuthUpdate
+
+```python
+class MCPOAuthUpdate(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/vault_credential_update_params.py)
+
+<a id="qca.forward.types.vault_credential_update_params.MCPOAuthUpdate.type"></a>
+
+#### type
+
+<a id="qca.forward.types.vault_credential_update_params.MCPOAuthUpdate.access_token"></a>
+
+#### access\_token
+
+<a id="qca.forward.types.vault_credential_update_params.MCPOAuthUpdate.expires_at"></a>
+
+#### expires\_at
+
+<a id="qca.forward.types.vault_credential_update_params.MCPOAuthUpdate.refresh"></a>
+
+#### refresh
+
+<a id="qca.forward.types.vault_credential_update_params.VaultCredentialUpdateAuth"></a>
+
+#### VaultCredentialUpdateAuth
+
+<a id="qca.forward.types.vault_credential_update_params.VaultCredentialUpdateParams"></a>
+
+## VaultCredentialUpdateParams
+
+```python
+class VaultCredentialUpdateParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/vault_credential_update_params.py)
+
+Merge patch. At least auth or metadata is required; null clears metadata.
+
+<a id="qca.forward.types.vault_credential_update_params.VaultCredentialUpdateParams.auth"></a>
+
+#### auth
+
+<a id="qca.forward.types.vault_credential_update_params.VaultCredentialUpdateParams.metadata"></a>
+
+#### metadata
+
+<a id="qca.forward.types.vault_credential_update_params.VaultCredentialUpdateParams.identity_id"></a>
+
+#### identity\_id
 
 <a id="qca.forward.types.vault_list_params"></a>
 
@@ -14638,6 +15098,128 @@ def list(
 
 GET /deployment_runs.
 
+<a id="qca.managed.resources.deployment_scoped_runs"></a>
+
+# qca.managed.resources.deployment\_scoped\_runs
+
+<a id="qca.managed.resources.deployment_scoped_runs.Runs"></a>
+
+## Runs
+
+```python
+class Runs(SyncAPIResource)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/deployment_scoped_runs.py)
+
+<a id="qca.managed.resources.deployment_scoped_runs.Runs.list"></a>
+
+#### list
+
+```python
+def list(
+    deployment_id: str,
+    *,
+    limit: Union[int, None, NotGiven] = NOT_GIVEN,
+    page: Union[str, None, NotGiven] = NOT_GIVEN,
+    after_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    before_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    triggered_after: Union[str, None, NotGiven] = NOT_GIVEN,
+    triggered_before: Union[str, None, NotGiven] = NOT_GIVEN,
+    workspace_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    betas: Union[List[str], None, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> SyncPage[DeploymentRun]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/deployment_scoped_runs.py)
+
+GET /deployments/{deployment_id}/runs.
+
+<a id="qca.managed.resources.deployment_scoped_runs.Runs.retrieve"></a>
+
+#### retrieve
+
+```python
+def retrieve(
+    run_id: str,
+    *,
+    deployment_id: str,
+    workspace_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    betas: Union[List[str], None, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> DeploymentRun
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/deployment_scoped_runs.py)
+
+GET /deployments/{deployment_id}/runs/{run_id}.
+
+<a id="qca.managed.resources.deployment_scoped_runs.AsyncRuns"></a>
+
+## AsyncRuns
+
+```python
+class AsyncRuns(AsyncAPIResource)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/deployment_scoped_runs.py)
+
+<a id="qca.managed.resources.deployment_scoped_runs.AsyncRuns.list"></a>
+
+#### list
+
+```python
+def list(
+    deployment_id: str,
+    *,
+    limit: Union[int, None, NotGiven] = NOT_GIVEN,
+    page: Union[str, None, NotGiven] = NOT_GIVEN,
+    after_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    before_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    triggered_after: Union[str, None, NotGiven] = NOT_GIVEN,
+    triggered_before: Union[str, None, NotGiven] = NOT_GIVEN,
+    workspace_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    betas: Union[List[str], None, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> AsyncPaginator[DeploymentRun]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/deployment_scoped_runs.py)
+
+GET /deployments/{deployment_id}/runs.
+
+<a id="qca.managed.resources.deployment_scoped_runs.AsyncRuns.retrieve"></a>
+
+#### retrieve
+
+```python
+async def retrieve(
+    run_id: str,
+    *,
+    deployment_id: str,
+    workspace_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    betas: Union[List[str], None, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> DeploymentRun
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/deployment_scoped_runs.py)
+
+GET /deployments/{deployment_id}/runs/{run_id}.
+
 <a id="qca.managed.resources.deployments"></a>
 
 # qca.managed.resources.deployments
@@ -14648,6 +15230,17 @@ GET /deployment_runs.
 
 ```python
 class Deployments(SyncAPIResource)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/deployments.py)
+
+<a id="qca.managed.resources.deployments.Deployments.runs"></a>
+
+#### runs
+
+```python
+@cached_property
+def runs() -> Runs
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/deployments.py)
@@ -14864,6 +15457,17 @@ POST /deployments/{deployment_id}/unpause.
 
 ```python
 class AsyncDeployments(AsyncAPIResource)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/deployments.py)
+
+<a id="qca.managed.resources.deployments.AsyncDeployments.runs"></a>
+
+#### runs
+
+```python
+@cached_property
+def runs() -> AsyncRuns
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/deployments.py)
@@ -17668,6 +18272,29 @@ class Sessions(SyncAPIResource)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/sessions/sessions.py)
 
+<a id="qca.managed.resources.sessions.sessions.Sessions.cancel"></a>
+
+#### cancel
+
+```python
+def cancel(
+    session_id: str,
+    *,
+    workspace_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    betas: Union[List[str], None, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> SessionCancelResponse
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/sessions/sessions.py)
+
+POST /sessions/{session_id}/cancel.
+
+Cancel the current turn (202); an idle session is a safe no-op (200).
+
 <a id="qca.managed.resources.sessions.sessions.Sessions.events"></a>
 
 #### events
@@ -17869,6 +18496,29 @@ class AsyncSessions(AsyncAPIResource)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/sessions/sessions.py)
+
+<a id="qca.managed.resources.sessions.sessions.AsyncSessions.cancel"></a>
+
+#### cancel
+
+```python
+async def cancel(
+    session_id: str,
+    *,
+    workspace_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    betas: Union[List[str], None, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> SessionCancelResponse
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/sessions/sessions.py)
+
+POST /sessions/{session_id}/cancel.
+
+Cancel the current turn (202); an idle session is a safe no-op (200).
 
 <a id="qca.managed.resources.sessions.sessions.AsyncSessions.events"></a>
 
@@ -21733,6 +22383,82 @@ class DeploymentRunRetrieveParams(TypedDict)
 #### workspace\_id
 
 <a id="qca.managed.types.deployment_run_retrieve_params.DeploymentRunRetrieveParams.betas"></a>
+
+#### betas
+
+<a id="qca.managed.types.deployment_scoped_run_list_params"></a>
+
+# qca.managed.types.deployment\_scoped\_run\_list\_params
+
+<a id="qca.managed.types.deployment_scoped_run_list_params.DeploymentScopedRunListParams"></a>
+
+## DeploymentScopedRunListParams
+
+```python
+class DeploymentScopedRunListParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/deployment_scoped_run_list_params.py)
+
+<a id="qca.managed.types.deployment_scoped_run_list_params.DeploymentScopedRunListParams.deployment_id"></a>
+
+#### deployment\_id
+
+<a id="qca.managed.types.deployment_scoped_run_list_params.DeploymentScopedRunListParams.limit"></a>
+
+#### limit
+
+<a id="qca.managed.types.deployment_scoped_run_list_params.DeploymentScopedRunListParams.page"></a>
+
+#### page
+
+<a id="qca.managed.types.deployment_scoped_run_list_params.DeploymentScopedRunListParams.after_id"></a>
+
+#### after\_id
+
+<a id="qca.managed.types.deployment_scoped_run_list_params.DeploymentScopedRunListParams.before_id"></a>
+
+#### before\_id
+
+<a id="qca.managed.types.deployment_scoped_run_list_params.DeploymentScopedRunListParams.triggered_after"></a>
+
+#### triggered\_after
+
+<a id="qca.managed.types.deployment_scoped_run_list_params.DeploymentScopedRunListParams.triggered_before"></a>
+
+#### triggered\_before
+
+<a id="qca.managed.types.deployment_scoped_run_list_params.DeploymentScopedRunListParams.workspace_id"></a>
+
+#### workspace\_id
+
+<a id="qca.managed.types.deployment_scoped_run_list_params.DeploymentScopedRunListParams.betas"></a>
+
+#### betas
+
+<a id="qca.managed.types.deployment_scoped_run_retrieve_params"></a>
+
+# qca.managed.types.deployment\_scoped\_run\_retrieve\_params
+
+<a id="qca.managed.types.deployment_scoped_run_retrieve_params.DeploymentScopedRunRetrieveParams"></a>
+
+## DeploymentScopedRunRetrieveParams
+
+```python
+class DeploymentScopedRunRetrieveParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/deployment_scoped_run_retrieve_params.py)
+
+<a id="qca.managed.types.deployment_scoped_run_retrieve_params.DeploymentScopedRunRetrieveParams.deployment_id"></a>
+
+#### deployment\_id
+
+<a id="qca.managed.types.deployment_scoped_run_retrieve_params.DeploymentScopedRunRetrieveParams.workspace_id"></a>
+
+#### workspace\_id
+
+<a id="qca.managed.types.deployment_scoped_run_retrieve_params.DeploymentScopedRunRetrieveParams.betas"></a>
 
 #### betas
 
@@ -26317,6 +27043,54 @@ class SessionArchiveParams(TypedDict)
 <a id="qca.managed.types.session_archive_params.SessionArchiveParams.betas"></a>
 
 #### betas
+
+<a id="qca.managed.types.session_cancel_params"></a>
+
+# qca.managed.types.session\_cancel\_params
+
+<a id="qca.managed.types.session_cancel_params.SessionCancelParams"></a>
+
+## SessionCancelParams
+
+```python
+class SessionCancelParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/session_cancel_params.py)
+
+<a id="qca.managed.types.session_cancel_params.SessionCancelParams.workspace_id"></a>
+
+#### workspace\_id
+
+<a id="qca.managed.types.session_cancel_params.SessionCancelParams.betas"></a>
+
+#### betas
+
+<a id="qca.managed.types.session_cancel_response"></a>
+
+# qca.managed.types.session\_cancel\_response
+
+<a id="qca.managed.types.session_cancel_response.SessionCancelResponse"></a>
+
+## SessionCancelResponse
+
+```python
+class SessionCancelResponse(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/session_cancel_response.py)
+
+<a id="qca.managed.types.session_cancel_response.SessionCancelResponse.id"></a>
+
+#### id
+
+<a id="qca.managed.types.session_cancel_response.SessionCancelResponse.type"></a>
+
+#### type
+
+<a id="qca.managed.types.session_cancel_response.SessionCancelResponse.status"></a>
+
+#### status
 
 <a id="qca.managed.types.session_create_params"></a>
 

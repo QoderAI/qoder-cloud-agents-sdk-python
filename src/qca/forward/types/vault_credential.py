@@ -18,5 +18,6 @@ class VaultCredential(BaseModel):
     auth: Optional[VaultCredentialAuth] = None
     display_name: Optional[str] = None
     metadata: Optional[Dict[str, Any]] = None
+    archived_at: Optional[datetime] = None
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None

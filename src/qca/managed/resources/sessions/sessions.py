@@ -22,6 +22,7 @@ from qca.managed.types.git_hub_repository_resource_params import GitHubRepositor
 from qca.managed.types.memory_store_resource_param import MemoryStoreResourceParam
 from qca.managed.types.session import Session
 from qca.managed.types.session_agent_update_param import SessionAgentUpdateParam
+from qca.managed.types.session_cancel_response import SessionCancelResponse
 from qca.managed.types.user_define_outcome_event_params import UserDefineOutcomeEventParams
 from qca.managed.types.user_message_event_params import UserMessageEventParams
 
@@ -29,6 +30,33 @@ __all__ = ["Sessions", "AsyncSessions"]
 
 
 class Sessions(SyncAPIResource):
+    def cancel(
+        self,
+        session_id: str,
+        *,
+        workspace_id: Union[str, None, NotGiven] = NOT_GIVEN,
+        betas: Union[List[str], None, NotGiven] = NOT_GIVEN,
+        extra_headers: Dict[str, str] | None = None,
+        extra_query: Dict[str, Any] | None = None,
+        extra_body: Dict[str, Any] | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
+    ) -> SessionCancelResponse:
+        """POST /sessions/{session_id}/cancel.
+
+        Cancel the current turn (202); an idle session is a safe no-op (200).
+        """
+        _path = path_template("/sessions/{session_id}/cancel", session_id=session_id)
+        options = make_request_options(
+            body={},
+            query={},
+            headers={"qoder-workspace-id": workspace_id, "x-qoder-beta": betas},
+            extra_headers=extra_headers,
+            extra_query=extra_query,
+            extra_body=extra_body,
+            timeout=timeout,
+        )
+        return self._client.request("POST", _path, cast_to=SessionCancelResponse, options=options)
+
     @cached_property
     def events(self) -> Events:
         return Events(self._client)
@@ -250,6 +278,33 @@ class Sessions(SyncAPIResource):
 
 
 class AsyncSessions(AsyncAPIResource):
+    async def cancel(
+        self,
+        session_id: str,
+        *,
+        workspace_id: Union[str, None, NotGiven] = NOT_GIVEN,
+        betas: Union[List[str], None, NotGiven] = NOT_GIVEN,
+        extra_headers: Dict[str, str] | None = None,
+        extra_query: Dict[str, Any] | None = None,
+        extra_body: Dict[str, Any] | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
+    ) -> SessionCancelResponse:
+        """POST /sessions/{session_id}/cancel.
+
+        Cancel the current turn (202); an idle session is a safe no-op (200).
+        """
+        _path = path_template("/sessions/{session_id}/cancel", session_id=session_id)
+        options = make_request_options(
+            body={},
+            query={},
+            headers={"qoder-workspace-id": workspace_id, "x-qoder-beta": betas},
+            extra_headers=extra_headers,
+            extra_query=extra_query,
+            extra_body=extra_body,
+            timeout=timeout,
+        )
+        return await self._client.request("POST", _path, cast_to=SessionCancelResponse, options=options)
+
     @cached_property
     def events(self) -> AsyncEvents:
         return AsyncEvents(self._client)

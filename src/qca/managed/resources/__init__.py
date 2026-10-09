@@ -1,5 +1,7 @@
 from .deployment_runs import AsyncDeploymentRuns as AsyncDeploymentRuns
 from .deployment_runs import DeploymentRuns as DeploymentRuns
+from .deployment_scoped_runs import AsyncRuns as AsyncRuns
+from .deployment_scoped_runs import Runs as Runs
 from .deployments import AsyncDeployments as AsyncDeployments
 from .deployments import Deployments as Deployments
 from .dreams import AsyncDreams as AsyncDreams

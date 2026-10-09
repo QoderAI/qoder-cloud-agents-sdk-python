@@ -10,3 +10,4 @@ __all__ = ["VaultCredentialAuth"]
 class VaultCredentialAuth(BaseModel):
     type: Optional[str] = None
     mcp_server_url: Optional[str] = None
+    secret_name: Optional[str] = None

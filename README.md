@@ -6,7 +6,7 @@
 
 The Qoder Cloud Agents Python SDK provides access to the Qoder Cloud Agents API from Python 3.10+. It ships synchronous and natively asynchronous clients, typed request parameters and response models, automatic pagination, SSE streaming, and file transfer.
 
-The API is exposed in two modes, and each has its own client, resources, and types. Forward is multi-tenant: sessions are created from an Identity and a Template, and it adds Schedule, Batch, and Channel. Managed is single-tenant: sessions are created from an Agent and an Environment, and it adds Deployment, Dream, and the Work API for self-hosted environments.
+The API is exposed in two modes, and each has its own client, resources, and types. Forward is multi-tenant: sessions are created from an Identity and a Template, and it adds Schedule, Batch, Channel, and Usage. Managed is single-tenant: sessions are created from an Agent and an Environment, and it adds Deployment, Dream, and the Work API for self-hosted environments.
 
 ## Installation
 
@@ -103,6 +103,41 @@ asyncio.run(main())
 ```
 
 Every method shown in this document has an async counterpart with the same name and signature. Async streams are opened with `async with await client.sessions.events.stream(...)`.
+
+## Usage and cancellation
+
+Forward Usage requires PAT or Admin SAT.
+
+```python
+with Forward() as client:
+    for row in client.usage.list_identities(
+        start_at="2026-09-14T09:00:00", end_at="2026-09-14T12:00:00",
+        identity_ids=["idn_one", "idn_two"],
+    ):
+        print(row.identity_id, row.active_seconds, row.credits)
+
+with Managed() as client:
+    acknowledgement = client.sessions.cancel("sess_one")
+    for run in client.deployments.runs.list("dep_one", limit=20):
+        print(run.id)
+    run = client.deployments.runs.retrieve("drun_one", deployment_id="dep_one")
+```
+
+`usage.list_templates` accepts the same filters. Bounds are whole hours in
+Asia/Shanghai for CN and Global, with an inclusive start, exclusive end, and a
+maximum 744-hour span. Multi-ID filters accept lists or comma-separated strings.
+`active_seconds` preserves fractions. Legacy timestamp parameters and
+`duration_seconds` are not exposed.
+
+`client.vaults.credentials.update("cred_one", vault_id="vault_one", auth={...})`
+rotates write-only secrets; only auth and metadata are patched, and omitted fields
+are preserved. `metadata=None` clears metadata; `metadata={"key": None}` deletes a
+key. This operation never retries automatically, even if client retries are enabled.
+
+Session cancellation returns the lightweight `canceling` acknowledgement for
+active (HTTP 202) and idle (HTTP 200) sessions. The global `deployment_runs` resource
+remains available. All new methods also exist on `AsyncForward` / `AsyncManaged`;
+await requests or iterate pages with `async for`.
 
 ## Sessions
 
