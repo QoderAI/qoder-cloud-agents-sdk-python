@@ -282,8 +282,9 @@ class SyncAPIClient(BaseClient):
         self._client = http_client or httpx.Client(timeout=timeout, follow_redirects=False)
 
     def _send(self, request: httpx.Request, *, storage: bool = False) -> httpx.Response:
+        max_retries = 0 if request.extensions.get("qca_no_retry") else self.max_retries
         track_retries = request.headers.get("X-Qoder-Retry-Count") == "0"
-        for attempt in range(self.max_retries + 1):
+        for attempt in range(max_retries + 1):
             if track_retries and attempt:
                 request.headers["X-Qoder-Retry-Count"] = str(attempt)
             if not storage and self.credential and not self.pat and "Authorization" not in self.default_headers:
@@ -294,14 +295,14 @@ class SyncAPIClient(BaseClient):
             try:
                 response = self._client.send(request, stream=True, auth=None, follow_redirects=False)
             except httpx.TransportError as exc:
-                if attempt < self.max_retries and self._retryable(request, None):
+                if attempt < max_retries and self._retryable(request, None):
                     time.sleep(self._retry_delay(attempt, None))
                     continue
                 cls = APITimeoutError if isinstance(exc, httpx.TimeoutException) else APIConnectionError
                 raise cls(request=request) from exc
             if response.is_success:
                 return response
-            if attempt < self.max_retries and self._retryable(request, response):
+            if attempt < max_retries and self._retryable(request, response):
                 delay = self._retry_delay(attempt, response)
                 response.close()
                 time.sleep(delay)
@@ -335,6 +336,7 @@ class SyncAPIClient(BaseClient):
         )
         # httpx multipart streams are single-use. Cache the encoded request once.
         request.read()
+        request.extensions["qca_no_retry"] = options.get("max_retries") == 0
         response = self._send(request)
         if stream:
             return Stream(response, cast_to, strict=self._strict_response_validation)
@@ -397,8 +399,9 @@ class AsyncAPIClient(BaseClient):
         self._client = http_client or httpx.AsyncClient(timeout=timeout, follow_redirects=False)
 
     async def _send(self, request: httpx.Request, *, storage: bool = False) -> httpx.Response:
+        max_retries = 0 if request.extensions.get("qca_no_retry") else self.max_retries
         track_retries = request.headers.get("X-Qoder-Retry-Count") == "0"
-        for attempt in range(self.max_retries + 1):
+        for attempt in range(max_retries + 1):
             if track_retries and attempt:
                 request.headers["X-Qoder-Retry-Count"] = str(attempt)
             if not storage and self.credential and not self.pat and not request.extensions.get("qca_explicit_auth"):
@@ -409,14 +412,14 @@ class AsyncAPIClient(BaseClient):
             try:
                 response = await self._client.send(request, stream=True, auth=None, follow_redirects=False)
             except httpx.TransportError as exc:
-                if attempt < self.max_retries and self._retryable(request, None):
+                if attempt < max_retries and self._retryable(request, None):
                     await anyio.sleep(self._retry_delay(attempt, None))
                     continue
                 cls = APITimeoutError if isinstance(exc, httpx.TimeoutException) else APIConnectionError
                 raise cls(request=request) from exc
             if response.is_success:
                 return response
-            if attempt < self.max_retries and self._retryable(request, response):
+            if attempt < max_retries and self._retryable(request, response):
                 delay = self._retry_delay(attempt, response)
                 await response.aclose()
                 await anyio.sleep(delay)
@@ -455,6 +458,7 @@ class AsyncAPIClient(BaseClient):
             key.lower() == "authorization" for key in (*self.default_headers, *options.get("headers", {}))
         )
         await request.aread()
+        request.extensions["qca_no_retry"] = options.get("max_retries") == 0
         response = await self._send(request)
         if stream:
             return AsyncStream(response, cast_to, strict=self._strict_response_validation)

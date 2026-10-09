@@ -17,6 +17,7 @@ from .resources.schedules import AsyncSchedules, Schedules
 from .resources.sessions.sessions import AsyncSessions, Sessions
 from .resources.skills.skills import AsyncSkills, Skills
 from .resources.templates import AsyncTemplates, Templates
+from .resources.usage import AsyncUsage, Usage
 from .resources.vaults.vaults import AsyncVaults, Vaults
 
 
@@ -75,6 +76,10 @@ class Forward(SyncAPIClient):
     @cached_property
     def memory_stores(self) -> MemoryStores:
         return MemoryStores(self)
+
+    @cached_property
+    def usage(self) -> Usage:
+        return Usage(self)
 
     @cached_property
     def models(self) -> Models:
@@ -136,6 +141,10 @@ class AsyncForward(AsyncAPIClient):
     @cached_property
     def memory_stores(self) -> AsyncMemoryStores:
         return AsyncMemoryStores(self)
+
+    @cached_property
+    def usage(self) -> AsyncUsage:
+        return AsyncUsage(self)
 
     @cached_property
     def models(self) -> AsyncModels:

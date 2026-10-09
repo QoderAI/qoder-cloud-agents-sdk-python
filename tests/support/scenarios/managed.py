@@ -194,6 +194,14 @@ def deployment(client: Managed, context: Run) -> None:
     if saved.session_id != execution.session_id:
         raise AssertionError("Deployment Run session ID changed")
     wait_reply(client.sessions.events, context, execution.session_id).verify([expected])
+    scoped = client.deployments.runs.retrieve(execution.id, deployment_id=deployment.id)
+    if scoped.id != execution.id or scoped.deployment_id != deployment.id or scoped.session_id != execution.session_id:
+        raise AssertionError("Scoped Run changed its identity, deployment, or session")
+    runs = client.deployments.runs.list(deployment.id, limit=10)
+    if not any(row.id == execution.id for row in runs.data) or any(
+        row.deployment_id != deployment.id for row in runs.data
+    ):
+        raise AssertionError("Scoped Run list omitted the created Run or returned another deployment")
 
 
 def dream(client: Managed, context: Run) -> None:

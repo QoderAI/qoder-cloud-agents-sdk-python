@@ -9,11 +9,44 @@ from qca.common._types import NOT_GIVEN, NotGiven
 from qca.common._utils import make_request_options, path_template
 from qca.common.pagination import AsyncPaginator, SyncPage
 from qca.forward.types.vault_credential import VaultCredential
+from qca.forward.types.vault_credential_update_params import VaultCredentialUpdateAuth
 
 __all__ = ["Credentials", "AsyncCredentials"]
 
 
 class Credentials(SyncAPIResource):
+    def update(
+        self,
+        credential_id: str,
+        *,
+        vault_id: str,
+        auth: Union[VaultCredentialUpdateAuth, None, NotGiven] = NOT_GIVEN,
+        metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
+        identity_id: Union[str, None, NotGiven] = NOT_GIVEN,
+        extra_headers: Dict[str, str] | None = None,
+        extra_query: Dict[str, Any] | None = None,
+        extra_body: Dict[str, Any] | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
+    ) -> VaultCredential:
+        """POST /vaults/{vault_id}/credentials/{credential_id}.
+
+        Merge auth or metadata. Write-only secret updates are never automatically retried.
+        """
+        _path = path_template(
+            "/vaults/{vault_id}/credentials/{credential_id}", vault_id=vault_id, credential_id=credential_id
+        )
+        options = make_request_options(
+            body={"auth": auth, "metadata": metadata},
+            query={"identity_id": identity_id},
+            headers={},
+            extra_headers=extra_headers,
+            extra_query=extra_query,
+            extra_body=extra_body,
+            timeout=timeout,
+        )
+        options["max_retries"] = 0
+        return self._client.request("POST", _path, cast_to=VaultCredential, options=options)
+
     def list(
         self,
         vault_id: str,
@@ -119,6 +152,38 @@ class Credentials(SyncAPIResource):
 
 
 class AsyncCredentials(AsyncAPIResource):
+    async def update(
+        self,
+        credential_id: str,
+        *,
+        vault_id: str,
+        auth: Union[VaultCredentialUpdateAuth, None, NotGiven] = NOT_GIVEN,
+        metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
+        identity_id: Union[str, None, NotGiven] = NOT_GIVEN,
+        extra_headers: Dict[str, str] | None = None,
+        extra_query: Dict[str, Any] | None = None,
+        extra_body: Dict[str, Any] | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
+    ) -> VaultCredential:
+        """POST /vaults/{vault_id}/credentials/{credential_id}.
+
+        Merge auth or metadata. Write-only secret updates are never automatically retried.
+        """
+        _path = path_template(
+            "/vaults/{vault_id}/credentials/{credential_id}", vault_id=vault_id, credential_id=credential_id
+        )
+        options = make_request_options(
+            body={"auth": auth, "metadata": metadata},
+            query={"identity_id": identity_id},
+            headers={},
+            extra_headers=extra_headers,
+            extra_query=extra_query,
+            extra_body=extra_body,
+            timeout=timeout,
+        )
+        options["max_retries"] = 0
+        return await self._client.request("POST", _path, cast_to=VaultCredential, options=options)
+
     def list(
         self,
         vault_id: str,

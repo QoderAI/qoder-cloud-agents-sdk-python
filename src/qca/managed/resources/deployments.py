@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
+from functools import cached_property
 from typing import Any, Dict, List, Literal, Union
 
 import httpx
@@ -9,6 +10,7 @@ from qca.common._resource import AsyncAPIResource, SyncAPIResource
 from qca.common._types import NOT_GIVEN, NotGiven
 from qca.common._utils import make_request_options, path_template
 from qca.common.pagination import AsyncPaginator, SyncPage
+from qca.managed.resources.deployment_scoped_runs import AsyncRuns, Runs
 from qca.managed.types.agent_params import AgentParams
 from qca.managed.types.budget_limit_param import BudgetLimitParam
 from qca.managed.types.deployment import Deployment
@@ -25,6 +27,10 @@ __all__ = ["Deployments", "AsyncDeployments"]
 
 
 class Deployments(SyncAPIResource):
+    @cached_property
+    def runs(self) -> Runs:
+        return Runs(self._client)
+
     def create(
         self,
         *,
@@ -288,6 +294,10 @@ class Deployments(SyncAPIResource):
 
 
 class AsyncDeployments(AsyncAPIResource):
+    @cached_property
+    def runs(self) -> AsyncRuns:
+        return AsyncRuns(self._client)
+
     async def create(
         self,
         *,

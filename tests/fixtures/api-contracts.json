@@ -1876,6 +1876,70 @@
         "vault_id"
       ],
       "kind": "model"
+    },
+    {
+      "id": "forward.vaults.credentials.update",
+      "method": "POST",
+      "path": "/vaults/{vault_id}/credentials/{credential_id}",
+      "required": [
+        "credential_id",
+        "vault_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.usage.list_identities",
+      "method": "GET",
+      "path": "/usage/identities",
+      "required": [
+        "end_at",
+        "start_at"
+      ],
+      "kind": "page"
+    },
+    {
+      "id": "forward.usage.list_templates",
+      "method": "GET",
+      "path": "/usage/templates",
+      "required": [
+        "end_at",
+        "start_at"
+      ],
+      "kind": "page"
+    },
+    {
+      "id": "managed.sessions.cancel",
+      "method": "POST",
+      "path": "/sessions/{session_id}/cancel",
+      "required": [
+        "session_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.deployments.runs.list",
+      "method": "GET",
+      "path": "/deployments/{deployment_id}/runs",
+      "required": [
+        "deployment_id"
+      ],
+      "kind": "page"
+    },
+    {
+      "id": "managed.deployments.runs.retrieve",
+      "method": "GET",
+      "path": "/deployments/{deployment_id}/runs/{run_id}",
+      "required": [
+        "deployment_id",
+        "run_id"
+      ],
+      "kind": "model"
+    }
+  ],
+  "extensions": [
+    {
+      "source": "cloud-agent/cloud-agents-api-doc origin/master 1b3f3d023b8631395c3f65577a507050d3893d12 (2026-10-09)",
+      "operations": 6
     }
   ]
 }

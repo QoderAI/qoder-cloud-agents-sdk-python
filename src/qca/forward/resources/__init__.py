@@ -12,3 +12,5 @@ from .schedules import AsyncSchedules as AsyncSchedules
 from .schedules import Schedules as Schedules
 from .templates import AsyncTemplates as AsyncTemplates
 from .templates import Templates as Templates
+from .usage import AsyncUsage as AsyncUsage
+from .usage import Usage as Usage

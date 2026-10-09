@@ -106,11 +106,72 @@ class ExampleService:
 
         if path == "models":
             return reply({"data": [{"id": "ultimate", "is_enabled": True}]})
+        if parts[0] == "usage":
+            assert request.url.params.get("start_at") and request.url.params.get("end_at")
+            assert "start_time" not in request.url.params and "end_time" not in request.url.params
+            kind = "identity" if parts[1] == "identities" else "template"
+            return reply(
+                {
+                    "type": f"{kind}_usage.list",
+                    "start_at": request.url.params["start_at"],
+                    "end_at": request.url.params["end_at"],
+                    "data": [
+                        {
+                            "type": f"{kind}_usage",
+                            f"{kind}_id": kind + "-usage",
+                            "active_seconds": 1.25,
+                            "credits": 0.5,
+                            "session_count": 1,
+                            **({"active_identities": 1} if kind == "template" else {}),
+                        }
+                    ],
+                    "has_more": False,
+                }
+            )
+        if parts[0] == "vaults" and len(parts) >= 3 and parts[2] == "credentials":
+            if len(parts) == 3 and verb == "POST":
+                auth = {key: value for key, value in body["auth"].items() if key != "token"}
+                return reply(
+                    self.create(
+                        "credential", {"vault_id": parts[1], "auth": auth, "metadata": body.get("metadata", {})}
+                    )
+                )
+            if len(parts) == 4:
+                credential = self.objects[parts[3]]
+                assert credential["vault_id"] == parts[1]
+                if verb == "POST":
+                    assert "mcp_server_url" not in body.get("auth", {})
+                    if "metadata" in body:
+                        if body["metadata"] is None:
+                            credential["metadata"] = {}
+                        else:
+                            for key, value in body["metadata"].items():
+                                if value is None:
+                                    credential["metadata"].pop(key, None)
+                                else:
+                                    credential["metadata"][key] = value
+                if verb == "DELETE":
+                    self.deleted.append(parts[3])
+                return reply(credential)
+        if parts[0] == "deployments" and len(parts) >= 3 and parts[2] == "runs":
+            runs = [item for item in self.objects.values() if item.get("deployment_id") == parts[1]]
+            if len(parts) == 3:
+                return reply({"data": runs, "has_more": False})
+            assert self.objects[parts[3]]["deployment_id"] == parts[1]
+            return reply(self.objects[parts[3]])
         if parts[0] == "sessions" and len(parts) >= 3:
             session_id = parts[1]
+            if parts[2] == "cancel":
+                session = self.objects[session_id]
+                status = 200 if session["status"] == "idle" else 202
+                session["status"] = "idle"
+                return httpx.Response(status, json={"id": session_id, "type": "session", "status": "canceling"})
             if parts[2] == "events":
                 if verb == "POST":
-                    return reply({"data": [self.send(session_id, e) for e in body["events"]]})
+                    events = [self.send(session_id, e) for e in body["events"]]
+                    if any("sleep 30 seconds" in str(e.get("content", "")) for e in body["events"]):
+                        self.objects[session_id]["status"] = "running"
+                    return reply({"data": events})
                 events = self.events[session_id]
                 after = request.headers.get("Last-Event-ID") or request.url.params.get("after_id")
                 if after:
@@ -210,7 +271,9 @@ class ExampleService:
         if len(parts) == 3 and parts[-1] == "run":
             item = self.objects[parts[1]]
             session = self.session(item)
-            execution = self.create("run", {"session_id": session["id"], "status": "completed"})
+            execution = self.create(
+                "run", {"deployment_id": parts[1], "session_id": session["id"], "status": "completed"}
+            )
             return reply(execution)
         if len(parts) == 3 and parts[-1] == "tasks":
             return reply({"data": [{"custom_id": row["custom_id"]} for row in self.outputs[parts[1]]]})

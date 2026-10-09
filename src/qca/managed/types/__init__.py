@@ -90,6 +90,10 @@ from .deployment_run_error_union import DeploymentRunErrorUnion as DeploymentRun
 from .deployment_run_list_params import DeploymentRunListParams as DeploymentRunListParams
 from .deployment_run_params import DeploymentRunParams as DeploymentRunParams
 from .deployment_run_retrieve_params import DeploymentRunRetrieveParams as DeploymentRunRetrieveParams
+from .deployment_scoped_run_list_params import DeploymentScopedRunListParams as DeploymentScopedRunListParams
+from .deployment_scoped_run_retrieve_params import (
+    DeploymentScopedRunRetrieveParams as DeploymentScopedRunRetrieveParams,
+)
 from .deployment_unpause_params import DeploymentUnpauseParams as DeploymentUnpauseParams
 from .deployment_update_params import DeploymentUpdateParams as DeploymentUpdateParams
 from .deployment_user_define_outcome_event_rubric_union import (
@@ -267,6 +271,8 @@ from .session_agent_tool_union_default_config_permission_policy import (
 )
 from .session_agent_update_param import SessionAgentUpdateParam as SessionAgentUpdateParam
 from .session_archive_params import SessionArchiveParams as SessionArchiveParams
+from .session_cancel_params import SessionCancelParams as SessionCancelParams
+from .session_cancel_response import SessionCancelResponse as SessionCancelResponse
 from .session_create_params import SessionCreateParams as SessionCreateParams
 from .session_delete_params import SessionDeleteParams as SessionDeleteParams
 from .session_error_event_error_union import SessionErrorEventErrorUnion as SessionErrorEventErrorUnion

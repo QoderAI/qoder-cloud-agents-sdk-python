@@ -39,7 +39,7 @@ def test_contract_fixture_has_pinned_provenance():
         "commit": "bc5bc655d70b67fcd88623320ac01896a7360d8a",
         "captured_at": "2026-09-22",
     }
-    assert len(CONTRACT_FIXTURE["contracts"]) == 205
+    assert len(CONTRACT_FIXTURE["contracts"]) == 211
 
 
 @pytest.mark.parametrize("endpoint", ENDPOINTS, ids=endpoint_id)

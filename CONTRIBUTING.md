@@ -34,6 +34,20 @@ The default test command excludes account-backed integration tests and must not 
 
 Never commit `.env.live`, tokens, credentials, generated logs, or test output. Integration scenarios must register cleanup immediately after creating a resource. Run them explicitly with `QODER_RUN_LIVE=1`; they are not part of public pull-request CI.
 
+`tests/integration/test_api_expansion.py` adds Forward hourly Usage, Credential
+merge patches and secret redaction, and Managed Session cancellation before and
+after sending a turn. The existing Managed deployment scenario also checks
+scoped Run listing/retrieval. These are part of `test-live-all`; cancellation
+after sending a turn and deployment scenarios can execute models. Select a
+separate `QODER_LIVE_ENV_FILE` with matching URL and PAT for each CN/Global run.
+
+Usage queries the last 24 completed whole hours in Asia/Shanghai in both regions;
+empty pages verify only the collection. A Session may finish before cancellation
+and return HTTP 200 instead of 202; tests record which response occurred. Those
+responses do not prove active cancellation occurred. Cleanup failures remain
+failures; offline replay exercises assertions and cleanup without account
+credentials.
+
 The Forward and Managed integration files also include six `strict_response_contract` checks using a separate client with `_strict_response_validation=True`: model, template/agent, and session lists. They send only GET requests, inspect the first page with `limit=1` where supported, and allow empty lists. An empty list checks the response envelope; item schemas are checked when items exist. Returned items must have a non-empty string ID, and `data` must be present even when empty. Existing business scenarios continue to use the default lenient response parsing.
 
 To run only these read-only checks:
