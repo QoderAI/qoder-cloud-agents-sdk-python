@@ -138,7 +138,6 @@ def resources(client: Forward, context: Run) -> None:
         session_id,
         f"请使用技能 {skill_name}，读取并返回 EXAMPLE_SKILL_CODE。",
         [skill_value],
-        require_tool=True,
     )
 
 
