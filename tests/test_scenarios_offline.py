@@ -52,6 +52,57 @@ def test_go_example_scenarios_with_http_stub(mode, scenario, monkeypatch, capsys
         assert outputs["cleanup"] == "completed"
 
 
+@pytest.mark.parametrize("mode", ["forward", "managed"])
+@pytest.mark.parametrize(
+    "case,expected_error",
+    [
+        ("cached_skill", None),
+        ("missing_first_turn_tool", "No actual tool execution"),
+        ("wrong_skill_value", "missing expected values"),
+    ],
+)
+def test_resource_scenarios_allow_cached_skill_but_still_verify_tools_and_values(
+    mode, case, expected_error, monkeypatch
+):
+    config = Config(mode, "test-token", f"https://api.test/api/v1/{mode}", timeout=2, poll_interval=0)
+    run = Run(config)
+    service = ExampleService(mode)
+    original_send = service.send
+    replies = []
+
+    def send(session_id, event):
+        start = len(service.events[session_id])
+        user_event = original_send(session_id, event)
+        reply = service.events[session_id][start + 1 :]
+        second_turn = len(replies) == 1
+        if second_turn or case == "missing_first_turn_tool":
+            reply = [item for item in reply if item["type"] not in ("agent.tool_use", "agent.mcp_tool_use")]
+        if second_turn and case == "wrong_skill_value":
+            for item in reply:
+                if item["type"] == "agent.message":
+                    item["content"] = [{"type": "text", "text": "incorrect skill value"}]
+        service.events[session_id][start + 1 :] = reply
+        replies.append(reply)
+        return user_event
+
+    monkeypatch.setattr(service, "send", send)
+    cls, scenarios = (Forward, FORWARD_SCENARIOS) if mode == "forward" else (Managed, MANAGED_SCENARIOS)
+    with cls(**config.client_options(), http_client=httpx.Client(transport=httpx.MockTransport(service))) as client:
+        try:
+            if expected_error is None:
+                scenarios["resources"](client, run)
+                assert len(replies) == 2
+                assert any(item["type"] == "agent.tool_use" for item in replies[0])
+                assert not any(item["type"] == "agent.tool_use" for item in replies[1])
+            else:
+                with pytest.raises(AssertionError, match=expected_error):
+                    scenarios["resources"](client, run)
+        finally:
+            run.cleanup()
+    assert not run.cleanups
+    assert not service.mounts
+
+
 def test_turn_assertions_require_final_assistant_output_and_successful_idle():
     result = TurnResult()
     for event in [
