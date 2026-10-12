@@ -30,7 +30,7 @@ The default test command excludes account-backed integration tests and must not 
 
 - **Unit and contract tests** live under `tests/` and run with `uv run make test`.
 - **Integration tests** live under `tests/integration/` and must not import implementation from `examples/`. Copy `.env.live.example` to `.env.live`, use a dedicated test account, and run `uv run make test-live-all`.
-- **Examples** are runnable documentation. Tests must not import from `examples/`; use each example's `--help` mode for a no-network smoke check.
+- **Examples** are runnable documentation. Business integration tests must not import from `examples/`; use each example's `--help` mode for a no-network smoke check.
 
 Never commit `.env.live`, tokens, credentials, generated logs, or test output. Integration scenarios must register cleanup immediately after creating a resource. Run them explicitly with `QODER_RUN_LIVE=1`; they are not part of public pull-request CI.
 
@@ -140,3 +140,38 @@ PyPI versions are immutable. Never reuse or overwrite one: fix forward with a ne
 ## Pull requests
 
 Complete the pull request template, include exact verification commands and results, and identify public API, documentation, integration-test, and cross-SDK effects. Do not combine unrelated refactors with behavior changes.
+
+## Service Account authentication checks
+
+The separate read-only SA suite requires `QODER_SA_CN_KEY` and
+`QODER_SA_GLOBAL_KEY` in `.env.live` or the process environment and provisioned SA permissions
+(and Managed workspace bindings). Run `uv run make test-live-sa`. It tests both API
+surfaces in CN and Global using automatic exchange and static SAT. Required keys
+are checked before the first API call; normal PAT suites remain independent.
+The read-only command does not prove write, model execution, SSE, or
+user/identity isolation coverage. Do not print
+SA Keys or SATs in test reports.
+
+For write/read, Session SSE and cleanup verification, use dedicated SA accounts
+and run `uv run make test-live-sa-execution` with
+`QODER_SA_LIVE_ALLOW_WRITE=true` and `QODER_SA_LIVE_ALLOW_EXECUTION=true`.
+`QODER_SA_MODEL` selects the model (default `auto`). This separate entry creates
+unique test Environments, Templates/Agents, Forward Identities and Sessions in
+both regions, sends one message per Session, checks the assistant reply and idle
+event through SSE, and cleans up resources even after execution fails. Cleanup
+failures fail the test. Python covers both synchronous and asynchronous clients.
+Missing keys or execution flags fail this explicit command before resource creation.
+The read-only SA command does not run these execution cases.
+
+Process environment variables override `.env.live`; explicit empty values do not
+fall back to the file. Use `LIVE_ENV_FILE` with Make or `QODER_LIVE_ENV_FILE` with pytest
+to select another file.
+`QODER_AUTH_MODE` selects example authentication only. PAT and SA test entries
+are separate; setting it to `sa` does not switch the ordinary PAT suites.
+
+`uv run make test` collects the SA live suites, excludes account-backed cases
+with the `integration` marker, and runs configuration regression tests offline.
+
+Business integration scenarios keep independent test helpers. Dedicated offline
+regression tests for example configuration and lifecycle may import examples;
+those tests do not replace SDK integration coverage.

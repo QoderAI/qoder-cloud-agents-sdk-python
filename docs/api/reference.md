@@ -1,3 +1,24 @@
+<a id="qca.common._auth"></a>
+
+# qca.common.\_auth
+
+<a id="qca.common._auth.AuthMode"></a>
+
+#### AuthMode
+
+<a id="qca.common._auth.resolve_auth"></a>
+
+#### resolve\_auth
+
+```python
+def resolve_auth(*, pat: str | None, access_token: str | None,
+                 auth_mode: AuthMode | None,
+                 credential: Credential | AsyncCredential | None,
+                 is_async: bool) -> tuple[AuthMode, str | None]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/_auth.py)
+
 <a id="qca.common._base_client"></a>
 
 # qca.common.\_base\_client
@@ -23,7 +44,10 @@ class BaseClient()
 ```python
 def with_options(
         *,
-        pat: str | NotGiven = NOT_GIVEN,
+        pat: str | None | NotGiven = NOT_GIVEN,
+        access_token: str | None | NotGiven = NOT_GIVEN,
+        auth_mode: AuthMode | NotGiven = NOT_GIVEN,
+        credential: Credential | AsyncCredential | None | NotGiven = NOT_GIVEN,
         base_url: str | httpx.URL | NotGiven = NOT_GIVEN,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
         max_retries: int | NotGiven = NOT_GIVEN,
@@ -60,6 +84,8 @@ class SyncAPIClient(BaseClient)
 ```python
 def __init__(*,
              pat: str | None = None,
+             access_token: str | None = None,
+             auth_mode: AuthMode | None = None,
              base_url: str | httpx.URL | None = None,
              timeout: float | httpx.Timeout | None = DEFAULT_TIMEOUT,
              max_retries: int = 2,
@@ -138,6 +164,8 @@ class AsyncAPIClient(BaseClient)
 ```python
 def __init__(*,
              pat: str | None = None,
+             access_token: str | None = None,
+             auth_mode: AuthMode | None = None,
              base_url: str | httpx.URL | None = None,
              timeout: float | httpx.Timeout | None = DEFAULT_TIMEOUT,
              max_retries: int = 2,
@@ -1803,6 +1831,206 @@ async def __aiter__() -> AsyncIterator[T]
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/pagination.py)
+
+<a id="qca.common.service_account"></a>
+
+# qca.common.service\_account
+
+<a id="qca.common.service_account._ServiceAccountBase"></a>
+
+## \_ServiceAccountBase
+
+```python
+class _ServiceAccountBase()
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/service_account.py)
+
+<a id="qca.common.service_account._ServiceAccountBase.__init__"></a>
+
+#### \_\_init\_\_
+
+```python
+def __init__(*,
+             sa_key: str,
+             region: Literal["cn", "global"],
+             scopes: Sequence[str],
+             ttl_seconds: int = 3600,
+             timeout: float = 30) -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/service_account.py)
+
+<a id="qca.common.service_account._ServiceAccountBase.__repr__"></a>
+
+#### \_\_repr\_\_
+
+```python
+def __repr__() -> str
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/service_account.py)
+
+<a id="qca.common.service_account._ServiceAccountBase.from_env"></a>
+
+#### from\_env
+
+```python
+@classmethod
+def from_env(cls, *, region: Literal["cn", "global"], scopes: Sequence[str],
+             **options: Any) -> Self
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/service_account.py)
+
+<a id="qca.common.service_account._ServiceAccountBase.validate_region"></a>
+
+#### validate\_region
+
+```python
+def validate_region(host: str) -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/service_account.py)
+
+<a id="qca.common.service_account.ServiceAccountCredential"></a>
+
+## ServiceAccountCredential
+
+```python
+class ServiceAccountCredential(_ServiceAccountBase)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/service_account.py)
+
+Synchronous, lazy SAT cache. An injected HTTP client remains caller-owned.
+
+<a id="qca.common.service_account.ServiceAccountCredential.__init__"></a>
+
+#### \_\_init\_\_
+
+```python
+def __init__(*,
+             sa_key: str,
+             region: Literal["cn", "global"],
+             scopes: Sequence[str],
+             ttl_seconds: int = 3600,
+             timeout: float = 30,
+             http_client: httpx.Client | None = None) -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/service_account.py)
+
+<a id="qca.common.service_account.ServiceAccountCredential.get_token"></a>
+
+#### get\_token
+
+```python
+def get_token() -> str
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/service_account.py)
+
+<a id="qca.common.service_account.ServiceAccountCredential.close"></a>
+
+#### close
+
+```python
+def close() -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/service_account.py)
+
+<a id="qca.common.service_account.ServiceAccountCredential.__enter__"></a>
+
+#### \_\_enter\_\_
+
+```python
+def __enter__() -> Self
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/service_account.py)
+
+<a id="qca.common.service_account.ServiceAccountCredential.__exit__"></a>
+
+#### \_\_exit\_\_
+
+```python
+def __exit__(*_: object) -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/service_account.py)
+
+<a id="qca.common.service_account.AsyncServiceAccountCredential"></a>
+
+## AsyncServiceAccountCredential
+
+```python
+class AsyncServiceAccountCredential(_ServiceAccountBase)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/service_account.py)
+
+Async SAT cache shared on one event loop, using the caller's anyio backend.
+
+Cancelling the exchange owner releases the lock so another caller can exchange.
+Cancelling a waiter does not cancel the owner. No permanent task is created.
+
+<a id="qca.common.service_account.AsyncServiceAccountCredential.__init__"></a>
+
+#### \_\_init\_\_
+
+```python
+def __init__(*,
+             sa_key: str,
+             region: Literal["cn", "global"],
+             scopes: Sequence[str],
+             ttl_seconds: int = 3600,
+             timeout: float = 30,
+             http_client: httpx.AsyncClient | None = None) -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/service_account.py)
+
+<a id="qca.common.service_account.AsyncServiceAccountCredential.get_token"></a>
+
+#### get\_token
+
+```python
+async def get_token() -> str
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/service_account.py)
+
+<a id="qca.common.service_account.AsyncServiceAccountCredential.aclose"></a>
+
+#### aclose
+
+```python
+async def aclose() -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/service_account.py)
+
+<a id="qca.common.service_account.AsyncServiceAccountCredential.__aenter__"></a>
+
+#### \_\_aenter\_\_
+
+```python
+async def __aenter__() -> Self
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/service_account.py)
+
+<a id="qca.common.service_account.AsyncServiceAccountCredential.__aexit__"></a>
+
+#### \_\_aexit\_\_
+
+```python
+async def __aexit__(*_: object) -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/service_account.py)
 
 <a id="qca.forward"></a>
 

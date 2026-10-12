@@ -50,6 +50,11 @@ from .common import (
 from .common import (
     UnprocessableEntityError as UnprocessableEntityError,
 )
+from .common._auth import AuthMode as AuthMode
+from .common.credentials import AsyncCredential as AsyncCredential
+from .common.credentials import Credential as Credential
+from .common.service_account import AsyncServiceAccountCredential as AsyncServiceAccountCredential
+from .common.service_account import ServiceAccountCredential as ServiceAccountCredential
 from .forward import AsyncForward as AsyncForward
 from .forward import Forward as Forward
 from .managed import AsyncManaged as AsyncManaged

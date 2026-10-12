@@ -7,12 +7,14 @@ import asyncio
 import os
 from uuid import uuid4
 
+from examples.common.live import Config
 from qca import AsyncForward
 
 
 async def main() -> None:
     session_id = os.environ["QODER_SESSION_ID"]
-    async with AsyncForward() as client:
+    config = Config.load("forward")
+    async with config.open_async_client(AsyncForward) as client:
         sent = await client.sessions.events.send(
             session_id,
             events=[{"type": "user.message", "content": [{"type": "text", "text": "Hello!"}]}],

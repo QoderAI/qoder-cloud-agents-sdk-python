@@ -14,7 +14,7 @@ The API is exposed in two modes, and each has its own client, resources, and typ
 python -m pip install qca-sdk
 ```
 
-The distribution is named `qca-sdk`; the import package is `qca`. The package is pre-1.0, so the command above resolves to the latest `0.1.x` release. To work from a checkout of this repository instead:
+The distribution is named `qca-sdk`; the import package is `qca`. The package is pre-1.0, so pin the version your application uses. To work from a checkout of this repository instead:
 
 ```bash
 python -m pip install .
@@ -64,11 +64,11 @@ Both clients read their token from the environment. `from qca.forward import Cli
 
 | Setting | Forward | Managed |
 |---|---|---|
-| Token | `QODER_PAT` | `QODER_PAT` |
+| Token | `QODER_ACCESS_TOKEN` (PAT mode falls back to `QODER_PAT`) | `QODER_ACCESS_TOKEN` (PAT mode falls back to `QODER_PAT`) |
 | Base URL | `QODER_FORWARD_BASE_URL` | `QODER_MANAGED_BASE_URL` |
 | Default base URL | `https://api.qoder.com/api/v1/forward/` | `https://api.qoder.com/api/v1/cloud/` |
 
-Explicit arguments take precedence over environment variables. The clients never read `.env` files; only the examples load `.env.live`. Other regions, including China, have to be configured explicitly:
+Explicit arguments take precedence over environment variables. The clients never read `.env` files; examples and explicit live-test commands have their own config loaders. Other regions, including China, have to be configured explicitly:
 
 ```python
 client = Forward(
@@ -80,6 +80,97 @@ client = Forward(
 ```
 
 A client owns an HTTP connection pool, so it should be closed when you are done with it — either through the context manager above or with `client.close()`.
+
+## PAT and Service Account authentication
+
+PAT and SA are parallel modes. Existing `pat=` calls remain supported. For an
+existing SAT use `Forward(auth_mode="sa", access_token=token)` (Managed and async
+clients accept the same configuration). `QODER_ACCESS_TOKEN` supplies the selected
+mode's token; only PAT mode falls back to `QODER_PAT`. Ordinary clients do not read
+`QODER_SA_KEY` or implicitly exchange it.
+
+```python
+from qca import Forward, Managed, ServiceAccountCredential
+
+with ServiceAccountCredential.from_env(
+    region="global", scopes=["qca.access", "forward.access"]
+) as credential:
+    with Forward(credential=credential) as forward, Managed(credential=credential) as managed:
+        templates = forward.templates.list(limit=1)
+        agents = managed.agents.list(limit=1)
+```
+
+Use `AsyncServiceAccountCredential` with `AsyncForward`/`AsyncManaged` and `async
+with`; native sync/async credentials must match the client. For CN, select
+`region="cn"` and the matching `https://api.qoder.com.cn/api/v1/forward/` or
+`https://api.qoder.com.cn/api/v1/cloud/` BaseURL. Managed-only access can request
+`["qca.access"]`. Permissions and workspace bindings are configured server-side.
+
+The instance-owned cache uses the server's actual TTL and a monotonic clock.
+Concurrent calls share exchange results; failures enter a cooldown. Transient
+failures may reuse a still-safe SAT; authentication and invalid-response failures
+cannot. Expiry is handled before the next request, without background refresh,
+PAT fallback, or replaying a 401 write. Existing streams are not closed by expiry.
+Sync exchange uses httpx phase timeouts (default 30 seconds); async exchange also
+has an independent total deadline. Cancelling an async owner releases the shared
+state so another caller can exchange; cancelling a waiter does not cancel its owner.
+Close the credential separately: business clients do not own it. Injected exchange
+HTTP clients remain caller-owned.
+
+Do not combine `access_token` with `pat` or `credential`, or an SA credential with
+a static token. Explicit `pat` + legacy custom credential retains PAT precedence;
+explicit credentials now override ambient PAT. Request Authorization overrides
+remain supported. `with_options` retains mode/source and accepts `credential`,
+`access_token`, and `auth_mode`; switching mode clears the prior credentials.
+
+Run the separate read-only CN/Global suite with `uv run make test-live-sa`, setting
+`QODER_SA_CN_KEY` and `QODER_SA_GLOBAL_KEY` in `.env.live` or the process environment.
+Process variables take precedence; `LIVE_ENV_FILE` selects another file when using
+Make. All selected regions' keys are checked before the first API call. For
+write/read, Session SSE and cleanup verification, run
+`uv run make test-live-sa-execution` with `QODER_SA_LIVE_ALLOW_WRITE=true` and
+`QODER_SA_LIVE_ALLOW_EXECUTION=true`. `QODER_SA_MODEL` defaults to `auto`.
+Existing PAT tests remain separate; `QODER_AUTH_MODE` switches examples, not the
+PAT test suites. See the
+[official authentication contract](https://docs.qoder.com/cloud-agents/api/conventions/authentication).
+
+### Authentication examples
+
+The two read-only examples under `examples/auth/` show client construction directly:
+SA Key exchange with automatic caching/renewal, and direct SAT access with renewal
+managed by the caller. Each lists Forward templates and Managed agents; no model
+execution or resources are created. The SA needs both API scopes/permissions and
+its Managed workspace binding in the selected region.
+
+```sh
+# These standalone demos read process environment variables (not .env.live).
+# Configure QODER_SA_REGION=cn|global and only the credential needed by the demo.
+uv run python -m examples.auth.sa_key       # QODER_SA_KEY; unset QODER_ACCESS_TOKEN
+uv run python -m examples.auth.sa_key --async
+uv run python -m examples.auth.sa_token     # QODER_ACCESS_TOKEN; unset QODER_SA_KEY
+```
+
+The existing business examples keep PAT as the default and read `.env.live`.
+Set `QODER_AUTH_MODE=sa` to select SA explicitly, then configure exactly one of
+`QODER_SA_KEY` and `QODER_ACCESS_TOKEN`. `QODER_SA_REGION=cn|global` selects both the
+business and exchange hosts; `--region` overrides it (`international` remains an
+alias for `global`). Leave the unused credential empty. Ambient PATs are ignored
+in SA mode; missing SA credentials and conflicting Key/SAT inputs fail before a
+request is sent. The async Session examples use the same configuration and manage
+an `AsyncServiceAccountCredential` for SA Key access. This selection is example
+configuration, not implicit SDK behavior.
+
+```sh
+# With the SA credential configured in .env.live, reuse any business example.
+QODER_AUTH_MODE=sa QODER_SA_REGION=cn uv run python -m examples.forward.models
+QODER_AUTH_MODE=sa QODER_SA_REGION=global uv run python -m examples.managed.session
+# Continue an existing session with native async I/O.
+QODER_AUTH_MODE=sa QODER_SESSION_ID=sess_... uv run python -m examples.managed.async_session
+```
+
+For a centralized SAT service, supply `Forward(auth_mode="sa", credential=my_token_provider)`.
+The provider's `get_token()` returns the current SAT and manages its renewal;
+async clients also support an async `get_token()`.
 
 ## Async usage
 
