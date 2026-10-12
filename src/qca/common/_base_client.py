@@ -13,6 +13,7 @@ from typing_extensions import Self
 
 from qca._version import __version__
 
+from ._auth import AuthMode, resolve_auth
 from ._exceptions import APIConnectionError, APIResponseValidationError, APITimeoutError, status_error
 from ._files import multipart_parts
 from ._models import parse_response
@@ -30,6 +31,7 @@ from ._types import NOT_GIVEN, NotGiven
 from ._utils import query_pairs, strip_not_given
 from .credentials import AsyncCredential, Credential
 from .pagination import AsyncPage, SyncPage
+from .service_account import AsyncServiceAccountCredential, ServiceAccountCredential
 
 DEFAULT_TIMEOUT = httpx.Timeout(600.0, connect=5.0)
 
@@ -55,6 +57,8 @@ class BaseClient:
         self,
         *,
         pat: str | None,
+        access_token: str | None,
+        auth_mode: AuthMode | None,
         base_url: str | httpx.URL | None,
         timeout: float | httpx.Timeout | None,
         max_retries: int,
@@ -65,7 +69,12 @@ class BaseClient:
     ) -> None:
         if not isinstance(max_retries, int) or isinstance(max_retries, bool) or max_retries < 0:
             raise ValueError("max_retries must be a non-negative integer")
-        self.pat = pat if pat is not None else os.environ.get("QODER_PAT")
+        self.auth_mode, self._token = resolve_auth(
+            pat=pat, access_token=access_token, auth_mode=auth_mode, credential=credential, is_async=self._is_async
+        )
+        self._auth_options = dict(pat=pat, access_token=access_token, auth_mode=self.auth_mode, credential=credential)
+        self.pat = self._token if access_token is None and self.auth_mode == "pat" else pat
+        self.access_token = access_token
         self.credential = credential
         self.base_url = httpx.URL(base_url or os.environ.get(self._base_url_env) or self._default_base_url)
         if self.base_url.scheme not in ("http", "https") or not self.base_url.host or self.base_url.userinfo:
@@ -74,6 +83,8 @@ class BaseClient:
             raise ValueError("base_url must not contain a query or fragment")
         if not self.base_url.path.endswith("/"):
             self.base_url = self.base_url.copy_with(path=self.base_url.path + "/")
+        if isinstance(credential, (ServiceAccountCredential, AsyncServiceAccountCredential)):
+            credential.validate_region(self.base_url.host)
         self.timeout = timeout
         self.max_retries = max_retries
         self.default_headers = dict(default_headers or {})
@@ -82,18 +93,22 @@ class BaseClient:
 
     def _copy(self, *, raw: bool = False, streaming: bool = False, **overrides: Any) -> Self:
         options = dict(
-            pat=self.pat,
+            **self._auth_options,
             base_url=self.base_url,
             timeout=self.timeout,
             max_retries=self.max_retries,
             default_headers=self.default_headers,
             default_query=self.default_query,
-            credential=self.credential,
             http_client=self._client,
             _strict_response_validation=self._strict_response_validation,
         )
+        auth_changed = any(key in overrides for key in self._auth_options)
+        if "auth_mode" in overrides and overrides["auth_mode"] != self.auth_mode:
+            options.update(pat=None, access_token=None, credential=None)
         options.update(overrides)
         client = type(self)(**options)
+        if not auth_changed:
+            client._token, client.pat = self._token, self.pat
         client._raw_response = raw
         client._stream_response = streaming
         return client
@@ -101,14 +116,25 @@ class BaseClient:
     def with_options(
         self,
         *,
-        pat: str | NotGiven = NOT_GIVEN,
+        pat: str | None | NotGiven = NOT_GIVEN,
+        access_token: str | None | NotGiven = NOT_GIVEN,
+        auth_mode: AuthMode | NotGiven = NOT_GIVEN,
+        credential: Credential | AsyncCredential | None | NotGiven = NOT_GIVEN,
         base_url: str | httpx.URL | NotGiven = NOT_GIVEN,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
         max_retries: int | NotGiven = NOT_GIVEN,
         default_headers: Mapping[str, str] | NotGiven = NOT_GIVEN,
         default_query: Mapping[str, Any] | NotGiven = NOT_GIVEN,
     ) -> Self:
-        values: dict[str, Any] = dict(pat=pat, base_url=base_url, timeout=timeout, max_retries=max_retries)
+        values: dict[str, Any] = dict(
+            pat=pat,
+            access_token=access_token,
+            auth_mode=auth_mode,
+            credential=credential,
+            base_url=base_url,
+            timeout=timeout,
+            max_retries=max_retries,
+        )
         if not isinstance(default_headers, NotGiven):
             values["default_headers"] = {**self.default_headers, **default_headers}
         if not isinstance(default_query, NotGiven):
@@ -128,8 +154,8 @@ class BaseClient:
             return
 
         raise TypeError(
-            "Could not resolve authentication method. Expected one of pat or credential to be set, "
-            "or the QODER_PAT environment variable to be configured."
+            "Could not resolve authentication method. Configure access_token or credential, "
+            "or QODER_ACCESS_TOKEN (QODER_PAT is supported in PAT mode)."
         )
 
     def _headers(self, options: dict[str, Any], token: str | None) -> httpx.Headers:
@@ -258,6 +284,8 @@ class SyncAPIClient(BaseClient):
         self,
         *,
         pat: str | None = None,
+        access_token: str | None = None,
+        auth_mode: AuthMode | None = None,
         base_url: str | httpx.URL | None = None,
         timeout: float | httpx.Timeout | None = DEFAULT_TIMEOUT,
         max_retries: int = 2,
@@ -269,6 +297,8 @@ class SyncAPIClient(BaseClient):
     ) -> None:
         self._configure(
             pat=pat,
+            access_token=access_token,
+            auth_mode=auth_mode,
             base_url=base_url,
             timeout=timeout,
             max_retries=max_retries,
@@ -287,11 +317,14 @@ class SyncAPIClient(BaseClient):
         for attempt in range(max_retries + 1):
             if track_retries and attempt:
                 request.headers["X-Qoder-Retry-Count"] = str(attempt)
-            if not storage and self.credential and not self.pat and "Authorization" not in self.default_headers:
+            if not storage and self.credential and self._token is None:
                 # Dynamic credentials can rotate between retries. Explicit request
                 # headers still take priority and are marked by request().
                 if not request.extensions.get("qca_explicit_auth"):
-                    request.headers["Authorization"] = f"Bearer {self.credential.get_token()}"
+                    token = self.credential.get_token()
+                    if not isinstance(token, str) or not token.strip():
+                        raise ValueError("Credential returned an empty access token")
+                    request.headers["Authorization"] = f"Bearer {token}"
             try:
                 response = self._client.send(request, stream=True, auth=None, follow_redirects=False)
             except httpx.TransportError as exc:
@@ -327,7 +360,7 @@ class SyncAPIClient(BaseClient):
         download_link: bool = False,
         file_fields: list[str] | None = None,
     ) -> Any:
-        args = self._request_args(method, path, options, self.pat, file_fields)
+        args = self._request_args(method, path, options, self._token, file_fields)
         if stream:
             args["headers"]["Accept"] = "text/event-stream"
         request = self._client.build_request(**args)
@@ -375,6 +408,8 @@ class AsyncAPIClient(BaseClient):
         self,
         *,
         pat: str | None = None,
+        access_token: str | None = None,
+        auth_mode: AuthMode | None = None,
         base_url: str | httpx.URL | None = None,
         timeout: float | httpx.Timeout | None = DEFAULT_TIMEOUT,
         max_retries: int = 2,
@@ -386,6 +421,8 @@ class AsyncAPIClient(BaseClient):
     ) -> None:
         self._configure(
             pat=pat,
+            access_token=access_token,
+            auth_mode=auth_mode,
             base_url=base_url,
             timeout=timeout,
             max_retries=max_retries,
@@ -404,10 +441,17 @@ class AsyncAPIClient(BaseClient):
         for attempt in range(max_retries + 1):
             if track_retries and attempt:
                 request.headers["X-Qoder-Retry-Count"] = str(attempt)
-            if not storage and self.credential and not self.pat and not request.extensions.get("qca_explicit_auth"):
+            if (
+                not storage
+                and self.credential
+                and self._token is None
+                and not request.extensions.get("qca_explicit_auth")
+            ):
                 token = self.credential.get_token()
                 if inspect.isawaitable(token):
                     token = await token
+                if not isinstance(token, str) or not token.strip():
+                    raise ValueError("Credential returned an empty access token")
                 request.headers["Authorization"] = f"Bearer {token}"
             try:
                 response = await self._client.send(request, stream=True, auth=None, follow_redirects=False)
@@ -447,10 +491,10 @@ class AsyncAPIClient(BaseClient):
         if file_fields:
             # Reading local file objects should not block the event loop.
             args = await anyio.to_thread.run_sync(
-                lambda: self._request_args(method, path, options, self.pat, file_fields)
+                lambda: self._request_args(method, path, options, self._token, file_fields)
             )
         else:
-            args = self._request_args(method, path, options, self.pat, None)
+            args = self._request_args(method, path, options, self._token, None)
         if stream:
             args["headers"]["Accept"] = "text/event-stream"
         request = self._client.build_request(**args)

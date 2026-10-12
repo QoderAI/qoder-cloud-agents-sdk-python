@@ -34,12 +34,26 @@ def run(client: Managed, context: Run) -> None:
     context.track("deployment", deployment.id, lambda: client.deployments.archive(deployment.id))
     execution = client.deployments.run(deployment.id)
     if not execution.session_id:
-        return
+        raise RuntimeError("Deployment run returned no session")
     context.track("session", execution.session_id, lambda: finish_session(client, context, execution.session_id))
     context.output("session_id", execution.session_id)
-    for event in client.sessions.events.list(execution.session_id, order="asc"):
-        if event.type == "agent.message":
-            context.output("assistant", event.to_json())
+    seen: set[str] = set()
+    has_reply = False
+    # A run acknowledgement arrives before execution; wait before cleaning up its session.
+    while True:
+        context.remaining()
+        for event in client.sessions.events.list(execution.session_id, order="asc"):
+            if event.id in seen:
+                continue
+            seen.add(event.id)
+            if event.type == "agent.message":
+                has_reply = True
+                context.output("assistant", event.to_json())
+            elif event.type in ("session.error", "session.status_terminated"):
+                raise RuntimeError(f"Deployment session stopped: {event.type}")
+            elif event.type == "session.status_idle" and has_reply:
+                return
+        context.pause()
 
 
 if __name__ == "__main__":

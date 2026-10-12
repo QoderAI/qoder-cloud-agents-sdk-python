@@ -7,6 +7,7 @@ import re
 import sys
 import time
 from collections.abc import Callable
+from contextlib import AsyncExitStack, ExitStack, asynccontextmanager, contextmanager
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -15,7 +16,13 @@ from uuid import uuid4
 import httpx
 from pydantic import ValidationError
 
-from qca import APIError, APIResponseValidationError, APIStatusError
+from qca import (
+    APIError,
+    APIResponseValidationError,
+    APIStatusError,
+    AsyncServiceAccountCredential,
+    ServiceAccountCredential,
+)
 
 
 def name(kind: str) -> str:
@@ -60,14 +67,28 @@ class Config:
     model: str = ""
     timeout: float = 300
     poll_interval: float = 1
+    auth_mode: str = "pat"
+    access_token: str = field(default="", repr=False)
+    sa_key: str = field(default="", repr=False)
+    sa_region: str = "cn"
 
     @classmethod
     def load(cls, mode: str, *, env_file: str = ".env.live", region: str | None = None, timeout: float = 300) -> Config:
         values = {**read_env(env_file), **os.environ}
         prefix = f"QODER_{mode.upper()}_"
-        token = values.get(prefix + "PAT") or values.get("QODER_PAT", "")
-        if not token:
-            raise ValueError(f"Configure {prefix}PAT or QODER_PAT")
+        auth_mode = values.get("QODER_AUTH_MODE") or "pat"
+        if auth_mode not in ("pat", "sa"):
+            raise ValueError("QODER_AUTH_MODE must be pat or sa")
+        token = access_token = sa_key = ""
+        if auth_mode == "pat":
+            token = values.get(prefix + "PAT") or values.get("QODER_PAT", "")
+            if not token:
+                raise ValueError(f"Configure {prefix}PAT or QODER_PAT")
+        else:
+            sa_key = values.get("QODER_SA_KEY", "").strip()
+            access_token = values.get("QODER_ACCESS_TOKEN", "").strip()
+            if bool(sa_key) == bool(access_token):
+                raise ValueError("SA examples require exactly one of QODER_SA_KEY and QODER_ACCESS_TOKEN")
         suffix = "forward" if mode == "forward" else "cloud"
         base = values.get(prefix + "BASE_URL") or f"https://api.qoder.com.cn/api/v1/{suffix}"
         url = httpx.URL(base)
@@ -81,14 +102,58 @@ class Config:
             raise ValueError("Examples require an HTTPS api.qoder.com.cn or api.qoder.com URL")
         if url.path.rstrip("/") != f"/api/v1/{suffix}":
             raise ValueError(f"Expected the {mode} API root /api/v1/{suffix}")
+        region = region or (values.get("QODER_SA_REGION") if auth_mode == "sa" else None)
         if region:
+            if region not in ("cn", "global", "international"):
+                raise ValueError("region must be cn or global (international is an alias)")
             url = url.copy_with(host="api.qoder.com.cn" if region == "cn" else "api.qoder.com")
         if timeout <= 0:
             raise ValueError("timeout must be positive")
-        return cls(mode, token, str(url), values.get(prefix + "MODEL", ""), timeout)
+        return cls(
+            mode,
+            token,
+            str(url),
+            values.get(prefix + "MODEL", ""),
+            timeout,
+            auth_mode=auth_mode,
+            access_token=access_token,
+            sa_key=sa_key,
+            sa_region="cn" if url.host == "api.qoder.com.cn" else "global",
+        )
 
-    def client_options(self) -> dict[str, Any]:
-        return dict(pat=self.pat, base_url=self.base_url, max_retries=0, timeout=30)
+    @property
+    def secret(self) -> str:
+        return self.sa_key or self.access_token or self.pat
+
+    def client_options(self, credential: Any = None) -> dict[str, Any]:
+        options = dict(base_url=self.base_url, max_retries=0, timeout=30)
+        if self.auth_mode == "pat":
+            return dict(options, pat=self.pat)
+        if self.sa_key:
+            if credential is None:
+                raise ValueError("Use open_client or open_async_client to manage the SA credential lifetime")
+            return dict(options, auth_mode="sa", credential=credential)
+        return dict(options, auth_mode="sa", access_token=self.access_token)
+
+    def credential_options(self) -> dict[str, Any]:
+        scopes = ["qca.access", "forward.access"] if self.mode == "forward" else ["qca.access"]
+        return dict(sa_key=self.sa_key, region=self.sa_region, scopes=scopes)
+
+    @contextmanager
+    def open_client(self, client_type: Any):
+        with ExitStack() as stack:
+            credential = None
+            if self.sa_key:
+                credential = stack.enter_context(ServiceAccountCredential(**self.credential_options()))
+            yield stack.enter_context(client_type(**self.client_options(credential)))
+
+    @asynccontextmanager
+    async def open_async_client(self, client_type: Any):
+        async with AsyncExitStack() as stack:
+            credential = None
+            if self.sa_key:
+                credential = await stack.enter_async_context(AsyncServiceAccountCredential(**self.credential_options()))
+            yield await stack.enter_async_context(client_type(**self.client_options(credential)))
 
 
 def safe_error(error: BaseException, token: str = "") -> str:
@@ -162,7 +227,7 @@ class Run:
             try:
                 action()
             except Exception as error:
-                failures.append(f"{kind} {resource_id}: {safe_error(error, self.config.pat)}")
+                failures.append(f"{kind} {resource_id}: {safe_error(error, self.config.secret)}")
         self.cleanups.clear()
         if failures:
             raise RuntimeError("Cleanup failed:\n" + "\n".join(failures))
@@ -184,7 +249,7 @@ def choose_model(models: Any, requested: str) -> str:
 def run_cli(mode: str, client_type: Any, scenarios: dict[str, Callable[[Any, Run], None]]) -> None:
     parser = argparse.ArgumentParser(description=f"Qoder {mode} SDK examples")
     parser.add_argument("--env", default=".env.live")
-    parser.add_argument("--region", choices=["cn", "international"])
+    parser.add_argument("--region", choices=["cn", "global", "international"])
     parser.add_argument("--scenario", choices=[*scenarios, "all"], default=next(iter(scenarios)))
     parser.add_argument("--timeout", type=float, default=300)
     parser.add_argument("--output", choices=["text", "json"], default="text")
@@ -200,16 +265,16 @@ def run_cli(mode: str, client_type: Any, scenarios: dict[str, Callable[[Any, Run
             print(f"[{mode}.{scenario}]", flush=True)
         errors = []
         try:
-            with client_type(**config.client_options()) as client:
+            with config.open_client(client_type) as client:
                 try:
                     scenarios[scenario](client, context)
                 finally:
                     try:
                         context.cleanup()
                     except Exception as error:
-                        errors.append(safe_error(error, config.pat))
+                        errors.append(safe_error(error, config.secret))
         except Exception as error:
-            errors.insert(0, safe_error(error, config.pat))
+            errors.insert(0, safe_error(error, config.secret))
         results.append({"scenario": scenario, "passed": not errors, "outputs": context.outputs, "errors": errors})
         if args.output == "text":
             print(f"{scenario}: {'FAIL' if errors else 'PASS'}")

@@ -31,3 +31,10 @@ test-live-managed:
 
 test-live-all:
 	QODER_RUN_LIVE=1 QODER_LIVE_ENV_FILE="$(LIVE_ENV_FILE)" $(PYTHON) -m pytest tests/integration -m integration -v
+
+.PHONY: test-live-sa test-live-sa-execution
+test-live-sa:
+	QODER_LIVE_ENV_FILE="$(LIVE_ENV_FILE)" $(PYTHON) -m pytest tests/sa/test_auth_live.py -m integration -v
+
+test-live-sa-execution:
+	QODER_LIVE_ENV_FILE="$(LIVE_ENV_FILE)" $(PYTHON) -m pytest tests/sa/test_execution_live.py -m integration -v -s
