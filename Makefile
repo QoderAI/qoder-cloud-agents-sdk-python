@@ -32,7 +32,7 @@ test-live-managed:
 test-live-all:
 	QODER_RUN_LIVE=1 QODER_LIVE_ENV_FILE="$(LIVE_ENV_FILE)" $(PYTHON) -m pytest tests/integration -m integration -v
 
-.PHONY: test-live-sa test-live-sa-execution
+.PHONY: test-live-sa test-live-sa-execution test-live-sa-tokens
 test-live-sa:
 	QODER_LIVE_ENV_FILE="$(LIVE_ENV_FILE)" $(PYTHON) -m pytest tests/sa/test_auth_live.py -m integration -v
 
@@ -42,3 +42,6 @@ test-live-sa-execution:
 .PHONY: test-live-realtime
 test-live-realtime:
 	QODER_REALTIME_RUN_LIVE=1 QODER_LIVE_ENV_FILE="$(LIVE_ENV_FILE)" $(PYTHON) -m pytest tests/realtime -m integration -v -s
+
+test-live-sa-tokens:
+	QODER_LIVE_ENV_FILE="$(LIVE_ENV_FILE)" $(PYTHON) -m pytest tests/sa/test_tokens_live.py -m integration -v -s

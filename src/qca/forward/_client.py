@@ -15,6 +15,7 @@ from .resources.models import AsyncModels, Models
 from .resources.realtime import AsyncRealtime, Realtime
 from .resources.schedule_runs import AsyncScheduleRuns, ScheduleRuns
 from .resources.schedules import AsyncSchedules, Schedules
+from .resources.service_account_tokens import AsyncServiceAccountTokens, ServiceAccountTokens
 from .resources.sessions.sessions import AsyncSessions, Sessions
 from .resources.skills.skills import AsyncSkills, Skills
 from .resources.templates import AsyncTemplates, Templates
@@ -87,6 +88,10 @@ class Forward(SyncAPIClient):
         return Usage(self)
 
     @cached_property
+    def service_account_tokens(self) -> ServiceAccountTokens:
+        return ServiceAccountTokens(self)
+
+    @cached_property
     def models(self) -> Models:
         return Models(self)
 
@@ -154,6 +159,10 @@ class AsyncForward(AsyncAPIClient):
     @cached_property
     def usage(self) -> AsyncUsage:
         return AsyncUsage(self)
+
+    @cached_property
+    def service_account_tokens(self) -> AsyncServiceAccountTokens:
+        return AsyncServiceAccountTokens(self)
 
     @cached_property
     def models(self) -> AsyncModels:

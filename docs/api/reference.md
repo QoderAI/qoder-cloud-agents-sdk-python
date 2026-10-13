@@ -2231,6 +2231,17 @@ def usage() -> Usage
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/_client.py)
 
+<a id="qca.forward._client.Forward.service_account_tokens"></a>
+
+#### service\_account\_tokens
+
+```python
+@cached_property
+def service_account_tokens() -> ServiceAccountTokens
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/_client.py)
+
 <a id="qca.forward._client.Forward.models"></a>
 
 #### models
@@ -2417,6 +2428,17 @@ def usage() -> AsyncUsage
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/_client.py)
 
+<a id="qca.forward._client.AsyncForward.service_account_tokens"></a>
+
+#### service\_account\_tokens
+
+```python
+@cached_property
+def service_account_tokens() -> AsyncServiceAccountTokens
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/_client.py)
+
 <a id="qca.forward._client.AsyncForward.models"></a>
 
 #### models
@@ -2427,6 +2449,21 @@ def models() -> AsyncModels
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/_client.py)
+
+<a id="qca.forward.resources._service_account_auth"></a>
+
+# qca.forward.resources.\_service\_account\_auth
+
+<a id="qca.forward.resources._service_account_auth.sa_key_headers"></a>
+
+#### sa\_key\_headers
+
+```python
+def sa_key_headers(sa_key: str,
+                   extra_headers: Mapping[str, str] | None) -> dict[str, str]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/_service_account_auth.py)
 
 <a id="qca.forward.resources.batches.batches"></a>
 
@@ -3980,6 +4017,17 @@ class Identities(SyncAPIResource)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/identities/identities.py)
 
+<a id="qca.forward.resources.identities.identities.Identities.service_account_tokens"></a>
+
+#### service\_account\_tokens
+
+```python
+@cached_property
+def service_account_tokens() -> ServiceAccountTokens
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/identities/identities.py)
+
 <a id="qca.forward.resources.identities.identities.Identities.configs"></a>
 
 #### configs
@@ -4231,6 +4279,17 @@ POST /identities/{identity_id}/enable.
 
 ```python
 class AsyncIdentities(AsyncAPIResource)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/identities/identities.py)
+
+<a id="qca.forward.resources.identities.identities.AsyncIdentities.service_account_tokens"></a>
+
+#### service\_account\_tokens
+
+```python
+@cached_property
+def service_account_tokens() -> AsyncServiceAccountTokens
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/identities/identities.py)
@@ -4627,6 +4686,80 @@ async def detach(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/identities/memory_stores.py)
 
 DELETE /identities/{identity_id}/templates/{template_id}/memory_stores/{memory_store_id}.
+
+<a id="qca.forward.resources.identities.service_account_tokens"></a>
+
+# qca.forward.resources.identities.service\_account\_tokens
+
+<a id="qca.forward.resources.identities.service_account_tokens.ServiceAccountTokens"></a>
+
+## ServiceAccountTokens
+
+```python
+class ServiceAccountTokens(SyncAPIResource)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/identities/service_account_tokens.py)
+
+<a id="qca.forward.resources.identities.service_account_tokens.ServiceAccountTokens.create"></a>
+
+#### create
+
+```python
+def create(
+    identity_id: str,
+    *,
+    sa_key: str,
+    ttl_seconds: int | NotGiven = NOT_GIVEN,
+    metadata: dict[str, Any] | NotGiven = NOT_GIVEN,
+    extra_headers: dict[str, str] | None = None,
+    extra_query: dict[str, Any] | None = None,
+    extra_body: dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> ServiceAccountToken
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/identities/service_account_tokens.py)
+
+POST /identities/{identity_id}/service_account_tokens.
+
+Issue an Identity SAT using the explicit SA Key, with no automatic retries.
+ttl_seconds is 1-43200; omission uses the issuer's default.
+
+<a id="qca.forward.resources.identities.service_account_tokens.AsyncServiceAccountTokens"></a>
+
+## AsyncServiceAccountTokens
+
+```python
+class AsyncServiceAccountTokens(AsyncAPIResource)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/identities/service_account_tokens.py)
+
+<a id="qca.forward.resources.identities.service_account_tokens.AsyncServiceAccountTokens.create"></a>
+
+#### create
+
+```python
+async def create(
+    identity_id: str,
+    *,
+    sa_key: str,
+    ttl_seconds: int | NotGiven = NOT_GIVEN,
+    metadata: dict[str, Any] | NotGiven = NOT_GIVEN,
+    extra_headers: dict[str, str] | None = None,
+    extra_query: dict[str, Any] | None = None,
+    extra_body: dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> ServiceAccountToken
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/identities/service_account_tokens.py)
+
+POST /identities/{identity_id}/service_account_tokens.
+
+Issue an Identity SAT using the explicit SA Key, with no automatic retries.
+ttl_seconds is 1-43200; omission uses the issuer's default.
 
 <a id="qca.forward.resources.memory_stores.memories"></a>
 
@@ -6733,6 +6866,128 @@ async def unpause(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/schedules.py)
 
 POST /schedules/{schedule_id}/unpause.
+
+<a id="qca.forward.resources.service_account_tokens"></a>
+
+# qca.forward.resources.service\_account\_tokens
+
+<a id="qca.forward.resources.service_account_tokens.ServiceAccountTokens"></a>
+
+## ServiceAccountTokens
+
+```python
+class ServiceAccountTokens(SyncAPIResource)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/service_account_tokens.py)
+
+<a id="qca.forward.resources.service_account_tokens.ServiceAccountTokens.create"></a>
+
+#### create
+
+```python
+def create(
+    *,
+    sa_key: str,
+    ttl_seconds: int | NotGiven = NOT_GIVEN,
+    metadata: dict[str, Any] | NotGiven = NOT_GIVEN,
+    extra_headers: dict[str, str] | None = None,
+    extra_query: dict[str, Any] | None = None,
+    extra_body: dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> ServiceAccountToken
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/service_account_tokens.py)
+
+POST /service_account_tokens.
+
+Issue an admin SAT using the explicit SA Key, with no automatic retries.
+ttl_seconds is 1-43200; omission uses the issuer's default.
+
+<a id="qca.forward.resources.service_account_tokens.ServiceAccountTokens.revoke"></a>
+
+#### revoke
+
+```python
+def revoke(
+    auth_token_id: str,
+    *,
+    sa_key: str,
+    target_credential_id: str | NotGiven = NOT_GIVEN,
+    target_expires_at: str | datetime | NotGiven = NOT_GIVEN,
+    reason: str | NotGiven = NOT_GIVEN,
+    extra_headers: dict[str, str] | None = None,
+    extra_query: dict[str, Any] | None = None,
+    extra_body: dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> ServiceAccountTokenRevokeResponse
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/service_account_tokens.py)
+
+POST /service_account_tokens/{auth_token_id}/revoke.
+
+Revoke a Forward SAT binding from the same SA. Creation metadata disambiguates the target.
+
+<a id="qca.forward.resources.service_account_tokens.AsyncServiceAccountTokens"></a>
+
+## AsyncServiceAccountTokens
+
+```python
+class AsyncServiceAccountTokens(AsyncAPIResource)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/service_account_tokens.py)
+
+<a id="qca.forward.resources.service_account_tokens.AsyncServiceAccountTokens.create"></a>
+
+#### create
+
+```python
+async def create(
+    *,
+    sa_key: str,
+    ttl_seconds: int | NotGiven = NOT_GIVEN,
+    metadata: dict[str, Any] | NotGiven = NOT_GIVEN,
+    extra_headers: dict[str, str] | None = None,
+    extra_query: dict[str, Any] | None = None,
+    extra_body: dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> ServiceAccountToken
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/service_account_tokens.py)
+
+POST /service_account_tokens.
+
+Issue an admin SAT using the explicit SA Key, with no automatic retries.
+ttl_seconds is 1-43200; omission uses the issuer's default.
+
+<a id="qca.forward.resources.service_account_tokens.AsyncServiceAccountTokens.revoke"></a>
+
+#### revoke
+
+```python
+async def revoke(
+    auth_token_id: str,
+    *,
+    sa_key: str,
+    target_credential_id: str | NotGiven = NOT_GIVEN,
+    target_expires_at: str | datetime | NotGiven = NOT_GIVEN,
+    reason: str | NotGiven = NOT_GIVEN,
+    extra_headers: dict[str, str] | None = None,
+    extra_query: dict[str, Any] | None = None,
+    extra_body: dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> ServiceAccountTokenRevokeResponse
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/service_account_tokens.py)
+
+POST /service_account_tokens/{auth_token_id}/revoke.
+
+Revoke a Forward SAT binding from the same SA. Creation metadata disambiguates the target.
 
 <a id="qca.forward.resources.sessions.events"></a>
 
@@ -13591,6 +13846,136 @@ class ScheduleUpdateParams(TypedDict)
 <a id="qca.forward.types.schedule_update_params.ScheduleUpdateParams.idempotency_key"></a>
 
 #### idempotency\_key
+
+<a id="qca.forward.types.service_account_token"></a>
+
+# qca.forward.types.service\_account\_token
+
+<a id="qca.forward.types.service_account_token.ServiceAccountToken"></a>
+
+## ServiceAccountToken
+
+```python
+class ServiceAccountToken(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/service_account_token.py)
+
+A newly issued Forward SAT. Treat serialized responses as secrets; renewal is caller-owned.
+
+<a id="qca.forward.types.service_account_token.ServiceAccountToken.type"></a>
+
+#### type
+
+<a id="qca.forward.types.service_account_token.ServiceAccountToken.access_token"></a>
+
+#### access\_token
+
+<a id="qca.forward.types.service_account_token.ServiceAccountToken.token_type"></a>
+
+#### token\_type
+
+<a id="qca.forward.types.service_account_token.ServiceAccountToken.expires_in"></a>
+
+#### expires\_in
+
+<a id="qca.forward.types.service_account_token.ServiceAccountToken.expires_at"></a>
+
+#### expires\_at
+
+<a id="qca.forward.types.service_account_token.ServiceAccountToken.auth_token_id"></a>
+
+#### auth\_token\_id
+
+<a id="qca.forward.types.service_account_token.ServiceAccountToken.service_account_id"></a>
+
+#### service\_account\_id
+
+<a id="qca.forward.types.service_account_token.ServiceAccountToken.credential_id"></a>
+
+#### credential\_id
+
+<a id="qca.forward.types.service_account_token.ServiceAccountToken.subject_type"></a>
+
+#### subject\_type
+
+<a id="qca.forward.types.service_account_token.ServiceAccountToken.identity_id"></a>
+
+#### identity\_id
+
+<a id="qca.forward.types.service_account_token_create_params"></a>
+
+# qca.forward.types.service\_account\_token\_create\_params
+
+<a id="qca.forward.types.service_account_token_create_params.ServiceAccountTokenCreateParams"></a>
+
+## ServiceAccountTokenCreateParams
+
+```python
+class ServiceAccountTokenCreateParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/service_account_token_create_params.py)
+
+<a id="qca.forward.types.service_account_token_create_params.ServiceAccountTokenCreateParams.sa_key"></a>
+
+#### sa\_key
+
+<a id="qca.forward.types.service_account_token_create_params.ServiceAccountTokenCreateParams.ttl_seconds"></a>
+
+#### ttl\_seconds
+
+<a id="qca.forward.types.service_account_token_create_params.ServiceAccountTokenCreateParams.metadata"></a>
+
+#### metadata
+
+<a id="qca.forward.types.service_account_token_revoke_params"></a>
+
+# qca.forward.types.service\_account\_token\_revoke\_params
+
+<a id="qca.forward.types.service_account_token_revoke_params.ServiceAccountTokenRevokeParams"></a>
+
+## ServiceAccountTokenRevokeParams
+
+```python
+class ServiceAccountTokenRevokeParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/service_account_token_revoke_params.py)
+
+<a id="qca.forward.types.service_account_token_revoke_params.ServiceAccountTokenRevokeParams.sa_key"></a>
+
+#### sa\_key
+
+<a id="qca.forward.types.service_account_token_revoke_params.ServiceAccountTokenRevokeParams.target_credential_id"></a>
+
+#### target\_credential\_id
+
+<a id="qca.forward.types.service_account_token_revoke_params.ServiceAccountTokenRevokeParams.target_expires_at"></a>
+
+#### target\_expires\_at
+
+<a id="qca.forward.types.service_account_token_revoke_params.ServiceAccountTokenRevokeParams.reason"></a>
+
+#### reason
+
+<a id="qca.forward.types.service_account_token_revoke_response"></a>
+
+# qca.forward.types.service\_account\_token\_revoke\_response
+
+<a id="qca.forward.types.service_account_token_revoke_response.ServiceAccountTokenRevokeResponse"></a>
+
+## ServiceAccountTokenRevokeResponse
+
+```python
+class ServiceAccountTokenRevokeResponse(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/service_account_token_revoke_response.py)
+
+<a id="qca.forward.types.service_account_token_revoke_response.ServiceAccountTokenRevokeResponse.revoked"></a>
+
+#### revoked
 
 <a id="qca.forward.types.session"></a>
 

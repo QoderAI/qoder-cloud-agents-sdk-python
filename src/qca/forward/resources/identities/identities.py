@@ -11,6 +11,7 @@ from qca.common._utils import make_request_options, path_template
 from qca.common.pagination import AsyncPaginator, SyncPage
 from qca.forward.resources.identities.configs import AsyncConfigs, Configs
 from qca.forward.resources.identities.memory_stores import AsyncMemoryStores, MemoryStores
+from qca.forward.resources.identities.service_account_tokens import AsyncServiceAccountTokens, ServiceAccountTokens
 from qca.forward.types.deleted_identity import DeletedIdentity
 from qca.forward.types.identity import Identity
 from qca.forward.types.identity_clear_response import IdentityClearResponse
@@ -21,6 +22,10 @@ __all__ = ["Identities", "AsyncIdentities"]
 
 
 class Identities(SyncAPIResource):
+    @cached_property
+    def service_account_tokens(self) -> ServiceAccountTokens:
+        return ServiceAccountTokens(self._client)
+
     @cached_property
     def configs(self) -> Configs:
         return Configs(self._client)
@@ -295,6 +300,10 @@ class Identities(SyncAPIResource):
 
 
 class AsyncIdentities(AsyncAPIResource):
+    @cached_property
+    def service_account_tokens(self) -> AsyncServiceAccountTokens:
+        return AsyncServiceAccountTokens(self._client)
+
     @cached_property
     def configs(self) -> AsyncConfigs:
         return AsyncConfigs(self._client)
