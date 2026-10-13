@@ -118,6 +118,54 @@ async def read_models(client, view):
     return await resolve(client.models.list())
 
 
+@pytest.mark.parametrize("client_type", [Managed, AsyncManaged])
+@pytest.mark.parametrize("resource", ["agents", "sessions"])
+@pytest.mark.parametrize("effort", ["low", {"type": "high"}, None])
+async def test_managed_model_effort_response_shapes(client_type, resource, effort):
+    model = {"id": "qfmodel", "effort": effort, "context_window": 200000, "effective_context_window": 200000}
+    item = (
+        {"id": "resource-1", "model": model}
+        if resource == "agents"
+        else {"id": "resource-1", "agent": {"model": model}}
+    )
+    http_type = httpx.AsyncClient if client_type is AsyncManaged else httpx.Client
+    client = client_type(
+        pat="test-token",
+        _strict_response_validation=True,
+        http_client=http_type(transport=httpx.MockTransport(lambda _: httpx.Response(200, json={"data": [item]}))),
+    )
+    try:
+        page = await resolve(getattr(client, resource).list(limit=1))
+        agent = page.data[0] if resource == "agents" else page.data[0].agent
+        assert agent.model.id == "qfmodel"
+        assert agent.model.context_window == 200000
+        assert agent.model.effective_context_window == 200000
+        if isinstance(effort, dict):
+            assert agent.model.effort.type == effort["type"]
+        else:
+            assert agent.model.effort == effort
+    finally:
+        await resolve(client.close())
+
+
+@pytest.mark.parametrize("client_type", [Managed, AsyncManaged])
+@pytest.mark.parametrize("effort", [123, ["low"]])
+async def test_managed_model_effort_still_rejects_invalid_response_shapes(client_type, effort):
+    payload = {"data": [{"id": "sess-1", "agent": {"model": {"id": "qfmodel", "effort": effort}}}]}
+    http_type = httpx.AsyncClient if client_type is AsyncManaged else httpx.Client
+    client = client_type(
+        pat="test-token",
+        _strict_response_validation=True,
+        http_client=http_type(transport=httpx.MockTransport(lambda _: httpx.Response(200, json=payload))),
+    )
+    try:
+        with pytest.raises(APIResponseValidationError) as caught:
+            await resolve(client.sessions.list(limit=1))
+        assert caught.value.body == payload
+    finally:
+        await resolve(client.close())
+
+
 @pytest.mark.parametrize("strict", [False, True])
 @pytest.mark.parametrize("view", ["normal", "raw", "streaming_response"])
 async def test_response_validation_modes_survive_client_and_response_views(make_client, strict, view):
