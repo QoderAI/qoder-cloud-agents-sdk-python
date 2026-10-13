@@ -25,7 +25,7 @@ from qca.common.pagination import AsyncPage, SyncPage
 
 DECLARATION = re.compile(r"^(GET|POST|PUT|PATCH|DELETE) (/[^\s.]*)\.")
 CONTROL_PARAMS = ("extra_headers", "extra_query", "extra_body", "timeout")
-HANDWRITTEN_RESOURCE_METHODS = {"sessions.events.resumable_stream"}
+HANDWRITTEN_RESOURCE_METHODS = {"sessions.events.resumable_stream", "realtime.connect"}
 CONTRACT_FIXTURE = json.loads((Path(__file__).parent / "fixtures" / "api-contracts.json").read_text())
 CONTRACT_ROWS = CONTRACT_FIXTURE["contracts"]
 CONTRACTS = {row["id"]: row for row in CONTRACT_ROWS}
@@ -109,6 +109,8 @@ class Endpoint:
         if self.kind != "model":
             return CONTAINERS[self.kind, async_]
         name = self.returns.removeprefix("Optional[").removesuffix("]")
+        if async_ and name == "RealtimeHistoryPage":
+            name = "AsyncRealtimeHistoryPage"
         return getattr(import_module(f"qca.{self.mode}.types"), name)
 
     def resource(self, client: Any) -> Any:

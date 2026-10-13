@@ -1934,6 +1934,28 @@
         "run_id"
       ],
       "kind": "model"
+    },
+    {
+      "id": "forward.realtime.conversations.create",
+      "method": "POST",
+      "path": "/realtime/conversations",
+      "required": [
+        "idempotency_key",
+        "identity_id",
+        "template_id"
+      ],
+      "kind": "model",
+      "source": "https://docs.qoder.com/cloud-agents/api/forward/realtime/create-conversation"
+    },
+    {
+      "id": "forward.realtime.conversations.history",
+      "method": "GET",
+      "path": "/realtime/conversations/{conversation_id}/history",
+      "required": [
+        "conversation_id"
+      ],
+      "kind": "model",
+      "source": "Cloud Agents Realtime API.md (2026-10-13)"
     }
   ],
   "extensions": [

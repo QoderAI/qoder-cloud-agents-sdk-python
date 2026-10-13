@@ -175,3 +175,7 @@ with the `integration` marker, and runs configuration regression tests offline.
 Business integration scenarios keep independent test helpers. Dedicated offline
 regression tests for example configuration and lifecycle may import examples;
 those tests do not replace SDK integration coverage.
+
+## Realtime validation
+
+Realtime REST and local WebSocket protocol/lifecycle tests run offline with the default suite. `uv run make test-live-realtime` is a separate opt-in CN/Global entry, controlled by the dedicated `QODER_REALTIME_*` configuration and both write/execution flags. It creates persistent Conversations using already-enabled Templates; transport close is not resource cleanup. Record the printed Conversation/request IDs and agree on retention with the service owner. Basic ping/history success does not replace text, PCM, playback, and background Work acceptance. Realtime auth headers, SSL context, and proxy settings use the WebSocket adapter; arbitrary httpx middleware is not applied to it.
