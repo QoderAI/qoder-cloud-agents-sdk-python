@@ -281,7 +281,10 @@ def carriers(request: httpx.Request, name: str, value: Any) -> set[str]:
     found = set()
     if name in request.url.params:
         found.add("query")
-    if isinstance(value, str) and value in request.headers.values():
+    if isinstance(value, str) and (
+        value in request.headers.values()
+        or (name == "sa_key" and request.headers.get("authorization") == f"Bearer {value}")
+    ):
         found.add("header")
     if name in body_keys(request):
         found.add("body")

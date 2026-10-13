@@ -134,6 +134,59 @@ Existing PAT tests remain separate; `QODER_AUTH_MODE` switches examples, not the
 PAT test suites. See the
 [official authentication contract](https://docs.qoder.com/cloud-agents/api/conventions/authentication).
 
+### Forward SAT management
+
+Forward exposes explicit admin/Identity SAT issuance and revocation in addition
+to automatic platform exchange. These three endpoints authenticate with an
+**SA Key**, supplied per method call; ordinary business requests still use PAT
+or SAT. The Key overrides client/request Authorization only for that call, is
+never included in the JSON body, and is not saved on the client.
+
+`ttl_seconds` is optional (1-43200); omission uses the issuer's default. Issuance
+and revocation are not automatically retried, even when the client or request
+allows retries. Do not blindly repeat an issuance after an uncertain network
+failure: it may already have issued a token. Metadata is for audit information,
+not secrets. Keep the issuance response's Token ID, Credential ID and expiry for
+precise revocation. A returned static SAT does not renew automatically, and
+revocation affects its Forward binding; it does not cancel an already-running
+Session or revoke unrelated Managed/platform access. Never log the SA Key, SAT,
+serialized token response or Authorization headers.
+
+Run `uv run make test-live-sa-tokens` with `QODER_SA_CN_KEY`,
+`QODER_SA_GLOBAL_KEY` and `QODER_SA_LIVE_ALLOW_WRITE=true` to verify both regions.
+This separate suite issues admin and Identity SATs, checks business access and
+cross-Identity refusal, then revokes the tokens, verifies access is refused and
+deletes its temporary Identities. It does not execute a model or require
+`QODER_SA_LIVE_ALLOW_EXECUTION=true`.
+
+```python
+with Forward(base_url=forward_base_url) as issuer:
+    # Admin: issuer.service_account_tokens.create(sa_key=sa_key, ...).
+    token = issuer.identities.service_account_tokens.create(
+        identity_id, sa_key=sa_key, ttl_seconds=600,
+    )
+    try:
+        with Forward(base_url=forward_base_url, auth_mode="sa",
+                     access_token=token.access_token) as runtime:
+            page = runtime.sessions.list(identity_i_ds=[identity_id], limit=1)
+    finally:
+        issuer.service_account_tokens.revoke(
+            token.auth_token_id, sa_key=sa_key,
+            target_credential_id=token.credential_id,
+            target_expires_at=token.expires_at, reason="runtime complete",
+        )
+```
+
+`AsyncForward` exposes the same methods with `await`, including raw/streaming
+response views. Runnable example: `uv run python -m examples.auth.forward_tokens`.
+It revokes its token even if the business call fails. Set `QODER_SA_KEY` and
+`QODER_SA_REGION=cn|global`; set `QODER_IDENTITY_ID` for Identity mode, or leave it
+unset for admin mode.
+
+See the official [admin issuance](https://docs.qoder.com/cloud-agents/api/forward/service-account-tokens/create),
+[Identity issuance](https://docs.qoder.com/cloud-agents/api/forward/service-account-tokens/create-identity)
+and [revocation](https://docs.qoder.com/cloud-agents/api/forward/service-account-tokens/revoke) contracts.
+
 ### Authentication examples
 
 The two read-only examples under `examples/auth/` show client construction directly:

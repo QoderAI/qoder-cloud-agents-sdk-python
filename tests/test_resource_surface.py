@@ -39,7 +39,7 @@ def test_contract_fixture_has_pinned_provenance():
         "commit": "bc5bc655d70b67fcd88623320ac01896a7360d8a",
         "captured_at": "2026-09-22",
     }
-    assert len(CONTRACT_FIXTURE["contracts"]) == 211
+    assert len(CONTRACT_FIXTURE["contracts"]) == 214
 
 
 @pytest.mark.parametrize("endpoint", ENDPOINTS, ids=endpoint_id)
@@ -56,7 +56,7 @@ async def test_endpoint_sends_its_documented_request(endpoint, async_):
     request = recorded[0]
     assert request.method == endpoint.verb
     assert request.url.path == f"/api/v1/{endpoint.mode}{endpoint.path}"
-    assert request.headers["authorization"] == f"Bearer {TOKEN}"
+    assert request.headers["authorization"] == f"Bearer {endpoint.arguments.get('sa_key', TOKEN)}"
     assert request.headers["user-agent"].startswith("qca-python/")
     expected_accept = "text/event-stream" if endpoint.kind == "stream" else "application/json"
     assert request.headers["accept"] == expected_accept
