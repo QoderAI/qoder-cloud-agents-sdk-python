@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Union
 
 from qca.common._models import BaseModel
 
@@ -13,6 +13,6 @@ __all__ = ["ModelConfig"]
 class ModelConfig(BaseModel):
     context_window: Optional[int] = None
     id: Optional[str] = None
-    effort: Optional[ModelConfigEffortUnion] = None
+    effort: Optional[Union[str, ModelConfigEffortUnion]] = None
     inference_geo: Optional[str] = None
     speed: Optional[str] = None
