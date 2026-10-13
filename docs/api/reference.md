@@ -2066,6 +2066,17 @@ class Forward(SyncAPIClient)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/_client.py)
 
+<a id="qca.forward._client.Forward.realtime"></a>
+
+#### realtime
+
+```python
+@cached_property
+def realtime() -> Realtime
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/_client.py)
+
 <a id="qca.forward._client.Forward.templates"></a>
 
 #### templates
@@ -2248,6 +2259,17 @@ def models() -> Models
 
 ```python
 class AsyncForward(AsyncAPIClient)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/_client.py)
+
+<a id="qca.forward._client.AsyncForward.realtime"></a>
+
+#### realtime
+
+```python
+@cached_property
+def realtime() -> AsyncRealtime
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/_client.py)
@@ -5502,6 +5524,794 @@ async def list(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/models.py)
 
 GET /models.
+
+<a id="qca.forward.resources.realtime._protocol"></a>
+
+# qca.forward.resources.realtime.\_protocol
+
+<a id="qca.forward.resources.realtime._protocol.PROTOCOL"></a>
+
+#### PROTOCOL
+
+<a id="qca.forward.resources.realtime._protocol.MAX_CLIENT_MESSAGE_BYTES"></a>
+
+#### MAX\_CLIENT\_MESSAGE\_BYTES
+
+<a id="qca.forward.resources.realtime._protocol.TERMINAL_ERRORS"></a>
+
+#### TERMINAL\_ERRORS
+
+<a id="qca.forward.resources.realtime._protocol.CLOSE_OUTCOMES"></a>
+
+#### CLOSE\_OUTCOMES
+
+<a id="qca.forward.resources.realtime._protocol.PAYLOADS"></a>
+
+#### PAYLOADS
+
+<a id="qca.forward.resources.realtime._protocol.RealtimeError"></a>
+
+## RealtimeError
+
+```python
+class RealtimeError(APIConnectionError)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/_protocol.py)
+
+Realtime transport/protocol failure, without credentials or raw event text.
+
+<a id="qca.forward.resources.realtime._protocol.RealtimeError.__init__"></a>
+
+#### \_\_init\_\_
+
+```python
+def __init__(message: str,
+             *,
+             conversation_id: str,
+             close_code: int | None = None,
+             close_reason: str | None = None) -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/_protocol.py)
+
+<a id="qca.forward.resources.realtime._protocol.RealtimeProtocolError"></a>
+
+## RealtimeProtocolError
+
+```python
+class RealtimeProtocolError(RealtimeError)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/_protocol.py)
+
+<a id="qca.forward.resources.realtime._protocol.RealtimeTimeoutError"></a>
+
+## RealtimeTimeoutError
+
+```python
+class RealtimeTimeoutError(RealtimeError)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/_protocol.py)
+
+<a id="qca.forward.resources.realtime._protocol.RealtimeTimeoutError.__init__"></a>
+
+#### \_\_init\_\_
+
+```python
+def __init__(stage: str, *, conversation_id: str) -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/_protocol.py)
+
+<a id="qca.forward.resources.realtime._protocol.RealtimeQueueOverflowError"></a>
+
+## RealtimeQueueOverflowError
+
+```python
+class RealtimeQueueOverflowError(RealtimeError)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/_protocol.py)
+
+<a id="qca.forward.resources.realtime._protocol.RealtimeServerError"></a>
+
+## RealtimeServerError
+
+```python
+class RealtimeServerError(RealtimeError)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/_protocol.py)
+
+<a id="qca.forward.resources.realtime._protocol.RealtimeServerError.__init__"></a>
+
+#### \_\_init\_\_
+
+```python
+def __init__(event: RealtimeEvent) -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/_protocol.py)
+
+<a id="qca.forward.resources.realtime._protocol.websocket_url"></a>
+
+#### websocket\_url
+
+```python
+def websocket_url(base_url: httpx.URL, conversation_id: str) -> str
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/_protocol.py)
+
+<a id="qca.forward.resources.realtime._protocol.parse_event"></a>
+
+#### parse\_event
+
+```python
+def parse_event(message: str | bytes, conversation_id: str) -> RealtimeEvent
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/_protocol.py)
+
+<a id="qca.forward.resources.realtime._protocol.encode_event"></a>
+
+#### encode\_event
+
+```python
+def encode_event(event_type: str, payload: dict[str, Any]) -> str
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/_protocol.py)
+
+<a id="qca.forward.resources.realtime._protocol.pcm_payload"></a>
+
+#### pcm\_payload
+
+```python
+def pcm_payload(pcm_bytes: bytes) -> dict[str, Any]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/_protocol.py)
+
+<a id="qca.forward.resources.realtime._protocol.receipt_payload"></a>
+
+#### receipt\_payload
+
+```python
+def receipt_payload(work_id: str | None,
+                    announcement_id: str | None) -> dict[str, Any]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/_protocol.py)
+
+<a id="qca.forward.resources.realtime.connection"></a>
+
+# qca.forward.resources.realtime.connection
+
+<a id="qca.forward.resources.realtime.connection._ConnectionState"></a>
+
+## \_ConnectionState
+
+```python
+class _ConnectionState()
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+<a id="qca.forward.resources.realtime.connection._ConnectionState.__init__"></a>
+
+#### \_\_init\_\_
+
+```python
+def __init__(conversation_id: str, *, max_queue: int, max_queue_bytes: int,
+             send_timeout: float, close_timeout: float) -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+<a id="qca.forward.resources.realtime.connection.RealtimeConnection"></a>
+
+## RealtimeConnection
+
+```python
+class RealtimeConnection(_ConnectionState)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+Single-reader synchronous voice.realtime.v1 connection with bounded events.
+
+<a id="qca.forward.resources.realtime.connection.RealtimeConnection.__init__"></a>
+
+#### \_\_init\_\_
+
+```python
+def __init__(socket: SyncSocket,
+             conversation_id: str,
+             *,
+             max_queue: int = 256,
+             max_queue_bytes: int = 4 * 1024 * 1024,
+             send_timeout: float = 30,
+             close_timeout: float = 10) -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+<a id="qca.forward.resources.realtime.connection.RealtimeConnection.recv"></a>
+
+#### recv
+
+```python
+def recv(*, timeout: float | None = None) -> RealtimeEvent
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+<a id="qca.forward.resources.realtime.connection.RealtimeConnection.__iter__"></a>
+
+#### \_\_iter\_\_
+
+```python
+def __iter__() -> Iterator[RealtimeEvent]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+<a id="qca.forward.resources.realtime.connection.RealtimeConnection.__next__"></a>
+
+#### \_\_next\_\_
+
+```python
+def __next__() -> RealtimeEvent
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+<a id="qca.forward.resources.realtime.connection.RealtimeConnection.send_event"></a>
+
+#### send\_event
+
+```python
+def send_event(event_type: str, payload: dict[str, Any] | None = None) -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+<a id="qca.forward.resources.realtime.connection.RealtimeConnection.send_text"></a>
+
+#### send\_text
+
+```python
+def send_text(text: str) -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+<a id="qca.forward.resources.realtime.connection.RealtimeConnection.append_audio"></a>
+
+#### append\_audio
+
+```python
+def append_audio(pcm_bytes: bytes) -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+<a id="qca.forward.resources.realtime.connection.RealtimeConnection.interrupt"></a>
+
+#### interrupt
+
+```python
+def interrupt() -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+<a id="qca.forward.resources.realtime.connection.RealtimeConnection.ping"></a>
+
+#### ping
+
+```python
+def ping() -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+<a id="qca.forward.resources.realtime.connection.RealtimeConnection.playback_started"></a>
+
+#### playback\_started
+
+```python
+def playback_started(*,
+                     work_id: str | None = None,
+                     announcement_id: str | None = None) -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+<a id="qca.forward.resources.realtime.connection.RealtimeConnection.playback_ended"></a>
+
+#### playback\_ended
+
+```python
+def playback_ended(*,
+                   work_id: str | None = None,
+                   announcement_id: str | None = None) -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+<a id="qca.forward.resources.realtime.connection.RealtimeConnection.playback_cancelled"></a>
+
+#### playback\_cancelled
+
+```python
+def playback_cancelled(*,
+                       work_id: str | None = None,
+                       announcement_id: str | None = None) -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+<a id="qca.forward.resources.realtime.connection.RealtimeConnection.close_gracefully"></a>
+
+#### close\_gracefully
+
+```python
+def close_gracefully(*,
+                     request_id: str | None = None,
+                     timeout: float | None = None) -> str
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+<a id="qca.forward.resources.realtime.connection.RealtimeConnection.close"></a>
+
+#### close
+
+```python
+def close() -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+<a id="qca.forward.resources.realtime.connection.RealtimeConnection.__enter__"></a>
+
+#### \_\_enter\_\_
+
+```python
+def __enter__() -> RealtimeConnection
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+<a id="qca.forward.resources.realtime.connection.RealtimeConnection.__exit__"></a>
+
+#### \_\_exit\_\_
+
+```python
+def __exit__(*_: object) -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+<a id="qca.forward.resources.realtime.connection.AsyncRealtimeConnection"></a>
+
+## AsyncRealtimeConnection
+
+```python
+class AsyncRealtimeConnection(_ConnectionState)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+Async connection; only its background task reads WebSocket messages.
+
+<a id="qca.forward.resources.realtime.connection.AsyncRealtimeConnection.__init__"></a>
+
+#### \_\_init\_\_
+
+```python
+def __init__(socket: AsyncSocket,
+             conversation_id: str,
+             *,
+             max_queue: int = 256,
+             max_queue_bytes: int = 4 * 1024 * 1024,
+             send_timeout: float = 30,
+             close_timeout: float = 10) -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+<a id="qca.forward.resources.realtime.connection.AsyncRealtimeConnection.recv"></a>
+
+#### recv
+
+```python
+async def recv(*, timeout: float | None = None) -> RealtimeEvent
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+<a id="qca.forward.resources.realtime.connection.AsyncRealtimeConnection.__aiter__"></a>
+
+#### \_\_aiter\_\_
+
+```python
+def __aiter__() -> AsyncIterator[RealtimeEvent]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+<a id="qca.forward.resources.realtime.connection.AsyncRealtimeConnection.__anext__"></a>
+
+#### \_\_anext\_\_
+
+```python
+async def __anext__() -> RealtimeEvent
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+<a id="qca.forward.resources.realtime.connection.AsyncRealtimeConnection.send_event"></a>
+
+#### send\_event
+
+```python
+async def send_event(event_type: str,
+                     payload: dict[str, Any] | None = None) -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+<a id="qca.forward.resources.realtime.connection.AsyncRealtimeConnection.send_text"></a>
+
+#### send\_text
+
+```python
+async def send_text(text: str) -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+<a id="qca.forward.resources.realtime.connection.AsyncRealtimeConnection.append_audio"></a>
+
+#### append\_audio
+
+```python
+async def append_audio(pcm_bytes: bytes) -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+<a id="qca.forward.resources.realtime.connection.AsyncRealtimeConnection.interrupt"></a>
+
+#### interrupt
+
+```python
+async def interrupt() -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+<a id="qca.forward.resources.realtime.connection.AsyncRealtimeConnection.ping"></a>
+
+#### ping
+
+```python
+async def ping() -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+<a id="qca.forward.resources.realtime.connection.AsyncRealtimeConnection.playback_started"></a>
+
+#### playback\_started
+
+```python
+async def playback_started(*,
+                           work_id: str | None = None,
+                           announcement_id: str | None = None) -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+<a id="qca.forward.resources.realtime.connection.AsyncRealtimeConnection.playback_ended"></a>
+
+#### playback\_ended
+
+```python
+async def playback_ended(*,
+                         work_id: str | None = None,
+                         announcement_id: str | None = None) -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+<a id="qca.forward.resources.realtime.connection.AsyncRealtimeConnection.playback_cancelled"></a>
+
+#### playback\_cancelled
+
+```python
+async def playback_cancelled(*,
+                             work_id: str | None = None,
+                             announcement_id: str | None = None) -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+<a id="qca.forward.resources.realtime.connection.AsyncRealtimeConnection.close_gracefully"></a>
+
+#### close\_gracefully
+
+```python
+async def close_gracefully(*,
+                           request_id: str | None = None,
+                           timeout: float | None = None) -> str
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+<a id="qca.forward.resources.realtime.connection.AsyncRealtimeConnection.close"></a>
+
+#### close
+
+```python
+async def close() -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+<a id="qca.forward.resources.realtime.connection.AsyncRealtimeConnection.__aenter__"></a>
+
+#### \_\_aenter\_\_
+
+```python
+async def __aenter__() -> AsyncRealtimeConnection
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+<a id="qca.forward.resources.realtime.connection.AsyncRealtimeConnection.__aexit__"></a>
+
+#### \_\_aexit\_\_
+
+```python
+async def __aexit__(*_: object) -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/connection.py)
+
+<a id="qca.forward.resources.realtime.conversations"></a>
+
+# qca.forward.resources.realtime.conversations
+
+<a id="qca.forward.resources.realtime.conversations.Conversations"></a>
+
+## Conversations
+
+```python
+class Conversations(SyncAPIResource)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/conversations.py)
+
+<a id="qca.forward.resources.realtime.conversations.Conversations.create"></a>
+
+#### create
+
+```python
+def create(
+    *,
+    identity_id: str,
+    template_id: str,
+    idempotency_key: str,
+    title: str | None | NotGiven = NOT_GIVEN,
+    metadata: dict[str, Any] | None | NotGiven = NOT_GIVEN,
+    config: RealtimeConfigParam | NotGiven = NOT_GIVEN,
+    extra_headers: dict[str, str] | None = None,
+    extra_query: dict[str, Any] | None = None,
+    extra_body: dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> RealtimeConversation
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/conversations.py)
+
+POST /realtime/conversations. Requires a stable creation idempotency key.
+
+<a id="qca.forward.resources.realtime.conversations.Conversations.history"></a>
+
+#### history
+
+```python
+def history(
+    conversation_id: str,
+    *,
+    limit: int | NotGiven = NOT_GIVEN,
+    before: str | NotGiven = NOT_GIVEN,
+    types: str | NotGiven = NOT_GIVEN,
+    extra_headers: dict[str, str] | None = None,
+    extra_query: dict[str, Any] | None = None,
+    extra_body: dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> RealtimeHistoryPage
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/conversations.py)
+
+GET /realtime/conversations/{conversation_id}/history. Pages move toward older events.
+
+<a id="qca.forward.resources.realtime.conversations.AsyncConversations"></a>
+
+## AsyncConversations
+
+```python
+class AsyncConversations(AsyncAPIResource)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/conversations.py)
+
+<a id="qca.forward.resources.realtime.conversations.AsyncConversations.create"></a>
+
+#### create
+
+```python
+async def create(
+    *,
+    identity_id: str,
+    template_id: str,
+    idempotency_key: str,
+    title: str | None | NotGiven = NOT_GIVEN,
+    metadata: dict[str, Any] | None | NotGiven = NOT_GIVEN,
+    config: RealtimeConfigParam | NotGiven = NOT_GIVEN,
+    extra_headers: dict[str, str] | None = None,
+    extra_query: dict[str, Any] | None = None,
+    extra_body: dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> RealtimeConversation
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/conversations.py)
+
+POST /realtime/conversations. Requires a stable creation idempotency key.
+
+<a id="qca.forward.resources.realtime.conversations.AsyncConversations.history"></a>
+
+#### history
+
+```python
+async def history(
+    conversation_id: str,
+    *,
+    limit: int | NotGiven = NOT_GIVEN,
+    before: str | NotGiven = NOT_GIVEN,
+    types: str | NotGiven = NOT_GIVEN,
+    extra_headers: dict[str, str] | None = None,
+    extra_query: dict[str, Any] | None = None,
+    extra_body: dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> AsyncRealtimeHistoryPage
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/conversations.py)
+
+GET /realtime/conversations/{conversation_id}/history. Await get_next_page() for older events.
+
+<a id="qca.forward.resources.realtime.realtime"></a>
+
+# qca.forward.resources.realtime.realtime
+
+<a id="qca.forward.resources.realtime.realtime._NoRedirectConnect"></a>
+
+## \_NoRedirectConnect
+
+```python
+class _NoRedirectConnect(AsyncConnect)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/realtime.py)
+
+<a id="qca.forward.resources.realtime.realtime._NoRedirectConnect.process_redirect"></a>
+
+#### process\_redirect
+
+```python
+def process_redirect(exc: Exception) -> Exception | str
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/realtime.py)
+
+<a id="qca.forward.resources.realtime.realtime.Realtime"></a>
+
+## Realtime
+
+```python
+class Realtime(SyncAPIResource)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/realtime.py)
+
+<a id="qca.forward.resources.realtime.realtime.Realtime.conversations"></a>
+
+#### conversations
+
+```python
+@cached_property
+def conversations() -> Conversations
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/realtime.py)
+
+<a id="qca.forward.resources.realtime.realtime.Realtime.connect"></a>
+
+#### connect
+
+```python
+def connect(*,
+            conversation_id: str,
+            extra_headers: dict[str, str] | None = None,
+            handshake_timeout: float = 30,
+            ready_timeout: float = 60,
+            send_timeout: float = 30,
+            close_timeout: float = 10,
+            max_queue: int = 256,
+            max_queue_bytes: int = 4 * 1024 * 1024,
+            max_message_bytes: int = 1024 * 1024,
+            ssl_context: ssl.SSLContext | None = None,
+            proxy: str | Literal[True] | None = True) -> RealtimeConnection
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/realtime.py)
+
+Connect to /realtime and return after voice.ready. No redirects, retries, or replay.
+
+<a id="qca.forward.resources.realtime.realtime.AsyncRealtime"></a>
+
+## AsyncRealtime
+
+```python
+class AsyncRealtime(AsyncAPIResource)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/realtime.py)
+
+<a id="qca.forward.resources.realtime.realtime.AsyncRealtime.conversations"></a>
+
+#### conversations
+
+```python
+@cached_property
+def conversations() -> AsyncConversations
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/realtime.py)
+
+<a id="qca.forward.resources.realtime.realtime.AsyncRealtime.connect"></a>
+
+#### connect
+
+```python
+async def connect(
+        *,
+        conversation_id: str,
+        extra_headers: dict[str, str] | None = None,
+        handshake_timeout: float = 30,
+        ready_timeout: float = 60,
+        send_timeout: float = 30,
+        close_timeout: float = 10,
+        max_queue: int = 256,
+        max_queue_bytes: int = 4 * 1024 * 1024,
+        max_message_bytes: int = 1024 * 1024,
+        ssl_context: ssl.SSLContext | None = None,
+        proxy: str | Literal[True] | None = True) -> AsyncRealtimeConnection
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/realtime/realtime.py)
+
+Connect to /realtime and return after voice.ready. Cancellation releases transport.
 
 <a id="qca.forward.resources.schedule_runs"></a>
 
@@ -11644,6 +12454,678 @@ class PermissionPolicyParam(TypedDict)
 <a id="qca.forward.types.permission_policy_param.PermissionPolicyParam.type"></a>
 
 #### type
+
+<a id="qca.forward.types.realtime"></a>
+
+# qca.forward.types.realtime
+
+<a id="qca.forward.types.realtime.RealtimeOutputAudioConfigParam"></a>
+
+## RealtimeOutputAudioConfigParam
+
+```python
+class RealtimeOutputAudioConfigParam(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/realtime.py)
+
+<a id="qca.forward.types.realtime.RealtimeOutputAudioConfigParam.voice"></a>
+
+#### voice
+
+<a id="qca.forward.types.realtime.RealtimeAudioConfigParam"></a>
+
+## RealtimeAudioConfigParam
+
+```python
+class RealtimeAudioConfigParam(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/realtime.py)
+
+<a id="qca.forward.types.realtime.RealtimeAudioConfigParam.output"></a>
+
+#### output
+
+<a id="qca.forward.types.realtime.RealtimeConfigParam"></a>
+
+## RealtimeConfigParam
+
+```python
+class RealtimeConfigParam(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/realtime.py)
+
+<a id="qca.forward.types.realtime.RealtimeConfigParam.audio"></a>
+
+#### audio
+
+<a id="qca.forward.types.realtime.RealtimeConversation"></a>
+
+## RealtimeConversation
+
+```python
+class RealtimeConversation(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/realtime.py)
+
+<a id="qca.forward.types.realtime.RealtimeConversation.id"></a>
+
+#### id
+
+<a id="qca.forward.types.realtime.RealtimeConversation.type"></a>
+
+#### type
+
+<a id="qca.forward.types.realtime.RealtimeConversation.status"></a>
+
+#### status
+
+<a id="qca.forward.types.realtime.RealtimeConversation.title"></a>
+
+#### title
+
+<a id="qca.forward.types.realtime.RealtimeConversation.metadata"></a>
+
+#### metadata
+
+<a id="qca.forward.types.realtime.RealtimeConversation.config"></a>
+
+#### config
+
+<a id="qca.forward.types.realtime.RealtimeConversation.created_at"></a>
+
+#### created\_at
+
+<a id="qca.forward.types.realtime.RealtimeConversation.updated_at"></a>
+
+#### updated\_at
+
+<a id="qca.forward.types.realtime.RealtimeConversationSummary"></a>
+
+## RealtimeConversationSummary
+
+```python
+class RealtimeConversationSummary(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/realtime.py)
+
+<a id="qca.forward.types.realtime.RealtimeConversationSummary.id"></a>
+
+#### id
+
+<a id="qca.forward.types.realtime.RealtimeConversationSummary.title"></a>
+
+#### title
+
+<a id="qca.forward.types.realtime.RealtimeConversationSummary.initialization_status"></a>
+
+#### initialization\_status
+
+<a id="qca.forward.types.realtime.RealtimeConversationSummary.metadata"></a>
+
+#### metadata
+
+<a id="qca.forward.types.realtime.RealtimeConversationSummary.created_at"></a>
+
+#### created\_at
+
+<a id="qca.forward.types.realtime.RealtimeConversationSummary.updated_at"></a>
+
+#### updated\_at
+
+<a id="qca.forward.types.realtime.RealtimeHistoryEvent"></a>
+
+## RealtimeHistoryEvent
+
+```python
+class RealtimeHistoryEvent(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/realtime.py)
+
+<a id="qca.forward.types.realtime.RealtimeHistoryEvent.id"></a>
+
+#### id
+
+<a id="qca.forward.types.realtime.RealtimeHistoryEvent.type"></a>
+
+#### type
+
+<a id="qca.forward.types.realtime.RealtimeHistoryEvent.status"></a>
+
+#### status
+
+<a id="qca.forward.types.realtime.RealtimeHistoryEvent.occurred_at"></a>
+
+#### occurred\_at
+
+<a id="qca.forward.types.realtime.RealtimeHistoryEvent.role"></a>
+
+#### role
+
+<a id="qca.forward.types.realtime.RealtimeHistoryEvent.text"></a>
+
+#### text
+
+<a id="qca.forward.types.realtime.RealtimeHistoryEvent.work_id"></a>
+
+#### work\_id
+
+<a id="qca.forward.types.realtime.RealtimeHistoryEvent.objective"></a>
+
+#### objective
+
+<a id="qca.forward.types.realtime.RealtimeHistoryEvent.result"></a>
+
+#### result
+
+<a id="qca.forward.types.realtime.RealtimeHistoryEvent.error"></a>
+
+#### error
+
+<a id="qca.forward.types.realtime.RealtimeHistoryEvent.turn_id"></a>
+
+#### turn\_id
+
+<a id="qca.forward.types.realtime.RealtimeHistoryEvent.user_message_event_id"></a>
+
+#### user\_message\_event\_id
+
+<a id="qca.forward.types.realtime.RealtimeHistoryEvent.announcement_id"></a>
+
+#### announcement\_id
+
+<a id="qca.forward.types.realtime.RealtimeHistoryEvent.milestone_type"></a>
+
+#### milestone\_type
+
+<a id="qca.forward.types.realtime.RealtimeHistoryPageInfo"></a>
+
+## RealtimeHistoryPageInfo
+
+```python
+class RealtimeHistoryPageInfo(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/realtime.py)
+
+<a id="qca.forward.types.realtime.RealtimeHistoryPageInfo.next_before"></a>
+
+#### next\_before
+
+<a id="qca.forward.types.realtime.RealtimeHistoryPageInfo.has_more"></a>
+
+#### has\_more
+
+<a id="qca.forward.types.realtime._RealtimeHistoryPage"></a>
+
+## \_RealtimeHistoryPage
+
+```python
+class _RealtimeHistoryPage(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/realtime.py)
+
+<a id="qca.forward.types.realtime._RealtimeHistoryPage.conversation"></a>
+
+#### conversation
+
+<a id="qca.forward.types.realtime._RealtimeHistoryPage.events"></a>
+
+#### events
+
+<a id="qca.forward.types.realtime._RealtimeHistoryPage.page"></a>
+
+#### page
+
+<a id="qca.forward.types.realtime._RealtimeHistoryPage.has_next_page"></a>
+
+#### has\_next\_page
+
+```python
+def has_next_page() -> bool
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/realtime.py)
+
+<a id="qca.forward.types.realtime.RealtimeHistoryPage"></a>
+
+## RealtimeHistoryPage
+
+```python
+class RealtimeHistoryPage(_RealtimeHistoryPage)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/realtime.py)
+
+<a id="qca.forward.types.realtime.RealtimeHistoryPage.get_next_page"></a>
+
+#### get\_next\_page
+
+```python
+def get_next_page() -> RealtimeHistoryPage
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/realtime.py)
+
+Fetch the next page toward older history.
+
+<a id="qca.forward.types.realtime.AsyncRealtimeHistoryPage"></a>
+
+## AsyncRealtimeHistoryPage
+
+```python
+class AsyncRealtimeHistoryPage(_RealtimeHistoryPage)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/realtime.py)
+
+<a id="qca.forward.types.realtime.AsyncRealtimeHistoryPage.get_next_page"></a>
+
+#### get\_next\_page
+
+```python
+async def get_next_page() -> AsyncRealtimeHistoryPage
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/realtime.py)
+
+Fetch the next page toward older history.
+
+<a id="qca.forward.types.realtime.RealtimeAudioFormat"></a>
+
+## RealtimeAudioFormat
+
+```python
+class RealtimeAudioFormat(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/realtime.py)
+
+<a id="qca.forward.types.realtime.RealtimeAudioFormat.format"></a>
+
+#### format
+
+<a id="qca.forward.types.realtime.RealtimeAudioFormat.sample_rate"></a>
+
+#### sample\_rate
+
+<a id="qca.forward.types.realtime.RealtimeAudioFormat.channels"></a>
+
+#### channels
+
+<a id="qca.forward.types.realtime.RealtimeCapabilities"></a>
+
+## RealtimeCapabilities
+
+```python
+class RealtimeCapabilities(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/realtime.py)
+
+<a id="qca.forward.types.realtime.RealtimeCapabilities.graceful_close"></a>
+
+#### graceful\_close
+
+<a id="qca.forward.types.realtime.RealtimePayload"></a>
+
+## RealtimePayload
+
+```python
+class RealtimePayload(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/realtime.py)
+
+Payload for unknown event types; extension fields remain accessible.
+
+<a id="qca.forward.types.realtime.RealtimeReadyPayload"></a>
+
+## RealtimeReadyPayload
+
+```python
+class RealtimeReadyPayload(RealtimePayload)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/realtime.py)
+
+<a id="qca.forward.types.realtime.RealtimeReadyPayload.config"></a>
+
+#### config
+
+<a id="qca.forward.types.realtime.RealtimeReadyPayload.provider"></a>
+
+#### provider
+
+<a id="qca.forward.types.realtime.RealtimeReadyPayload.input_audio"></a>
+
+#### input\_audio
+
+<a id="qca.forward.types.realtime.RealtimeReadyPayload.output_audio"></a>
+
+#### output\_audio
+
+<a id="qca.forward.types.realtime.RealtimeReadyPayload.capabilities"></a>
+
+#### capabilities
+
+<a id="qca.forward.types.realtime.RealtimeStatePayload"></a>
+
+## RealtimeStatePayload
+
+```python
+class RealtimeStatePayload(RealtimePayload)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/realtime.py)
+
+<a id="qca.forward.types.realtime.RealtimeStatePayload.state"></a>
+
+#### state
+
+<a id="qca.forward.types.realtime.RealtimeReasonPayload"></a>
+
+## RealtimeReasonPayload
+
+```python
+class RealtimeReasonPayload(RealtimePayload)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/realtime.py)
+
+<a id="qca.forward.types.realtime.RealtimeReasonPayload.reason"></a>
+
+#### reason
+
+<a id="qca.forward.types.realtime.RealtimeTranscriptPayload"></a>
+
+## RealtimeTranscriptPayload
+
+```python
+class RealtimeTranscriptPayload(RealtimePayload)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/realtime.py)
+
+<a id="qca.forward.types.realtime.RealtimeTranscriptPayload.role"></a>
+
+#### role
+
+<a id="qca.forward.types.realtime.RealtimeTranscriptPayload.text"></a>
+
+#### text
+
+<a id="qca.forward.types.realtime.RealtimeTranscriptPayload.item_id"></a>
+
+#### item\_id
+
+<a id="qca.forward.types.realtime.RealtimeTranscriptPayload.response_id"></a>
+
+#### response\_id
+
+<a id="qca.forward.types.realtime.RealtimeAudioPayload"></a>
+
+## RealtimeAudioPayload
+
+```python
+class RealtimeAudioPayload(RealtimePayload)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/realtime.py)
+
+<a id="qca.forward.types.realtime.RealtimeAudioPayload.audio"></a>
+
+#### audio
+
+<a id="qca.forward.types.realtime.RealtimeWorkAcceptedPayload"></a>
+
+## RealtimeWorkAcceptedPayload
+
+```python
+class RealtimeWorkAcceptedPayload(RealtimePayload)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/realtime.py)
+
+<a id="qca.forward.types.realtime.RealtimeWorkAcceptedPayload.status"></a>
+
+#### status
+
+<a id="qca.forward.types.realtime.RealtimeWorkAcceptedPayload.objective"></a>
+
+#### objective
+
+<a id="qca.forward.types.realtime.RealtimeWorkRunningPayload"></a>
+
+## RealtimeWorkRunningPayload
+
+```python
+class RealtimeWorkRunningPayload(RealtimePayload)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/realtime.py)
+
+<a id="qca.forward.types.realtime.RealtimeWorkRunningPayload.status"></a>
+
+#### status
+
+<a id="qca.forward.types.realtime.RealtimeWorkProgressPayload"></a>
+
+## RealtimeWorkProgressPayload
+
+```python
+class RealtimeWorkProgressPayload(RealtimePayload)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/realtime.py)
+
+<a id="qca.forward.types.realtime.RealtimeWorkProgressPayload.kind"></a>
+
+#### kind
+
+<a id="qca.forward.types.realtime.RealtimeWorkProgressPayload.detail"></a>
+
+#### detail
+
+<a id="qca.forward.types.realtime.RealtimeWorkProgressPayload.title"></a>
+
+#### title
+
+<a id="qca.forward.types.realtime.RealtimeWorkProgressPayload.is_error"></a>
+
+#### is\_error
+
+<a id="qca.forward.types.realtime.RealtimeWorkProgressPayload.event_id"></a>
+
+#### event\_id
+
+<a id="qca.forward.types.realtime.RealtimeWorkMilestonePayload"></a>
+
+## RealtimeWorkMilestonePayload
+
+```python
+class RealtimeWorkMilestonePayload(RealtimePayload)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/realtime.py)
+
+<a id="qca.forward.types.realtime.RealtimeWorkMilestonePayload.announcement_id"></a>
+
+#### announcement\_id
+
+<a id="qca.forward.types.realtime.RealtimeWorkMilestonePayload.milestone_type"></a>
+
+#### milestone\_type
+
+<a id="qca.forward.types.realtime.RealtimeWorkMilestonePayload.summary"></a>
+
+#### summary
+
+<a id="qca.forward.types.realtime.RealtimeWorkCompletedPayload"></a>
+
+## RealtimeWorkCompletedPayload
+
+```python
+class RealtimeWorkCompletedPayload(RealtimePayload)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/realtime.py)
+
+<a id="qca.forward.types.realtime.RealtimeWorkCompletedPayload.status"></a>
+
+#### status
+
+<a id="qca.forward.types.realtime.RealtimeWorkCompletedPayload.result"></a>
+
+#### result
+
+<a id="qca.forward.types.realtime.RealtimeWorkCompletedPayload.event_id"></a>
+
+#### event\_id
+
+<a id="qca.forward.types.realtime.RealtimeWorkError"></a>
+
+## RealtimeWorkError
+
+```python
+class RealtimeWorkError(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/realtime.py)
+
+<a id="qca.forward.types.realtime.RealtimeWorkError.code"></a>
+
+#### code
+
+<a id="qca.forward.types.realtime.RealtimeWorkFailedPayload"></a>
+
+## RealtimeWorkFailedPayload
+
+```python
+class RealtimeWorkFailedPayload(RealtimePayload)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/realtime.py)
+
+<a id="qca.forward.types.realtime.RealtimeWorkFailedPayload.status"></a>
+
+#### status
+
+<a id="qca.forward.types.realtime.RealtimeWorkFailedPayload.error"></a>
+
+#### error
+
+<a id="qca.forward.types.realtime.RealtimeWorkFailedPayload.event_id"></a>
+
+#### event\_id
+
+<a id="qca.forward.types.realtime.RealtimeClosedPayload"></a>
+
+## RealtimeClosedPayload
+
+```python
+class RealtimeClosedPayload(RealtimePayload)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/realtime.py)
+
+<a id="qca.forward.types.realtime.RealtimeClosedPayload.request_id"></a>
+
+#### request\_id
+
+<a id="qca.forward.types.realtime.RealtimeClosedPayload.outcome"></a>
+
+#### outcome
+
+<a id="qca.forward.types.realtime.RealtimeErrorPayload"></a>
+
+## RealtimeErrorPayload
+
+```python
+class RealtimeErrorPayload(RealtimePayload)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/realtime.py)
+
+<a id="qca.forward.types.realtime.RealtimeErrorPayload.code"></a>
+
+#### code
+
+<a id="qca.forward.types.realtime.RealtimeErrorPayload.message"></a>
+
+#### message
+
+<a id="qca.forward.types.realtime.RealtimeErrorPayload.retryable"></a>
+
+#### retryable
+
+<a id="qca.forward.types.realtime.RealtimeErrorPayload.retry_after_ms"></a>
+
+#### retry\_after\_ms
+
+<a id="qca.forward.types.realtime.RealtimeEvent"></a>
+
+## RealtimeEvent
+
+```python
+class RealtimeEvent(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/realtime.py)
+
+<a id="qca.forward.types.realtime.RealtimeEvent.version"></a>
+
+#### version
+
+<a id="qca.forward.types.realtime.RealtimeEvent.type"></a>
+
+#### type
+
+<a id="qca.forward.types.realtime.RealtimeEvent.event_id"></a>
+
+#### event\_id
+
+<a id="qca.forward.types.realtime.RealtimeEvent.sequence"></a>
+
+#### sequence
+
+<a id="qca.forward.types.realtime.RealtimeEvent.conversation_id"></a>
+
+#### conversation\_id
+
+<a id="qca.forward.types.realtime.RealtimeEvent.timestamp"></a>
+
+#### timestamp
+
+<a id="qca.forward.types.realtime.RealtimeEvent.payload"></a>
+
+#### payload
+
+<a id="qca.forward.types.realtime.RealtimeEvent.work_id"></a>
+
+#### work\_id
+
+<a id="qca.forward.types.realtime.RealtimeEvent.announcement_id"></a>
+
+#### announcement\_id
+
+<a id="qca.forward.types.realtime.RealtimeEvent.audio_bytes"></a>
+
+#### audio\_bytes
+
+```python
+def audio_bytes() -> bytes
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/realtime.py)
+
+Decode an audio.delta event's raw PCM16 bytes (no WAV header).
 
 <a id="qca.forward.types.resource_binding"></a>
 

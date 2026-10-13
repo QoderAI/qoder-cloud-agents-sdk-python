@@ -39,5 +39,9 @@ test-live-sa:
 test-live-sa-execution:
 	QODER_LIVE_ENV_FILE="$(LIVE_ENV_FILE)" $(PYTHON) -m pytest tests/sa/test_execution_live.py -m integration -v -s
 
+.PHONY: test-live-realtime
+test-live-realtime:
+	QODER_REALTIME_RUN_LIVE=1 QODER_LIVE_ENV_FILE="$(LIVE_ENV_FILE)" $(PYTHON) -m pytest tests/realtime -m integration -v -s
+
 test-live-sa-tokens:
 	QODER_LIVE_ENV_FILE="$(LIVE_ENV_FILE)" $(PYTHON) -m pytest tests/sa/test_tokens_live.py -m integration -v -s

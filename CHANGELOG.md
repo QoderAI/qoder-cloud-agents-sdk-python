@@ -9,6 +9,9 @@ existing `0.1.0` release; earlier development prereleases are not listed.
 
 - Forward admin and Identity SAT issuance and Forward SAT revocation, using explicit per-call SA Key authentication, typed issuance/revocation metadata, and no automatic retries. Existing platform credentials and PAT/SAT business authentication remain unchanged.
 
+- Forward Realtime (Beta): synchronous/asynchronous Conversation creation with stable idempotency keys, independent history pages, and WebSocket connections that wait for readiness, preserve typed/unknown events, reuse PAT/SAT/Credential authentication, and expose text/PCM16, interruption, playback receipt, and verified graceful-close helpers.
+- Bounded Realtime queues, protocol/timeout errors, opt-in CN/Global connection and history smoke checks, and text/PCM/history examples. Adds websockets 16.x while retaining Python 3.10 support; no automatic reconnect/replay or Realtime Template configuration API.
+
 ## [0.4.0] - 2026-10-12
 
 ### Added

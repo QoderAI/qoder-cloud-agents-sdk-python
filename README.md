@@ -23,7 +23,7 @@ python -m pip install -e '.[dev]'   # development environment
 
 ## Requirements
 
-Python 3.10 or newer. The runtime dependencies are `httpx`, `pydantic` v2, `anyio`, and `typing-extensions`; the package is typed and ships `py.typed`.
+Python 3.10 or newer. The runtime dependencies are `httpx`, `pydantic` v2, `anyio`, `typing-extensions`, and `websockets` 16.x; the package is typed and ships `py.typed`.
 
 ## Generating documentation
 
@@ -80,6 +80,119 @@ client = Forward(
 ```
 
 A client owns an HTTP connection pool, so it should be closed when you are done with it — either through the context manager above or with `client.close()`.
+
+## Forward Realtime (Beta)
+
+Forward exposes Conversation creation, WebSocket connections, and independent
+history pages. The Template must already have Realtime enabled. No Realtime
+Template configuration methods or extra beta header are added. See the
+[creation](https://docs.qoder.com/cloud-agents/api/forward/realtime/create-conversation)
+and [connection](https://docs.qoder.com/cloud-agents/api/forward/realtime/connect)
+contracts.
+
+```python
+from uuid import uuid4
+from qca import Forward
+
+with Forward() as client:
+    conversation = client.realtime.conversations.create(
+        identity_id="idn_your_test_identity",
+        template_id="tmpl_realtime_enabled",
+        idempotency_key=uuid4().hex,
+        config={"audio": {"output": {"voice": "longanqian"}}},
+    )
+    with client.realtime.connect(conversation_id=conversation.id) as connection:
+        # connect returns only after voice.ready; earlier events remain iterable.
+        connection.ping()
+        for event in connection:
+            if event.type == "pong":
+                break
+        outcome = connection.close_gracefully()
+    page = client.realtime.conversations.history(conversation.id, limit=10)
+    while page.has_next_page():
+        page = page.get_next_page()  # next_before moves toward older history
+```
+
+For `AsyncForward`, await creation, history, and connection methods; use
+`async with await client.realtime.connect(...)` and `async for event in connection`.
+An async history page has `await page.get_next_page()`. History uses
+`conversation / events / page.next_before / page.has_more`, not `data / next_page`;
+`types="message"`, `"work"`, or `"message,work"` filters it. Repeated cursors fail
+rather than looping. History event IDs (`vevt_*`) differ from WebSocket delivery
+IDs and connection-local sequence numbers. Original timestamp strings preserve
+nanosecond precision; unknown event types, payload fields, and history fields are
+retained.
+
+Connections expose `conversation_id`, typed `ready`, and optional handshake
+`request_id`. They provide `send_text`, `append_audio`, `send_event`, `interrupt`,
+`ping`, `playback_started`, `playback_ended`, and `playback_cancelled` (await them
+on async connections). Pass the corresponding audio event's `work_id` and
+`announcement_id` to playback receipts. Input is raw **16 kHz mono little-endian
+PCM16**; output is **24 kHz mono PCM16**, available through `event.audio_bytes()`.
+The SDK sends Base64 inside JSON text frames; it doesn't open audio devices,
+resample, decode WAV, or send an `audio.commit` event. Text is trimmed and limited
+to 16 KiB UTF-8. The complete outgoing JSON, including Base64, is limited to 256
+KiB.
+
+`audio.done` describes generation, not completed playback. Applications stop their
+player on `playback.interrupt`, clear queued audio, and acknowledge actual
+playback/cancellation; the SDK never invents receipts. `work.failed` and
+nonterminal `error` events remain available without closing a healthy connection.
+`voice.replaced` ends the old connection and stops sending.
+
+`close_gracefully()` sends a request ID, waits for the matching
+`connection.closed`, returns the successful outcome, and closes the transport.
+A missing/mismatched acknowledgement, persistence failure, or timeout raises an
+error. A server that advertises `graceful_close=false` rejects this operation.
+`close()`/context exit release transport only; they don't confirm persistence,
+stop background Work, or delete the Conversation. No public Conversation delete
+API is assumed. Keep track of test Conversations and use dedicated resources.
+
+Handshake/credential resolution defaults to 30 seconds, ready to 60, sending to
+30, and graceful close to 10; the ordinary HTTP timeout isn't the WebSocket
+lifetime. The server limits a connection to 60 minutes. The receive queue is
+bounded to 256 events and 4 MiB, and incoming messages to 1 MiB; slow consumers
+raise `RealtimeQueueOverflowError` and close instead of dropping events. These
+limits and timeouts are keyword options on `connect`. Transport/protocol errors
+are exported from `qca.forward` and belong to the existing API error hierarchy.
+
+HTTP and each new handshake share PAT, direct SAT, and Credential header
+construction. Credentials appear only in headers. Every new connection resolves
+a current token; an established connection doesn't rotate its Authorization.
+There are no redirects, automatic reconnects, or input replay. Custom `httpx`
+clients/middleware aren't WebSocket transports: configure `ssl_context` and
+`proxy` on `connect` (system proxy by default, `None` to disable). Synchronous
+Credential providers can't be forcibly stopped; if a deadline/cancellation wins,
+their background call may finish later without opening a WebSocket.
+
+The Realtime service currently requires a **Forward-issued, bound SAT** in SA
+mode. Pass that token as `Forward(auth_mode="sa", access_token=forward_sat)`
+(or use a custom provider that returns such a token). A platform SAT obtained
+from `ServiceAccountCredential` does not create this Forward token binding.
+The SDK does not automatically issue or bind a Forward SAT.
+
+Runnable text, PCM, and history examples reuse the existing PAT/SA configuration:
+
+```bash
+python -m examples.forward.realtime --identity-id ID --template-id ID --text "Hello"
+python -m examples.forward.realtime --identity-id ID --template-id ID --pcm input.pcm --async
+python -m examples.forward.realtime --conversation-id ID --history-only
+```
+
+For SA examples, set `QODER_AUTH_MODE=sa` and `QODER_ACCESS_TOKEN` to the
+Forward-issued SAT; leave `QODER_SA_KEY` empty.
+
+The PCM example sends 20 ms chunks and validates output without playing it.
+Use `--help` for a no-network check. CN/Global integration is separate from daily
+business tests: configure the dedicated `QODER_REALTIME_*` fields in
+`.env.live.example` and run `uv run make test-live-realtime`. It preflights both
+regions, requires explicit write/model flags, creates persistent Conversations,
+and covers ready, ping, short text response (or explicit PCM input), graceful close,
+history, and temporary Identity cleanup in both PAT/SA and sync/async modes.
+It records persistent Conversation IDs. Background Work and actual speaker
+playback still require dedicated acceptance scenarios.
+Use `QODER_REALTIME_CN_SAT` and `QODER_REALTIME_GLOBAL_SAT` for SA acceptance;
+these take priority over the platform Credential path retained for diagnostics.
 
 ## PAT and Service Account authentication
 

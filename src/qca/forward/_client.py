@@ -12,6 +12,7 @@ from .resources.files import AsyncFiles, Files
 from .resources.identities.identities import AsyncIdentities, Identities
 from .resources.memory_stores.memory_stores import AsyncMemoryStores, MemoryStores
 from .resources.models import AsyncModels, Models
+from .resources.realtime import AsyncRealtime, Realtime
 from .resources.schedule_runs import AsyncScheduleRuns, ScheduleRuns
 from .resources.schedules import AsyncSchedules, Schedules
 from .resources.service_account_tokens import AsyncServiceAccountTokens, ServiceAccountTokens
@@ -25,6 +26,10 @@ from .resources.vaults.vaults import AsyncVaults, Vaults
 class Forward(SyncAPIClient):
     _default_base_url = "https://api.qoder.com/api/v1/forward/"
     _base_url_env = "QODER_FORWARD_BASE_URL"
+
+    @cached_property
+    def realtime(self) -> Realtime:
+        return Realtime(self)
 
     @cached_property
     def templates(self) -> Templates:
@@ -94,6 +99,10 @@ class Forward(SyncAPIClient):
 class AsyncForward(AsyncAPIClient):
     _default_base_url = "https://api.qoder.com/api/v1/forward/"
     _base_url_env = "QODER_FORWARD_BASE_URL"
+
+    @cached_property
+    def realtime(self) -> AsyncRealtime:
+        return AsyncRealtime(self)
 
     @cached_property
     def templates(self) -> AsyncTemplates:
