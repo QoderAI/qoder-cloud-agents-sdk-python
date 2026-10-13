@@ -1934,6 +1934,38 @@
         "run_id"
       ],
       "kind": "model"
+    },
+    {
+      "id": "forward.service_account_tokens.create",
+      "method": "POST",
+      "path": "/service_account_tokens",
+      "required": [
+        "sa_key"
+      ],
+      "kind": "model",
+      "source": "https://docs.qoder.com/cloud-agents/api/forward/service-account-tokens/create"
+    },
+    {
+      "id": "forward.identities.service_account_tokens.create",
+      "method": "POST",
+      "path": "/identities/{identity_id}/service_account_tokens",
+      "required": [
+        "identity_id",
+        "sa_key"
+      ],
+      "kind": "model",
+      "source": "https://docs.qoder.com/cloud-agents/api/forward/service-account-tokens/create-identity"
+    },
+    {
+      "id": "forward.service_account_tokens.revoke",
+      "method": "POST",
+      "path": "/service_account_tokens/{auth_token_id}/revoke",
+      "required": [
+        "auth_token_id",
+        "sa_key"
+      ],
+      "kind": "model",
+      "source": "https://docs.qoder.com/cloud-agents/api/forward/service-account-tokens/revoke"
     }
   ],
   "extensions": [

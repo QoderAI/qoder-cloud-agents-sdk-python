@@ -10,6 +10,8 @@ from .schedule_runs import AsyncScheduleRuns as AsyncScheduleRuns
 from .schedule_runs import ScheduleRuns as ScheduleRuns
 from .schedules import AsyncSchedules as AsyncSchedules
 from .schedules import Schedules as Schedules
+from .service_account_tokens import AsyncServiceAccountTokens as AsyncServiceAccountTokens
+from .service_account_tokens import ServiceAccountTokens as ServiceAccountTokens
 from .templates import AsyncTemplates as AsyncTemplates
 from .templates import Templates as Templates
 from .usage import AsyncUsage as AsyncUsage
