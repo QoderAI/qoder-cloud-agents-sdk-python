@@ -45,3 +45,7 @@ test-live-realtime:
 
 test-live-sa-tokens:
 	QODER_LIVE_ENV_FILE="$(LIVE_ENV_FILE)" $(PYTHON) -m pytest tests/sa/test_tokens_live.py -m integration -v -s
+
+.PHONY: test-live-drive
+test-live-drive:
+	QODER_DRIVE_RUN_LIVE=1 QODER_LIVE_ENV_FILE="$(LIVE_ENV_FILE)" $(PYTHON) -m pytest tests/integration/test_drive.py -m integration -v -s

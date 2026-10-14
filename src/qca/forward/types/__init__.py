@@ -37,6 +37,17 @@ from .deleted_memory import DeletedMemory as DeletedMemory
 from .deleted_memory_store import DeletedMemoryStore as DeletedMemoryStore
 from .deleted_memory_store_mount import DeletedMemoryStoreMount as DeletedMemoryStoreMount
 from .deleted_skill_version import DeletedSkillVersion as DeletedSkillVersion
+from .drive import DriveClearParams as DriveClearParams
+from .drive import DriveClearResponse as DriveClearResponse
+from .drive import DriveCreateDownloadURLParams as DriveCreateDownloadURLParams
+from .drive import DriveCreateUploadURLParams as DriveCreateUploadURLParams
+from .drive import DriveDeleteEntryParams as DriveDeleteEntryParams
+from .drive import DriveDeleteEntryResponse as DriveDeleteEntryResponse
+from .drive import DriveDownloadURL as DriveDownloadURL
+from .drive import DriveEntry as DriveEntry
+from .drive import DriveListEntriesParams as DriveListEntriesParams
+from .drive import DriveListEntriesResponse as DriveListEntriesResponse
+from .drive import DriveUploadURL as DriveUploadURL
 from .effective_config import EffectiveConfig as EffectiveConfig
 from .effective_config_agent import EffectiveConfigAgent as EffectiveConfigAgent
 from .effective_config_agent_tools_item import EffectiveConfigAgentToolsItem as EffectiveConfigAgentToolsItem
@@ -79,6 +90,8 @@ from .identity_template import IdentityTemplate as IdentityTemplate
 from .identity_update_params import IdentityUpdateParams as IdentityUpdateParams
 from .identity_usage import IdentityUsage as IdentityUsage
 from .image_source_param import ImageSourceParam as ImageSourceParam
+from .managed_tool_config import ManagedToolConfig as ManagedToolConfig
+from .managed_tool_config_param import ManagedToolConfigParam as ManagedToolConfigParam
 from .mcp_server import MCPServer as MCPServer
 from .mcp_server_override import MCPServerOverride as MCPServerOverride
 from .mcp_server_override_param import MCPServerOverrideParam as MCPServerOverrideParam

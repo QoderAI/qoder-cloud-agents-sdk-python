@@ -6,6 +6,7 @@ from typing_extensions import Required, TypedDict
 
 if TYPE_CHECKING:
     from .git_hub_repository_param import GitHubRepositoryParam
+    from .managed_tool_config_param import ManagedToolConfigParam
     from .mcp_server_param import MCPServerParam
     from .model_config_param import ModelConfigParam
     from .multiagent_config_param import MultiagentConfigParam
@@ -17,6 +18,7 @@ __all__ = ["TemplateCreateParams"]
 
 
 class TemplateCreateParams(TypedDict, total=False):
+    managed_tool_config: Optional[ManagedToolConfigParam]
     name: Required[str]
     model: Required[Union[str, ModelConfigParam]]
     environment_id: Required[str]

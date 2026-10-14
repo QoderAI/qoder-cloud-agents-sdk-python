@@ -2066,6 +2066,17 @@ class Forward(SyncAPIClient)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/_client.py)
 
+<a id="qca.forward._client.Forward.drives"></a>
+
+#### drives
+
+```python
+@cached_property
+def drives() -> Drives
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/_client.py)
+
 <a id="qca.forward._client.Forward.realtime"></a>
 
 #### realtime
@@ -2259,6 +2270,17 @@ def models() -> Models
 
 ```python
 class AsyncForward(AsyncAPIClient)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/_client.py)
+
+<a id="qca.forward._client.AsyncForward.drives"></a>
+
+#### drives
+
+```python
+@cached_property
+def drives() -> AsyncDrives
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/_client.py)
@@ -3300,6 +3322,244 @@ async def retrieve(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/channels/qr_sessions.py)
 
 GET /qr_sessions/{session_key}.
+
+<a id="qca.forward.resources.drives"></a>
+
+# qca.forward.resources.drives
+
+<a id="qca.forward.resources.drives.Drives"></a>
+
+## Drives
+
+```python
+class Drives(SyncAPIResource)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/drives.py)
+
+Persistent Identity files (Beta). Identity SATs also require identity_id.
+
+<a id="qca.forward.resources.drives.Drives.list_entries"></a>
+
+#### list\_entries
+
+```python
+def list_entries(
+    *,
+    identity_id: str,
+    path: str | NotGiven = NOT_GIVEN,
+    limit: int | NotGiven = NOT_GIVEN,
+    page_token: str | NotGiven = NOT_GIVEN,
+    extra_headers: dict[str, str] | None = None,
+    extra_query: dict[str, Any] | None = None,
+    extra_body: dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> DriveListEntriesResponse
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/drives.py)
+
+GET /drives/entries. Returns one page in service order; reuse next_page_token in the same scope/path.
+
+<a id="qca.forward.resources.drives.Drives.create_upload_url"></a>
+
+#### create\_upload\_url
+
+```python
+def create_upload_url(
+    *,
+    identity_id: str,
+    path: str,
+    content_type: str | NotGiven = NOT_GIVEN,
+    idempotency_key: str | NotGiven = NOT_GIVEN,
+    extra_headers: dict[str, str] | None = None,
+    extra_query: dict[str, Any] | None = None,
+    extra_body: dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> DriveUploadURL
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/drives.py)
+
+POST /drives/upload-url. Use only the returned headers when uploading; do not send API credentials to storage.
+
+<a id="qca.forward.resources.drives.Drives.create_download_url"></a>
+
+#### create\_download\_url
+
+```python
+def create_download_url(
+    *,
+    identity_id: str,
+    path: str,
+    idempotency_key: str | NotGiven = NOT_GIVEN,
+    extra_headers: dict[str, str] | None = None,
+    extra_query: dict[str, Any] | None = None,
+    extra_body: dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> DriveDownloadURL
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/drives.py)
+
+POST /drives/download-url. Use a new Idempotency-Key or omit it to refresh expiry; replay does not renew it.
+
+<a id="qca.forward.resources.drives.Drives.delete_entry"></a>
+
+#### delete\_entry
+
+```python
+def delete_entry(
+    *,
+    identity_id: str,
+    path: str,
+    recursive: bool | NotGiven = NOT_GIVEN,
+    extra_headers: dict[str, str] | None = None,
+    extra_query: dict[str, Any] | None = None,
+    extra_body: dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> DriveDeleteEntryResponse
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/drives.py)
+
+DELETE /drives/entries. Nonempty directories require recursive=True. Partial failures retain error.deleted_count.
+
+<a id="qca.forward.resources.drives.Drives.clear"></a>
+
+#### clear
+
+```python
+def clear(
+    *,
+    identity_id: str,
+    extra_headers: dict[str, str] | None = None,
+    extra_query: dict[str, Any] | None = None,
+    extra_body: dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> DriveClearResponse
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/drives.py)
+
+DELETE /drives. Deletes all files in the selected Identity Drive.
+
+<a id="qca.forward.resources.drives.AsyncDrives"></a>
+
+## AsyncDrives
+
+```python
+class AsyncDrives(AsyncAPIResource)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/drives.py)
+
+Persistent Identity files (Beta). Identity SATs also require identity_id.
+
+<a id="qca.forward.resources.drives.AsyncDrives.list_entries"></a>
+
+#### list\_entries
+
+```python
+async def list_entries(
+    *,
+    identity_id: str,
+    path: str | NotGiven = NOT_GIVEN,
+    limit: int | NotGiven = NOT_GIVEN,
+    page_token: str | NotGiven = NOT_GIVEN,
+    extra_headers: dict[str, str] | None = None,
+    extra_query: dict[str, Any] | None = None,
+    extra_body: dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> DriveListEntriesResponse
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/drives.py)
+
+GET /drives/entries. Returns one page in service order; reuse next_page_token in the same scope/path.
+
+<a id="qca.forward.resources.drives.AsyncDrives.create_upload_url"></a>
+
+#### create\_upload\_url
+
+```python
+async def create_upload_url(
+    *,
+    identity_id: str,
+    path: str,
+    content_type: str | NotGiven = NOT_GIVEN,
+    idempotency_key: str | NotGiven = NOT_GIVEN,
+    extra_headers: dict[str, str] | None = None,
+    extra_query: dict[str, Any] | None = None,
+    extra_body: dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> DriveUploadURL
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/drives.py)
+
+POST /drives/upload-url. Use only the returned headers when uploading; do not send API credentials to storage.
+
+<a id="qca.forward.resources.drives.AsyncDrives.create_download_url"></a>
+
+#### create\_download\_url
+
+```python
+async def create_download_url(
+    *,
+    identity_id: str,
+    path: str,
+    idempotency_key: str | NotGiven = NOT_GIVEN,
+    extra_headers: dict[str, str] | None = None,
+    extra_query: dict[str, Any] | None = None,
+    extra_body: dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> DriveDownloadURL
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/drives.py)
+
+POST /drives/download-url. Use a new Idempotency-Key or omit it to refresh expiry; replay does not renew it.
+
+<a id="qca.forward.resources.drives.AsyncDrives.delete_entry"></a>
+
+#### delete\_entry
+
+```python
+async def delete_entry(
+    *,
+    identity_id: str,
+    path: str,
+    recursive: bool | NotGiven = NOT_GIVEN,
+    extra_headers: dict[str, str] | None = None,
+    extra_query: dict[str, Any] | None = None,
+    extra_body: dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> DriveDeleteEntryResponse
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/drives.py)
+
+DELETE /drives/entries. Nonempty directories require recursive=True. Partial failures retain error.deleted_count.
+
+<a id="qca.forward.resources.drives.AsyncDrives.clear"></a>
+
+#### clear
+
+```python
+async def clear(
+    *,
+    identity_id: str,
+    extra_headers: dict[str, str] | None = None,
+    extra_query: dict[str, Any] | None = None,
+    extra_body: dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> DriveClearResponse
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/drives.py)
+
+DELETE /drives. Deletes all files in the selected Identity Drive.
 
 <a id="qca.forward.resources.environments"></a>
 
@@ -8477,6 +8737,8 @@ def create(
         mcp_servers: Union[List[MCPServerParam], None, NotGiven] = NOT_GIVEN,
         skills: Union[List[SkillBindingParam], None, NotGiven] = NOT_GIVEN,
         multiagent: Union[MultiagentConfigParam, None, NotGiven] = NOT_GIVEN,
+        managed_tool_config: Union[ManagedToolConfigParam, None,
+                                   NotGiven] = NOT_GIVEN,
         vaults: Union[Dict[str, ResourceBindingParam], None,
                       NotGiven] = NOT_GIVEN,
         files: Union[Dict[str, ResourceBindingParam], None,
@@ -8534,6 +8796,8 @@ def update(
         mcp_servers: Union[List[MCPServerParam], None, NotGiven] = NOT_GIVEN,
         skills: Union[List[SkillBindingParam], None, NotGiven] = NOT_GIVEN,
         multiagent: Union[MultiagentConfigParam, None, NotGiven] = NOT_GIVEN,
+        managed_tool_config: Union[ManagedToolConfigParam, None,
+                                   NotGiven] = NOT_GIVEN,
         environment_id: Union[str, None, NotGiven] = NOT_GIVEN,
         vaults: Union[Dict[str, ResourceBindingParam], None,
                       NotGiven] = NOT_GIVEN,
@@ -8647,6 +8911,8 @@ async def create(
         mcp_servers: Union[List[MCPServerParam], None, NotGiven] = NOT_GIVEN,
         skills: Union[List[SkillBindingParam], None, NotGiven] = NOT_GIVEN,
         multiagent: Union[MultiagentConfigParam, None, NotGiven] = NOT_GIVEN,
+        managed_tool_config: Union[ManagedToolConfigParam, None,
+                                   NotGiven] = NOT_GIVEN,
         vaults: Union[Dict[str, ResourceBindingParam], None,
                       NotGiven] = NOT_GIVEN,
         files: Union[Dict[str, ResourceBindingParam], None,
@@ -8704,6 +8970,8 @@ async def update(
         mcp_servers: Union[List[MCPServerParam], None, NotGiven] = NOT_GIVEN,
         skills: Union[List[SkillBindingParam], None, NotGiven] = NOT_GIVEN,
         multiagent: Union[MultiagentConfigParam, None, NotGiven] = NOT_GIVEN,
+        managed_tool_config: Union[ManagedToolConfigParam, None,
+                                   NotGiven] = NOT_GIVEN,
         environment_id: Union[str, None, NotGiven] = NOT_GIVEN,
         vaults: Union[Dict[str, ResourceBindingParam], None,
                       NotGiven] = NOT_GIVEN,
@@ -10349,6 +10617,268 @@ class DeletedSkillVersion(BaseModel)
 
 #### deleted
 
+<a id="qca.forward.types.drive"></a>
+
+# qca.forward.types.drive
+
+<a id="qca.forward.types.drive.DriveEntry"></a>
+
+## DriveEntry
+
+```python
+class DriveEntry(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/drive.py)
+
+<a id="qca.forward.types.drive.DriveEntry.path"></a>
+
+#### path
+
+<a id="qca.forward.types.drive.DriveEntry.name"></a>
+
+#### name
+
+<a id="qca.forward.types.drive.DriveEntry.type"></a>
+
+#### type
+
+<a id="qca.forward.types.drive.DriveEntry.size"></a>
+
+#### size
+
+<a id="qca.forward.types.drive.DriveEntry.etag"></a>
+
+#### etag
+
+<a id="qca.forward.types.drive.DriveEntry.last_modified"></a>
+
+#### last\_modified
+
+<a id="qca.forward.types.drive.DriveListEntriesResponse"></a>
+
+## DriveListEntriesResponse
+
+```python
+class DriveListEntriesResponse(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/drive.py)
+
+One page in service order; pass next_page_token unchanged to continue.
+
+<a id="qca.forward.types.drive.DriveListEntriesResponse.entries"></a>
+
+#### entries
+
+<a id="qca.forward.types.drive.DriveListEntriesResponse.next_page_token"></a>
+
+#### next\_page\_token
+
+<a id="qca.forward.types.drive.DriveUploadURL"></a>
+
+## DriveUploadURL
+
+```python
+class DriveUploadURL(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/drive.py)
+
+Signed storage URL valid for 15 minutes. Treat url as a credential.
+
+<a id="qca.forward.types.drive.DriveUploadURL.url"></a>
+
+#### url
+
+<a id="qca.forward.types.drive.DriveUploadURL.method"></a>
+
+#### method
+
+<a id="qca.forward.types.drive.DriveUploadURL.headers"></a>
+
+#### headers
+
+<a id="qca.forward.types.drive.DriveUploadURL.expires_at"></a>
+
+#### expires\_at
+
+<a id="qca.forward.types.drive.DriveDownloadURL"></a>
+
+## DriveDownloadURL
+
+```python
+class DriveDownloadURL(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/drive.py)
+
+<a id="qca.forward.types.drive.DriveDownloadURL.url"></a>
+
+#### url
+
+<a id="qca.forward.types.drive.DriveDownloadURL.method"></a>
+
+#### method
+
+<a id="qca.forward.types.drive.DriveDownloadURL.headers"></a>
+
+#### headers
+
+<a id="qca.forward.types.drive.DriveDownloadURL.expires_at"></a>
+
+#### expires\_at
+
+<a id="qca.forward.types.drive.DriveDownloadURL.size"></a>
+
+#### size
+
+<a id="qca.forward.types.drive.DriveDownloadURL.etag"></a>
+
+#### etag
+
+<a id="qca.forward.types.drive.DriveDownloadURL.content_type"></a>
+
+#### content\_type
+
+<a id="qca.forward.types.drive.DriveDeleteEntryResponse"></a>
+
+## DriveDeleteEntryResponse
+
+```python
+class DriveDeleteEntryResponse(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/drive.py)
+
+<a id="qca.forward.types.drive.DriveDeleteEntryResponse.deleted_count"></a>
+
+#### deleted\_count
+
+<a id="qca.forward.types.drive.DriveClearResponse"></a>
+
+## DriveClearResponse
+
+```python
+class DriveClearResponse(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/drive.py)
+
+<a id="qca.forward.types.drive.DriveClearResponse.deleted_count"></a>
+
+#### deleted\_count
+
+<a id="qca.forward.types.drive.DriveListEntriesParams"></a>
+
+## DriveListEntriesParams
+
+```python
+class DriveListEntriesParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/drive.py)
+
+<a id="qca.forward.types.drive.DriveListEntriesParams.identity_id"></a>
+
+#### identity\_id
+
+<a id="qca.forward.types.drive.DriveListEntriesParams.path"></a>
+
+#### path
+
+<a id="qca.forward.types.drive.DriveListEntriesParams.limit"></a>
+
+#### limit
+
+<a id="qca.forward.types.drive.DriveListEntriesParams.page_token"></a>
+
+#### page\_token
+
+<a id="qca.forward.types.drive.DriveCreateUploadURLParams"></a>
+
+## DriveCreateUploadURLParams
+
+```python
+class DriveCreateUploadURLParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/drive.py)
+
+<a id="qca.forward.types.drive.DriveCreateUploadURLParams.identity_id"></a>
+
+#### identity\_id
+
+<a id="qca.forward.types.drive.DriveCreateUploadURLParams.path"></a>
+
+#### path
+
+<a id="qca.forward.types.drive.DriveCreateUploadURLParams.content_type"></a>
+
+#### content\_type
+
+<a id="qca.forward.types.drive.DriveCreateUploadURLParams.idempotency_key"></a>
+
+#### idempotency\_key
+
+<a id="qca.forward.types.drive.DriveCreateDownloadURLParams"></a>
+
+## DriveCreateDownloadURLParams
+
+```python
+class DriveCreateDownloadURLParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/drive.py)
+
+<a id="qca.forward.types.drive.DriveCreateDownloadURLParams.identity_id"></a>
+
+#### identity\_id
+
+<a id="qca.forward.types.drive.DriveCreateDownloadURLParams.path"></a>
+
+#### path
+
+<a id="qca.forward.types.drive.DriveCreateDownloadURLParams.idempotency_key"></a>
+
+#### idempotency\_key
+
+<a id="qca.forward.types.drive.DriveDeleteEntryParams"></a>
+
+## DriveDeleteEntryParams
+
+```python
+class DriveDeleteEntryParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/drive.py)
+
+<a id="qca.forward.types.drive.DriveDeleteEntryParams.identity_id"></a>
+
+#### identity\_id
+
+<a id="qca.forward.types.drive.DriveDeleteEntryParams.path"></a>
+
+#### path
+
+<a id="qca.forward.types.drive.DriveDeleteEntryParams.recursive"></a>
+
+#### recursive
+
+<a id="qca.forward.types.drive.DriveClearParams"></a>
+
+## DriveClearParams
+
+```python
+class DriveClearParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/drive.py)
+
+<a id="qca.forward.types.drive.DriveClearParams.identity_id"></a>
+
+#### identity\_id
+
 <a id="qca.forward.types.effective_config"></a>
 
 # qca.forward.types.effective\_config
@@ -11644,6 +12174,46 @@ class ImageSourceParam(TypedDict)
 <a id="qca.forward.types.image_source_param.ImageSourceParam.file_id"></a>
 
 #### file\_id
+
+<a id="qca.forward.types.managed_tool_config"></a>
+
+# qca.forward.types.managed\_tool\_config
+
+<a id="qca.forward.types.managed_tool_config.ManagedToolConfig"></a>
+
+## ManagedToolConfig
+
+```python
+class ManagedToolConfig(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/managed_tool_config.py)
+
+Forward-managed tools, distinct from tools[].enabled_tools.
+
+<a id="qca.forward.types.managed_tool_config.ManagedToolConfig.enabled_tools"></a>
+
+#### enabled\_tools
+
+<a id="qca.forward.types.managed_tool_config_param"></a>
+
+# qca.forward.types.managed\_tool\_config\_param
+
+<a id="qca.forward.types.managed_tool_config_param.ManagedToolConfigParam"></a>
+
+## ManagedToolConfigParam
+
+```python
+class ManagedToolConfigParam(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/managed_tool_config_param.py)
+
+Replaces the complete enabled list; [] disables all managed tools.
+
+<a id="qca.forward.types.managed_tool_config_param.ManagedToolConfigParam.enabled_tools"></a>
+
+#### enabled\_tools
 
 <a id="qca.forward.types.mcp_server"></a>
 
@@ -15453,6 +16023,10 @@ class Template(BaseModel)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/template.py)
 
+<a id="qca.forward.types.template.Template.managed_tool_config"></a>
+
+#### managed\_tool\_config
+
 <a id="qca.forward.types.template.Template.type"></a>
 
 #### type
@@ -15587,6 +16161,10 @@ class TemplateCreateParams(TypedDict)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/template_create_params.py)
 
+<a id="qca.forward.types.template_create_params.TemplateCreateParams.managed_tool_config"></a>
+
+#### managed\_tool\_config
+
 <a id="qca.forward.types.template_create_params.TemplateCreateParams.name"></a>
 
 #### name
@@ -15694,6 +16272,10 @@ class TemplateUpdateParams(TypedDict)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/template_update_params.py)
+
+<a id="qca.forward.types.template_update_params.TemplateUpdateParams.managed_tool_config"></a>
+
+#### managed\_tool\_config
 
 <a id="qca.forward.types.template_update_params.TemplateUpdateParams.name"></a>
 

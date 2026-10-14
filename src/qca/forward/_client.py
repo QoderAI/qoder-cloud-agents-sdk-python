@@ -7,6 +7,7 @@ from qca.common._base_client import AsyncAPIClient, SyncAPIClient
 from .resources.batches.batches import AsyncBatches, Batches
 from .resources.channel_pairings import AsyncChannelPairings, ChannelPairings
 from .resources.channels.channels import AsyncChannels, Channels
+from .resources.drives import AsyncDrives, Drives
 from .resources.environments import AsyncEnvironments, Environments
 from .resources.files import AsyncFiles, Files
 from .resources.identities.identities import AsyncIdentities, Identities
@@ -24,6 +25,10 @@ from .resources.vaults.vaults import AsyncVaults, Vaults
 
 
 class Forward(SyncAPIClient):
+    @cached_property
+    def drives(self) -> Drives:
+        return Drives(self)
+
     _default_base_url = "https://api.qoder.com/api/v1/forward/"
     _base_url_env = "QODER_FORWARD_BASE_URL"
 
@@ -97,6 +102,10 @@ class Forward(SyncAPIClient):
 
 
 class AsyncForward(AsyncAPIClient):
+    @cached_property
+    def drives(self) -> AsyncDrives:
+        return AsyncDrives(self)
+
     _default_base_url = "https://api.qoder.com/api/v1/forward/"
     _base_url_env = "QODER_FORWARD_BASE_URL"
 
