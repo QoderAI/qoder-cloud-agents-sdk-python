@@ -1,5 +1,7 @@
 from .channel_pairings import AsyncChannelPairings as AsyncChannelPairings
 from .channel_pairings import ChannelPairings as ChannelPairings
+from .drives import AsyncDrives as AsyncDrives
+from .drives import Drives as Drives
 from .environments import AsyncEnvironments as AsyncEnvironments
 from .environments import Environments as Environments
 from .files import AsyncFiles as AsyncFiles

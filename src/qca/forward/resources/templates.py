@@ -9,6 +9,7 @@ from qca.common._types import NOT_GIVEN, NotGiven
 from qca.common._utils import make_request_options, path_template
 from qca.common.pagination import AsyncPaginator, SyncPage
 from qca.forward.types.git_hub_repository_param import GitHubRepositoryParam
+from qca.forward.types.managed_tool_config_param import ManagedToolConfigParam
 from qca.forward.types.mcp_server_param import MCPServerParam
 from qca.forward.types.model_config_param import ModelConfigParam
 from qca.forward.types.multiagent_config_param import MultiagentConfigParam
@@ -58,6 +59,7 @@ class Templates(SyncAPIResource):
         mcp_servers: Union[List[MCPServerParam], None, NotGiven] = NOT_GIVEN,
         skills: Union[List[SkillBindingParam], None, NotGiven] = NOT_GIVEN,
         multiagent: Union[MultiagentConfigParam, None, NotGiven] = NOT_GIVEN,
+        managed_tool_config: Union[ManagedToolConfigParam, None, NotGiven] = NOT_GIVEN,
         vaults: Union[Dict[str, ResourceBindingParam], None, NotGiven] = NOT_GIVEN,
         files: Union[Dict[str, ResourceBindingParam], None, NotGiven] = NOT_GIVEN,
         github_repositories: Union[Dict[str, GitHubRepositoryParam], None, NotGiven] = NOT_GIVEN,
@@ -83,6 +85,7 @@ class Templates(SyncAPIResource):
                 "mcp_servers": mcp_servers,
                 "skills": skills,
                 "multiagent": multiagent,
+                "managed_tool_config": managed_tool_config,
                 "vaults": vaults,
                 "files": files,
                 "github_repositories": github_repositories,
@@ -132,6 +135,7 @@ class Templates(SyncAPIResource):
         mcp_servers: Union[List[MCPServerParam], None, NotGiven] = NOT_GIVEN,
         skills: Union[List[SkillBindingParam], None, NotGiven] = NOT_GIVEN,
         multiagent: Union[MultiagentConfigParam, None, NotGiven] = NOT_GIVEN,
+        managed_tool_config: Union[ManagedToolConfigParam, None, NotGiven] = NOT_GIVEN,
         environment_id: Union[str, None, NotGiven] = NOT_GIVEN,
         vaults: Union[Dict[str, ResourceBindingParam], None, NotGiven] = NOT_GIVEN,
         files: Union[Dict[str, ResourceBindingParam], None, NotGiven] = NOT_GIVEN,
@@ -157,6 +161,7 @@ class Templates(SyncAPIResource):
                 "mcp_servers": mcp_servers,
                 "skills": skills,
                 "multiagent": multiagent,
+                "managed_tool_config": managed_tool_config,
                 "environment_id": environment_id,
                 "vaults": vaults,
                 "files": files,
@@ -262,6 +267,7 @@ class AsyncTemplates(AsyncAPIResource):
         mcp_servers: Union[List[MCPServerParam], None, NotGiven] = NOT_GIVEN,
         skills: Union[List[SkillBindingParam], None, NotGiven] = NOT_GIVEN,
         multiagent: Union[MultiagentConfigParam, None, NotGiven] = NOT_GIVEN,
+        managed_tool_config: Union[ManagedToolConfigParam, None, NotGiven] = NOT_GIVEN,
         vaults: Union[Dict[str, ResourceBindingParam], None, NotGiven] = NOT_GIVEN,
         files: Union[Dict[str, ResourceBindingParam], None, NotGiven] = NOT_GIVEN,
         github_repositories: Union[Dict[str, GitHubRepositoryParam], None, NotGiven] = NOT_GIVEN,
@@ -287,6 +293,7 @@ class AsyncTemplates(AsyncAPIResource):
                 "mcp_servers": mcp_servers,
                 "skills": skills,
                 "multiagent": multiagent,
+                "managed_tool_config": managed_tool_config,
                 "vaults": vaults,
                 "files": files,
                 "github_repositories": github_repositories,
@@ -336,6 +343,7 @@ class AsyncTemplates(AsyncAPIResource):
         mcp_servers: Union[List[MCPServerParam], None, NotGiven] = NOT_GIVEN,
         skills: Union[List[SkillBindingParam], None, NotGiven] = NOT_GIVEN,
         multiagent: Union[MultiagentConfigParam, None, NotGiven] = NOT_GIVEN,
+        managed_tool_config: Union[ManagedToolConfigParam, None, NotGiven] = NOT_GIVEN,
         environment_id: Union[str, None, NotGiven] = NOT_GIVEN,
         vaults: Union[Dict[str, ResourceBindingParam], None, NotGiven] = NOT_GIVEN,
         files: Union[Dict[str, ResourceBindingParam], None, NotGiven] = NOT_GIVEN,
@@ -361,6 +369,7 @@ class AsyncTemplates(AsyncAPIResource):
                 "mcp_servers": mcp_servers,
                 "skills": skills,
                 "multiagent": multiagent,
+                "managed_tool_config": managed_tool_config,
                 "environment_id": environment_id,
                 "vaults": vaults,
                 "files": files,

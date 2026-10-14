@@ -7,6 +7,7 @@ from qca.common._models import BaseModel
 
 if TYPE_CHECKING:
     from .git_hub_repository import GitHubRepository
+    from .managed_tool_config import ManagedToolConfig
     from .mcp_server import MCPServer
     from .model_config import ModelConfig
     from .multiagent_config import MultiagentConfig
@@ -18,6 +19,7 @@ __all__ = ["Template"]
 
 
 class Template(BaseModel):
+    managed_tool_config: Optional[ManagedToolConfig] = None
     type: Optional[str] = None
     id: Optional[str] = None
     name: Optional[str] = None

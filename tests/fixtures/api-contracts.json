@@ -1988,6 +1988,54 @@
       ],
       "kind": "model",
       "source": "https://docs.qoder.com/cloud-agents/api/forward/service-account-tokens/revoke"
+    },
+    {
+      "id": "forward.drives.list_entries",
+      "method": "GET",
+      "path": "/drives/entries",
+      "required": [
+        "identity_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.drives.create_upload_url",
+      "method": "POST",
+      "path": "/drives/upload-url",
+      "required": [
+        "identity_id",
+        "path"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.drives.create_download_url",
+      "method": "POST",
+      "path": "/drives/download-url",
+      "required": [
+        "identity_id",
+        "path"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.drives.delete_entry",
+      "method": "DELETE",
+      "path": "/drives/entries",
+      "required": [
+        "identity_id",
+        "path"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.drives.clear",
+      "method": "DELETE",
+      "path": "/drives",
+      "required": [
+        "identity_id"
+      ],
+      "kind": "model"
     }
   ],
   "extensions": [

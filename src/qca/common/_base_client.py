@@ -364,6 +364,8 @@ class SyncAPIClient(BaseClient):
         if stream:
             args["headers"]["Accept"] = "text/event-stream"
         request = self._client.build_request(**args)
+        if serializer := options.get("query_serializer"):
+            request.url = request.url.copy_with(query=serializer(request.url.params.multi_items()).encode("ascii"))
         request.extensions["qca_explicit_auth"] = any(
             key.lower() == "authorization" for key in (*self.default_headers, *options.get("headers", {}))
         )
@@ -498,6 +500,8 @@ class AsyncAPIClient(BaseClient):
         if stream:
             args["headers"]["Accept"] = "text/event-stream"
         request = self._client.build_request(**args)
+        if serializer := options.get("query_serializer"):
+            request.url = request.url.copy_with(query=serializer(request.url.params.multi_items()).encode("ascii"))
         request.extensions["qca_explicit_auth"] = any(
             key.lower() == "authorization" for key in (*self.default_headers, *options.get("headers", {}))
         )

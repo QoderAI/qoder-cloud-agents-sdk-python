@@ -609,6 +609,57 @@ credential = client.vaults.credentials.retrieve("credential-id", vault_id="vault
 memory = client.memory_stores.memories.retrieve("memory-id", memory_store_id="store-id")
 ```
 
+## Forward Drive (Beta)
+
+Drive is a Beta API. It uses `entries` / `next_page_token`, not the ordinary
+resource paginator. Pass `identity_id` even with an Identity SAT, preserve the
+server order, and reuse a cursor only within the same Identity, directory and
+authentication scope. Paths are relative; the SDK preserves slashes when encoding
+the list query and leaves path validation to the service.
+
+Upload/download methods return a signed URL, method, headers and expiry. Send the
+storage request with a separate HTTP client using only those returned headers;
+do not attach QCA credentials or log signed URLs. Replaying an `Idempotency-Key`
+does not renew the URL: use a new key or omit it when requesting a fresh URL.
+
+Deleting a nonempty directory requires `recursive=true`; `clear` deletes the
+entire selected Identity Drive. Partial failures retain `drive_delete_partial`
+and `deleted_count` in the standard API error body. Direct Drive APIs do not
+require Template tool configuration.
+
+```python
+page = client.drives.list_entries(identity_id=identity_id, path="reports", limit=20)
+for entry in page.entries:
+    print(entry.path)
+if page.next_page_token:
+    page = client.drives.list_entries(
+        identity_id=identity_id, path="reports", page_token=page.next_page_token,
+    )
+# Replace the complete managed-tool list, retaining any other tools you need.
+client.templates.update(template_id, managed_tool_config={"enabled_tools": ["drive"]})
+```
+
+`AsyncForward` exposes the same methods with `await`. Run the
+[file lifecycle example](examples/forward/drive.py) with
+`python -m examples.forward.drive --region cn` (or `global`); it uses the shared
+PAT/SA configuration and creates a fresh Identity. A directory has `size=None`;
+a zero-byte file has `size=0`.
+For maintainers, `uv run make test-live-drive` tests CN/Global × PAT/admin
+SAT/Identity SAT with both sync and async clients.
+
+To enable Agent-managed Drive tools, use Template `managed_tool_config.enabled_tools`.
+It is separate from `tools[].enabled_tools` and replaces the entire list; an empty
+list disables managed tools, omission preserves the setting, and `null` clears it.
+Full Agent Drive usage also requires the DeliverArtifacts tool. Internal
+`/forward-mcp` routes are invoked by the runtime and are not public SDK methods.
+
+The Drive live suite requires `QODER_DRIVE_LIVE_ALLOW_WRITE=true`,
+`QODER_FORWARD_CN_PAT`, `QODER_FORWARD_GLOBAL_PAT`, `QODER_SA_CN_KEY`, and
+`QODER_SA_GLOBAL_KEY` in `.env.live` (or `LIVE_ENV_FILE`). It creates isolated
+Identities, verifies storage transfers, pagination, deletion, Identity isolation,
+and Template configuration, then clears only those new Identities. It does not
+run Agent/model tool execution.
+
 ## File uploads and downloads
 
 Uploads accept `bytes`, a binary file object, a `Path`, or a `(filename, content[, content type])` tuple. Content is buffered so it can be replayed on retry; a file object you open stays yours to close.
