@@ -9,6 +9,9 @@ __all__ = ["ScheduleTriggerPolicy"]
 
 
 class ScheduleTriggerPolicy(BaseModel):
+    start_at: Optional[datetime] = None
+    stop_at: Optional[datetime] = None
+    last_run_at: Optional[datetime] = None
     type: Optional[str] = None
     expression: Optional[str] = None
     timezone: Optional[str] = None

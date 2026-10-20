@@ -17,6 +17,7 @@ from qca.managed.types.deployment import Deployment
 from qca.managed.types.deployment_run import DeploymentRun
 from qca.managed.types.file_resource_params import FileResourceParams
 from qca.managed.types.git_hub_repository_resource_params import GitHubRepositoryResourceParams
+from qca.managed.types.git_repository_resource_params import GitRepositoryResourceParams
 from qca.managed.types.memory_store_resource_param import MemoryStoreResourceParam
 from qca.managed.types.schedule_params import ScheduleParams
 from qca.managed.types.system_message_event_params import SystemMessageEventParams
@@ -44,7 +45,16 @@ class Deployments(SyncAPIResource):
         budget: Union[BudgetLimitParam, None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, str], None, NotGiven] = NOT_GIVEN,
         resources: Union[
-            List[Union[GitHubRepositoryResourceParams, FileResourceParams, MemoryStoreResourceParam]], None, NotGiven
+            List[
+                Union[
+                    GitRepositoryResourceParams,
+                    GitHubRepositoryResourceParams,
+                    FileResourceParams,
+                    MemoryStoreResourceParam,
+                ]
+            ],
+            None,
+            NotGiven,
         ] = NOT_GIVEN,
         schedule: Union[ScheduleParams, None, NotGiven] = NOT_GIVEN,
         vault_ids: Union[List[str], None, NotGiven] = NOT_GIVEN,
@@ -114,7 +124,16 @@ class Deployments(SyncAPIResource):
         workspace_id: Union[str, None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         resources: Union[
-            List[Union[GitHubRepositoryResourceParams, FileResourceParams, MemoryStoreResourceParam]], None, NotGiven
+            List[
+                Union[
+                    GitRepositoryResourceParams,
+                    GitHubRepositoryResourceParams,
+                    FileResourceParams,
+                    MemoryStoreResourceParam,
+                ]
+            ],
+            None,
+            NotGiven,
         ] = NOT_GIVEN,
         vault_ids: Union[List[str], None, NotGiven] = NOT_GIVEN,
         agent: Union[Union[str, AgentParams], None, NotGiven] = NOT_GIVEN,
@@ -311,7 +330,16 @@ class AsyncDeployments(AsyncAPIResource):
         budget: Union[BudgetLimitParam, None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, str], None, NotGiven] = NOT_GIVEN,
         resources: Union[
-            List[Union[GitHubRepositoryResourceParams, FileResourceParams, MemoryStoreResourceParam]], None, NotGiven
+            List[
+                Union[
+                    GitRepositoryResourceParams,
+                    GitHubRepositoryResourceParams,
+                    FileResourceParams,
+                    MemoryStoreResourceParam,
+                ]
+            ],
+            None,
+            NotGiven,
         ] = NOT_GIVEN,
         schedule: Union[ScheduleParams, None, NotGiven] = NOT_GIVEN,
         vault_ids: Union[List[str], None, NotGiven] = NOT_GIVEN,
@@ -381,7 +409,16 @@ class AsyncDeployments(AsyncAPIResource):
         workspace_id: Union[str, None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         resources: Union[
-            List[Union[GitHubRepositoryResourceParams, FileResourceParams, MemoryStoreResourceParam]], None, NotGiven
+            List[
+                Union[
+                    GitRepositoryResourceParams,
+                    GitHubRepositoryResourceParams,
+                    FileResourceParams,
+                    MemoryStoreResourceParam,
+                ]
+            ],
+            None,
+            NotGiven,
         ] = NOT_GIVEN,
         vault_ids: Union[List[str], None, NotGiven] = NOT_GIVEN,
         agent: Union[Union[str, AgentParams], None, NotGiven] = NOT_GIVEN,

@@ -10,6 +10,7 @@ if TYPE_CHECKING:
     from .budget_limit_param import BudgetLimitParam
     from .file_resource_params import FileResourceParams
     from .git_hub_repository_resource_params import GitHubRepositoryResourceParams
+    from .git_repository_resource_params import GitRepositoryResourceParams
     from .memory_store_resource_param import MemoryStoreResourceParam
     from .user_define_outcome_event_params import UserDefineOutcomeEventParams
     from .user_message_event_params import UserMessageEventParams
@@ -26,6 +27,8 @@ class SessionCreateParams(TypedDict, total=False):
     budget: BudgetLimitParam
     initial_events: List[Union[UserMessageEventParams, UserDefineOutcomeEventParams]]
     metadata: Dict[str, str]
-    resources: List[Union[GitHubRepositoryResourceParams, FileResourceParams, MemoryStoreResourceParam]]
+    resources: List[
+        Union[GitRepositoryResourceParams, GitHubRepositoryResourceParams, FileResourceParams, MemoryStoreResourceParam]
+    ]
     vault_ids: List[str]
     betas: List[str]

@@ -18,6 +18,7 @@ __all__ = ["TemplateUpdateParams"]
 
 
 class TemplateUpdateParams(TypedDict, total=False):
+    max_tool_rounds: Optional[int]
     managed_tool_config: Optional[ManagedToolConfigParam]
     name: Optional[str]
     description: Optional[str]

@@ -12,7 +12,7 @@ __all__ = ["GitHubRepositoryResourceParams"]
 
 
 class GitHubRepositoryResourceParams(TypedDict, total=False):
-    authorization_token: Required[str]
+    authorization_token: str
     type: Required[Literal["github_repository"]]
     url: Required[str]
     mount_path: Optional[str]

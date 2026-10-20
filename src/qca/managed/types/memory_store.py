@@ -9,6 +9,9 @@ __all__ = ["MemoryStore"]
 
 
 class MemoryStore(BaseModel):
+    status: Optional[str] = None
+    entry_count: Optional[int] = None
+    total_size: Optional[int] = None
     id: Optional[str] = None
     created_at: Optional[datetime] = None
     name: Optional[str] = None

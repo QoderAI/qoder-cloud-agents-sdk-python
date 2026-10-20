@@ -11,6 +11,8 @@ __all__ = ["SessionErrorEventErrorUnion"]
 
 
 class SessionErrorEventErrorUnion(BaseModel):
+    qoder_error_code: Optional[str] = None
+    """Diagnostic only; use retry_status to determine retry behavior."""
     message: Optional[str] = None
     retry_status: Optional[SessionErrorEventErrorUnionRetryStatus] = None
     type: Optional[str] = None

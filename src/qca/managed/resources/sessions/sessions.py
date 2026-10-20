@@ -19,6 +19,7 @@ from qca.managed.types.budget_limit_param import BudgetLimitParam
 from qca.managed.types.deleted_session import DeletedSession
 from qca.managed.types.file_resource_params import FileResourceParams
 from qca.managed.types.git_hub_repository_resource_params import GitHubRepositoryResourceParams
+from qca.managed.types.git_repository_resource_params import GitRepositoryResourceParams
 from qca.managed.types.memory_store_resource_param import MemoryStoreResourceParam
 from qca.managed.types.session import Session
 from qca.managed.types.session_agent_update_param import SessionAgentUpdateParam
@@ -83,7 +84,16 @@ class Sessions(SyncAPIResource):
         ] = NOT_GIVEN,
         metadata: Union[Dict[str, str], None, NotGiven] = NOT_GIVEN,
         resources: Union[
-            List[Union[GitHubRepositoryResourceParams, FileResourceParams, MemoryStoreResourceParam]], None, NotGiven
+            List[
+                Union[
+                    GitRepositoryResourceParams,
+                    GitHubRepositoryResourceParams,
+                    FileResourceParams,
+                    MemoryStoreResourceParam,
+                ]
+            ],
+            None,
+            NotGiven,
         ] = NOT_GIVEN,
         vault_ids: Union[List[str], None, NotGiven] = NOT_GIVEN,
         betas: Union[List[str], None, NotGiven] = NOT_GIVEN,
@@ -331,7 +341,16 @@ class AsyncSessions(AsyncAPIResource):
         ] = NOT_GIVEN,
         metadata: Union[Dict[str, str], None, NotGiven] = NOT_GIVEN,
         resources: Union[
-            List[Union[GitHubRepositoryResourceParams, FileResourceParams, MemoryStoreResourceParam]], None, NotGiven
+            List[
+                Union[
+                    GitRepositoryResourceParams,
+                    GitHubRepositoryResourceParams,
+                    FileResourceParams,
+                    MemoryStoreResourceParam,
+                ]
+            ],
+            None,
+            NotGiven,
         ] = NOT_GIVEN,
         vault_ids: Union[List[str], None, NotGiven] = NOT_GIVEN,
         betas: Union[List[str], None, NotGiven] = NOT_GIVEN,

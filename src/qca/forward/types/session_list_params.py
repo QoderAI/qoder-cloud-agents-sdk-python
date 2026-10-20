@@ -9,6 +9,7 @@ __all__ = ["SessionListParams"]
 
 
 class SessionListParams(TypedDict, total=False):
+    search: str
     identity_i_ds: List[str]
     template_id: Optional[str]
     source_type: Optional[str]

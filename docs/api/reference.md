@@ -2543,6 +2543,7 @@ def create(
         *,
         input_file_id: str,
         completion_window: str,
+        ignore_idle_window: Union[bool, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
@@ -2682,6 +2683,7 @@ async def create(
         *,
         input_file_id: str,
         completion_window: str,
+        ignore_idle_window: Union[bool, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
@@ -5400,6 +5402,7 @@ def create(
     *,
     name: str,
     idempotency_key: str,
+    mount: Union[MemoryStoreCreateMountParam, NotGiven] = NOT_GIVEN,
     description: Union[str, None, NotGiven] = NOT_GIVEN,
     metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
@@ -5555,6 +5558,7 @@ async def create(
     *,
     name: str,
     idempotency_key: str,
+    mount: Union[MemoryStoreCreateMountParam, NotGiven] = NOT_GIVEN,
     description: Union[str, None, NotGiven] = NOT_GIVEN,
     metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
@@ -7655,6 +7659,7 @@ def threads() -> Threads
 ```python
 def list(
     *,
+    search: Union[str, NotGiven] = NOT_GIVEN,
     identity_i_ds: Union[List[str], None, NotGiven] = NOT_GIVEN,
     template_id: Union[str, None, NotGiven] = NOT_GIVEN,
     source_type: Union[str, None, NotGiven] = NOT_GIVEN,
@@ -7842,6 +7847,7 @@ def threads() -> AsyncThreads
 ```python
 def list(
     *,
+    search: Union[str, NotGiven] = NOT_GIVEN,
     identity_i_ds: Union[List[str], None, NotGiven] = NOT_GIVEN,
     template_id: Union[str, None, NotGiven] = NOT_GIVEN,
     source_type: Union[str, None, NotGiven] = NOT_GIVEN,
@@ -8869,6 +8875,7 @@ def create(
         mcp_servers: Union[List[MCPServerParam], None, NotGiven] = NOT_GIVEN,
         skills: Union[List[SkillBindingParam], None, NotGiven] = NOT_GIVEN,
         multiagent: Union[MultiagentConfigParam, None, NotGiven] = NOT_GIVEN,
+        max_tool_rounds: Union[int, None, NotGiven] = NOT_GIVEN,
         managed_tool_config: Union[ManagedToolConfigParam, None,
                                    NotGiven] = NOT_GIVEN,
         vaults: Union[Dict[str, ResourceBindingParam], None,
@@ -8928,6 +8935,7 @@ def update(
         mcp_servers: Union[List[MCPServerParam], None, NotGiven] = NOT_GIVEN,
         skills: Union[List[SkillBindingParam], None, NotGiven] = NOT_GIVEN,
         multiagent: Union[MultiagentConfigParam, None, NotGiven] = NOT_GIVEN,
+        max_tool_rounds: Union[int, None, NotGiven] = NOT_GIVEN,
         managed_tool_config: Union[ManagedToolConfigParam, None,
                                    NotGiven] = NOT_GIVEN,
         environment_id: Union[str, None, NotGiven] = NOT_GIVEN,
@@ -9043,6 +9051,7 @@ async def create(
         mcp_servers: Union[List[MCPServerParam], None, NotGiven] = NOT_GIVEN,
         skills: Union[List[SkillBindingParam], None, NotGiven] = NOT_GIVEN,
         multiagent: Union[MultiagentConfigParam, None, NotGiven] = NOT_GIVEN,
+        max_tool_rounds: Union[int, None, NotGiven] = NOT_GIVEN,
         managed_tool_config: Union[ManagedToolConfigParam, None,
                                    NotGiven] = NOT_GIVEN,
         vaults: Union[Dict[str, ResourceBindingParam], None,
@@ -9102,6 +9111,7 @@ async def update(
         mcp_servers: Union[List[MCPServerParam], None, NotGiven] = NOT_GIVEN,
         skills: Union[List[SkillBindingParam], None, NotGiven] = NOT_GIVEN,
         multiagent: Union[MultiagentConfigParam, None, NotGiven] = NOT_GIVEN,
+        max_tool_rounds: Union[int, None, NotGiven] = NOT_GIVEN,
         managed_tool_config: Union[ManagedToolConfigParam, None,
                                    NotGiven] = NOT_GIVEN,
         environment_id: Union[str, None, NotGiven] = NOT_GIVEN,
@@ -9821,6 +9831,14 @@ class Batch(BaseModel)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/batch.py)
 
+<a id="qca.forward.types.batch.Batch.ignore_idle_window"></a>
+
+#### ignore\_idle\_window
+
+<a id="qca.forward.types.batch.Batch.queue_reason"></a>
+
+#### queue\_reason
+
 <a id="qca.forward.types.batch.Batch.id"></a>
 
 #### id
@@ -9932,6 +9950,10 @@ class BatchCreateParams(TypedDict)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/batch_create_params.py)
+
+<a id="qca.forward.types.batch_create_params.BatchCreateParams.ignore_idle_window"></a>
+
+#### ignore\_idle\_window
 
 <a id="qca.forward.types.batch_create_params.BatchCreateParams.input_file_id"></a>
 
@@ -11287,6 +11309,14 @@ class Environment(BaseModel)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/environment.py)
 
+<a id="qca.forward.types.environment.Environment.icon_url"></a>
+
+#### icon\_url
+
+<a id="qca.forward.types.environment.Environment.binding_info"></a>
+
+#### binding\_info
+
 <a id="qca.forward.types.environment.Environment.id"></a>
 
 #### id
@@ -11327,6 +11357,24 @@ class Environment(BaseModel)
 
 #### archived\_at
 
+<a id="qca.forward.types.environment_binding_info"></a>
+
+# qca.forward.types.environment\_binding\_info
+
+<a id="qca.forward.types.environment_binding_info.EnvironmentBindingInfo"></a>
+
+## EnvironmentBindingInfo
+
+```python
+class EnvironmentBindingInfo(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/environment_binding_info.py)
+
+<a id="qca.forward.types.environment_binding_info.EnvironmentBindingInfo.agent_template_count"></a>
+
+#### agent\_template\_count
+
 <a id="qca.forward.types.environment_config"></a>
 
 # qca.forward.types.environment\_config
@@ -11340,6 +11388,10 @@ class EnvironmentConfig(BaseModel)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/environment_config.py)
+
+<a id="qca.forward.types.environment_config.EnvironmentConfig.setup_script"></a>
+
+#### setup\_script
 
 <a id="qca.forward.types.environment_config.EnvironmentConfig.type"></a>
 
@@ -12679,6 +12731,32 @@ class MemoryStore(BaseModel)
 
 #### binding\_info
 
+<a id="qca.forward.types.memory_store_create_mount_param"></a>
+
+# qca.forward.types.memory\_store\_create\_mount\_param
+
+<a id="qca.forward.types.memory_store_create_mount_param.MemoryStoreCreateMountParam"></a>
+
+## MemoryStoreCreateMountParam
+
+```python
+class MemoryStoreCreateMountParam(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/memory_store_create_mount_param.py)
+
+<a id="qca.forward.types.memory_store_create_mount_param.MemoryStoreCreateMountParam.identity_id"></a>
+
+#### identity\_id
+
+<a id="qca.forward.types.memory_store_create_mount_param.MemoryStoreCreateMountParam.template_id"></a>
+
+#### template\_id
+
+<a id="qca.forward.types.memory_store_create_mount_param.MemoryStoreCreateMountParam.access"></a>
+
+#### access
+
 <a id="qca.forward.types.memory_store_create_params"></a>
 
 # qca.forward.types.memory\_store\_create\_params
@@ -12692,6 +12770,10 @@ class MemoryStoreCreateParams(TypedDict)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/memory_store_create_params.py)
+
+<a id="qca.forward.types.memory_store_create_params.MemoryStoreCreateParams.mount"></a>
+
+#### mount
 
 <a id="qca.forward.types.memory_store_create_params.MemoryStoreCreateParams.name"></a>
 
@@ -13983,6 +14065,18 @@ class Schedule(BaseModel)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/schedule.py)
 
+<a id="qca.forward.types.schedule.Schedule.source"></a>
+
+#### source
+
+<a id="qca.forward.types.schedule.Schedule.source_session_id"></a>
+
+#### source\_session\_id
+
+<a id="qca.forward.types.schedule.Schedule.initial_events_version"></a>
+
+#### initial\_events\_version
+
 <a id="qca.forward.types.schedule.Schedule.id"></a>
 
 #### id
@@ -14315,6 +14409,18 @@ class ScheduleRun(BaseModel)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/schedule_run.py)
 
+<a id="qca.forward.types.schedule_run.ScheduleRun.source"></a>
+
+#### source
+
+<a id="qca.forward.types.schedule_run.ScheduleRun.source_session_id"></a>
+
+#### source\_session\_id
+
+<a id="qca.forward.types.schedule_run.ScheduleRun.initial_events_version"></a>
+
+#### initial\_events\_version
+
 <a id="qca.forward.types.schedule_run.ScheduleRun.id"></a>
 
 #### id
@@ -14565,6 +14671,18 @@ class ScheduleTriggerPolicy(BaseModel)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/schedule_trigger_policy.py)
 
+<a id="qca.forward.types.schedule_trigger_policy.ScheduleTriggerPolicy.start_at"></a>
+
+#### start\_at
+
+<a id="qca.forward.types.schedule_trigger_policy.ScheduleTriggerPolicy.stop_at"></a>
+
+#### stop\_at
+
+<a id="qca.forward.types.schedule_trigger_policy.ScheduleTriggerPolicy.last_run_at"></a>
+
+#### last\_run\_at
+
 <a id="qca.forward.types.schedule_trigger_policy.ScheduleTriggerPolicy.type"></a>
 
 #### type
@@ -14796,6 +14914,10 @@ class Session(BaseModel)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/session.py)
+
+<a id="qca.forward.types.session.Session.outcome_evaluations"></a>
+
+#### outcome\_evaluations
 
 <a id="qca.forward.types.session.Session.id"></a>
 
@@ -15337,6 +15459,10 @@ class SessionListParams(TypedDict)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/session_list_params.py)
 
+<a id="qca.forward.types.session_list_params.SessionListParams.search"></a>
+
+#### search
+
 <a id="qca.forward.types.session_list_params.SessionListParams.identity_i_ds"></a>
 
 #### identity\_i\_ds
@@ -15400,6 +15526,48 @@ class SessionListParams(TypedDict)
 <a id="qca.forward.types.session_list_params.SessionListParams.include_archived"></a>
 
 #### include\_archived
+
+<a id="qca.forward.types.session_outcome_evaluation"></a>
+
+# qca.forward.types.session\_outcome\_evaluation
+
+<a id="qca.forward.types.session_outcome_evaluation.SessionOutcomeEvaluation"></a>
+
+## SessionOutcomeEvaluation
+
+```python
+class SessionOutcomeEvaluation(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/session_outcome_evaluation.py)
+
+<a id="qca.forward.types.session_outcome_evaluation.SessionOutcomeEvaluation.type"></a>
+
+#### type
+
+<a id="qca.forward.types.session_outcome_evaluation.SessionOutcomeEvaluation.outcome_id"></a>
+
+#### outcome\_id
+
+<a id="qca.forward.types.session_outcome_evaluation.SessionOutcomeEvaluation.description"></a>
+
+#### description
+
+<a id="qca.forward.types.session_outcome_evaluation.SessionOutcomeEvaluation.iteration"></a>
+
+#### iteration
+
+<a id="qca.forward.types.session_outcome_evaluation.SessionOutcomeEvaluation.result"></a>
+
+#### result
+
+<a id="qca.forward.types.session_outcome_evaluation.SessionOutcomeEvaluation.explanation"></a>
+
+#### explanation
+
+<a id="qca.forward.types.session_outcome_evaluation.SessionOutcomeEvaluation.completed_at"></a>
+
+#### completed\_at
 
 <a id="qca.forward.types.session_resource"></a>
 
@@ -15561,6 +15729,14 @@ class SessionThread(BaseModel)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/session_thread.py)
 
+<a id="qca.forward.types.session_thread.SessionThread.stats"></a>
+
+#### stats
+
+<a id="qca.forward.types.session_thread.SessionThread.usage"></a>
+
+#### usage
+
 <a id="qca.forward.types.session_thread.SessionThread.id"></a>
 
 #### id
@@ -15701,6 +15877,32 @@ class SessionThreadListParams(TypedDict)
 
 #### before\_id
 
+<a id="qca.forward.types.session_thread_stats"></a>
+
+# qca.forward.types.session\_thread\_stats
+
+<a id="qca.forward.types.session_thread_stats.SessionThreadStats"></a>
+
+## SessionThreadStats
+
+```python
+class SessionThreadStats(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/session_thread_stats.py)
+
+<a id="qca.forward.types.session_thread_stats.SessionThreadStats.active_seconds"></a>
+
+#### active\_seconds
+
+<a id="qca.forward.types.session_thread_stats.SessionThreadStats.duration_seconds"></a>
+
+#### duration\_seconds
+
+<a id="qca.forward.types.session_thread_stats.SessionThreadStats.startup_seconds"></a>
+
+#### startup\_seconds
+
 <a id="qca.forward.types.session_thread_stop_reason"></a>
 
 # qca.forward.types.session\_thread\_stop\_reason
@@ -15718,6 +15920,24 @@ class SessionThreadStopReason(BaseModel)
 <a id="qca.forward.types.session_thread_stop_reason.SessionThreadStopReason.type"></a>
 
 #### type
+
+<a id="qca.forward.types.session_thread_usage"></a>
+
+# qca.forward.types.session\_thread\_usage
+
+<a id="qca.forward.types.session_thread_usage.SessionThreadUsage"></a>
+
+## SessionThreadUsage
+
+```python
+class SessionThreadUsage(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/session_thread_usage.py)
+
+<a id="qca.forward.types.session_thread_usage.SessionThreadUsage.total_credits"></a>
+
+#### total\_credits
 
 <a id="qca.forward.types.session_update_params"></a>
 
@@ -16303,6 +16523,10 @@ class Template(BaseModel)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/template.py)
 
+<a id="qca.forward.types.template.Template.max_tool_rounds"></a>
+
+#### max\_tool\_rounds
+
 <a id="qca.forward.types.template.Template.managed_tool_config"></a>
 
 #### managed\_tool\_config
@@ -16441,6 +16665,10 @@ class TemplateCreateParams(TypedDict)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/template_create_params.py)
 
+<a id="qca.forward.types.template_create_params.TemplateCreateParams.max_tool_rounds"></a>
+
+#### max\_tool\_rounds
+
 <a id="qca.forward.types.template_create_params.TemplateCreateParams.managed_tool_config"></a>
 
 #### managed\_tool\_config
@@ -16552,6 +16780,10 @@ class TemplateUpdateParams(TypedDict)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/template_update_params.py)
+
+<a id="qca.forward.types.template_update_params.TemplateUpdateParams.max_tool_rounds"></a>
+
+#### max\_tool\_rounds
 
 <a id="qca.forward.types.template_update_params.TemplateUpdateParams.managed_tool_config"></a>
 
@@ -18244,9 +18476,16 @@ def create(
     workspace_id: Union[str, None, NotGiven] = NOT_GIVEN,
     budget: Union[BudgetLimitParam, None, NotGiven] = NOT_GIVEN,
     metadata: Union[Dict[str, str], None, NotGiven] = NOT_GIVEN,
-    resources: Union[List[Union[GitHubRepositoryResourceParams,
-                                FileResourceParams, MemoryStoreResourceParam]],
-                     None, NotGiven] = NOT_GIVEN,
+    resources: Union[
+        List[Union[
+            GitRepositoryResourceParams,
+            GitHubRepositoryResourceParams,
+            FileResourceParams,
+            MemoryStoreResourceParam,
+        ]],
+        None,
+        NotGiven,
+    ] = NOT_GIVEN,
     schedule: Union[ScheduleParams, None, NotGiven] = NOT_GIVEN,
     vault_ids: Union[List[str], None, NotGiven] = NOT_GIVEN,
     betas: Union[List[str], None, NotGiven] = NOT_GIVEN,
@@ -18296,9 +18535,16 @@ def update(
     name: Union[str, None, NotGiven] = NOT_GIVEN,
     workspace_id: Union[str, None, NotGiven] = NOT_GIVEN,
     metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
-    resources: Union[List[Union[GitHubRepositoryResourceParams,
-                                FileResourceParams, MemoryStoreResourceParam]],
-                     None, NotGiven] = NOT_GIVEN,
+    resources: Union[
+        List[Union[
+            GitRepositoryResourceParams,
+            GitHubRepositoryResourceParams,
+            FileResourceParams,
+            MemoryStoreResourceParam,
+        ]],
+        None,
+        NotGiven,
+    ] = NOT_GIVEN,
     vault_ids: Union[List[str], None, NotGiven] = NOT_GIVEN,
     agent: Union[Union[str, AgentParams], None, NotGiven] = NOT_GIVEN,
     budget: Union[BudgetLimitParam, None, NotGiven] = NOT_GIVEN,
@@ -18471,9 +18717,16 @@ async def create(
     workspace_id: Union[str, None, NotGiven] = NOT_GIVEN,
     budget: Union[BudgetLimitParam, None, NotGiven] = NOT_GIVEN,
     metadata: Union[Dict[str, str], None, NotGiven] = NOT_GIVEN,
-    resources: Union[List[Union[GitHubRepositoryResourceParams,
-                                FileResourceParams, MemoryStoreResourceParam]],
-                     None, NotGiven] = NOT_GIVEN,
+    resources: Union[
+        List[Union[
+            GitRepositoryResourceParams,
+            GitHubRepositoryResourceParams,
+            FileResourceParams,
+            MemoryStoreResourceParam,
+        ]],
+        None,
+        NotGiven,
+    ] = NOT_GIVEN,
     schedule: Union[ScheduleParams, None, NotGiven] = NOT_GIVEN,
     vault_ids: Union[List[str], None, NotGiven] = NOT_GIVEN,
     betas: Union[List[str], None, NotGiven] = NOT_GIVEN,
@@ -18523,9 +18776,16 @@ async def update(
     name: Union[str, None, NotGiven] = NOT_GIVEN,
     workspace_id: Union[str, None, NotGiven] = NOT_GIVEN,
     metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
-    resources: Union[List[Union[GitHubRepositoryResourceParams,
-                                FileResourceParams, MemoryStoreResourceParam]],
-                     None, NotGiven] = NOT_GIVEN,
+    resources: Union[
+        List[Union[
+            GitRepositoryResourceParams,
+            GitHubRepositoryResourceParams,
+            FileResourceParams,
+            MemoryStoreResourceParam,
+        ]],
+        None,
+        NotGiven,
+    ] = NOT_GIVEN,
     vault_ids: Union[List[str], None, NotGiven] = NOT_GIVEN,
     agent: Union[Union[str, AgentParams], None, NotGiven] = NOT_GIVEN,
     budget: Union[BudgetLimitParam, None, NotGiven] = NOT_GIVEN,
@@ -21327,10 +21587,16 @@ def create(
                                          UserDefineOutcomeEventParams]], None,
                               NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, str], None, NotGiven] = NOT_GIVEN,
-        resources: Union[List[Union[GitHubRepositoryResourceParams,
-                                    FileResourceParams,
-                                    MemoryStoreResourceParam]], None,
-                         NotGiven] = NOT_GIVEN,
+        resources: Union[
+            List[Union[
+                GitRepositoryResourceParams,
+                GitHubRepositoryResourceParams,
+                FileResourceParams,
+                MemoryStoreResourceParam,
+            ]],
+            None,
+            NotGiven,
+        ] = NOT_GIVEN,
         vault_ids: Union[List[str], None, NotGiven] = NOT_GIVEN,
         betas: Union[List[str], None, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
@@ -21552,10 +21818,16 @@ async def create(
                                          UserDefineOutcomeEventParams]], None,
                               NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, str], None, NotGiven] = NOT_GIVEN,
-        resources: Union[List[Union[GitHubRepositoryResourceParams,
-                                    FileResourceParams,
-                                    MemoryStoreResourceParam]], None,
-                         NotGiven] = NOT_GIVEN,
+        resources: Union[
+            List[Union[
+                GitRepositoryResourceParams,
+                GitHubRepositoryResourceParams,
+                FileResourceParams,
+                MemoryStoreResourceParam,
+            ]],
+            None,
+            NotGiven,
+        ] = NOT_GIVEN,
         vault_ids: Union[List[str], None, NotGiven] = NOT_GIVEN,
         betas: Union[List[str], None, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
@@ -25981,6 +26253,10 @@ class DreamOutput(BaseModel)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/dream_output.py)
 
+<a id="qca.managed.types.dream_output.DreamOutput.files_touched"></a>
+
+#### files\_touched
+
 <a id="qca.managed.types.dream_output.DreamOutput.memory_store_id"></a>
 
 #### memory\_store\_id
@@ -26310,6 +26586,10 @@ class EnvironmentConfigUnion(BaseModel)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/environment_config_union.py)
+
+<a id="qca.managed.types.environment_config_union.EnvironmentConfigUnion.setup_script"></a>
+
+#### setup\_script
 
 <a id="qca.managed.types.environment_config_union.EnvironmentConfigUnion.networking"></a>
 
@@ -27255,6 +27535,40 @@ class GitHubRepositoryResourceParams(TypedDict)
 
 #### checkout
 
+<a id="qca.managed.types.git_repository_resource_params"></a>
+
+# qca.managed.types.git\_repository\_resource\_params
+
+<a id="qca.managed.types.git_repository_resource_params.GitRepositoryResourceParams"></a>
+
+## GitRepositoryResourceParams
+
+```python
+class GitRepositoryResourceParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/git_repository_resource_params.py)
+
+<a id="qca.managed.types.git_repository_resource_params.GitRepositoryResourceParams.password"></a>
+
+#### password
+
+<a id="qca.managed.types.git_repository_resource_params.GitRepositoryResourceParams.type"></a>
+
+#### type
+
+<a id="qca.managed.types.git_repository_resource_params.GitRepositoryResourceParams.url"></a>
+
+#### url
+
+<a id="qca.managed.types.git_repository_resource_params.GitRepositoryResourceParams.mount_path"></a>
+
+#### mount\_path
+
+<a id="qca.managed.types.git_repository_resource_params.GitRepositoryResourceParams.checkout"></a>
+
+#### checkout
+
 <a id="qca.managed.types.glob_tool_config_params"></a>
 
 # qca.managed.types.glob\_tool\_config\_params
@@ -27930,6 +28244,18 @@ class MemoryStore(BaseModel)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/memory_store.py)
+
+<a id="qca.managed.types.memory_store.MemoryStore.status"></a>
+
+#### status
+
+<a id="qca.managed.types.memory_store.MemoryStore.entry_count"></a>
+
+#### entry\_count
+
+<a id="qca.managed.types.memory_store.MemoryStore.total_size"></a>
+
+#### total\_size
 
 <a id="qca.managed.types.memory_store.MemoryStore.id"></a>
 
@@ -29461,6 +29787,10 @@ class SelfHostedConfigParams(TypedDict)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/self_hosted_config_params.py)
 
+<a id="qca.managed.types.self_hosted_config_params.SelfHostedConfigParams.setup_script"></a>
+
+#### setup\_script
+
 <a id="qca.managed.types.self_hosted_config_params.SelfHostedConfigParams.type"></a>
 
 #### type
@@ -30167,6 +30497,12 @@ class SessionErrorEventErrorUnion(BaseModel)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/session_error_event_error_union.py)
 
+<a id="qca.managed.types.session_error_event_error_union.SessionErrorEventErrorUnion.qoder_error_code"></a>
+
+#### qoder\_error\_code
+
+Diagnostic only; use retry_status to determine retry behavior.
+
 <a id="qca.managed.types.session_error_event_error_union.SessionErrorEventErrorUnion.message"></a>
 
 #### message
@@ -30222,6 +30558,22 @@ class SessionEvent(BaseModel)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/session_event.py)
+
+<a id="qca.managed.types.session_event.SessionEvent.file_id"></a>
+
+#### file\_id
+
+<a id="qca.managed.types.session_event.SessionEvent.original_filename"></a>
+
+#### original\_filename
+
+<a id="qca.managed.types.session_event.SessionEvent.size"></a>
+
+#### size
+
+<a id="qca.managed.types.session_event.SessionEvent.content_type"></a>
+
+#### content\_type
 
 <a id="qca.managed.types.session_event.SessionEvent.model_credits"></a>
 
@@ -31170,6 +31522,22 @@ class SessionStreamEvent(BaseModel)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/session_stream_event.py)
+
+<a id="qca.managed.types.session_stream_event.SessionStreamEvent.file_id"></a>
+
+#### file\_id
+
+<a id="qca.managed.types.session_stream_event.SessionStreamEvent.original_filename"></a>
+
+#### original\_filename
+
+<a id="qca.managed.types.session_stream_event.SessionStreamEvent.size"></a>
+
+#### size
+
+<a id="qca.managed.types.session_stream_event.SessionStreamEvent.content_type"></a>
+
+#### content\_type
 
 <a id="qca.managed.types.session_stream_event.SessionStreamEvent.model_credits"></a>
 
@@ -32452,6 +32820,22 @@ class StreamSessionThreadEventsUnion(BaseModel)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/stream_session_thread_events_union.py)
+
+<a id="qca.managed.types.stream_session_thread_events_union.StreamSessionThreadEventsUnion.file_id"></a>
+
+#### file\_id
+
+<a id="qca.managed.types.stream_session_thread_events_union.StreamSessionThreadEventsUnion.original_filename"></a>
+
+#### original\_filename
+
+<a id="qca.managed.types.stream_session_thread_events_union.StreamSessionThreadEventsUnion.size"></a>
+
+#### size
+
+<a id="qca.managed.types.stream_session_thread_events_union.StreamSessionThreadEventsUnion.content_type"></a>
+
+#### content\_type
 
 <a id="qca.managed.types.stream_session_thread_events_union.StreamSessionThreadEventsUnion.model_credits"></a>
 

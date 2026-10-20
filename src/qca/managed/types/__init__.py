@@ -168,6 +168,7 @@ from .git_hub_repository_resource_config_checkout_union import (
     GitHubRepositoryResourceConfigCheckoutUnion as GitHubRepositoryResourceConfigCheckoutUnion,
 )
 from .git_hub_repository_resource_params import GitHubRepositoryResourceParams as GitHubRepositoryResourceParams
+from .git_repository_resource_params import GitRepositoryResourceParams as GitRepositoryResourceParams
 from .glob_tool_config_params import GlobToolConfigParams as GlobToolConfigParams
 from .grep_tool_config_params import GrepToolConfigParams as GrepToolConfigParams
 from .image_block_param import ImageBlockParam as ImageBlockParam

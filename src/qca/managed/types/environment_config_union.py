@@ -12,6 +12,7 @@ __all__ = ["EnvironmentConfigUnion"]
 
 
 class EnvironmentConfigUnion(BaseModel):
+    setup_script: Optional[str] = None
     networking: Optional[CloudConfigNetworkingUnion] = None
     packages: Optional[Packages] = None
     type: Optional[str] = None

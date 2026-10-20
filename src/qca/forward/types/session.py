@@ -7,6 +7,7 @@ from qca.common._models import BaseModel
 
 if TYPE_CHECKING:
     from .session_config import SessionConfig
+    from .session_outcome_evaluation import SessionOutcomeEvaluation
     from .session_resource import SessionResource
     from .session_stats import SessionStats
     from .session_template import SessionTemplate
@@ -16,6 +17,7 @@ __all__ = ["Session"]
 
 
 class Session(BaseModel):
+    outcome_evaluations: Optional[List[SessionOutcomeEvaluation]] = None
     id: Optional[str] = None
     type: Optional[str] = None
     identity_id: Optional[str] = None
