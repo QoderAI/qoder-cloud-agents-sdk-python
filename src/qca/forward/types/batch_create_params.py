@@ -8,6 +8,7 @@ __all__ = ["BatchCreateParams"]
 
 
 class BatchCreateParams(TypedDict, total=False):
+    ignore_idle_window: bool
     input_file_id: Required[str]
     completion_window: Required[str]
     metadata: Dict[str, Any]

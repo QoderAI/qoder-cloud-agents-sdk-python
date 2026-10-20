@@ -16,6 +16,9 @@ __all__ = ["Schedule"]
 
 
 class Schedule(BaseModel):
+    source: Optional[str] = None
+    source_session_id: Optional[str] = None
+    initial_events_version: Optional[int] = None
     id: Optional[str] = None
     identity_id: Optional[str] = None
     template_id: Optional[str] = None

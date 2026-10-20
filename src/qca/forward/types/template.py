@@ -19,6 +19,7 @@ __all__ = ["Template"]
 
 
 class Template(BaseModel):
+    max_tool_rounds: Optional[int] = None
     managed_tool_config: Optional[ManagedToolConfig] = None
     type: Optional[str] = None
     id: Optional[str] = None

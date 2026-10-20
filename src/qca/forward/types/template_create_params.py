@@ -18,6 +18,7 @@ __all__ = ["TemplateCreateParams"]
 
 
 class TemplateCreateParams(TypedDict, total=False):
+    max_tool_rounds: Optional[int]
     managed_tool_config: Optional[ManagedToolConfigParam]
     name: Required[str]
     model: Required[Union[str, ModelConfigParam]]

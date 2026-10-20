@@ -11,5 +11,6 @@ __all__ = ["EnvironmentConfig"]
 
 
 class EnvironmentConfig(BaseModel):
+    setup_script: Optional[str] = None
     type: Optional[str] = None
     packages: Optional[EnvironmentConfigPackages] = None

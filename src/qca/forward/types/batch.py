@@ -13,6 +13,8 @@ __all__ = ["Batch"]
 
 
 class Batch(BaseModel):
+    ignore_idle_window: Optional[bool] = None
+    queue_reason: Optional[str] = None
     id: Optional[str] = None
     object: Optional[str] = None
     status: Optional[str] = None

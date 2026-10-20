@@ -51,6 +51,7 @@ class Batches(SyncAPIResource):
         *,
         input_file_id: str,
         completion_window: str,
+        ignore_idle_window: Union[bool, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
@@ -61,7 +62,12 @@ class Batches(SyncAPIResource):
         """POST /batches."""
         _path = path_template("/batches")
         options = make_request_options(
-            body={"input_file_id": input_file_id, "completion_window": completion_window, "metadata": metadata},
+            body={
+                "input_file_id": input_file_id,
+                "completion_window": completion_window,
+                "metadata": metadata,
+                "ignore_idle_window": ignore_idle_window,
+            },
             query={},
             headers={"Idempotency-Key": idempotency_key},
             extra_headers=extra_headers,
@@ -198,6 +204,7 @@ class AsyncBatches(AsyncAPIResource):
         *,
         input_file_id: str,
         completion_window: str,
+        ignore_idle_window: Union[bool, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
@@ -208,7 +215,12 @@ class AsyncBatches(AsyncAPIResource):
         """POST /batches."""
         _path = path_template("/batches")
         options = make_request_options(
-            body={"input_file_id": input_file_id, "completion_window": completion_window, "metadata": metadata},
+            body={
+                "input_file_id": input_file_id,
+                "completion_window": completion_window,
+                "metadata": metadata,
+                "ignore_idle_window": ignore_idle_window,
+            },
             query={},
             headers={"Idempotency-Key": idempotency_key},
             extra_headers=extra_headers,

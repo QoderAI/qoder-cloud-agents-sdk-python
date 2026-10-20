@@ -37,6 +37,7 @@ class Sessions(SyncAPIResource):
     def list(
         self,
         *,
+        search: Union[str, NotGiven] = NOT_GIVEN,
         identity_i_ds: Union[List[str], None, NotGiven] = NOT_GIVEN,
         template_id: Union[str, None, NotGiven] = NOT_GIVEN,
         source_type: Union[str, None, NotGiven] = NOT_GIVEN,
@@ -63,6 +64,7 @@ class Sessions(SyncAPIResource):
         options = make_request_options(
             body={},
             query={
+                "search": search,
                 "identity_ids": identity_i_ds,
                 "template_id": template_id,
                 "source_type": source_type,
@@ -234,6 +236,7 @@ class AsyncSessions(AsyncAPIResource):
     def list(
         self,
         *,
+        search: Union[str, NotGiven] = NOT_GIVEN,
         identity_i_ds: Union[List[str], None, NotGiven] = NOT_GIVEN,
         template_id: Union[str, None, NotGiven] = NOT_GIVEN,
         source_type: Union[str, None, NotGiven] = NOT_GIVEN,
@@ -260,6 +263,7 @@ class AsyncSessions(AsyncAPIResource):
         options = make_request_options(
             body={},
             query={
+                "search": search,
                 "identity_ids": identity_i_ds,
                 "template_id": template_id,
                 "source_type": source_type,

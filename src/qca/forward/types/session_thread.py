@@ -6,12 +6,16 @@ from typing import TYPE_CHECKING, Optional
 from qca.common._models import BaseModel
 
 if TYPE_CHECKING:
+    from .session_thread_stats import SessionThreadStats
     from .session_thread_stop_reason import SessionThreadStopReason
+    from .session_thread_usage import SessionThreadUsage
 
 __all__ = ["SessionThread"]
 
 
 class SessionThread(BaseModel):
+    stats: Optional[SessionThreadStats] = None
+    usage: Optional[SessionThreadUsage] = None
     id: Optional[str] = None
     type: Optional[str] = None
     session_id: Optional[str] = None

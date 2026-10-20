@@ -13,6 +13,7 @@ from qca.forward.resources.memory_stores.memories import AsyncMemories, Memories
 from qca.forward.resources.memory_stores.memory_versions import AsyncMemoryVersions, MemoryVersions
 from qca.forward.types.deleted_memory_store import DeletedMemoryStore
 from qca.forward.types.memory_store import MemoryStore
+from qca.forward.types.memory_store_create_mount_param import MemoryStoreCreateMountParam
 
 __all__ = ["MemoryStores", "AsyncMemoryStores"]
 
@@ -56,6 +57,7 @@ class MemoryStores(SyncAPIResource):
         *,
         name: str,
         idempotency_key: str,
+        mount: Union[MemoryStoreCreateMountParam, NotGiven] = NOT_GIVEN,
         description: Union[str, None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
@@ -66,7 +68,7 @@ class MemoryStores(SyncAPIResource):
         """POST /memory_stores."""
         _path = path_template("/memory_stores")
         options = make_request_options(
-            body={"name": name, "description": description, "metadata": metadata},
+            body={"name": name, "description": description, "metadata": metadata, "mount": mount},
             query={},
             headers={"Idempotency-Key": idempotency_key},
             extra_headers=extra_headers,
@@ -209,6 +211,7 @@ class AsyncMemoryStores(AsyncAPIResource):
         *,
         name: str,
         idempotency_key: str,
+        mount: Union[MemoryStoreCreateMountParam, NotGiven] = NOT_GIVEN,
         description: Union[str, None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
@@ -219,7 +222,7 @@ class AsyncMemoryStores(AsyncAPIResource):
         """POST /memory_stores."""
         _path = path_template("/memory_stores")
         options = make_request_options(
-            body={"name": name, "description": description, "metadata": metadata},
+            body={"name": name, "description": description, "metadata": metadata, "mount": mount},
             query={},
             headers={"Idempotency-Key": idempotency_key},
             extra_headers=extra_headers,

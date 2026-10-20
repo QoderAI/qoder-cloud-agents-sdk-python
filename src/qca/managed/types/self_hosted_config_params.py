@@ -8,4 +8,5 @@ __all__ = ["SelfHostedConfigParams"]
 
 
 class SelfHostedConfigParams(TypedDict, total=False):
+    setup_script: str
     type: Literal["self_hosted"]

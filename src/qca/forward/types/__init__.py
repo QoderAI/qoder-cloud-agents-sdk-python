@@ -59,6 +59,7 @@ from .effective_config_session_resources_item import (
     EffectiveConfigSessionResourcesItem as EffectiveConfigSessionResourcesItem,
 )
 from .environment import Environment as Environment
+from .environment_binding_info import EnvironmentBindingInfo as EnvironmentBindingInfo
 from .environment_config import EnvironmentConfig as EnvironmentConfig
 from .environment_config_packages import EnvironmentConfigPackages as EnvironmentConfigPackages
 from .environment_create_params import EnvironmentCreateParams as EnvironmentCreateParams
@@ -98,6 +99,7 @@ from .mcp_server_override_param import MCPServerOverrideParam as MCPServerOverri
 from .mcp_server_param import MCPServerParam as MCPServerParam
 from .memory import Memory as Memory
 from .memory_store import MemoryStore as MemoryStore
+from .memory_store_create_mount_param import MemoryStoreCreateMountParam as MemoryStoreCreateMountParam
 from .memory_store_create_params import MemoryStoreCreateParams as MemoryStoreCreateParams
 from .memory_store_list_params import MemoryStoreListParams as MemoryStoreListParams
 from .memory_store_memory_create_params import MemoryStoreMemoryCreateParams as MemoryStoreMemoryCreateParams
@@ -187,6 +189,7 @@ from .session_event_send_params import SessionEventSendParams as SessionEventSen
 from .session_event_send_response import SessionEventSendResponse as SessionEventSendResponse
 from .session_event_stream_params import SessionEventStreamParams as SessionEventStreamParams
 from .session_list_params import SessionListParams as SessionListParams
+from .session_outcome_evaluation import SessionOutcomeEvaluation as SessionOutcomeEvaluation
 from .session_resource import SessionResource as SessionResource
 from .session_resource_add_params import SessionResourceAddParams as SessionResourceAddParams
 from .session_resource_spec_param import SessionResourceSpecParam as SessionResourceSpecParam
@@ -197,7 +200,9 @@ from .session_thread_archive_params import SessionThreadArchiveParams as Session
 from .session_thread_event_list_params import SessionThreadEventListParams as SessionThreadEventListParams
 from .session_thread_event_stream_params import SessionThreadEventStreamParams as SessionThreadEventStreamParams
 from .session_thread_list_params import SessionThreadListParams as SessionThreadListParams
+from .session_thread_stats import SessionThreadStats as SessionThreadStats
 from .session_thread_stop_reason import SessionThreadStopReason as SessionThreadStopReason
+from .session_thread_usage import SessionThreadUsage as SessionThreadUsage
 from .session_update_params import SessionUpdateParams as SessionUpdateParams
 from .session_update_params_config_param import SessionUpdateParamsConfigParam as SessionUpdateParamsConfigParam
 from .session_usage import SessionUsage as SessionUsage

@@ -12,6 +12,9 @@ __all__ = ["ScheduleRun"]
 
 
 class ScheduleRun(BaseModel):
+    source: Optional[str] = None
+    source_session_id: Optional[str] = None
+    initial_events_version: Optional[int] = None
     id: Optional[str] = None
     schedule_id: Optional[str] = None
     identity_id: Optional[str] = None

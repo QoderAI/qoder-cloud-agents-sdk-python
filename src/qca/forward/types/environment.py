@@ -6,12 +6,15 @@ from typing import TYPE_CHECKING, Any, Dict, Optional
 from qca.common._models import BaseModel
 
 if TYPE_CHECKING:
+    from .environment_binding_info import EnvironmentBindingInfo
     from .environment_config import EnvironmentConfig
 
 __all__ = ["Environment"]
 
 
 class Environment(BaseModel):
+    icon_url: Optional[str] = None
+    binding_info: Optional[EnvironmentBindingInfo] = None
     id: Optional[str] = None
     type: Optional[str] = None
     name: Optional[str] = None

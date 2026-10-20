@@ -9,6 +9,7 @@ if TYPE_CHECKING:
     from .budget_limit_param import BudgetLimitParam
     from .file_resource_params import FileResourceParams
     from .git_hub_repository_resource_params import GitHubRepositoryResourceParams
+    from .git_repository_resource_params import GitRepositoryResourceParams
     from .memory_store_resource_param import MemoryStoreResourceParam
     from .schedule_params import ScheduleParams
     from .system_message_event_params import SystemMessageEventParams
@@ -25,7 +26,9 @@ class DeploymentUpdateParams(TypedDict, total=False):
     name: Optional[str]
     workspace_id: Optional[str]
     metadata: Dict[str, Any]
-    resources: List[Union[GitHubRepositoryResourceParams, FileResourceParams, MemoryStoreResourceParam]]
+    resources: List[
+        Union[GitRepositoryResourceParams, GitHubRepositoryResourceParams, FileResourceParams, MemoryStoreResourceParam]
+    ]
     vault_ids: List[str]
     agent: Union[str, AgentParams]
     budget: BudgetLimitParam

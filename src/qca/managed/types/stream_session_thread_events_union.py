@@ -29,6 +29,10 @@ __all__ = ["StreamSessionThreadEventsUnion"]
 
 
 class StreamSessionThreadEventsUnion(BaseModel):
+    file_id: Optional[str] = None
+    original_filename: Optional[str] = None
+    size: Optional[int] = None
+    content_type: Optional[str] = None
     model_credits: Optional[float] = None
     sandbox_runtime_credits: Optional[float] = None
     total_credits: Optional[float] = None
