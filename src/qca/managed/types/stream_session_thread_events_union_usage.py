@@ -13,6 +13,7 @@ __all__ = ["StreamSessionThreadEventsUnionUsage"]
 
 
 class StreamSessionThreadEventsUnionUsage(BaseModel):
+    credits: Optional[float] = None
     cache_creation_input_tokens: Optional[int] = None
     cache_read_input_tokens: Optional[int] = None
     input_tokens: Optional[int] = None

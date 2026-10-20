@@ -27,6 +27,10 @@ __all__ = ["SessionEvent"]
 
 
 class SessionEvent(BaseModel):
+    model_credits: Optional[float] = None
+    sandbox_runtime_credits: Optional[float] = None
+    total_credits: Optional[float] = None
+
     id: Optional[str] = None
     content: Optional[
         Union[

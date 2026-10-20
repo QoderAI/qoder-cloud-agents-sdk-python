@@ -8,6 +8,8 @@ __all__ = ["EnvironmentCreateParams"]
 
 
 class EnvironmentCreateParams(TypedDict, total=False):
+    identity_id: str
+    """Select identity ownership with a PAT. Omit when using a SAT."""
     name: Required[str]
     description: Optional[str]
     config: Dict[str, Any]

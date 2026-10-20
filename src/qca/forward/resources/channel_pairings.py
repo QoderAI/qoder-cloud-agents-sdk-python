@@ -17,7 +17,8 @@ class ChannelPairings(SyncAPIResource):
     def create(
         self,
         *,
-        code: str,
+        code: Union[str, NotGiven] = NOT_GIVEN,
+        channel_pairing_id: Union[str, NotGiven] = NOT_GIVEN,
         identity_id: str,
         template_id: str,
         idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
@@ -26,10 +27,18 @@ class ChannelPairings(SyncAPIResource):
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> ChannelPairing:
-        """POST /channel_pairings."""
+        """POST /channel_pairings.
+
+        Supply exactly one of code or channel_pairing_id.
+        """
         _path = path_template("/channel_pairings")
         options = make_request_options(
-            body={"code": code, "identity_id": identity_id, "template_id": template_id},
+            body={
+                "code": code,
+                "channel_pairing_id": channel_pairing_id,
+                "identity_id": identity_id,
+                "template_id": template_id,
+            },
             query={},
             headers={"Idempotency-Key": idempotency_key},
             extra_headers=extra_headers,
@@ -66,7 +75,8 @@ class AsyncChannelPairings(AsyncAPIResource):
     async def create(
         self,
         *,
-        code: str,
+        code: Union[str, NotGiven] = NOT_GIVEN,
+        channel_pairing_id: Union[str, NotGiven] = NOT_GIVEN,
         identity_id: str,
         template_id: str,
         idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
@@ -75,10 +85,18 @@ class AsyncChannelPairings(AsyncAPIResource):
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> ChannelPairing:
-        """POST /channel_pairings."""
+        """POST /channel_pairings.
+
+        Supply exactly one of code or channel_pairing_id.
+        """
         _path = path_template("/channel_pairings")
         options = make_request_options(
-            body={"code": code, "identity_id": identity_id, "template_id": template_id},
+            body={
+                "code": code,
+                "channel_pairing_id": channel_pairing_id,
+                "identity_id": identity_id,
+                "template_id": template_id,
+            },
             query={},
             headers={"Idempotency-Key": idempotency_key},
             extra_headers=extra_headers,

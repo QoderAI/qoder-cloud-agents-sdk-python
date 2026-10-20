@@ -24,16 +24,21 @@ class Files(SyncAPIResource):
         before_id: Union[str, None, NotGiven] = NOT_GIVEN,
         name: Union[str, None, NotGiven] = NOT_GIVEN,
         scope_id: Union[str, None, NotGiven] = NOT_GIVEN,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> SyncPage[FileMetadata]:
-        """GET /files."""
+        """GET /files.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/files")
         options = make_request_options(
             body={},
             query={
+                "identity_id": identity_id,
                 "limit": limit,
                 "page": page,
                 "after_id": after_id,
@@ -57,16 +62,20 @@ class Files(SyncAPIResource):
         purpose: Union[str, None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> FileMetadata:
-        """POST /files."""
+        """POST /files.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/files")
         options = make_request_options(
             body={"file": file, "name": name, "purpose": purpose, "metadata": metadata},
-            query={},
+            query={"identity_id": identity_id},
             headers={"Idempotency-Key": idempotency_key},
             extra_headers=extra_headers,
             extra_query=extra_query,
@@ -79,16 +88,20 @@ class Files(SyncAPIResource):
         self,
         file_id: str,
         *,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> FileMetadata:
-        """GET /files/{file_id}."""
+        """GET /files/{file_id}.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/files/{file_id}", file_id=file_id)
         options = make_request_options(
             body={},
-            query={},
+            query={"identity_id": identity_id},
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,
@@ -101,16 +114,20 @@ class Files(SyncAPIResource):
         self,
         file_id: str,
         *,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> None:
-        """DELETE /files/{file_id}."""
+        """DELETE /files/{file_id}.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/files/{file_id}", file_id=file_id)
         options = make_request_options(
             body={},
-            query={},
+            query={"identity_id": identity_id},
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,
@@ -123,16 +140,20 @@ class Files(SyncAPIResource):
         self,
         file_id: str,
         *,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> BinaryAPIResponse:
-        """GET /files/{file_id}/content."""
+        """GET /files/{file_id}/content.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/files/{file_id}/content", file_id=file_id)
         options = make_request_options(
             body={},
-            query={},
+            query={"identity_id": identity_id},
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,
@@ -152,16 +173,21 @@ class AsyncFiles(AsyncAPIResource):
         before_id: Union[str, None, NotGiven] = NOT_GIVEN,
         name: Union[str, None, NotGiven] = NOT_GIVEN,
         scope_id: Union[str, None, NotGiven] = NOT_GIVEN,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> AsyncPaginator[FileMetadata]:
-        """GET /files."""
+        """GET /files.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/files")
         options = make_request_options(
             body={},
             query={
+                "identity_id": identity_id,
                 "limit": limit,
                 "page": page,
                 "after_id": after_id,
@@ -187,16 +213,20 @@ class AsyncFiles(AsyncAPIResource):
         purpose: Union[str, None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> FileMetadata:
-        """POST /files."""
+        """POST /files.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/files")
         options = make_request_options(
             body={"file": file, "name": name, "purpose": purpose, "metadata": metadata},
-            query={},
+            query={"identity_id": identity_id},
             headers={"Idempotency-Key": idempotency_key},
             extra_headers=extra_headers,
             extra_query=extra_query,
@@ -209,16 +239,20 @@ class AsyncFiles(AsyncAPIResource):
         self,
         file_id: str,
         *,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> FileMetadata:
-        """GET /files/{file_id}."""
+        """GET /files/{file_id}.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/files/{file_id}", file_id=file_id)
         options = make_request_options(
             body={},
-            query={},
+            query={"identity_id": identity_id},
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,
@@ -231,16 +265,20 @@ class AsyncFiles(AsyncAPIResource):
         self,
         file_id: str,
         *,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> None:
-        """DELETE /files/{file_id}."""
+        """DELETE /files/{file_id}.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/files/{file_id}", file_id=file_id)
         options = make_request_options(
             body={},
-            query={},
+            query={"identity_id": identity_id},
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,
@@ -253,16 +291,20 @@ class AsyncFiles(AsyncAPIResource):
         self,
         file_id: str,
         *,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> AsyncBinaryAPIResponse:
-        """GET /files/{file_id}/content."""
+        """GET /files/{file_id}/content.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/files/{file_id}/content", file_id=file_id)
         options = make_request_options(
             body={},
-            query={},
+            query={"identity_id": identity_id},
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,

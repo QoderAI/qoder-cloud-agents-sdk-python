@@ -2860,7 +2860,8 @@ class ChannelPairings(SyncAPIResource)
 ```python
 def create(
     *,
-    code: str,
+    code: Union[str, NotGiven] = NOT_GIVEN,
+    channel_pairing_id: Union[str, NotGiven] = NOT_GIVEN,
     identity_id: str,
     template_id: str,
     idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
@@ -2874,6 +2875,8 @@ def create(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/channel_pairings.py)
 
 POST /channel_pairings.
+
+Supply exactly one of code or channel_pairing_id.
 
 <a id="qca.forward.resources.channel_pairings.ChannelPairings.delete"></a>
 
@@ -2911,7 +2914,8 @@ class AsyncChannelPairings(AsyncAPIResource)
 ```python
 async def create(
     *,
-    code: str,
+    code: Union[str, NotGiven] = NOT_GIVEN,
+    channel_pairing_id: Union[str, NotGiven] = NOT_GIVEN,
     identity_id: str,
     template_id: str,
     idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
@@ -2925,6 +2929,8 @@ async def create(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/channel_pairings.py)
 
 POST /channel_pairings.
+
+Supply exactly one of code or channel_pairing_id.
 
 <a id="qca.forward.resources.channel_pairings.AsyncChannelPairings.delete"></a>
 
@@ -3586,6 +3592,7 @@ def list(
     page: Union[str, None, NotGiven] = NOT_GIVEN,
     after_id: Union[str, None, NotGiven] = NOT_GIVEN,
     before_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -3596,6 +3603,8 @@ def list(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/environments.py)
 
 GET /environments.
+
+identity_id selects identity ownership with a PAT; omit it with a SAT.
 
 <a id="qca.forward.resources.environments.Environments.create"></a>
 
@@ -3609,6 +3618,7 @@ def create(
     config: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
     metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
     idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -3620,6 +3630,8 @@ def create(
 
 POST /environments.
 
+identity_id selects identity ownership with a PAT; omit it with a SAT.
+
 <a id="qca.forward.resources.environments.Environments.retrieve"></a>
 
 #### retrieve
@@ -3628,6 +3640,7 @@ POST /environments.
 def retrieve(
     environment_id: str,
     *,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -3638,6 +3651,8 @@ def retrieve(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/environments.py)
 
 GET /environments/{environment_id}.
+
+identity_id selects identity ownership with a PAT; omit it with a SAT.
 
 <a id="qca.forward.resources.environments.Environments.update"></a>
 
@@ -3651,6 +3666,7 @@ def update(
     description: Union[str, None, NotGiven] = NOT_GIVEN,
     config: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
     metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -3662,6 +3678,8 @@ def update(
 
 POST /environments/{environment_id}.
 
+identity_id selects identity ownership with a PAT; omit it with a SAT.
+
 <a id="qca.forward.resources.environments.Environments.archive"></a>
 
 #### archive
@@ -3670,6 +3688,7 @@ POST /environments/{environment_id}.
 def archive(
     environment_id: str,
     *,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -3681,6 +3700,8 @@ def archive(
 
 POST /environments/{environment_id}/archive.
 
+identity_id selects identity ownership with a PAT; omit it with a SAT.
+
 <a id="qca.forward.resources.environments.Environments.delete"></a>
 
 #### delete
@@ -3689,6 +3710,7 @@ POST /environments/{environment_id}/archive.
 def delete(
         environment_id: str,
         *,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -3698,6 +3720,8 @@ def delete(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/environments.py)
 
 DELETE /environments/{environment_id}.
+
+identity_id selects identity ownership with a PAT; omit it with a SAT.
 
 <a id="qca.forward.resources.environments.AsyncEnvironments"></a>
 
@@ -3720,6 +3744,7 @@ def list(
     page: Union[str, None, NotGiven] = NOT_GIVEN,
     after_id: Union[str, None, NotGiven] = NOT_GIVEN,
     before_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -3730,6 +3755,8 @@ def list(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/environments.py)
 
 GET /environments.
+
+identity_id selects identity ownership with a PAT; omit it with a SAT.
 
 <a id="qca.forward.resources.environments.AsyncEnvironments.create"></a>
 
@@ -3743,6 +3770,7 @@ async def create(
     config: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
     metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
     idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -3754,6 +3782,8 @@ async def create(
 
 POST /environments.
 
+identity_id selects identity ownership with a PAT; omit it with a SAT.
+
 <a id="qca.forward.resources.environments.AsyncEnvironments.retrieve"></a>
 
 #### retrieve
@@ -3762,6 +3792,7 @@ POST /environments.
 async def retrieve(
     environment_id: str,
     *,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -3772,6 +3803,8 @@ async def retrieve(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/environments.py)
 
 GET /environments/{environment_id}.
+
+identity_id selects identity ownership with a PAT; omit it with a SAT.
 
 <a id="qca.forward.resources.environments.AsyncEnvironments.update"></a>
 
@@ -3785,6 +3818,7 @@ async def update(
     description: Union[str, None, NotGiven] = NOT_GIVEN,
     config: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
     metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -3796,6 +3830,8 @@ async def update(
 
 POST /environments/{environment_id}.
 
+identity_id selects identity ownership with a PAT; omit it with a SAT.
+
 <a id="qca.forward.resources.environments.AsyncEnvironments.archive"></a>
 
 #### archive
@@ -3804,6 +3840,7 @@ POST /environments/{environment_id}.
 async def archive(
     environment_id: str,
     *,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -3815,6 +3852,8 @@ async def archive(
 
 POST /environments/{environment_id}/archive.
 
+identity_id selects identity ownership with a PAT; omit it with a SAT.
+
 <a id="qca.forward.resources.environments.AsyncEnvironments.delete"></a>
 
 #### delete
@@ -3823,6 +3862,7 @@ POST /environments/{environment_id}/archive.
 async def delete(
         environment_id: str,
         *,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -3832,6 +3872,8 @@ async def delete(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/environments.py)
 
 DELETE /environments/{environment_id}.
+
+identity_id selects identity ownership with a PAT; omit it with a SAT.
 
 <a id="qca.forward.resources.files"></a>
 
@@ -3860,6 +3902,7 @@ def list(
     before_id: Union[str, None, NotGiven] = NOT_GIVEN,
     name: Union[str, None, NotGiven] = NOT_GIVEN,
     scope_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -3870,6 +3913,8 @@ def list(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/files.py)
 
 GET /files.
+
+identity_id selects identity ownership with a PAT; omit it with a SAT.
 
 <a id="qca.forward.resources.files.Files.upload"></a>
 
@@ -3883,6 +3928,7 @@ def upload(
     purpose: Union[str, None, NotGiven] = NOT_GIVEN,
     metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
     idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -3894,6 +3940,8 @@ def upload(
 
 POST /files.
 
+identity_id selects identity ownership with a PAT; omit it with a SAT.
+
 <a id="qca.forward.resources.files.Files.retrieve_metadata"></a>
 
 #### retrieve\_metadata
@@ -3902,6 +3950,7 @@ POST /files.
 def retrieve_metadata(
     file_id: str,
     *,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -3913,6 +3962,8 @@ def retrieve_metadata(
 
 GET /files/{file_id}.
 
+identity_id selects identity ownership with a PAT; omit it with a SAT.
+
 <a id="qca.forward.resources.files.Files.delete"></a>
 
 #### delete
@@ -3921,6 +3972,7 @@ GET /files/{file_id}.
 def delete(
         file_id: str,
         *,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -3931,6 +3983,8 @@ def delete(
 
 DELETE /files/{file_id}.
 
+identity_id selects identity ownership with a PAT; omit it with a SAT.
+
 <a id="qca.forward.resources.files.Files.download"></a>
 
 #### download
@@ -3939,6 +3993,7 @@ DELETE /files/{file_id}.
 def download(
     file_id: str,
     *,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -3949,6 +4004,8 @@ def download(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/files.py)
 
 GET /files/{file_id}/content.
+
+identity_id selects identity ownership with a PAT; omit it with a SAT.
 
 <a id="qca.forward.resources.files.AsyncFiles"></a>
 
@@ -3973,6 +4030,7 @@ def list(
     before_id: Union[str, None, NotGiven] = NOT_GIVEN,
     name: Union[str, None, NotGiven] = NOT_GIVEN,
     scope_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -3983,6 +4041,8 @@ def list(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/files.py)
 
 GET /files.
+
+identity_id selects identity ownership with a PAT; omit it with a SAT.
 
 <a id="qca.forward.resources.files.AsyncFiles.upload"></a>
 
@@ -3996,6 +4056,7 @@ async def upload(
     purpose: Union[str, None, NotGiven] = NOT_GIVEN,
     metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
     idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -4007,6 +4068,8 @@ async def upload(
 
 POST /files.
 
+identity_id selects identity ownership with a PAT; omit it with a SAT.
+
 <a id="qca.forward.resources.files.AsyncFiles.retrieve_metadata"></a>
 
 #### retrieve\_metadata
@@ -4015,6 +4078,7 @@ POST /files.
 async def retrieve_metadata(
     file_id: str,
     *,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -4026,6 +4090,8 @@ async def retrieve_metadata(
 
 GET /files/{file_id}.
 
+identity_id selects identity ownership with a PAT; omit it with a SAT.
+
 <a id="qca.forward.resources.files.AsyncFiles.delete"></a>
 
 #### delete
@@ -4034,6 +4100,7 @@ GET /files/{file_id}.
 async def delete(
         file_id: str,
         *,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -4044,6 +4111,8 @@ async def delete(
 
 DELETE /files/{file_id}.
 
+identity_id selects identity ownership with a PAT; omit it with a SAT.
+
 <a id="qca.forward.resources.files.AsyncFiles.download"></a>
 
 #### download
@@ -4052,6 +4121,7 @@ DELETE /files/{file_id}.
 async def download(
     file_id: str,
     *,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -4062,6 +4132,8 @@ async def download(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/files.py)
 
 GET /files/{file_id}/content.
+
+identity_id selects identity ownership with a PAT; omit it with a SAT.
 
 <a id="qca.forward.resources.identities.configs"></a>
 
@@ -8230,6 +8302,7 @@ def list(
     display_title: Union[str, None, NotGiven] = NOT_GIVEN,
     source: Union[str, None, NotGiven] = NOT_GIVEN,
     name: Union[str, None, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -8240,6 +8313,8 @@ def list(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/skills/skills.py)
 
 GET /skills.
+
+identity_id selects identity ownership with a PAT; omit it with a SAT.
 
 <a id="qca.forward.resources.skills.skills.Skills.create"></a>
 
@@ -8256,6 +8331,7 @@ def create(
         description: Union[str, None, NotGiven] = NOT_GIVEN,
         type: Union[str, None, NotGiven] = NOT_GIVEN,
         idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -8266,6 +8342,8 @@ def create(
 
 POST /skills.
 
+identity_id selects identity ownership with a PAT; omit it with a SAT.
+
 <a id="qca.forward.resources.skills.skills.Skills.retrieve"></a>
 
 #### retrieve
@@ -8275,6 +8353,7 @@ def retrieve(
         skill_id: str,
         *,
         include_content: Union[bool, None, NotGiven] = NOT_GIVEN,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -8284,6 +8363,8 @@ def retrieve(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/skills/skills.py)
 
 GET /skills/{skill_id}.
+
+identity_id selects identity ownership with a PAT; omit it with a SAT.
 
 <a id="qca.forward.resources.skills.skills.Skills.update"></a>
 
@@ -8299,6 +8380,7 @@ def update(
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         icon_id: Union[str, None, NotGiven] = NOT_GIVEN,
         name: Union[str, None, NotGiven] = NOT_GIVEN,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -8309,6 +8391,8 @@ def update(
 
 PUT /skills/{skill_id}.
 
+identity_id selects identity ownership with a PAT; omit it with a SAT.
+
 <a id="qca.forward.resources.skills.skills.Skills.delete"></a>
 
 #### delete
@@ -8317,6 +8401,7 @@ PUT /skills/{skill_id}.
 def delete(
         skill_id: str,
         *,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -8326,6 +8411,8 @@ def delete(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/skills/skills.py)
 
 DELETE /skills/{skill_id}.
+
+identity_id selects identity ownership with a PAT; omit it with a SAT.
 
 <a id="qca.forward.resources.skills.skills.AsyncSkills"></a>
 
@@ -8362,6 +8449,7 @@ def list(
     display_title: Union[str, None, NotGiven] = NOT_GIVEN,
     source: Union[str, None, NotGiven] = NOT_GIVEN,
     name: Union[str, None, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -8372,6 +8460,8 @@ def list(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/skills/skills.py)
 
 GET /skills.
+
+identity_id selects identity ownership with a PAT; omit it with a SAT.
 
 <a id="qca.forward.resources.skills.skills.AsyncSkills.create"></a>
 
@@ -8388,6 +8478,7 @@ async def create(
         description: Union[str, None, NotGiven] = NOT_GIVEN,
         type: Union[str, None, NotGiven] = NOT_GIVEN,
         idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -8398,6 +8489,8 @@ async def create(
 
 POST /skills.
 
+identity_id selects identity ownership with a PAT; omit it with a SAT.
+
 <a id="qca.forward.resources.skills.skills.AsyncSkills.retrieve"></a>
 
 #### retrieve
@@ -8407,6 +8500,7 @@ async def retrieve(
         skill_id: str,
         *,
         include_content: Union[bool, None, NotGiven] = NOT_GIVEN,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -8416,6 +8510,8 @@ async def retrieve(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/skills/skills.py)
 
 GET /skills/{skill_id}.
+
+identity_id selects identity ownership with a PAT; omit it with a SAT.
 
 <a id="qca.forward.resources.skills.skills.AsyncSkills.update"></a>
 
@@ -8431,6 +8527,7 @@ async def update(
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         icon_id: Union[str, None, NotGiven] = NOT_GIVEN,
         name: Union[str, None, NotGiven] = NOT_GIVEN,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -8441,6 +8538,8 @@ async def update(
 
 PUT /skills/{skill_id}.
 
+identity_id selects identity ownership with a PAT; omit it with a SAT.
+
 <a id="qca.forward.resources.skills.skills.AsyncSkills.delete"></a>
 
 #### delete
@@ -8449,6 +8548,7 @@ PUT /skills/{skill_id}.
 async def delete(
         skill_id: str,
         *,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -8458,6 +8558,8 @@ async def delete(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/skills/skills.py)
 
 DELETE /skills/{skill_id}.
+
+identity_id selects identity ownership with a PAT; omit it with a SAT.
 
 <a id="qca.forward.resources.skills.versions"></a>
 
@@ -8483,6 +8585,7 @@ def list(
     *,
     limit: Union[int, None, NotGiven] = NOT_GIVEN,
     page: Union[str, None, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -8494,6 +8597,8 @@ def list(
 
 GET /skills/{skill_id}/versions.
 
+identity_id selects identity ownership with a PAT; omit it with a SAT.
+
 <a id="qca.forward.resources.skills.versions.Versions.create"></a>
 
 #### create
@@ -8503,6 +8608,7 @@ def create(
     skill_id: str,
     *,
     files: List[FileTypes],
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -8514,6 +8620,8 @@ def create(
 
 POST /skills/{skill_id}/versions.
 
+identity_id selects identity ownership with a PAT; omit it with a SAT.
+
 <a id="qca.forward.resources.skills.versions.Versions.retrieve"></a>
 
 #### retrieve
@@ -8523,6 +8631,7 @@ def retrieve(
     version: str,
     *,
     skill_id: str,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -8534,6 +8643,8 @@ def retrieve(
 
 GET /skills/{skill_id}/versions/{version}.
 
+identity_id selects identity ownership with a PAT; omit it with a SAT.
+
 <a id="qca.forward.resources.skills.versions.Versions.delete"></a>
 
 #### delete
@@ -8543,6 +8654,7 @@ def delete(
     version: str,
     *,
     skill_id: str,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -8554,6 +8666,8 @@ def delete(
 
 DELETE /skills/{skill_id}/versions/{version}.
 
+identity_id selects identity ownership with a PAT; omit it with a SAT.
+
 <a id="qca.forward.resources.skills.versions.Versions.download"></a>
 
 #### download
@@ -8563,6 +8677,7 @@ def download(
     version: str,
     *,
     skill_id: str,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -8573,6 +8688,8 @@ def download(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/skills/versions.py)
 
 GET /skills/{skill_id}/versions/{version}/content.
+
+identity_id selects identity ownership with a PAT; omit it with a SAT.
 
 <a id="qca.forward.resources.skills.versions.AsyncVersions"></a>
 
@@ -8594,6 +8711,7 @@ def list(
     *,
     limit: Union[int, None, NotGiven] = NOT_GIVEN,
     page: Union[str, None, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -8605,6 +8723,8 @@ def list(
 
 GET /skills/{skill_id}/versions.
 
+identity_id selects identity ownership with a PAT; omit it with a SAT.
+
 <a id="qca.forward.resources.skills.versions.AsyncVersions.create"></a>
 
 #### create
@@ -8614,6 +8734,7 @@ async def create(
     skill_id: str,
     *,
     files: List[FileTypes],
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -8625,6 +8746,8 @@ async def create(
 
 POST /skills/{skill_id}/versions.
 
+identity_id selects identity ownership with a PAT; omit it with a SAT.
+
 <a id="qca.forward.resources.skills.versions.AsyncVersions.retrieve"></a>
 
 #### retrieve
@@ -8634,6 +8757,7 @@ async def retrieve(
     version: str,
     *,
     skill_id: str,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -8645,6 +8769,8 @@ async def retrieve(
 
 GET /skills/{skill_id}/versions/{version}.
 
+identity_id selects identity ownership with a PAT; omit it with a SAT.
+
 <a id="qca.forward.resources.skills.versions.AsyncVersions.delete"></a>
 
 #### delete
@@ -8654,6 +8780,7 @@ async def delete(
     version: str,
     *,
     skill_id: str,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -8665,6 +8792,8 @@ async def delete(
 
 DELETE /skills/{skill_id}/versions/{version}.
 
+identity_id selects identity ownership with a PAT; omit it with a SAT.
+
 <a id="qca.forward.resources.skills.versions.AsyncVersions.download"></a>
 
 #### download
@@ -8674,6 +8803,7 @@ async def download(
     version: str,
     *,
     skill_id: str,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -8684,6 +8814,8 @@ async def download(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/skills/versions.py)
 
 GET /skills/{skill_id}/versions/{version}/content.
+
+identity_id selects identity ownership with a PAT; omit it with a SAT.
 
 <a id="qca.forward.resources.templates"></a>
 
@@ -9229,6 +9361,7 @@ def list(
     after_id: Union[str, None, NotGiven] = NOT_GIVEN,
     before_id: Union[str, None, NotGiven] = NOT_GIVEN,
     name: Union[str, None, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -9239,6 +9372,8 @@ def list(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/vaults/credentials.py)
 
 GET /vaults/{vault_id}/credentials.
+
+identity_id selects identity ownership with a PAT; omit it with a SAT.
 
 <a id="qca.forward.resources.vaults.credentials.Credentials.create"></a>
 
@@ -9252,6 +9387,7 @@ def create(
     display_name: Union[str, None, NotGiven] = NOT_GIVEN,
     metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
     idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -9263,6 +9399,8 @@ def create(
 
 POST /vaults/{vault_id}/credentials.
 
+identity_id selects identity ownership with a PAT; omit it with a SAT.
+
 <a id="qca.forward.resources.vaults.credentials.Credentials.retrieve"></a>
 
 #### retrieve
@@ -9272,6 +9410,7 @@ def retrieve(
     credential_id: str,
     *,
     vault_id: str,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -9283,6 +9422,8 @@ def retrieve(
 
 GET /vaults/{vault_id}/credentials/{credential_id}.
 
+identity_id selects identity ownership with a PAT; omit it with a SAT.
+
 <a id="qca.forward.resources.vaults.credentials.Credentials.delete"></a>
 
 #### delete
@@ -9292,6 +9433,7 @@ def delete(
         credential_id: str,
         *,
         vault_id: str,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -9301,6 +9443,8 @@ def delete(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/vaults/credentials.py)
 
 DELETE /vaults/{vault_id}/credentials/{credential_id}.
+
+identity_id selects identity ownership with a PAT; omit it with a SAT.
 
 <a id="qca.forward.resources.vaults.credentials.AsyncCredentials"></a>
 
@@ -9350,6 +9494,7 @@ def list(
     after_id: Union[str, None, NotGiven] = NOT_GIVEN,
     before_id: Union[str, None, NotGiven] = NOT_GIVEN,
     name: Union[str, None, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -9360,6 +9505,8 @@ def list(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/vaults/credentials.py)
 
 GET /vaults/{vault_id}/credentials.
+
+identity_id selects identity ownership with a PAT; omit it with a SAT.
 
 <a id="qca.forward.resources.vaults.credentials.AsyncCredentials.create"></a>
 
@@ -9373,6 +9520,7 @@ async def create(
     display_name: Union[str, None, NotGiven] = NOT_GIVEN,
     metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
     idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -9384,6 +9532,8 @@ async def create(
 
 POST /vaults/{vault_id}/credentials.
 
+identity_id selects identity ownership with a PAT; omit it with a SAT.
+
 <a id="qca.forward.resources.vaults.credentials.AsyncCredentials.retrieve"></a>
 
 #### retrieve
@@ -9393,6 +9543,7 @@ async def retrieve(
     credential_id: str,
     *,
     vault_id: str,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -9404,6 +9555,8 @@ async def retrieve(
 
 GET /vaults/{vault_id}/credentials/{credential_id}.
 
+identity_id selects identity ownership with a PAT; omit it with a SAT.
+
 <a id="qca.forward.resources.vaults.credentials.AsyncCredentials.delete"></a>
 
 #### delete
@@ -9413,6 +9566,7 @@ async def delete(
         credential_id: str,
         *,
         vault_id: str,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -9422,6 +9576,8 @@ async def delete(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/vaults/credentials.py)
 
 DELETE /vaults/{vault_id}/credentials/{credential_id}.
+
+identity_id selects identity ownership with a PAT; omit it with a SAT.
 
 <a id="qca.forward.resources.vaults.vaults"></a>
 
@@ -9460,6 +9616,7 @@ def list(
     after_id: Union[str, None, NotGiven] = NOT_GIVEN,
     before_id: Union[str, None, NotGiven] = NOT_GIVEN,
     name: Union[str, None, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -9471,6 +9628,8 @@ def list(
 
 GET /vaults.
 
+identity_id selects identity ownership with a PAT; omit it with a SAT.
+
 <a id="qca.forward.resources.vaults.vaults.Vaults.create"></a>
 
 #### create
@@ -9481,6 +9640,7 @@ def create(
         display_name: str,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -9491,6 +9651,8 @@ def create(
 
 POST /vaults.
 
+identity_id selects identity ownership with a PAT; omit it with a SAT.
+
 <a id="qca.forward.resources.vaults.vaults.Vaults.retrieve"></a>
 
 #### retrieve
@@ -9499,6 +9661,7 @@ POST /vaults.
 def retrieve(
         vault_id: str,
         *,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -9509,6 +9672,8 @@ def retrieve(
 
 GET /vaults/{vault_id}.
 
+identity_id selects identity ownership with a PAT; omit it with a SAT.
+
 <a id="qca.forward.resources.vaults.vaults.Vaults.delete"></a>
 
 #### delete
@@ -9517,6 +9682,7 @@ GET /vaults/{vault_id}.
 def delete(
         vault_id: str,
         *,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -9526,6 +9692,8 @@ def delete(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/vaults/vaults.py)
 
 DELETE /vaults/{vault_id}.
+
+identity_id selects identity ownership with a PAT; omit it with a SAT.
 
 <a id="qca.forward.resources.vaults.vaults.AsyncVaults"></a>
 
@@ -9560,6 +9728,7 @@ def list(
     after_id: Union[str, None, NotGiven] = NOT_GIVEN,
     before_id: Union[str, None, NotGiven] = NOT_GIVEN,
     name: Union[str, None, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -9571,6 +9740,8 @@ def list(
 
 GET /vaults.
 
+identity_id selects identity ownership with a PAT; omit it with a SAT.
+
 <a id="qca.forward.resources.vaults.vaults.AsyncVaults.create"></a>
 
 #### create
@@ -9581,6 +9752,7 @@ async def create(
         display_name: str,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -9591,6 +9763,8 @@ async def create(
 
 POST /vaults.
 
+identity_id selects identity ownership with a PAT; omit it with a SAT.
+
 <a id="qca.forward.resources.vaults.vaults.AsyncVaults.retrieve"></a>
 
 #### retrieve
@@ -9599,6 +9773,7 @@ POST /vaults.
 async def retrieve(
         vault_id: str,
         *,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -9609,6 +9784,8 @@ async def retrieve(
 
 GET /vaults/{vault_id}.
 
+identity_id selects identity ownership with a PAT; omit it with a SAT.
+
 <a id="qca.forward.resources.vaults.vaults.AsyncVaults.delete"></a>
 
 #### delete
@@ -9617,6 +9794,7 @@ GET /vaults/{vault_id}.
 async def delete(
         vault_id: str,
         *,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -9626,6 +9804,8 @@ async def delete(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/vaults/vaults.py)
 
 DELETE /vaults/{vault_id}.
+
+identity_id selects identity ownership with a PAT; omit it with a SAT.
 
 <a id="qca.forward.types.batch"></a>
 
@@ -10281,6 +10461,26 @@ class ChannelPairing(BaseModel)
 
 #### paired\_at
 
+<a id="qca.forward.types.channel_pairing.ChannelPairing.scope_type"></a>
+
+#### scope\_type
+
+<a id="qca.forward.types.channel_pairing.ChannelPairing.scope_external_id"></a>
+
+#### scope\_external\_id
+
+<a id="qca.forward.types.channel_pairing.ChannelPairing.scope_display_name"></a>
+
+#### scope\_display\_name
+
+<a id="qca.forward.types.channel_pairing.ChannelPairing.created_at"></a>
+
+#### created\_at
+
+<a id="qca.forward.types.channel_pairing.ChannelPairing.updated_at"></a>
+
+#### updated\_at
+
 <a id="qca.forward.types.channel_pairing_create_params"></a>
 
 # qca.forward.types.channel\_pairing\_create\_params
@@ -10298,6 +10498,12 @@ class ChannelPairingCreateParams(TypedDict)
 <a id="qca.forward.types.channel_pairing_create_params.ChannelPairingCreateParams.code"></a>
 
 #### code
+
+Supply exactly one of code or channel_pairing_id.
+
+<a id="qca.forward.types.channel_pairing_create_params.ChannelPairingCreateParams.channel_pairing_id"></a>
+
+#### channel\_pairing\_id
 
 <a id="qca.forward.types.channel_pairing_create_params.ChannelPairingCreateParams.identity_id"></a>
 
@@ -11199,6 +11405,12 @@ class EnvironmentCreateParams(TypedDict)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/environment_create_params.py)
 
+<a id="qca.forward.types.environment_create_params.EnvironmentCreateParams.identity_id"></a>
+
+#### identity\_id
+
+Select identity ownership with a PAT. Omit when using a SAT.
+
 <a id="qca.forward.types.environment_create_params.EnvironmentCreateParams.name"></a>
 
 #### name
@@ -11233,6 +11445,12 @@ class EnvironmentListParams(TypedDict)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/environment_list_params.py)
 
+<a id="qca.forward.types.environment_list_params.EnvironmentListParams.identity_id"></a>
+
+#### identity\_id
+
+Select identity ownership with a PAT. Omit when using a SAT.
+
 <a id="qca.forward.types.environment_list_params.EnvironmentListParams.limit"></a>
 
 #### limit
@@ -11262,6 +11480,12 @@ class EnvironmentUpdateParams(TypedDict)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/environment_update_params.py)
+
+<a id="qca.forward.types.environment_update_params.EnvironmentUpdateParams.identity_id"></a>
+
+#### identity\_id
+
+Select identity ownership with a PAT. Omit when using a SAT.
 
 <a id="qca.forward.types.environment_update_params.EnvironmentUpdateParams.name"></a>
 
@@ -11336,6 +11560,12 @@ class FileListParams(TypedDict)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/file_list_params.py)
+
+<a id="qca.forward.types.file_list_params.FileListParams.identity_id"></a>
+
+#### identity\_id
+
+Select identity ownership with a PAT. Omit when using a SAT.
 
 <a id="qca.forward.types.file_list_params.FileListParams.limit"></a>
 
@@ -11432,6 +11662,12 @@ class FileUploadParams(TypedDict)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/file_upload_params.py)
+
+<a id="qca.forward.types.file_upload_params.FileUploadParams.identity_id"></a>
+
+#### identity\_id
+
+Select identity ownership with a PAT. Omit when using a SAT.
 
 <a id="qca.forward.types.file_upload_params.FileUploadParams.file"></a>
 
@@ -15545,6 +15781,14 @@ class SessionUsage(BaseModel)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/session_usage.py)
 
+<a id="qca.forward.types.session_usage.SessionUsage.model_credits"></a>
+
+#### model\_credits
+
+<a id="qca.forward.types.session_usage.SessionUsage.sandbox_runtime_credits"></a>
+
+#### sandbox\_runtime\_credits
+
 <a id="qca.forward.types.session_usage.SessionUsage.total_credits"></a>
 
 #### total\_credits
@@ -15685,6 +15929,12 @@ class SkillCreateParams(TypedDict)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/skill_create_params.py)
 
+<a id="qca.forward.types.skill_create_params.SkillCreateParams.identity_id"></a>
+
+#### identity\_id
+
+Select identity ownership with a PAT. Omit when using a SAT.
+
 <a id="qca.forward.types.skill_create_params.SkillCreateParams.files"></a>
 
 #### files
@@ -15730,6 +15980,12 @@ class SkillListParams(TypedDict)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/skill_list_params.py)
+
+<a id="qca.forward.types.skill_list_params.SkillListParams.identity_id"></a>
+
+#### identity\_id
+
+Select identity ownership with a PAT. Omit when using a SAT.
 
 <a id="qca.forward.types.skill_list_params.SkillListParams.limit"></a>
 
@@ -15825,6 +16081,12 @@ class SkillRetrieveParams(TypedDict)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/skill_retrieve_params.py)
 
+<a id="qca.forward.types.skill_retrieve_params.SkillRetrieveParams.identity_id"></a>
+
+#### identity\_id
+
+Select identity ownership with a PAT. Omit when using a SAT.
+
 <a id="qca.forward.types.skill_retrieve_params.SkillRetrieveParams.include_content"></a>
 
 #### include\_content
@@ -15842,6 +16104,12 @@ class SkillUpdateParams(TypedDict)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/skill_update_params.py)
+
+<a id="qca.forward.types.skill_update_params.SkillUpdateParams.identity_id"></a>
+
+#### identity\_id
+
+Select identity ownership with a PAT. Omit when using a SAT.
 
 <a id="qca.forward.types.skill_update_params.SkillUpdateParams.description"></a>
 
@@ -15939,6 +16207,12 @@ class SkillVersionCreateParams(TypedDict)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/skill_version_create_params.py)
 
+<a id="qca.forward.types.skill_version_create_params.SkillVersionCreateParams.identity_id"></a>
+
+#### identity\_id
+
+Select identity ownership with a PAT. Omit when using a SAT.
+
 <a id="qca.forward.types.skill_version_create_params.SkillVersionCreateParams.files"></a>
 
 #### files
@@ -15956,6 +16230,12 @@ class SkillVersionListParams(TypedDict)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/skill_version_list_params.py)
+
+<a id="qca.forward.types.skill_version_list_params.SkillVersionListParams.identity_id"></a>
+
+#### identity\_id
+
+Select identity ownership with a PAT. Omit when using a SAT.
 
 <a id="qca.forward.types.skill_version_list_params.SkillVersionListParams.limit"></a>
 
@@ -16675,6 +16955,12 @@ class VaultCreateParams(TypedDict)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/vault_create_params.py)
 
+<a id="qca.forward.types.vault_create_params.VaultCreateParams.identity_id"></a>
+
+#### identity\_id
+
+Select identity ownership with a PAT. Omit when using a SAT.
+
 <a id="qca.forward.types.vault_create_params.VaultCreateParams.display_name"></a>
 
 #### display\_name
@@ -16777,6 +17063,12 @@ class VaultCredentialCreateParams(TypedDict)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/vault_credential_create_params.py)
 
+<a id="qca.forward.types.vault_credential_create_params.VaultCredentialCreateParams.identity_id"></a>
+
+#### identity\_id
+
+Select identity ownership with a PAT. Omit when using a SAT.
+
 <a id="qca.forward.types.vault_credential_create_params.VaultCredentialCreateParams.auth"></a>
 
 #### auth
@@ -16806,6 +17098,12 @@ class VaultCredentialListParams(TypedDict)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/vault_credential_list_params.py)
+
+<a id="qca.forward.types.vault_credential_list_params.VaultCredentialListParams.identity_id"></a>
+
+#### identity\_id
+
+Select identity ownership with a PAT. Omit when using a SAT.
 
 <a id="qca.forward.types.vault_credential_list_params.VaultCredentialListParams.limit"></a>
 
@@ -16956,6 +17254,12 @@ class VaultListParams(TypedDict)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/vault_list_params.py)
+
+<a id="qca.forward.types.vault_list_params.VaultListParams.identity_id"></a>
+
+#### identity\_id
+
+Select identity ownership with a PAT. Omit when using a SAT.
 
 <a id="qca.forward.types.vault_list_params.VaultListParams.limit"></a>
 
@@ -23883,9 +24187,9 @@ class BudgetLimit(BaseModel)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/budget_limit.py)
 
-<a id="qca.managed.types.budget_limit.BudgetLimit.max_list_cost"></a>
+<a id="qca.managed.types.budget_limit.BudgetLimit.max_credit_cost"></a>
 
-#### max\_list\_cost
+#### max\_credit\_cost
 
 <a id="qca.managed.types.budget_limit.BudgetLimit.type"></a>
 
@@ -23905,9 +24209,9 @@ class BudgetLimitParam(TypedDict)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/budget_limit_param.py)
 
-<a id="qca.managed.types.budget_limit_param.BudgetLimitParam.max_list_cost"></a>
+<a id="qca.managed.types.budget_limit_param.BudgetLimitParam.max_credit_cost"></a>
 
-#### max\_list\_cost
+#### max\_credit\_cost
 
 <a id="qca.managed.types.budget_limit_param.BudgetLimitParam.type"></a>
 
@@ -29919,6 +30223,18 @@ class SessionEvent(BaseModel)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/session_event.py)
 
+<a id="qca.managed.types.session_event.SessionEvent.model_credits"></a>
+
+#### model\_credits
+
+<a id="qca.managed.types.session_event.SessionEvent.sandbox_runtime_credits"></a>
+
+#### sandbox\_runtime\_credits
+
+<a id="qca.managed.types.session_event.SessionEvent.total_credits"></a>
+
+#### total\_credits
+
 <a id="qca.managed.types.session_event.SessionEvent.id"></a>
 
 #### id
@@ -30216,6 +30532,10 @@ class SessionEventUsage(BaseModel)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/session_event_usage.py)
+
+<a id="qca.managed.types.session_event_usage.SessionEventUsage.credits"></a>
+
+#### credits
 
 <a id="qca.managed.types.session_event_usage.SessionEventUsage.cache_creation_input_tokens"></a>
 
@@ -30851,6 +31171,18 @@ class SessionStreamEvent(BaseModel)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/session_stream_event.py)
 
+<a id="qca.managed.types.session_stream_event.SessionStreamEvent.model_credits"></a>
+
+#### model\_credits
+
+<a id="qca.managed.types.session_stream_event.SessionStreamEvent.sandbox_runtime_credits"></a>
+
+#### sandbox\_runtime\_credits
+
+<a id="qca.managed.types.session_stream_event.SessionStreamEvent.total_credits"></a>
+
+#### total\_credits
+
 <a id="qca.managed.types.session_stream_event.SessionStreamEvent.id"></a>
 
 #### id
@@ -31042,6 +31374,10 @@ class SessionStreamEventUsage(BaseModel)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/session_stream_event_usage.py)
+
+<a id="qca.managed.types.session_stream_event_usage.SessionStreamEventUsage.credits"></a>
+
+#### credits
 
 <a id="qca.managed.types.session_stream_event_usage.SessionStreamEventUsage.cache_creation_input_tokens"></a>
 
@@ -31573,6 +31909,18 @@ class SessionUsage(BaseModel)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/session_usage.py)
 
+<a id="qca.managed.types.session_usage.SessionUsage.model_credits"></a>
+
+#### model\_credits
+
+<a id="qca.managed.types.session_usage.SessionUsage.sandbox_runtime_credits"></a>
+
+#### sandbox\_runtime\_credits
+
+<a id="qca.managed.types.session_usage.SessionUsage.total_credits"></a>
+
+#### total\_credits
+
 <a id="qca.managed.types.session_usage.SessionUsage.active_seconds"></a>
 
 #### active\_seconds
@@ -31997,6 +32345,10 @@ class SpanModelUsage(BaseModel)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/span_model_usage.py)
 
+<a id="qca.managed.types.span_model_usage.SpanModelUsage.credits"></a>
+
+#### credits
+
 <a id="qca.managed.types.span_model_usage.SpanModelUsage.cache_creation_input_tokens"></a>
 
 #### cache\_creation\_input\_tokens
@@ -32100,6 +32452,18 @@ class StreamSessionThreadEventsUnion(BaseModel)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/stream_session_thread_events_union.py)
+
+<a id="qca.managed.types.stream_session_thread_events_union.StreamSessionThreadEventsUnion.model_credits"></a>
+
+#### model\_credits
+
+<a id="qca.managed.types.stream_session_thread_events_union.StreamSessionThreadEventsUnion.sandbox_runtime_credits"></a>
+
+#### sandbox\_runtime\_credits
+
+<a id="qca.managed.types.stream_session_thread_events_union.StreamSessionThreadEventsUnion.total_credits"></a>
+
+#### total\_credits
 
 <a id="qca.managed.types.stream_session_thread_events_union.StreamSessionThreadEventsUnion.id"></a>
 
@@ -32292,6 +32656,10 @@ class StreamSessionThreadEventsUnionUsage(BaseModel)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/stream_session_thread_events_union_usage.py)
+
+<a id="qca.managed.types.stream_session_thread_events_union_usage.StreamSessionThreadEventsUnionUsage.credits"></a>
+
+#### credits
 
 <a id="qca.managed.types.stream_session_thread_events_union_usage.StreamSessionThreadEventsUnionUsage.cache_creation_input_tokens"></a>
 
