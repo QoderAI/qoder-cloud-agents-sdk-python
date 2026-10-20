@@ -8,7 +8,9 @@ __all__ = ["ChannelPairingCreateParams"]
 
 
 class ChannelPairingCreateParams(TypedDict, total=False):
-    code: Required[str]
+    code: str
+    """Supply exactly one of code or channel_pairing_id."""
+    channel_pairing_id: str
     identity_id: Required[str]
     template_id: Required[str]
     idempotency_key: Optional[str]

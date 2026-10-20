@@ -21,16 +21,26 @@ class Environments(SyncAPIResource):
         page: Union[str, None, NotGiven] = NOT_GIVEN,
         after_id: Union[str, None, NotGiven] = NOT_GIVEN,
         before_id: Union[str, None, NotGiven] = NOT_GIVEN,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> SyncPage[Environment]:
-        """GET /environments."""
+        """GET /environments.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/environments")
         options = make_request_options(
             body={},
-            query={"limit": limit, "page": page, "after_id": after_id, "before_id": before_id},
+            query={
+                "identity_id": identity_id,
+                "limit": limit,
+                "page": page,
+                "after_id": after_id,
+                "before_id": before_id,
+            },
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,
@@ -47,16 +57,20 @@ class Environments(SyncAPIResource):
         config: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> Environment:
-        """POST /environments."""
+        """POST /environments.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/environments")
         options = make_request_options(
             body={"name": name, "description": description, "config": config, "metadata": metadata},
-            query={},
+            query={"identity_id": identity_id},
             headers={"Idempotency-Key": idempotency_key},
             extra_headers=extra_headers,
             extra_query=extra_query,
@@ -69,16 +83,20 @@ class Environments(SyncAPIResource):
         self,
         environment_id: str,
         *,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> Environment:
-        """GET /environments/{environment_id}."""
+        """GET /environments/{environment_id}.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/environments/{environment_id}", environment_id=environment_id)
         options = make_request_options(
             body={},
-            query={},
+            query={"identity_id": identity_id},
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,
@@ -95,16 +113,20 @@ class Environments(SyncAPIResource):
         description: Union[str, None, NotGiven] = NOT_GIVEN,
         config: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> Environment:
-        """POST /environments/{environment_id}."""
+        """POST /environments/{environment_id}.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/environments/{environment_id}", environment_id=environment_id)
         options = make_request_options(
             body={"name": name, "description": description, "config": config, "metadata": metadata},
-            query={},
+            query={"identity_id": identity_id},
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,
@@ -117,16 +139,20 @@ class Environments(SyncAPIResource):
         self,
         environment_id: str,
         *,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> Environment:
-        """POST /environments/{environment_id}/archive."""
+        """POST /environments/{environment_id}/archive.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/environments/{environment_id}/archive", environment_id=environment_id)
         options = make_request_options(
             body={},
-            query={},
+            query={"identity_id": identity_id},
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,
@@ -139,16 +165,20 @@ class Environments(SyncAPIResource):
         self,
         environment_id: str,
         *,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> None:
-        """DELETE /environments/{environment_id}."""
+        """DELETE /environments/{environment_id}.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/environments/{environment_id}", environment_id=environment_id)
         options = make_request_options(
             body={},
-            query={},
+            query={"identity_id": identity_id},
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,
@@ -166,16 +196,26 @@ class AsyncEnvironments(AsyncAPIResource):
         page: Union[str, None, NotGiven] = NOT_GIVEN,
         after_id: Union[str, None, NotGiven] = NOT_GIVEN,
         before_id: Union[str, None, NotGiven] = NOT_GIVEN,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> AsyncPaginator[Environment]:
-        """GET /environments."""
+        """GET /environments.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/environments")
         options = make_request_options(
             body={},
-            query={"limit": limit, "page": page, "after_id": after_id, "before_id": before_id},
+            query={
+                "identity_id": identity_id,
+                "limit": limit,
+                "page": page,
+                "after_id": after_id,
+                "before_id": before_id,
+            },
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,
@@ -194,16 +234,20 @@ class AsyncEnvironments(AsyncAPIResource):
         config: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> Environment:
-        """POST /environments."""
+        """POST /environments.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/environments")
         options = make_request_options(
             body={"name": name, "description": description, "config": config, "metadata": metadata},
-            query={},
+            query={"identity_id": identity_id},
             headers={"Idempotency-Key": idempotency_key},
             extra_headers=extra_headers,
             extra_query=extra_query,
@@ -216,16 +260,20 @@ class AsyncEnvironments(AsyncAPIResource):
         self,
         environment_id: str,
         *,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> Environment:
-        """GET /environments/{environment_id}."""
+        """GET /environments/{environment_id}.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/environments/{environment_id}", environment_id=environment_id)
         options = make_request_options(
             body={},
-            query={},
+            query={"identity_id": identity_id},
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,
@@ -242,16 +290,20 @@ class AsyncEnvironments(AsyncAPIResource):
         description: Union[str, None, NotGiven] = NOT_GIVEN,
         config: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> Environment:
-        """POST /environments/{environment_id}."""
+        """POST /environments/{environment_id}.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/environments/{environment_id}", environment_id=environment_id)
         options = make_request_options(
             body={"name": name, "description": description, "config": config, "metadata": metadata},
-            query={},
+            query={"identity_id": identity_id},
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,
@@ -264,16 +316,20 @@ class AsyncEnvironments(AsyncAPIResource):
         self,
         environment_id: str,
         *,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> Environment:
-        """POST /environments/{environment_id}/archive."""
+        """POST /environments/{environment_id}/archive.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/environments/{environment_id}/archive", environment_id=environment_id)
         options = make_request_options(
             body={},
-            query={},
+            query={"identity_id": identity_id},
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,
@@ -286,16 +342,20 @@ class AsyncEnvironments(AsyncAPIResource):
         self,
         environment_id: str,
         *,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> None:
-        """DELETE /environments/{environment_id}."""
+        """DELETE /environments/{environment_id}.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/environments/{environment_id}", environment_id=environment_id)
         options = make_request_options(
             body={},
-            query={},
+            query={"identity_id": identity_id},
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,

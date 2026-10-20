@@ -28,16 +28,27 @@ class Vaults(SyncAPIResource):
         after_id: Union[str, None, NotGiven] = NOT_GIVEN,
         before_id: Union[str, None, NotGiven] = NOT_GIVEN,
         name: Union[str, None, NotGiven] = NOT_GIVEN,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> SyncPage[Vault]:
-        """GET /vaults."""
+        """GET /vaults.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/vaults")
         options = make_request_options(
             body={},
-            query={"limit": limit, "page": page, "after_id": after_id, "before_id": before_id, "name": name},
+            query={
+                "identity_id": identity_id,
+                "limit": limit,
+                "page": page,
+                "after_id": after_id,
+                "before_id": before_id,
+                "name": name,
+            },
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,
@@ -52,16 +63,20 @@ class Vaults(SyncAPIResource):
         display_name: str,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> Vault:
-        """POST /vaults."""
+        """POST /vaults.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/vaults")
         options = make_request_options(
             body={"display_name": display_name, "metadata": metadata},
-            query={},
+            query={"identity_id": identity_id},
             headers={"Idempotency-Key": idempotency_key},
             extra_headers=extra_headers,
             extra_query=extra_query,
@@ -74,16 +89,20 @@ class Vaults(SyncAPIResource):
         self,
         vault_id: str,
         *,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> Vault:
-        """GET /vaults/{vault_id}."""
+        """GET /vaults/{vault_id}.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/vaults/{vault_id}", vault_id=vault_id)
         options = make_request_options(
             body={},
-            query={},
+            query={"identity_id": identity_id},
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,
@@ -96,16 +115,20 @@ class Vaults(SyncAPIResource):
         self,
         vault_id: str,
         *,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> None:
-        """DELETE /vaults/{vault_id}."""
+        """DELETE /vaults/{vault_id}.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/vaults/{vault_id}", vault_id=vault_id)
         options = make_request_options(
             body={},
-            query={},
+            query={"identity_id": identity_id},
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,
@@ -128,16 +151,27 @@ class AsyncVaults(AsyncAPIResource):
         after_id: Union[str, None, NotGiven] = NOT_GIVEN,
         before_id: Union[str, None, NotGiven] = NOT_GIVEN,
         name: Union[str, None, NotGiven] = NOT_GIVEN,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> AsyncPaginator[Vault]:
-        """GET /vaults."""
+        """GET /vaults.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/vaults")
         options = make_request_options(
             body={},
-            query={"limit": limit, "page": page, "after_id": after_id, "before_id": before_id, "name": name},
+            query={
+                "identity_id": identity_id,
+                "limit": limit,
+                "page": page,
+                "after_id": after_id,
+                "before_id": before_id,
+                "name": name,
+            },
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,
@@ -154,16 +188,20 @@ class AsyncVaults(AsyncAPIResource):
         display_name: str,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> Vault:
-        """POST /vaults."""
+        """POST /vaults.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/vaults")
         options = make_request_options(
             body={"display_name": display_name, "metadata": metadata},
-            query={},
+            query={"identity_id": identity_id},
             headers={"Idempotency-Key": idempotency_key},
             extra_headers=extra_headers,
             extra_query=extra_query,
@@ -176,16 +214,20 @@ class AsyncVaults(AsyncAPIResource):
         self,
         vault_id: str,
         *,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> Vault:
-        """GET /vaults/{vault_id}."""
+        """GET /vaults/{vault_id}.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/vaults/{vault_id}", vault_id=vault_id)
         options = make_request_options(
             body={},
-            query={},
+            query={"identity_id": identity_id},
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,
@@ -198,16 +240,20 @@ class AsyncVaults(AsyncAPIResource):
         self,
         vault_id: str,
         *,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> None:
-        """DELETE /vaults/{vault_id}."""
+        """DELETE /vaults/{vault_id}.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/vaults/{vault_id}", vault_id=vault_id)
         options = make_request_options(
             body={},
-            query={},
+            query={"identity_id": identity_id},
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,

@@ -10,6 +10,8 @@ __all__ = ["SkillCreateParams"]
 
 
 class SkillCreateParams(TypedDict, total=False):
+    identity_id: str
+    """Select identity ownership with a PAT. Omit when using a SAT."""
     files: List[FileTypes]
     metadata: Dict[str, Any]
     icon_id: Optional[str]

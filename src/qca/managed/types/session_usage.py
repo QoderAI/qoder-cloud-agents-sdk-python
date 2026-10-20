@@ -13,6 +13,10 @@ __all__ = ["SessionUsage"]
 
 
 class SessionUsage(BaseModel):
+    model_credits: Optional[float] = None
+    sandbox_runtime_credits: Optional[float] = None
+    total_credits: Optional[float] = None
+
     active_seconds: Optional[float] = None
     cache_creation: Optional[CacheCreationUsage] = None
     cache_read_input_tokens: Optional[int] = None

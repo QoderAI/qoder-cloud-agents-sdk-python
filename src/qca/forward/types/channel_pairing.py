@@ -15,3 +15,8 @@ class ChannelPairing(BaseModel):
     template_id: Optional[str] = None
     status: Optional[str] = None
     paired_at: Optional[str] = None
+    scope_type: Optional[str] = None
+    scope_external_id: Optional[str] = None
+    scope_display_name: Optional[str] = None
+    created_at: Optional[str] = None
+    updated_at: Optional[str] = None

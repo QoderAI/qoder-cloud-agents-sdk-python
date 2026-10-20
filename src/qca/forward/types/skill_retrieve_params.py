@@ -8,4 +8,6 @@ __all__ = ["SkillRetrieveParams"]
 
 
 class SkillRetrieveParams(TypedDict, total=False):
+    identity_id: str
+    """Select identity ownership with a PAT. Omit when using a SAT."""
     include_content: Optional[bool]

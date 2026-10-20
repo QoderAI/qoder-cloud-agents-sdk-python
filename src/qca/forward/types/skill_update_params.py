@@ -8,6 +8,8 @@ __all__ = ["SkillUpdateParams"]
 
 
 class SkillUpdateParams(TypedDict, total=False):
+    identity_id: str
+    """Select identity ownership with a PAT. Omit when using a SAT."""
     description: Optional[str]
     content: Optional[str]
     content_encoding: Optional[str]

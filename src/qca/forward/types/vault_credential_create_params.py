@@ -8,6 +8,8 @@ __all__ = ["VaultCredentialCreateParams"]
 
 
 class VaultCredentialCreateParams(TypedDict, total=False):
+    identity_id: str
+    """Select identity ownership with a PAT. Omit when using a SAT."""
     auth: Required[Dict[str, Any]]
     display_name: Optional[str]
     metadata: Dict[str, Any]

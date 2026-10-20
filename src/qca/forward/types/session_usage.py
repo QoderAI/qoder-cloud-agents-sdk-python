@@ -8,4 +8,6 @@ __all__ = ["SessionUsage"]
 
 
 class SessionUsage(BaseModel):
+    model_credits: Optional[float] = None
+    sandbox_runtime_credits: Optional[float] = None
     total_credits: Optional[float] = None

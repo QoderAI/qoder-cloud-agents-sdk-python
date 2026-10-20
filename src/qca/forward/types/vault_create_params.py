@@ -8,6 +8,8 @@ __all__ = ["VaultCreateParams"]
 
 
 class VaultCreateParams(TypedDict, total=False):
+    identity_id: str
+    """Select identity ownership with a PAT. Omit when using a SAT."""
     display_name: Required[str]
     metadata: Dict[str, Any]
     idempotency_key: Optional[str]

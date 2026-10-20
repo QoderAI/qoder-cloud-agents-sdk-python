@@ -22,16 +22,20 @@ class Versions(SyncAPIResource):
         *,
         limit: Union[int, None, NotGiven] = NOT_GIVEN,
         page: Union[str, None, NotGiven] = NOT_GIVEN,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> SyncPage[SkillVersion]:
-        """GET /skills/{skill_id}/versions."""
+        """GET /skills/{skill_id}/versions.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/skills/{skill_id}/versions", skill_id=skill_id)
         options = make_request_options(
             body={},
-            query={"limit": limit, "page": page},
+            query={"identity_id": identity_id, "limit": limit, "page": page},
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,
@@ -45,16 +49,20 @@ class Versions(SyncAPIResource):
         skill_id: str,
         *,
         files: List[FileTypes],
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> SkillVersion:
-        """POST /skills/{skill_id}/versions."""
+        """POST /skills/{skill_id}/versions.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/skills/{skill_id}/versions", skill_id=skill_id)
         options = make_request_options(
             body={"files": files},
-            query={},
+            query={"identity_id": identity_id},
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,
@@ -68,16 +76,20 @@ class Versions(SyncAPIResource):
         version: str,
         *,
         skill_id: str,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> SkillVersion:
-        """GET /skills/{skill_id}/versions/{version}."""
+        """GET /skills/{skill_id}/versions/{version}.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/skills/{skill_id}/versions/{version}", version=version, skill_id=skill_id)
         options = make_request_options(
             body={},
-            query={},
+            query={"identity_id": identity_id},
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,
@@ -91,16 +103,20 @@ class Versions(SyncAPIResource):
         version: str,
         *,
         skill_id: str,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> DeletedSkillVersion:
-        """DELETE /skills/{skill_id}/versions/{version}."""
+        """DELETE /skills/{skill_id}/versions/{version}.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/skills/{skill_id}/versions/{version}", version=version, skill_id=skill_id)
         options = make_request_options(
             body={},
-            query={},
+            query={"identity_id": identity_id},
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,
@@ -114,16 +130,20 @@ class Versions(SyncAPIResource):
         version: str,
         *,
         skill_id: str,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> BinaryAPIResponse:
-        """GET /skills/{skill_id}/versions/{version}/content."""
+        """GET /skills/{skill_id}/versions/{version}/content.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/skills/{skill_id}/versions/{version}/content", version=version, skill_id=skill_id)
         options = make_request_options(
             body={},
-            query={},
+            query={"identity_id": identity_id},
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,
@@ -140,16 +160,20 @@ class AsyncVersions(AsyncAPIResource):
         *,
         limit: Union[int, None, NotGiven] = NOT_GIVEN,
         page: Union[str, None, NotGiven] = NOT_GIVEN,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> AsyncPaginator[SkillVersion]:
-        """GET /skills/{skill_id}/versions."""
+        """GET /skills/{skill_id}/versions.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/skills/{skill_id}/versions", skill_id=skill_id)
         options = make_request_options(
             body={},
-            query={"limit": limit, "page": page},
+            query={"identity_id": identity_id, "limit": limit, "page": page},
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,
@@ -165,16 +189,20 @@ class AsyncVersions(AsyncAPIResource):
         skill_id: str,
         *,
         files: List[FileTypes],
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> SkillVersion:
-        """POST /skills/{skill_id}/versions."""
+        """POST /skills/{skill_id}/versions.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/skills/{skill_id}/versions", skill_id=skill_id)
         options = make_request_options(
             body={"files": files},
-            query={},
+            query={"identity_id": identity_id},
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,
@@ -188,16 +216,20 @@ class AsyncVersions(AsyncAPIResource):
         version: str,
         *,
         skill_id: str,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> SkillVersion:
-        """GET /skills/{skill_id}/versions/{version}."""
+        """GET /skills/{skill_id}/versions/{version}.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/skills/{skill_id}/versions/{version}", version=version, skill_id=skill_id)
         options = make_request_options(
             body={},
-            query={},
+            query={"identity_id": identity_id},
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,
@@ -211,16 +243,20 @@ class AsyncVersions(AsyncAPIResource):
         version: str,
         *,
         skill_id: str,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> DeletedSkillVersion:
-        """DELETE /skills/{skill_id}/versions/{version}."""
+        """DELETE /skills/{skill_id}/versions/{version}.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/skills/{skill_id}/versions/{version}", version=version, skill_id=skill_id)
         options = make_request_options(
             body={},
-            query={},
+            query={"identity_id": identity_id},
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,
@@ -234,16 +270,20 @@ class AsyncVersions(AsyncAPIResource):
         version: str,
         *,
         skill_id: str,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> AsyncBinaryAPIResponse:
-        """GET /skills/{skill_id}/versions/{version}/content."""
+        """GET /skills/{skill_id}/versions/{version}/content.
+
+        identity_id selects identity ownership with a PAT; omit it with a SAT.
+        """
         _path = path_template("/skills/{skill_id}/versions/{version}/content", version=version, skill_id=skill_id)
         options = make_request_options(
             body={},
-            query={},
+            query={"identity_id": identity_id},
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,
