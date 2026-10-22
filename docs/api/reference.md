@@ -2066,6 +2066,17 @@ class Forward(SyncAPIClient)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/_client.py)
 
+<a id="qca.forward._client.Forward.webhooks"></a>
+
+#### webhooks
+
+```python
+@cached_property
+def webhooks() -> Webhooks
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/_client.py)
+
 <a id="qca.forward._client.Forward.drives"></a>
 
 #### drives
@@ -2270,6 +2281,17 @@ def models() -> Models
 
 ```python
 class AsyncForward(AsyncAPIClient)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/_client.py)
+
+<a id="qca.forward._client.AsyncForward.webhooks"></a>
+
+#### webhooks
+
+```python
+@cached_property
+def webhooks() -> AsyncWebhooks
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/_client.py)
@@ -9816,6 +9838,394 @@ async def delete(
 DELETE /vaults/{vault_id}.
 
 identity_id selects identity ownership with a PAT; omit it with a SAT.
+
+<a id="qca.forward.resources.webhooks"></a>
+
+# qca.forward.resources.webhooks
+
+<a id="qca.forward.resources.webhooks.Webhooks"></a>
+
+## Webhooks
+
+```python
+class Webhooks(SyncAPIResource)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/webhooks.py)
+
+<a id="qca.forward.resources.webhooks.Webhooks.endpoints"></a>
+
+#### endpoints
+
+```python
+@cached_property
+def endpoints() -> WebhookEndpoints
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/webhooks.py)
+
+<a id="qca.forward.resources.webhooks.WebhookEndpoints"></a>
+
+## WebhookEndpoints
+
+```python
+class WebhookEndpoints(SyncAPIResource)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/webhooks.py)
+
+<a id="qca.forward.resources.webhooks.WebhookEndpoints.create"></a>
+
+#### create
+
+```python
+def create(
+    *,
+    url: str,
+    events: List[str],
+    description: Union[str, NotGiven] = NOT_GIVEN,
+    metadata: Union[Dict[str, str], NotGiven] = NOT_GIVEN,
+    idempotency_key: Union[str, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> WebhookEndpointCreateResponse
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/webhooks.py)
+
+POST /webhook/endpoints. Requires a PAT or administrator SAT.
+
+<a id="qca.forward.resources.webhooks.WebhookEndpoints.list"></a>
+
+#### list
+
+```python
+def list(
+    *,
+    limit: Union[int, NotGiven] = NOT_GIVEN,
+    after_id: Union[str, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> SyncPage[WebhookEndpoint]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/webhooks.py)
+
+GET /webhook/endpoints. Requires a PAT or administrator SAT.
+
+<a id="qca.forward.resources.webhooks.WebhookEndpoints.retrieve"></a>
+
+#### retrieve
+
+```python
+def retrieve(
+    endpoint_id: str,
+    *,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> WebhookEndpoint
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/webhooks.py)
+
+GET /webhook/endpoints/{endpoint_id}. Requires a PAT or administrator SAT.
+
+<a id="qca.forward.resources.webhooks.WebhookEndpoints.update"></a>
+
+#### update
+
+```python
+def update(
+    endpoint_id: str,
+    *,
+    url: Union[str, NotGiven] = NOT_GIVEN,
+    events: Union[List[str], NotGiven] = NOT_GIVEN,
+    description: Union[str, NotGiven] = NOT_GIVEN,
+    active: Union[bool, NotGiven] = NOT_GIVEN,
+    metadata: Union[Dict[str, str | None], NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> WebhookEndpoint
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/webhooks.py)
+
+PUT /webhook/endpoints/{endpoint_id}. Requires a PAT or administrator SAT.
+
+<a id="qca.forward.resources.webhooks.WebhookEndpoints.delete"></a>
+
+#### delete
+
+```python
+def delete(
+        endpoint_id: str,
+        *,
+        extra_headers: Dict[str, str] | None = None,
+        extra_query: Dict[str, Any] | None = None,
+        extra_body: Dict[str, Any] | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN) -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/webhooks.py)
+
+DELETE /webhook/endpoints/{endpoint_id}. Requires a PAT or administrator SAT.
+
+<a id="qca.forward.resources.webhooks.WebhookEndpoints.enable"></a>
+
+#### enable
+
+```python
+def enable(
+    endpoint_id: str,
+    *,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> WebhookEndpoint
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/webhooks.py)
+
+POST /webhook/endpoints/{endpoint_id}/enable. Requires a PAT or administrator SAT.
+
+<a id="qca.forward.resources.webhooks.WebhookEndpoints.disable"></a>
+
+#### disable
+
+```python
+def disable(
+    endpoint_id: str,
+    *,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> WebhookEndpoint
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/webhooks.py)
+
+POST /webhook/endpoints/{endpoint_id}/disable. Requires a PAT or administrator SAT.
+
+<a id="qca.forward.resources.webhooks.WebhookEndpoints.test"></a>
+
+#### test
+
+```python
+def test(
+    endpoint_id: str,
+    *,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> WebhookEndpointTestResponse
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/webhooks.py)
+
+POST /webhook/endpoints/{endpoint_id}/test. Queues a test event; 202 does not confirm delivery.
+
+<a id="qca.forward.resources.webhooks.AsyncWebhooks"></a>
+
+## AsyncWebhooks
+
+```python
+class AsyncWebhooks(AsyncAPIResource)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/webhooks.py)
+
+<a id="qca.forward.resources.webhooks.AsyncWebhooks.endpoints"></a>
+
+#### endpoints
+
+```python
+@cached_property
+def endpoints() -> AsyncWebhookEndpoints
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/webhooks.py)
+
+<a id="qca.forward.resources.webhooks.AsyncWebhookEndpoints"></a>
+
+## AsyncWebhookEndpoints
+
+```python
+class AsyncWebhookEndpoints(AsyncAPIResource)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/webhooks.py)
+
+<a id="qca.forward.resources.webhooks.AsyncWebhookEndpoints.create"></a>
+
+#### create
+
+```python
+async def create(
+    *,
+    url: str,
+    events: List[str],
+    description: Union[str, NotGiven] = NOT_GIVEN,
+    metadata: Union[Dict[str, str], NotGiven] = NOT_GIVEN,
+    idempotency_key: Union[str, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> WebhookEndpointCreateResponse
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/webhooks.py)
+
+POST /webhook/endpoints. Requires a PAT or administrator SAT.
+
+<a id="qca.forward.resources.webhooks.AsyncWebhookEndpoints.list"></a>
+
+#### list
+
+```python
+def list(
+    *,
+    limit: Union[int, NotGiven] = NOT_GIVEN,
+    after_id: Union[str, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> AsyncPaginator[WebhookEndpoint]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/webhooks.py)
+
+GET /webhook/endpoints. Requires a PAT or administrator SAT.
+
+<a id="qca.forward.resources.webhooks.AsyncWebhookEndpoints.retrieve"></a>
+
+#### retrieve
+
+```python
+async def retrieve(
+    endpoint_id: str,
+    *,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> WebhookEndpoint
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/webhooks.py)
+
+GET /webhook/endpoints/{endpoint_id}. Requires a PAT or administrator SAT.
+
+<a id="qca.forward.resources.webhooks.AsyncWebhookEndpoints.update"></a>
+
+#### update
+
+```python
+async def update(
+    endpoint_id: str,
+    *,
+    url: Union[str, NotGiven] = NOT_GIVEN,
+    events: Union[List[str], NotGiven] = NOT_GIVEN,
+    description: Union[str, NotGiven] = NOT_GIVEN,
+    active: Union[bool, NotGiven] = NOT_GIVEN,
+    metadata: Union[Dict[str, str | None], NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> WebhookEndpoint
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/webhooks.py)
+
+PUT /webhook/endpoints/{endpoint_id}. Requires a PAT or administrator SAT.
+
+<a id="qca.forward.resources.webhooks.AsyncWebhookEndpoints.delete"></a>
+
+#### delete
+
+```python
+async def delete(
+        endpoint_id: str,
+        *,
+        extra_headers: Dict[str, str] | None = None,
+        extra_query: Dict[str, Any] | None = None,
+        extra_body: Dict[str, Any] | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN) -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/webhooks.py)
+
+DELETE /webhook/endpoints/{endpoint_id}. Requires a PAT or administrator SAT.
+
+<a id="qca.forward.resources.webhooks.AsyncWebhookEndpoints.enable"></a>
+
+#### enable
+
+```python
+async def enable(
+    endpoint_id: str,
+    *,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> WebhookEndpoint
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/webhooks.py)
+
+POST /webhook/endpoints/{endpoint_id}/enable. Requires a PAT or administrator SAT.
+
+<a id="qca.forward.resources.webhooks.AsyncWebhookEndpoints.disable"></a>
+
+#### disable
+
+```python
+async def disable(
+    endpoint_id: str,
+    *,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> WebhookEndpoint
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/webhooks.py)
+
+POST /webhook/endpoints/{endpoint_id}/disable. Requires a PAT or administrator SAT.
+
+<a id="qca.forward.resources.webhooks.AsyncWebhookEndpoints.test"></a>
+
+#### test
+
+```python
+async def test(
+    endpoint_id: str,
+    *,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> WebhookEndpointTestResponse
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/webhooks.py)
+
+POST /webhook/endpoints/{endpoint_id}/test. Queues a test event; 202 does not confirm delivery.
 
 <a id="qca.forward.types.batch"></a>
 
@@ -17512,6 +17922,255 @@ Select identity ownership with a PAT. Omit when using a SAT.
 <a id="qca.forward.types.vault_list_params.VaultListParams.name"></a>
 
 #### name
+
+<a id="qca.forward.types.webhook_endpoint"></a>
+
+# qca.forward.types.webhook\_endpoint
+
+<a id="qca.forward.types.webhook_endpoint.WebhookEndpointCreateResponse"></a>
+
+## WebhookEndpointCreateResponse
+
+```python
+class WebhookEndpointCreateResponse(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/webhook_endpoint.py)
+
+The signing secret is returned only when creating an endpoint.
+
+<a id="qca.forward.types.webhook_endpoint.WebhookEndpointCreateResponse.id"></a>
+
+#### id
+
+<a id="qca.forward.types.webhook_endpoint.WebhookEndpointCreateResponse.url"></a>
+
+#### url
+
+<a id="qca.forward.types.webhook_endpoint.WebhookEndpointCreateResponse.events"></a>
+
+#### events
+
+<a id="qca.forward.types.webhook_endpoint.WebhookEndpointCreateResponse.description"></a>
+
+#### description
+
+<a id="qca.forward.types.webhook_endpoint.WebhookEndpointCreateResponse.metadata"></a>
+
+#### metadata
+
+<a id="qca.forward.types.webhook_endpoint.WebhookEndpointCreateResponse.active"></a>
+
+#### active
+
+<a id="qca.forward.types.webhook_endpoint.WebhookEndpointCreateResponse.created_at"></a>
+
+#### created\_at
+
+<a id="qca.forward.types.webhook_endpoint.WebhookEndpointCreateResponse.signing_secret"></a>
+
+#### signing\_secret
+
+<a id="qca.forward.types.webhook_endpoint.WebhookEndpoint"></a>
+
+## WebhookEndpoint
+
+```python
+class WebhookEndpoint(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/webhook_endpoint.py)
+
+<a id="qca.forward.types.webhook_endpoint.WebhookEndpoint.id"></a>
+
+#### id
+
+<a id="qca.forward.types.webhook_endpoint.WebhookEndpoint.url"></a>
+
+#### url
+
+<a id="qca.forward.types.webhook_endpoint.WebhookEndpoint.events"></a>
+
+#### events
+
+<a id="qca.forward.types.webhook_endpoint.WebhookEndpoint.description"></a>
+
+#### description
+
+<a id="qca.forward.types.webhook_endpoint.WebhookEndpoint.metadata"></a>
+
+#### metadata
+
+<a id="qca.forward.types.webhook_endpoint.WebhookEndpoint.active"></a>
+
+#### active
+
+<a id="qca.forward.types.webhook_endpoint.WebhookEndpoint.created_at"></a>
+
+#### created\_at
+
+<a id="qca.forward.types.webhook_endpoint.WebhookEndpoint.updated_at"></a>
+
+#### updated\_at
+
+<a id="qca.forward.types.webhook_endpoint.WebhookEndpoint.last_success_at"></a>
+
+#### last\_success\_at
+
+<a id="qca.forward.types.webhook_endpoint.WebhookEndpoint.last_failure_at"></a>
+
+#### last\_failure\_at
+
+<a id="qca.forward.types.webhook_endpoint.WebhookEndpoint.disabled_reason"></a>
+
+#### disabled\_reason
+
+<a id="qca.forward.types.webhook_endpoint.WebhookEndpoint.consecutive_fail"></a>
+
+#### consecutive\_fail
+
+<a id="qca.forward.types.webhook_endpoint.WebhookEndpointTestResponse"></a>
+
+## WebhookEndpointTestResponse
+
+```python
+class WebhookEndpointTestResponse(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/webhook_endpoint.py)
+
+Accepted delivery rows, not a delivery success report.
+
+<a id="qca.forward.types.webhook_endpoint.WebhookEndpointTestResponse.event_id"></a>
+
+#### event\_id
+
+<a id="qca.forward.types.webhook_endpoint.WebhookEndpointTestResponse.delivery_rows"></a>
+
+#### delivery\_rows
+
+<a id="qca.forward.types.webhook_endpoint_create_params"></a>
+
+# qca.forward.types.webhook\_endpoint\_create\_params
+
+<a id="qca.forward.types.webhook_endpoint_create_params.WebhookEndpointCreateParams"></a>
+
+## WebhookEndpointCreateParams
+
+```python
+class WebhookEndpointCreateParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/webhook_endpoint_create_params.py)
+
+<a id="qca.forward.types.webhook_endpoint_create_params.WebhookEndpointCreateParams.url"></a>
+
+#### url
+
+<a id="qca.forward.types.webhook_endpoint_create_params.WebhookEndpointCreateParams.events"></a>
+
+#### events
+
+<a id="qca.forward.types.webhook_endpoint_create_params.WebhookEndpointCreateParams.description"></a>
+
+#### description
+
+<a id="qca.forward.types.webhook_endpoint_create_params.WebhookEndpointCreateParams.metadata"></a>
+
+#### metadata
+
+<a id="qca.forward.types.webhook_endpoint_create_params.WebhookEndpointCreateParams.idempotency_key"></a>
+
+#### idempotency\_key
+
+<a id="qca.forward.types.webhook_endpoint_list_params"></a>
+
+# qca.forward.types.webhook\_endpoint\_list\_params
+
+<a id="qca.forward.types.webhook_endpoint_list_params.WebhookEndpointListParams"></a>
+
+## WebhookEndpointListParams
+
+```python
+class WebhookEndpointListParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/webhook_endpoint_list_params.py)
+
+<a id="qca.forward.types.webhook_endpoint_list_params.WebhookEndpointListParams.limit"></a>
+
+#### limit
+
+<a id="qca.forward.types.webhook_endpoint_list_params.WebhookEndpointListParams.after_id"></a>
+
+#### after\_id
+
+<a id="qca.forward.types.webhook_endpoint_update_params"></a>
+
+# qca.forward.types.webhook\_endpoint\_update\_params
+
+<a id="qca.forward.types.webhook_endpoint_update_params.WebhookEndpointUpdateParams"></a>
+
+## WebhookEndpointUpdateParams
+
+```python
+class WebhookEndpointUpdateParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/webhook_endpoint_update_params.py)
+
+<a id="qca.forward.types.webhook_endpoint_update_params.WebhookEndpointUpdateParams.url"></a>
+
+#### url
+
+<a id="qca.forward.types.webhook_endpoint_update_params.WebhookEndpointUpdateParams.events"></a>
+
+#### events
+
+<a id="qca.forward.types.webhook_endpoint_update_params.WebhookEndpointUpdateParams.description"></a>
+
+#### description
+
+<a id="qca.forward.types.webhook_endpoint_update_params.WebhookEndpointUpdateParams.active"></a>
+
+#### active
+
+<a id="qca.forward.types.webhook_endpoint_update_params.WebhookEndpointUpdateParams.metadata"></a>
+
+#### metadata
+
+<a id="qca.forward.webhook_signature"></a>
+
+# qca.forward.webhook\_signature
+
+Verify Forward delivery signatures before parsing the original request body.
+
+<a id="qca.forward.webhook_signature.WebhookVerificationError"></a>
+
+## WebhookVerificationError
+
+```python
+class WebhookVerificationError(ValueError)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/webhook_signature.py)
+
+Missing, invalid, expired or mismatched delivery authentication.
+
+<a id="qca.forward.webhook_signature.verify_webhook_signature"></a>
+
+#### verify\_webhook\_signature
+
+```python
+def verify_webhook_signature(payload: bytes, headers: Mapping[str, str],
+                             secret: str) -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/webhook_signature.py)
+
+Accept any matching v1 signature within 300 seconds; raise on failure.
+
+Use original body bytes. After verification, deduplicate using Webhook-ID.
 
 <a id="qca.managed"></a>
 

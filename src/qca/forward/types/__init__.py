@@ -247,6 +247,12 @@ from .vault_credential_update_params import StaticBearerUpdate as StaticBearerUp
 from .vault_credential_update_params import VaultCredentialUpdateAuth as VaultCredentialUpdateAuth
 from .vault_credential_update_params import VaultCredentialUpdateParams as VaultCredentialUpdateParams
 from .vault_list_params import VaultListParams as VaultListParams
+from .webhook_endpoint import WebhookEndpoint as WebhookEndpoint
+from .webhook_endpoint import WebhookEndpointCreateResponse as WebhookEndpointCreateResponse
+from .webhook_endpoint import WebhookEndpointTestResponse as WebhookEndpointTestResponse
+from .webhook_endpoint_create_params import WebhookEndpointCreateParams as WebhookEndpointCreateParams
+from .webhook_endpoint_list_params import WebhookEndpointListParams as WebhookEndpointListParams
+from .webhook_endpoint_update_params import WebhookEndpointUpdateParams as WebhookEndpointUpdateParams
 
 _namespace = dict(
     globals(),
