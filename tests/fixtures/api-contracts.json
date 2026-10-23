@@ -2036,12 +2036,87 @@
         "identity_id"
       ],
       "kind": "model"
+    },
+    {
+      "id": "forward.webhooks.endpoints.create",
+      "method": "POST",
+      "path": "/webhook/endpoints",
+      "required": [
+        "events",
+        "url"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.webhooks.endpoints.list",
+      "method": "GET",
+      "path": "/webhook/endpoints",
+      "required": [],
+      "kind": "page"
+    },
+    {
+      "id": "forward.webhooks.endpoints.retrieve",
+      "method": "GET",
+      "path": "/webhook/endpoints/{endpoint_id}",
+      "required": [
+        "endpoint_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.webhooks.endpoints.update",
+      "method": "PUT",
+      "path": "/webhook/endpoints/{endpoint_id}",
+      "required": [
+        "endpoint_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.webhooks.endpoints.delete",
+      "method": "DELETE",
+      "path": "/webhook/endpoints/{endpoint_id}",
+      "required": [
+        "endpoint_id"
+      ],
+      "kind": "empty"
+    },
+    {
+      "id": "forward.webhooks.endpoints.enable",
+      "method": "POST",
+      "path": "/webhook/endpoints/{endpoint_id}/enable",
+      "required": [
+        "endpoint_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.webhooks.endpoints.disable",
+      "method": "POST",
+      "path": "/webhook/endpoints/{endpoint_id}/disable",
+      "required": [
+        "endpoint_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.webhooks.endpoints.test",
+      "method": "POST",
+      "path": "/webhook/endpoints/{endpoint_id}/test",
+      "required": [
+        "endpoint_id"
+      ],
+      "kind": "model"
     }
   ],
   "extensions": [
     {
       "source": "cloud-agent/cloud-agents-api-doc origin/master 1b3f3d023b8631395c3f65577a507050d3893d12 (2026-10-09)",
       "operations": 6
+    },
+    {
+      "source": "https://docs.qoder.com/zh/cloud-agents/api/webhooks/overview (2026-10-22); Forward webhook handler and DTO cross-check",
+      "operations": 8
     }
   ]
 }

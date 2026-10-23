@@ -21,6 +21,8 @@ from .resources.realtime import (
 from .resources.realtime import (
     RealtimeTimeoutError as RealtimeTimeoutError,
 )
+from .webhook_signature import WebhookVerificationError as WebhookVerificationError
+from .webhook_signature import verify_webhook_signature as verify_webhook_signature
 
 Client = Forward
 AsyncClient = AsyncForward

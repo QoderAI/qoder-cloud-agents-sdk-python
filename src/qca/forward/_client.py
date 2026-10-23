@@ -22,9 +22,14 @@ from .resources.skills.skills import AsyncSkills, Skills
 from .resources.templates import AsyncTemplates, Templates
 from .resources.usage import AsyncUsage, Usage
 from .resources.vaults.vaults import AsyncVaults, Vaults
+from .resources.webhooks import AsyncWebhooks, Webhooks
 
 
 class Forward(SyncAPIClient):
+    @cached_property
+    def webhooks(self) -> Webhooks:
+        return Webhooks(self)
+
     @cached_property
     def drives(self) -> Drives:
         return Drives(self)
@@ -102,6 +107,10 @@ class Forward(SyncAPIClient):
 
 
 class AsyncForward(AsyncAPIClient):
+    @cached_property
+    def webhooks(self) -> AsyncWebhooks:
+        return AsyncWebhooks(self)
+
     @cached_property
     def drives(self) -> AsyncDrives:
         return AsyncDrives(self)
