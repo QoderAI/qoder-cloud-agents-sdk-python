@@ -609,7 +609,7 @@ credential = client.vaults.credentials.retrieve("credential-id", vault_id="vault
 memory = client.memory_stores.memories.retrieve("memory-id", memory_store_id="store-id")
 ```
 
-## Forward Decisions (next release)
+## Forward Decisions
 
 Evaluate a nonempty `state` object or an accessible `session_id` (exactly one)
 with 1–32 choice or score questions. Choice values are strings or booleans;
@@ -815,6 +815,6 @@ Runnable scenarios live in `examples/`, organized by mode, with one file per sce
 
 Released under the [MIT License](LICENSE).
 
-## Forward Webhooks (next release)
+## Forward Webhooks
 
 Manage webhook endpoints and verify signed event deliveries. See [Webhook usage and receiver examples](docs/webhooks.md).
