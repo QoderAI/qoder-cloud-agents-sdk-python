@@ -15,6 +15,8 @@ __all__ = ["Decisions", "AsyncDecisions"]
 
 
 class Decisions(SyncAPIResource):
+    """The Decision API is in Beta. Its behavior may change in future updates."""
+
     def create(
         self,
         *,
@@ -105,6 +107,8 @@ class Decisions(SyncAPIResource):
 
 
 class AsyncDecisions(AsyncAPIResource):
+    """The Decision API is in Beta. Its behavior may change in future updates."""
+
     async def create(
         self,
         *,

@@ -1,5 +1,7 @@
 """Create a Decision using shared PAT/SA configuration.
 
+The Decision API is in Beta. Its behavior may change in future updates.
+
 Run: python -m examples.forward.decisions --env .env.live
 Optionally set QODER_DECISION_SESSION_ID to evaluate an accessible Session.
 """
