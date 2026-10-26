@@ -2066,6 +2066,17 @@ class Forward(SyncAPIClient)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/_client.py)
 
+<a id="qca.forward._client.Forward.decisions"></a>
+
+#### decisions
+
+```python
+@cached_property
+def decisions() -> Decisions
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/_client.py)
+
 <a id="qca.forward._client.Forward.webhooks"></a>
 
 #### webhooks
@@ -2281,6 +2292,17 @@ def models() -> Models
 
 ```python
 class AsyncForward(AsyncAPIClient)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/_client.py)
+
+<a id="qca.forward._client.AsyncForward.decisions"></a>
+
+#### decisions
+
+```python
+@cached_property
+def decisions() -> AsyncDecisions
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/_client.py)
@@ -3352,6 +3374,182 @@ async def retrieve(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/channels/qr_sessions.py)
 
 GET /qr_sessions/{session_key}.
+
+<a id="qca.forward.resources.decisions"></a>
+
+# qca.forward.resources.decisions
+
+<a id="qca.forward.resources.decisions.Decisions"></a>
+
+## Decisions
+
+```python
+class Decisions(SyncAPIResource)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/decisions.py)
+
+<a id="qca.forward.resources.decisions.Decisions.create"></a>
+
+#### create
+
+```python
+def create(
+        *,
+        questions: List[DecisionQuestionParam],
+        session_id: Union[str, NotGiven] = NOT_GIVEN,
+        state: Union[Dict[str, Any], NotGiven] = NOT_GIVEN,
+        idempotency_key: Union[str, NotGiven] = NOT_GIVEN,
+        extra_headers: Dict[str, str] | None = None,
+        extra_query: Dict[str, Any] | None = None,
+        extra_body: Dict[str, Any] | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> Decision
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/decisions.py)
+
+POST /decisions.
+
+Synchronous evaluation using normal PAT/SAT authentication. Provide exactly
+one of session_id and nonempty state; state.session_context is reserved.
+Questions are choice (string/boolean options) or score (numeric levels).
+Reusing an idempotency key with identical bytes replays the stored result;
+different bytes or an in-progress request return HTTP 409.
+Explicit state/questions are never shortened; over-budget input is HTTP 422.
+
+<a id="qca.forward.resources.decisions.Decisions.retrieve"></a>
+
+#### retrieve
+
+```python
+def retrieve(
+        decision_id: str,
+        *,
+        extra_headers: Dict[str, str] | None = None,
+        extra_query: Dict[str, Any] | None = None,
+        extra_body: Dict[str, Any] | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> Decision
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/decisions.py)
+
+GET /decisions/{decision_id}.
+
+Retrieve a stored Decision, including running or failed records.
+
+<a id="qca.forward.resources.decisions.Decisions.list"></a>
+
+#### list
+
+```python
+def list(
+    *,
+    session_id: Union[str, NotGiven] = NOT_GIVEN,
+    limit: Union[int, NotGiven] = NOT_GIVEN,
+    after_id: Union[str, NotGiven] = NOT_GIVEN,
+    before_id: Union[str, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> SyncPage[Decision]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/decisions.py)
+
+GET /decisions.
+
+List in server order, optionally filtered by an accessible Session.
+Limit is 1-100 (default 20). after_id and before_id are mutually exclusive.
+Identity scope comes from authentication, not a query parameter.
+
+<a id="qca.forward.resources.decisions.AsyncDecisions"></a>
+
+## AsyncDecisions
+
+```python
+class AsyncDecisions(AsyncAPIResource)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/decisions.py)
+
+<a id="qca.forward.resources.decisions.AsyncDecisions.create"></a>
+
+#### create
+
+```python
+async def create(
+        *,
+        questions: List[DecisionQuestionParam],
+        session_id: Union[str, NotGiven] = NOT_GIVEN,
+        state: Union[Dict[str, Any], NotGiven] = NOT_GIVEN,
+        idempotency_key: Union[str, NotGiven] = NOT_GIVEN,
+        extra_headers: Dict[str, str] | None = None,
+        extra_query: Dict[str, Any] | None = None,
+        extra_body: Dict[str, Any] | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> Decision
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/decisions.py)
+
+POST /decisions.
+
+Synchronous evaluation using normal PAT/SAT authentication. Provide exactly
+one of session_id and nonempty state; state.session_context is reserved.
+Questions are choice (string/boolean options) or score (numeric levels).
+Reusing an idempotency key with identical bytes replays the stored result;
+different bytes or an in-progress request return HTTP 409.
+Explicit state/questions are never shortened; over-budget input is HTTP 422.
+
+<a id="qca.forward.resources.decisions.AsyncDecisions.retrieve"></a>
+
+#### retrieve
+
+```python
+async def retrieve(
+        decision_id: str,
+        *,
+        extra_headers: Dict[str, str] | None = None,
+        extra_query: Dict[str, Any] | None = None,
+        extra_body: Dict[str, Any] | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> Decision
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/decisions.py)
+
+GET /decisions/{decision_id}.
+
+Retrieve a stored Decision, including running or failed records.
+
+<a id="qca.forward.resources.decisions.AsyncDecisions.list"></a>
+
+#### list
+
+```python
+def list(
+    *,
+    session_id: Union[str, NotGiven] = NOT_GIVEN,
+    limit: Union[int, NotGiven] = NOT_GIVEN,
+    after_id: Union[str, NotGiven] = NOT_GIVEN,
+    before_id: Union[str, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> AsyncPaginator[Decision]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/decisions.py)
+
+GET /decisions.
+
+List in server order, optionally filtered by an accessible Session.
+Limit is 1-100 (default 20). after_id and before_id are mutually exclusive.
+Identity scope comes from authentication, not a query parameter.
 
 <a id="qca.forward.resources.drives"></a>
 
@@ -11084,6 +11282,417 @@ class ContentBlockParam(TypedDict)
 <a id="qca.forward.types.content_block_param.ContentBlockParam.source"></a>
 
 #### source
+
+<a id="qca.forward.types.decision"></a>
+
+# qca.forward.types.decision
+
+<a id="qca.forward.types.decision.DecisionChoice"></a>
+
+## DecisionChoice
+
+```python
+class DecisionChoice(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/decision.py)
+
+<a id="qca.forward.types.decision.DecisionChoice.value"></a>
+
+#### value
+
+<a id="qca.forward.types.decision.DecisionChoice.description"></a>
+
+#### description
+
+<a id="qca.forward.types.decision.DecisionLevel"></a>
+
+## DecisionLevel
+
+```python
+class DecisionLevel(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/decision.py)
+
+<a id="qca.forward.types.decision.DecisionLevel.label"></a>
+
+#### label
+
+<a id="qca.forward.types.decision.DecisionLevel.score"></a>
+
+#### score
+
+<a id="qca.forward.types.decision.DecisionLevel.description"></a>
+
+#### description
+
+<a id="qca.forward.types.decision.DecisionQuestion"></a>
+
+## DecisionQuestion
+
+```python
+class DecisionQuestion(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/decision.py)
+
+<a id="qca.forward.types.decision.DecisionQuestion.type"></a>
+
+#### type
+
+<a id="qca.forward.types.decision.DecisionQuestion.instructions"></a>
+
+#### instructions
+
+<a id="qca.forward.types.decision.DecisionQuestion.name"></a>
+
+#### name
+
+<a id="qca.forward.types.decision.DecisionQuestion.choices"></a>
+
+#### choices
+
+<a id="qca.forward.types.decision.DecisionQuestion.levels"></a>
+
+#### levels
+
+<a id="qca.forward.types.decision.DecisionAnswer"></a>
+
+## DecisionAnswer
+
+```python
+class DecisionAnswer(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/decision.py)
+
+<a id="qca.forward.types.decision.DecisionAnswer.type"></a>
+
+#### type
+
+<a id="qca.forward.types.decision.DecisionAnswer.name"></a>
+
+#### name
+
+<a id="qca.forward.types.decision.DecisionAnswer.value"></a>
+
+#### value
+
+<a id="qca.forward.types.decision.DecisionAnswer.score"></a>
+
+#### score
+
+<a id="qca.forward.types.decision.DecisionAnswer.refusal"></a>
+
+#### refusal
+
+<a id="qca.forward.types.decision.DecisionContext"></a>
+
+## DecisionContext
+
+```python
+class DecisionContext(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/decision.py)
+
+Server-selected input metadata. Estimates are not billed model usage.
+
+Session-only fields and preparation metadata may be absent, especially on
+running or failed records. Unknown fields remain accessible as model extras.
+
+<a id="qca.forward.types.decision.DecisionContext.mode"></a>
+
+#### mode
+
+<a id="qca.forward.types.decision.DecisionContext.policy_version"></a>
+
+#### policy\_version
+
+<a id="qca.forward.types.decision.DecisionContext.token_estimator"></a>
+
+#### token\_estimator
+
+<a id="qca.forward.types.decision.DecisionContext.estimated_input_tokens"></a>
+
+#### estimated\_input\_tokens
+
+<a id="qca.forward.types.decision.DecisionContext.max_input_tokens"></a>
+
+#### max\_input\_tokens
+
+<a id="qca.forward.types.decision.DecisionContext.snapshot_at"></a>
+
+#### snapshot\_at
+
+<a id="qca.forward.types.decision.DecisionContext.anchor_event_id"></a>
+
+#### anchor\_event\_id
+
+<a id="qca.forward.types.decision.DecisionContext.first_event_id"></a>
+
+#### first\_event\_id
+
+<a id="qca.forward.types.decision.DecisionContext.last_event_id"></a>
+
+#### last\_event\_id
+
+<a id="qca.forward.types.decision.DecisionContext.included_segment_count"></a>
+
+#### included\_segment\_count
+
+<a id="qca.forward.types.decision.DecisionContext.included_event_count"></a>
+
+#### included\_event\_count
+
+<a id="qca.forward.types.decision.DecisionContext.scan_limited"></a>
+
+#### scan\_limited
+
+<a id="qca.forward.types.decision.DecisionContext.truncated"></a>
+
+#### truncated
+
+<a id="qca.forward.types.decision.DecisionContext.truncation_reasons"></a>
+
+#### truncation\_reasons
+
+<a id="qca.forward.types.decision.DecisionError"></a>
+
+## DecisionError
+
+```python
+class DecisionError(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/decision.py)
+
+<a id="qca.forward.types.decision.DecisionError.code"></a>
+
+#### code
+
+<a id="qca.forward.types.decision.DecisionError.message"></a>
+
+#### message
+
+<a id="qca.forward.types.decision.Decision"></a>
+
+## Decision
+
+```python
+class Decision(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/decision.py)
+
+A stored evaluation. Retrieval and listing also expose running/failed records.
+
+<a id="qca.forward.types.decision.Decision.id"></a>
+
+#### id
+
+<a id="qca.forward.types.decision.Decision.session_id"></a>
+
+#### session\_id
+
+<a id="qca.forward.types.decision.Decision.source"></a>
+
+#### source
+
+<a id="qca.forward.types.decision.Decision.status"></a>
+
+#### status
+
+<a id="qca.forward.types.decision.Decision.questions"></a>
+
+#### questions
+
+<a id="qca.forward.types.decision.Decision.answers"></a>
+
+#### answers
+
+<a id="qca.forward.types.decision.Decision.context"></a>
+
+#### context
+
+<a id="qca.forward.types.decision.Decision.usage"></a>
+
+#### usage
+
+<a id="qca.forward.types.decision.Decision.error"></a>
+
+#### error
+
+<a id="qca.forward.types.decision.Decision.created_at"></a>
+
+#### created\_at
+
+<a id="qca.forward.types.decision.Decision.completed_at"></a>
+
+#### completed\_at
+
+<a id="qca.forward.types.decision_create_params"></a>
+
+# qca.forward.types.decision\_create\_params
+
+<a id="qca.forward.types.decision_create_params.DecisionChoiceParam"></a>
+
+## DecisionChoiceParam
+
+```python
+class DecisionChoiceParam(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/decision_create_params.py)
+
+<a id="qca.forward.types.decision_create_params.DecisionChoiceParam.value"></a>
+
+#### value
+
+<a id="qca.forward.types.decision_create_params.DecisionChoiceParam.description"></a>
+
+#### description
+
+<a id="qca.forward.types.decision_create_params.DecisionLevelParam"></a>
+
+## DecisionLevelParam
+
+```python
+class DecisionLevelParam(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/decision_create_params.py)
+
+<a id="qca.forward.types.decision_create_params.DecisionLevelParam.label"></a>
+
+#### label
+
+<a id="qca.forward.types.decision_create_params.DecisionLevelParam.score"></a>
+
+#### score
+
+<a id="qca.forward.types.decision_create_params.DecisionLevelParam.description"></a>
+
+#### description
+
+<a id="qca.forward.types.decision_create_params.DecisionChoiceQuestionParam"></a>
+
+## DecisionChoiceQuestionParam
+
+```python
+class DecisionChoiceQuestionParam(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/decision_create_params.py)
+
+<a id="qca.forward.types.decision_create_params.DecisionChoiceQuestionParam.type"></a>
+
+#### type
+
+<a id="qca.forward.types.decision_create_params.DecisionChoiceQuestionParam.instructions"></a>
+
+#### instructions
+
+<a id="qca.forward.types.decision_create_params.DecisionChoiceQuestionParam.name"></a>
+
+#### name
+
+<a id="qca.forward.types.decision_create_params.DecisionChoiceQuestionParam.choices"></a>
+
+#### choices
+
+<a id="qca.forward.types.decision_create_params.DecisionScoreQuestionParam"></a>
+
+## DecisionScoreQuestionParam
+
+```python
+class DecisionScoreQuestionParam(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/decision_create_params.py)
+
+<a id="qca.forward.types.decision_create_params.DecisionScoreQuestionParam.type"></a>
+
+#### type
+
+<a id="qca.forward.types.decision_create_params.DecisionScoreQuestionParam.instructions"></a>
+
+#### instructions
+
+<a id="qca.forward.types.decision_create_params.DecisionScoreQuestionParam.name"></a>
+
+#### name
+
+<a id="qca.forward.types.decision_create_params.DecisionScoreQuestionParam.levels"></a>
+
+#### levels
+
+<a id="qca.forward.types.decision_create_params.DecisionQuestionParam"></a>
+
+#### DecisionQuestionParam
+
+<a id="qca.forward.types.decision_create_params.DecisionCreateParams"></a>
+
+## DecisionCreateParams
+
+```python
+class DecisionCreateParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/decision_create_params.py)
+
+Provide exactly one of session_id and state, plus 1-32 questions.
+
+State must be a nonempty JSON object; state.session_context is reserved.
+Choice questions require 2-32 distinct string/boolean options; score
+questions require 2-32 finite numeric levels. No model parameter is accepted.
+
+<a id="qca.forward.types.decision_create_params.DecisionCreateParams.questions"></a>
+
+#### questions
+
+<a id="qca.forward.types.decision_create_params.DecisionCreateParams.session_id"></a>
+
+#### session\_id
+
+<a id="qca.forward.types.decision_create_params.DecisionCreateParams.state"></a>
+
+#### state
+
+<a id="qca.forward.types.decision_create_params.DecisionCreateParams.idempotency_key"></a>
+
+#### idempotency\_key
+
+<a id="qca.forward.types.decision_list_params"></a>
+
+# qca.forward.types.decision\_list\_params
+
+<a id="qca.forward.types.decision_list_params.DecisionListParams"></a>
+
+## DecisionListParams
+
+```python
+class DecisionListParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/decision_list_params.py)
+
+<a id="qca.forward.types.decision_list_params.DecisionListParams.session_id"></a>
+
+#### session\_id
+
+<a id="qca.forward.types.decision_list_params.DecisionListParams.limit"></a>
+
+#### limit
+
+<a id="qca.forward.types.decision_list_params.DecisionListParams.after_id"></a>
+
+#### after\_id
+
+<a id="qca.forward.types.decision_list_params.DecisionListParams.before_id"></a>
+
+#### before\_id
 
 <a id="qca.forward.types.deleted_channel"></a>
 
