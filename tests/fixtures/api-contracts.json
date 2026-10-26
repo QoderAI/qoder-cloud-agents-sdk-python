@@ -2107,6 +2107,31 @@
         "endpoint_id"
       ],
       "kind": "model"
+    },
+    {
+      "id": "forward.decisions.create",
+      "method": "POST",
+      "path": "/decisions",
+      "required": [
+        "questions"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.decisions.retrieve",
+      "method": "GET",
+      "path": "/decisions/{decision_id}",
+      "required": [
+        "decision_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.decisions.list",
+      "method": "GET",
+      "path": "/decisions",
+      "required": [],
+      "kind": "page"
     }
   ],
   "extensions": [
@@ -2117,6 +2142,10 @@
     {
       "source": "https://docs.qoder.com/zh/cloud-agents/api/webhooks/overview (2026-10-22); Forward webhook handler and DTO cross-check",
       "operations": 8
+    },
+    {
+      "source": "cloud-agents-forward-service@8b9474c6: internal/router/router.go, internal/handler/decision/handler.go, internal/model/dto/decision.go, internal/service/decision/{validation,service,context}.go",
+      "operations": 3
     }
   ]
 }

@@ -179,3 +179,26 @@ those tests do not replace SDK integration coverage.
 ## Realtime validation
 
 Realtime REST and local WebSocket protocol/lifecycle tests run offline with the default suite. `uv run make test-live-realtime` is a separate opt-in CN/Global entry, controlled by the dedicated `QODER_REALTIME_*` configuration and both write/execution flags. It creates persistent Conversations using already-enabled Templates; transport close is not resource cleanup. Record the printed Conversation/request IDs and agree on retention with the service owner. Basic ping/history success does not replace text, PCM, playback, and background Work acceptance. Realtime auth headers, SSL context, and proxy settings use the WebSocket adapter; arbitrary httpx middleware is not applied to it.
+
+## Decision live tests
+
+Decision evaluation is opt-in because it consumes model usage and creates
+records without a delete endpoint. Configure a dedicated account using
+`QODER_FORWARD_PAT` and `QODER_FORWARD_BASE_URL` in `.env.live`, then set
+`QODER_FORWARD_LIVE_ALLOW_WRITE=true`,
+`QODER_FORWARD_LIVE_ALLOW_EXECUTION=true`, and
+`QODER_FORWARD_LIVE_ALLOW_DECISIONS=true`. These live tests use PAT; offline
+contracts cover both PAT and SAT behavior. Normal unit/contract runs are offline.
+
+```bash
+QODER_RUN_LIVE=1 uv run pytest tests/integration/test_decisions.py -m integration -v
+```
+
+This checks state evaluation, idempotent replay, retrieval, and cursor pages.
+Set `QODER_DECISION_SESSION_ID` to an accessible Session with existing history
+to also test Session input; otherwise that case is explicitly skipped. The
+suite does not modify the supplied Session.
+
+Decision records expire according to server retention. Retain only decision
+IDs, HTTP status, and request IDs in shared diagnostics; do not log credentials
+or unrelated Session contents.
