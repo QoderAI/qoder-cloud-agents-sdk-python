@@ -609,7 +609,9 @@ credential = client.vaults.credentials.retrieve("credential-id", vault_id="vault
 memory = client.memory_stores.memories.retrieve("memory-id", memory_store_id="store-id")
 ```
 
-## Forward Decisions
+## Forward Decisions (Beta)
+
+The Decision API is in Beta. Its behavior may change in future updates.
 
 Evaluate a nonempty `state` object or an accessible `session_id` (exactly one)
 with 1–32 choice or score questions. Choice values are strings or booleans;
