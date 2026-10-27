@@ -45,14 +45,13 @@ async def test_decision_state_session_and_response_metadata(async_, auth):
                 result["session_id"] = "sess_own"
                 result["context"].update(
                     mode="session",
-                    snapshot_at="2026-10-26T00:00:00.123456789Z",
-                    truncated=True,
-                    truncation_reasons=["segment_budget"],
+                    anchor_event_id="evt_last",
+                    first_event_id="evt_first",
+                    last_event_id="evt_last",
+                    included_event_count=14,
                     included_segment_count=12,
-                    scan_limited=False,
                     future_context=True,
                 )
-                result["answers"] = [{"type": "refusal", "name": "private", "refusal": "Cannot assess"}]
         else:
             assert request.url.raw_path.endswith(b"/decisions/opaque%20%2F%3F%25%23")
             assert not request.content
@@ -68,15 +67,18 @@ async def test_decision_state_session_and_response_metadata(async_, auth):
         assert isinstance(result, Decision)
         assert result.answers[0].value is False and result.answers[1].score == 0
         assert "value" not in result.answers[1].model_fields_set
-        assert result.session_id is None and result.usage is None and result.error is None
+        assert result.session_id is None and result.error is None
+        assert "usage" not in result.to_dict()
+        assert result.context.to_dict() == {"mode": "state"}
         assert result.created_at.microsecond == 123456
         assert result._request_id == "req_decision" and result.model_extra["future_field"] == 1
         result = await resolve(
             client.decisions.create(session_id="sess_own", questions=FIXTURE["request"]["questions"])
         )
-        assert result.context.truncated and result.context.included_segment_count == 12
-        assert result.context.scan_limited is False and result.context.model_extra["future_context"] is True
-        assert result.answers[0].refusal == "Cannot assess" and "value" not in result.answers[0].model_fields_set
+        assert result.context.included_segment_count == 12 and result.context.included_event_count == 14
+        assert result.context.anchor_event_id == result.context.last_event_id == "evt_last"
+        assert result.context.first_event_id == "evt_first" and result.context.model_extra["future_context"] is True
+        assert result.answers[0].value is False and result.answers[1].score == 0
         assert (await resolve(client.decisions.retrieve("opaque /?%#"))).id == "dec_contract"
         with pytest.raises(ValueError):
             await resolve(client.decisions.retrieve(""))
@@ -166,7 +168,7 @@ async def test_decision_retry_requires_key_and_preserves_exact_body(async_, keye
 
 
 @pytest.mark.parametrize("async_", [False, True])
-@pytest.mark.parametrize("status", [400, 401, 403, 404, 409, 422, 429, 504])
+@pytest.mark.parametrize("status", [400, 401, 403, 404, 409, 422, 429, 502, 504])
 async def test_decision_error_keeps_correlation_and_server_validation(async_, status):
     calls = []
 
@@ -190,5 +192,38 @@ async def test_decision_error_keeps_correlation_and_server_validation(async_, st
         assert error.value.status_code == status and error.value.body["decision_id"] == "dec_failed"
         assert error.value.request_id == "req_decision" and error.value.code == "decision_test_error"
         assert len(calls) == 1
+    finally:
+        await resolve(client.close())
+
+
+@pytest.mark.parametrize("async_", [False, True])
+@pytest.mark.parametrize("status", ["running", "failed"])
+async def test_decision_incomplete_records_without_internal_fields(async_, status):
+    record = copy.deepcopy(FIXTURE["response"])
+    record.update(status=status, session_id="sess_own", answers=[], context={"mode": "session"})
+    if status == "running":
+        record["completed_at"] = None
+    else:
+        record["error"] = {"code": "decision_invalid_upstream_response", "message": "Invalid JEV response."}
+
+    def handle(request):
+        if request.url.path.endswith("/dec_contract"):
+            return httpx.Response(200, json=record)
+        return httpx.Response(
+            200, json={"data": [record], "has_more": False, "first_id": record["id"], "last_id": record["id"]}
+        )
+
+    client = client_for(async_, handle, pat="token", _strict_response_validation=True)
+    try:
+        result = await resolve(client.decisions.retrieve("dec_contract"))
+        page = await resolve(client.decisions.list(session_id="sess_own"))
+        assert result.to_dict() == page.data[0].to_dict()
+        assert result.status == status and result.answers == []
+        assert result.context.to_dict() == {"mode": "session"}
+        assert "usage" not in result.to_dict()
+        if status == "running":
+            assert result.completed_at is None and result.error is None
+        else:
+            assert result.error.code == "decision_invalid_upstream_response"
     finally:
         await resolve(client.close())

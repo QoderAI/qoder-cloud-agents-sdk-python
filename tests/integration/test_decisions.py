@@ -40,7 +40,21 @@ def test_decisions(live_example, mode):
     decision = client.decisions.create(**params, timeout=context.remaining())
     assert decision.id and decision.status == "completed"
     assert decision.context.mode == mode and len(decision.answers) == 2
-    assert 0 < decision.context.estimated_input_tokens <= decision.context.max_input_tokens
+    assert "usage" not in decision.to_dict()
+    assert (
+        not {
+            "truncated",
+            "max_input_tokens",
+            "policy_version",
+            "estimated_input_tokens",
+            "token_estimator",
+            "truncation_reasons",
+            "scan_limited",
+            "snapshot_at",
+        }
+        & decision.context.to_dict().keys()
+    )
+    assert all(answer.type in ("choice", "score") for answer in decision.answers)
     if mode == "state":
         assert decision.session_id is None
         assert decision.answers[0].value is False and decision.answers[1].score == 0
