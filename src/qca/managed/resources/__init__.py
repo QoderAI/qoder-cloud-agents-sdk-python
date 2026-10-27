@@ -10,3 +10,5 @@ from .files import AsyncFiles as AsyncFiles
 from .files import Files as Files
 from .models import AsyncModels as AsyncModels
 from .models import Models as Models
+from .oauth import AsyncOAuth as AsyncOAuth
+from .oauth import OAuth as OAuth

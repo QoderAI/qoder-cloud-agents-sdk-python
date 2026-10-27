@@ -12,12 +12,17 @@ from .resources.environments.environments import AsyncEnvironments, Environments
 from .resources.files import AsyncFiles, Files
 from .resources.memory_stores.memory_stores import AsyncMemoryStores, MemoryStores
 from .resources.models import AsyncModels, Models
+from .resources.oauth import AsyncOAuth, OAuth
 from .resources.sessions.sessions import AsyncSessions, Sessions
 from .resources.skills.skills import AsyncSkills, Skills
 from .resources.vaults.vaults import AsyncVaults, Vaults
 
 
 class Managed(SyncAPIClient):
+    @cached_property
+    def oauth(self) -> OAuth:
+        return OAuth(self)
+
     _default_base_url = "https://api.qoder.com/api/v1/cloud/"
     _base_url_env = "QODER_MANAGED_BASE_URL"
 
@@ -67,6 +72,10 @@ class Managed(SyncAPIClient):
 
 
 class AsyncManaged(AsyncAPIClient):
+    @cached_property
+    def oauth(self) -> AsyncOAuth:
+        return AsyncOAuth(self)
+
     _default_base_url = "https://api.qoder.com/api/v1/cloud/"
     _base_url_env = "QODER_MANAGED_BASE_URL"
 

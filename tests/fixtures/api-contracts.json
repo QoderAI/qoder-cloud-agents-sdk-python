@@ -370,7 +370,7 @@
         "identity_id",
         "template_id"
       ],
-      "kind": "model"
+      "kind": "page"
     },
     {
       "id": "forward.identities.memory_stores.mount",
@@ -1170,8 +1170,7 @@
       "method": "POST",
       "path": "/dreams",
       "required": [
-        "inputs",
-        "model"
+        "inputs"
       ],
       "kind": "model"
     },
@@ -2216,6 +2215,84 @@
       "path": "/memory_stores/search",
       "required": [],
       "kind": "page"
+    },
+    {
+      "id": "forward.dreams.create",
+      "method": "POST",
+      "path": "/dreams",
+      "required": [
+        "inputs"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.dreams.list",
+      "method": "GET",
+      "path": "/dreams",
+      "required": [],
+      "kind": "page"
+    },
+    {
+      "id": "forward.dreams.retrieve",
+      "method": "GET",
+      "path": "/dreams/{dream_id}",
+      "required": [
+        "dream_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.dreams.cancel",
+      "method": "POST",
+      "path": "/dreams/{dream_id}/cancel",
+      "required": [
+        "dream_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.dreams.archive",
+      "method": "POST",
+      "path": "/dreams/{dream_id}/archive",
+      "required": [
+        "dream_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.channel_pairings.list",
+      "method": "GET",
+      "path": "/channel_pairings",
+      "required": [],
+      "kind": "page"
+    },
+    {
+      "id": "forward.channel_pairings.retrieve",
+      "method": "GET",
+      "path": "/channel_pairings/{pairing_id}",
+      "required": [
+        "pairing_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "forward.channel_pairings.update",
+      "method": "POST",
+      "path": "/channel_pairings/{pairing_id}",
+      "required": [
+        "pairing_id"
+      ],
+      "kind": "model"
+    },
+    {
+      "id": "managed.oauth.start",
+      "method": "POST",
+      "path": "/oauth/start",
+      "required": [
+        "mcp_server_url",
+        "vault_id"
+      ],
+      "kind": "model"
     }
   ],
   "extensions": [
@@ -2230,6 +2307,10 @@
     {
       "source": "cloud-agents-forward-service@8b9474c6: internal/router/router.go, internal/handler/decision/handler.go, internal/model/dto/decision.go, internal/service/decision/{validation,service,context}.go",
       "operations": 3
+    },
+    {
+      "source": "https://docs.qoder.com/cloud-agents/api/forward/dreams/create; https://docs.qoder.com/cloud-agents/api/forward/channels/list-channel-pairings; https://docs.qoder.com/cloud-agents/api/vaults/start-oauth (2026-10-27)",
+      "operations": 9
     }
   ]
 }

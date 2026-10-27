@@ -7,6 +7,7 @@ from qca.common._models import BaseModel
 
 if TYPE_CHECKING:
     from .schedule_execution import ScheduleExecution
+    from .schedule_file_resource import ScheduleFileResource
     from .schedule_initial_events_item import ScheduleInitialEventsItem
     from .schedule_paused_reason import SchedulePausedReason
     from .schedule_sinks_item import ScheduleSinksItem
@@ -16,6 +17,7 @@ __all__ = ["Schedule"]
 
 
 class Schedule(BaseModel):
+    resources: Optional[List[ScheduleFileResource]] = None
     source: Optional[str] = None
     source_session_id: Optional[str] = None
     initial_events_version: Optional[int] = None

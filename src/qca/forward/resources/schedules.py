@@ -10,6 +10,7 @@ from qca.common._utils import make_request_options, path_template
 from qca.common.pagination import AsyncPaginator, SyncPage
 from qca.forward.types.schedule import Schedule
 from qca.forward.types.schedule_archive_many_response import ScheduleArchiveManyResponse
+from qca.forward.types.schedule_file_resource import ScheduleFileResourceParam
 from qca.forward.types.schedule_run import ScheduleRun
 
 __all__ = ["Schedules", "AsyncSchedules"]
@@ -70,6 +71,7 @@ class Schedules(SyncAPIResource):
         sinks: Union[List[Dict[str, Any]], None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
+        resources: Union[List[ScheduleFileResourceParam], None, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -79,6 +81,7 @@ class Schedules(SyncAPIResource):
         _path = path_template("/schedules")
         options = make_request_options(
             body={
+                "resources": resources,
                 "identity_id": identity_id,
                 "template_id": template_id,
                 "name": name,
@@ -158,6 +161,7 @@ class Schedules(SyncAPIResource):
         sinks: Union[List[Dict[str, Any]], None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
+        resources: Union[List[ScheduleFileResourceParam], None, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -167,6 +171,7 @@ class Schedules(SyncAPIResource):
         _path = path_template("/schedules/{schedule_id}", schedule_id=schedule_id)
         options = make_request_options(
             body={
+                "resources": resources,
                 "name": name,
                 "description": description,
                 "template_id": template_id,
@@ -336,6 +341,7 @@ class AsyncSchedules(AsyncAPIResource):
         sinks: Union[List[Dict[str, Any]], None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
+        resources: Union[List[ScheduleFileResourceParam], None, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -345,6 +351,7 @@ class AsyncSchedules(AsyncAPIResource):
         _path = path_template("/schedules")
         options = make_request_options(
             body={
+                "resources": resources,
                 "identity_id": identity_id,
                 "template_id": template_id,
                 "name": name,
@@ -424,6 +431,7 @@ class AsyncSchedules(AsyncAPIResource):
         sinks: Union[List[Dict[str, Any]], None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
+        resources: Union[List[ScheduleFileResourceParam], None, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -433,6 +441,7 @@ class AsyncSchedules(AsyncAPIResource):
         _path = path_template("/schedules/{schedule_id}", schedule_id=schedule_id)
         options = make_request_options(
             body={
+                "resources": resources,
                 "name": name,
                 "description": description,
                 "template_id": template_id,

@@ -8,6 +8,7 @@ __all__ = ["IdentityCreateParams"]
 
 
 class IdentityCreateParams(TypedDict, total=False):
+    auto_memory_store: Optional[bool]
     external_id: Required[str]
     name: Optional[str]
     enabled: Optional[bool]

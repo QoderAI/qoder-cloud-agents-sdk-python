@@ -16,7 +16,7 @@ __all__ = ["DreamCreateParams"]
 
 class DreamCreateParams(TypedDict, total=False):
     inputs: Required[List[Union[DreamMemoryStoreInputParam, DreamSessionsInputParam]]]
-    model: Required[Union[str, DreamModelConfigParam]]
+    model: Optional[Union[str, DreamModelConfigParam]]
     instructions: Optional[str]
     workspace_id: Optional[str]
     output_behavior: Union[OutputBehaviorCreateNewParam, OutputBehaviorUpdateExistingParam]

@@ -5,6 +5,8 @@ from typing import Any, Dict, Optional, Union
 
 from qca.common._models import BaseModel
 
+from .outcome_rubric import OutcomeRubric
+
 __all__ = ["SessionEvent"]
 
 
@@ -27,7 +29,7 @@ class SessionEvent(BaseModel):
     result: Optional[str] = None
     deny_message: Optional[str] = None
     description: Optional[str] = None
-    rubric: Optional[str] = None
+    rubric: Optional[OutcomeRubric] = None
     outcome_id: Optional[str] = None
     max_iterations: Optional[int] = None
     message_id: Optional[str] = None

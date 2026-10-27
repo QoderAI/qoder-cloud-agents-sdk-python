@@ -4,10 +4,13 @@ from typing import Any, Dict, List, Optional
 
 from typing_extensions import Required, TypedDict
 
+from .schedule_file_resource import ScheduleFileResourceParam
+
 __all__ = ["ScheduleCreateParams"]
 
 
 class ScheduleCreateParams(TypedDict, total=False):
+    resources: Optional[List[ScheduleFileResourceParam]]
     identity_id: Required[str]
     template_id: Required[str]
     name: Required[str]

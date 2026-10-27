@@ -8,6 +8,7 @@ from .resources.batches.batches import AsyncBatches, Batches
 from .resources.channel_pairings import AsyncChannelPairings, ChannelPairings
 from .resources.channels.channels import AsyncChannels, Channels
 from .resources.decisions import AsyncDecisions, Decisions
+from .resources.dreams import AsyncDreams, Dreams
 from .resources.drives import AsyncDrives, Drives
 from .resources.environments import AsyncEnvironments, Environments
 from .resources.files import AsyncFiles, Files
@@ -27,6 +28,10 @@ from .resources.webhooks import AsyncWebhooks, Webhooks
 
 
 class Forward(SyncAPIClient):
+    @cached_property
+    def dreams(self) -> Dreams:
+        return Dreams(self)
+
     @cached_property
     def decisions(self) -> Decisions:
         return Decisions(self)
@@ -112,6 +117,10 @@ class Forward(SyncAPIClient):
 
 
 class AsyncForward(AsyncAPIClient):
+    @cached_property
+    def dreams(self) -> AsyncDreams:
+        return AsyncDreams(self)
+
     @cached_property
     def decisions(self) -> AsyncDecisions:
         return AsyncDecisions(self)

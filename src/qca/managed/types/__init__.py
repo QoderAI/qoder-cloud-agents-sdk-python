@@ -52,6 +52,14 @@ from .base64_document_source_param import Base64DocumentSourceParam as Base64Doc
 from .base64_image_source_param import Base64ImageSourceParam as Base64ImageSourceParam
 from .bash_tool_config_params import BashToolConfigParams as BashToolConfigParams
 from .branch_checkout_param import BranchCheckoutParam as BranchCheckoutParam
+from .bucket_storage import BucketStorage as BucketStorage
+from .bucket_storage import BucketStorageParam as BucketStorageParam
+from .bucket_storage import OSSAccessKeyCredentialParam as OSSAccessKeyCredentialParam
+from .bucket_storage import OSSBucket as OSSBucket
+from .bucket_storage import OSSBucketCredential as OSSBucketCredential
+from .bucket_storage import OSSBucketCredentialParam as OSSBucketCredentialParam
+from .bucket_storage import OSSBucketParam as OSSBucketParam
+from .bucket_storage import OSSRAMRoleCredentialParam as OSSRAMRoleCredentialParam
 from .budget_limit import BudgetLimit as BudgetLimit
 from .budget_limit_param import BudgetLimitParam as BudgetLimitParam
 from .cache_creation_usage import CacheCreationUsage as CacheCreationUsage
@@ -236,6 +244,8 @@ from .multiagent import Multiagent as Multiagent
 from .multiagent_agent_union import MultiagentAgentUnion as MultiagentAgentUnion
 from .multiagent_params import MultiagentParams as MultiagentParams
 from .multiagent_self_params import MultiagentSelfParams as MultiagentSelfParams
+from .oauth_start_params import OAuthStartParams as OAuthStartParams
+from .oauth_start_response import OAuthStartResponse as OAuthStartResponse
 from .outcome_evaluation_resource import OutcomeEvaluationResource as OutcomeEvaluationResource
 from .output_behavior_create_new_param import OutputBehaviorCreateNewParam as OutputBehaviorCreateNewParam
 from .output_behavior_union import OutputBehaviorUnion as OutputBehaviorUnion
