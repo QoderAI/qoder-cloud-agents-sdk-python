@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, List, Optional
+from typing import TYPE_CHECKING, List, Optional, Union
 
 from qca.common._models import BaseModel
 
@@ -12,4 +12,4 @@ __all__ = ["MultiagentConfig"]
 
 class MultiagentConfig(BaseModel):
     type: Optional[str] = None
-    agents: Optional[List[MultiagentEntry]] = None
+    agents: Optional[List[Union[str, MultiagentEntry]]] = None

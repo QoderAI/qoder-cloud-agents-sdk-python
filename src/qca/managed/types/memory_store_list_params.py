@@ -9,6 +9,8 @@ __all__ = ["MemoryStoreListParams"]
 
 
 class MemoryStoreListParams(TypedDict, total=False):
+    before_id: Optional[str]
+    after_id: Optional[str]
     name: Optional[str]
     created_at_gte: Optional[datetime]
     created_at_lte: Optional[datetime]

@@ -78,6 +78,7 @@ class Identities(SyncAPIResource):
         enabled: Union[bool, None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
+        auto_memory_store: Union[bool, None, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -86,7 +87,13 @@ class Identities(SyncAPIResource):
         """POST /identities."""
         _path = path_template("/identities")
         options = make_request_options(
-            body={"external_id": external_id, "name": name, "enabled": enabled, "metadata": metadata},
+            body={
+                "auto_memory_store": auto_memory_store,
+                "external_id": external_id,
+                "name": name,
+                "enabled": enabled,
+                "metadata": metadata,
+            },
             query={},
             headers={"Idempotency-Key": idempotency_key},
             extra_headers=extra_headers,
@@ -169,6 +176,7 @@ class Identities(SyncAPIResource):
         enabled: Union[bool, None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
+        auto_memory_store: Union[bool, None, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -177,7 +185,13 @@ class Identities(SyncAPIResource):
         """POST /identities/{identity_id}."""
         _path = path_template("/identities/{identity_id}", identity_id=identity_id)
         options = make_request_options(
-            body={"external_id": external_id, "name": name, "enabled": enabled, "metadata": metadata},
+            body={
+                "auto_memory_store": auto_memory_store,
+                "external_id": external_id,
+                "name": name,
+                "enabled": enabled,
+                "metadata": metadata,
+            },
             query={},
             headers={"Idempotency-Key": idempotency_key},
             extra_headers=extra_headers,
@@ -358,6 +372,7 @@ class AsyncIdentities(AsyncAPIResource):
         enabled: Union[bool, None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
+        auto_memory_store: Union[bool, None, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -366,7 +381,13 @@ class AsyncIdentities(AsyncAPIResource):
         """POST /identities."""
         _path = path_template("/identities")
         options = make_request_options(
-            body={"external_id": external_id, "name": name, "enabled": enabled, "metadata": metadata},
+            body={
+                "auto_memory_store": auto_memory_store,
+                "external_id": external_id,
+                "name": name,
+                "enabled": enabled,
+                "metadata": metadata,
+            },
             query={},
             headers={"Idempotency-Key": idempotency_key},
             extra_headers=extra_headers,
@@ -449,6 +470,7 @@ class AsyncIdentities(AsyncAPIResource):
         enabled: Union[bool, None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
+        auto_memory_store: Union[bool, None, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -457,7 +479,13 @@ class AsyncIdentities(AsyncAPIResource):
         """POST /identities/{identity_id}."""
         _path = path_template("/identities/{identity_id}", identity_id=identity_id)
         options = make_request_options(
-            body={"external_id": external_id, "name": name, "enabled": enabled, "metadata": metadata},
+            body={
+                "auto_memory_store": auto_memory_store,
+                "external_id": external_id,
+                "name": name,
+                "enabled": enabled,
+                "metadata": metadata,
+            },
             query={},
             headers={"Idempotency-Key": idempotency_key},
             extra_headers=extra_headers,

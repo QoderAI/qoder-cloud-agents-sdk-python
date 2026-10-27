@@ -120,7 +120,7 @@ async def read_models(client, view):
 
 @pytest.mark.parametrize("client_type", [Managed, AsyncManaged])
 @pytest.mark.parametrize("resource", ["agents", "sessions"])
-@pytest.mark.parametrize("effort", ["low", {"type": "high"}, None])
+@pytest.mark.parametrize("effort", ["low", "high", "none", None])
 async def test_managed_model_effort_response_shapes(client_type, resource, effort):
     model = {"id": "qfmodel", "effort": effort, "context_window": 200000, "effective_context_window": 200000}
     item = (
@@ -140,16 +140,13 @@ async def test_managed_model_effort_response_shapes(client_type, resource, effor
         assert agent.model.id == "qfmodel"
         assert agent.model.context_window == 200000
         assert agent.model.effective_context_window == 200000
-        if isinstance(effort, dict):
-            assert agent.model.effort.type == effort["type"]
-        else:
-            assert agent.model.effort == effort
+        assert agent.model.effort == effort
     finally:
         await resolve(client.close())
 
 
 @pytest.mark.parametrize("client_type", [Managed, AsyncManaged])
-@pytest.mark.parametrize("effort", [123, ["low"]])
+@pytest.mark.parametrize("effort", [123, ["low"], {"type": "high"}])
 async def test_managed_model_effort_still_rejects_invalid_response_shapes(client_type, effort):
     payload = {"data": [{"id": "sess-1", "agent": {"model": {"id": "qfmodel", "effort": effort}}}]}
     http_type = httpx.AsyncClient if client_type is AsyncManaged else httpx.Client

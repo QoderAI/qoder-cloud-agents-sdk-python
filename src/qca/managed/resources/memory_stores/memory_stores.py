@@ -159,6 +159,8 @@ class MemoryStores(SyncAPIResource):
         page: Union[str, None, NotGiven] = NOT_GIVEN,
         workspace_id: Union[str, None, NotGiven] = NOT_GIVEN,
         betas: Union[List[str], None, NotGiven] = NOT_GIVEN,
+        after_id: Union[str, NotGiven] = NOT_GIVEN,
+        before_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -169,6 +171,8 @@ class MemoryStores(SyncAPIResource):
         options = make_request_options(
             body={},
             query={
+                "after_id": after_id,
+                "before_id": before_id,
                 "name": name,
                 "created_at[gte]": created_at_gte,
                 "created_at[lte]": created_at_lte,
@@ -376,6 +380,8 @@ class AsyncMemoryStores(AsyncAPIResource):
         page: Union[str, None, NotGiven] = NOT_GIVEN,
         workspace_id: Union[str, None, NotGiven] = NOT_GIVEN,
         betas: Union[List[str], None, NotGiven] = NOT_GIVEN,
+        after_id: Union[str, NotGiven] = NOT_GIVEN,
+        before_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -386,6 +392,8 @@ class AsyncMemoryStores(AsyncAPIResource):
         options = make_request_options(
             body={},
             query={
+                "after_id": after_id,
+                "before_id": before_id,
                 "name": name,
                 "created_at[gte]": created_at_gte,
                 "created_at[lte]": created_at_lte,

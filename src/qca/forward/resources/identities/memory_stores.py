@@ -1,14 +1,14 @@
 from __future__ import annotations
 
-from typing import Any, Dict
+from typing import Any, Dict, Literal, Union
 
 import httpx
 
 from qca.common._resource import AsyncAPIResource, SyncAPIResource
 from qca.common._types import NOT_GIVEN, NotGiven
 from qca.common._utils import make_request_options, path_template
+from qca.common.pagination import AsyncPaginator, SyncPage
 from qca.forward.types.deleted_memory_store_mount import DeletedMemoryStoreMount
-from qca.forward.types.identity_memory_store_list_response import IdentityMemoryStoreListResponse
 from qca.forward.types.memory_store_mount import MemoryStoreMount
 
 __all__ = ["MemoryStores", "AsyncMemoryStores"]
@@ -20,11 +20,14 @@ class MemoryStores(SyncAPIResource):
         template_id: str,
         *,
         identity_id: str,
+        limit: Union[int, NotGiven] = NOT_GIVEN,
+        after_id: Union[str, NotGiven] = NOT_GIVEN,
+        before_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> IdentityMemoryStoreListResponse:
+    ) -> SyncPage[MemoryStoreMount]:
         """GET /identities/{identity_id}/templates/{template_id}/memory_stores."""
         _path = path_template(
             "/identities/{identity_id}/templates/{template_id}/memory_stores",
@@ -33,14 +36,14 @@ class MemoryStores(SyncAPIResource):
         )
         options = make_request_options(
             body={},
-            query={},
+            query={"limit": limit, "after_id": after_id, "before_id": before_id},
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,
             extra_body=extra_body,
             timeout=timeout,
         )
-        return self._client.request("GET", _path, cast_to=IdentityMemoryStoreListResponse, options=options)
+        return self._client.request("GET", _path, cast_to=MemoryStoreMount, options=options, page_style="Page")
 
     def mount(
         self,
@@ -48,6 +51,7 @@ class MemoryStores(SyncAPIResource):
         *,
         identity_id: str,
         memory_store_id: str,
+        access: Union[Literal["read_only", "read_write"], NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -60,7 +64,7 @@ class MemoryStores(SyncAPIResource):
             identity_id=identity_id,
         )
         options = make_request_options(
-            body={"memory_store_id": memory_store_id},
+            body={"memory_store_id": memory_store_id, "access": access},
             query={},
             headers={},
             extra_headers=extra_headers,
@@ -101,16 +105,19 @@ class MemoryStores(SyncAPIResource):
 
 
 class AsyncMemoryStores(AsyncAPIResource):
-    async def list(
+    def list(
         self,
         template_id: str,
         *,
         identity_id: str,
+        limit: Union[int, NotGiven] = NOT_GIVEN,
+        after_id: Union[str, NotGiven] = NOT_GIVEN,
+        before_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> IdentityMemoryStoreListResponse:
+    ) -> AsyncPaginator[MemoryStoreMount]:
         """GET /identities/{identity_id}/templates/{template_id}/memory_stores."""
         _path = path_template(
             "/identities/{identity_id}/templates/{template_id}/memory_stores",
@@ -119,14 +126,16 @@ class AsyncMemoryStores(AsyncAPIResource):
         )
         options = make_request_options(
             body={},
-            query={},
+            query={"limit": limit, "after_id": after_id, "before_id": before_id},
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,
             extra_body=extra_body,
             timeout=timeout,
         )
-        return await self._client.request("GET", _path, cast_to=IdentityMemoryStoreListResponse, options=options)
+        return AsyncPaginator(
+            lambda: self._client.request("GET", _path, cast_to=MemoryStoreMount, options=options, page_style="Page")
+        )
 
     async def mount(
         self,
@@ -134,6 +143,7 @@ class AsyncMemoryStores(AsyncAPIResource):
         *,
         identity_id: str,
         memory_store_id: str,
+        access: Union[Literal["read_only", "read_write"], NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -146,7 +156,7 @@ class AsyncMemoryStores(AsyncAPIResource):
             identity_id=identity_id,
         )
         options = make_request_options(
-            body={"memory_store_id": memory_store_id},
+            body={"memory_store_id": memory_store_id, "access": access},
             query={},
             headers={},
             extra_headers=extra_headers,

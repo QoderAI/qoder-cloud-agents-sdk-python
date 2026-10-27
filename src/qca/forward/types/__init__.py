@@ -26,6 +26,8 @@ from .channel_identity_resolution import ChannelIdentityResolution as ChannelIde
 from .channel_list_params import ChannelListParams as ChannelListParams
 from .channel_pairing import ChannelPairing as ChannelPairing
 from .channel_pairing_create_params import ChannelPairingCreateParams as ChannelPairingCreateParams
+from .channel_pairing_list_params import ChannelPairingListParams as ChannelPairingListParams
+from .channel_pairing_update_params import ChannelPairingUpdateParams as ChannelPairingUpdateParams
 from .channel_qr_session import ChannelQRSession as ChannelQRSession
 from .channel_qr_session_create_params import ChannelQRSessionCreateParams as ChannelQRSessionCreateParams
 from .channel_update_params import ChannelUpdateParams as ChannelUpdateParams
@@ -51,6 +53,19 @@ from .deleted_memory import DeletedMemory as DeletedMemory
 from .deleted_memory_store import DeletedMemoryStore as DeletedMemoryStore
 from .deleted_memory_store_mount import DeletedMemoryStoreMount as DeletedMemoryStoreMount
 from .deleted_skill_version import DeletedSkillVersion as DeletedSkillVersion
+from .dream import Dream as Dream
+from .dream import DreamCreateParams as DreamCreateParams
+from .dream import DreamError as DreamError
+from .dream import DreamIdentityTemplateInputParam as DreamIdentityTemplateInputParam
+from .dream import DreamInput as DreamInput
+from .dream import DreamInputParam as DreamInputParam
+from .dream import DreamListParams as DreamListParams
+from .dream import DreamMemoryStoreInputParam as DreamMemoryStoreInputParam
+from .dream import DreamModelConfig as DreamModelConfig
+from .dream import DreamModelConfigParam as DreamModelConfigParam
+from .dream import DreamOutput as DreamOutput
+from .dream import DreamSessionsInputParam as DreamSessionsInputParam
+from .dream import DreamUsage as DreamUsage
 from .drive import DriveClearParams as DriveClearParams
 from .drive import DriveClearResponse as DriveClearResponse
 from .drive import DriveCreateDownloadURLParams as DriveCreateDownloadURLParams
@@ -100,6 +115,7 @@ from .identity_config_upsert_params import IdentityConfigUpsertParams as Identit
 from .identity_create_params import IdentityCreateParams as IdentityCreateParams
 from .identity_list_params import IdentityListParams as IdentityListParams
 from .identity_list_templates_response import IdentityListTemplatesResponse as IdentityListTemplatesResponse
+from .identity_memory_store_list_params import IdentityMemoryStoreListParams as IdentityMemoryStoreListParams
 from .identity_memory_store_list_response import IdentityMemoryStoreListResponse as IdentityMemoryStoreListResponse
 from .identity_memory_store_mount_params import IdentityMemoryStoreMountParams as IdentityMemoryStoreMountParams
 from .identity_stats import IdentityStats as IdentityStats
@@ -107,6 +123,8 @@ from .identity_template import IdentityTemplate as IdentityTemplate
 from .identity_update_params import IdentityUpdateParams as IdentityUpdateParams
 from .identity_usage import IdentityUsage as IdentityUsage
 from .image_source_param import ImageSourceParam as ImageSourceParam
+from .managed_capability_override import ManagedCapabilityOverride as ManagedCapabilityOverride
+from .managed_capability_override import ManagedCapabilityOverrideParam as ManagedCapabilityOverrideParam
 from .managed_tool_config import ManagedToolConfig as ManagedToolConfig
 from .managed_tool_config_param import ManagedToolConfigParam as ManagedToolConfigParam
 from .mcp_server import MCPServer as MCPServer
@@ -135,6 +153,12 @@ from .multiagent_config import MultiagentConfig as MultiagentConfig
 from .multiagent_config_param import MultiagentConfigParam as MultiagentConfigParam
 from .multiagent_entry import MultiagentEntry as MultiagentEntry
 from .multiagent_entry_param import MultiagentEntryParam as MultiagentEntryParam
+from .outcome_rubric import FileOutcomeRubric as FileOutcomeRubric
+from .outcome_rubric import FileOutcomeRubricParam as FileOutcomeRubricParam
+from .outcome_rubric import OutcomeRubric as OutcomeRubric
+from .outcome_rubric import OutcomeRubricParam as OutcomeRubricParam
+from .outcome_rubric import TextOutcomeRubric as TextOutcomeRubric
+from .outcome_rubric import TextOutcomeRubricParam as TextOutcomeRubricParam
 from .permission_policy import PermissionPolicy as PermissionPolicy
 from .permission_policy_param import PermissionPolicyParam as PermissionPolicyParam
 from .realtime import AsyncRealtimeHistoryPage as AsyncRealtimeHistoryPage
@@ -172,6 +196,8 @@ from .schedule_archive_many_response import ScheduleArchiveManyResponse as Sched
 from .schedule_archive_params import ScheduleArchiveParams as ScheduleArchiveParams
 from .schedule_create_params import ScheduleCreateParams as ScheduleCreateParams
 from .schedule_execution import ScheduleExecution as ScheduleExecution
+from .schedule_file_resource import ScheduleFileResource as ScheduleFileResource
+from .schedule_file_resource import ScheduleFileResourceParam as ScheduleFileResourceParam
 from .schedule_initial_events_item import ScheduleInitialEventsItem as ScheduleInitialEventsItem
 from .schedule_list_params import ScheduleListParams as ScheduleListParams
 from .schedule_pause_params import SchedulePauseParams as SchedulePauseParams

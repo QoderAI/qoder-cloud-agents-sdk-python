@@ -61,6 +61,7 @@ class ScheduleRuns(SyncAPIResource):
         run_id: str,
         *,
         identity_id: Union[str, None, NotGiven] = NOT_GIVEN,
+        include_initial_events: Union[bool, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -70,7 +71,7 @@ class ScheduleRuns(SyncAPIResource):
         _path = path_template("/schedule_runs/{run_id}", run_id=run_id)
         options = make_request_options(
             body={},
-            query={"identity_id": identity_id},
+            query={"include_initial_events": include_initial_events, "identity_id": identity_id},
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,
@@ -130,6 +131,7 @@ class AsyncScheduleRuns(AsyncAPIResource):
         run_id: str,
         *,
         identity_id: Union[str, None, NotGiven] = NOT_GIVEN,
+        include_initial_events: Union[bool, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -139,7 +141,7 @@ class AsyncScheduleRuns(AsyncAPIResource):
         _path = path_template("/schedule_runs/{run_id}", run_id=run_id)
         options = make_request_options(
             body={},
-            query={"identity_id": identity_id},
+            query={"include_initial_events": include_initial_events, "identity_id": identity_id},
             headers={},
             extra_headers=extra_headers,
             extra_query=extra_query,

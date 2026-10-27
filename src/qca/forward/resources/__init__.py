@@ -2,6 +2,8 @@ from .channel_pairings import AsyncChannelPairings as AsyncChannelPairings
 from .channel_pairings import ChannelPairings as ChannelPairings
 from .decisions import AsyncDecisions as AsyncDecisions
 from .decisions import Decisions as Decisions
+from .dreams import AsyncDreams as AsyncDreams
+from .dreams import Dreams as Dreams
 from .drives import AsyncDrives as AsyncDrives
 from .drives import Drives as Drives
 from .environments import AsyncEnvironments as AsyncEnvironments

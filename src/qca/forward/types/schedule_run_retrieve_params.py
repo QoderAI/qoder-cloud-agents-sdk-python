@@ -8,4 +8,5 @@ __all__ = ["ScheduleRunRetrieveParams"]
 
 
 class ScheduleRunRetrieveParams(TypedDict, total=False):
+    include_initial_events: Optional[bool]
     identity_id: Optional[str]

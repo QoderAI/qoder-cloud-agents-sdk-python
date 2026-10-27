@@ -1,17 +1,19 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import TYPE_CHECKING, Any, Dict, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 from qca.common._models import BaseModel
 
 if TYPE_CHECKING:
     from .schedule_run_trigger_context import ScheduleRunTriggerContext
+    from .session_event import SessionEvent
 
 __all__ = ["ScheduleRun"]
 
 
 class ScheduleRun(BaseModel):
+    initial_events: Optional[List[SessionEvent]] = None
     source: Optional[str] = None
     source_session_id: Optional[str] = None
     initial_events_version: Optional[int] = None

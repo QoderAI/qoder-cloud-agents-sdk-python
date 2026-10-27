@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING, List, Union
 
 from typing_extensions import Required, TypedDict
 
@@ -12,4 +12,4 @@ __all__ = ["MultiagentConfigParam"]
 
 class MultiagentConfigParam(TypedDict, total=False):
     type: Required[str]
-    agents: Required[List[MultiagentEntryParam]]
+    agents: Required[List[Union[str, MultiagentEntryParam]]]

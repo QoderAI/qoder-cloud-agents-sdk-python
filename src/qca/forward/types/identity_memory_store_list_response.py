@@ -11,5 +11,7 @@ __all__ = ["IdentityMemoryStoreListResponse"]
 
 
 class IdentityMemoryStoreListResponse(BaseModel):
+    first_id: Optional[str] = None
+    last_id: Optional[str] = None
     data: Optional[List[MemoryStoreMount]] = None
     has_more: Optional[bool] = None

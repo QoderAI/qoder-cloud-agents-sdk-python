@@ -8,6 +8,7 @@ __all__ = ["IdentityUpdateParams"]
 
 
 class IdentityUpdateParams(TypedDict, total=False):
+    auto_memory_store: Optional[bool]
     external_id: Optional[str]
     name: Optional[str]
     enabled: Optional[bool]

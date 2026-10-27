@@ -868,3 +868,67 @@ Synchronous searches return `SyncPage`; asynchronous searches can be awaited for
 an `AsyncPage` or directly iterated with `async for`. Use `get_next_page()` for
 manual pagination (await it on an async page). `*SearchParams` TypedDicts are
 exported from `qca.forward.types` and `qca.managed.types`.
+
+## Official contract alignment
+
+The next release aligns these public types with the official API documentation
+retrieved on 2026-10-27. It introduces source changes relative to 0.12.0:
+Outcome `rubric` is an object; Managed Agent `effort` is a string; Managed Agent
+and Dream model objects do not accept `speed`. Managed Dream `model` is optional
+and defaults to `auto`. Discover model IDs and supported efforts/context windows
+with List models. These Managed model changes do not remove Forward model features.
+
+```python
+from qca import Forward, Managed
+
+client = Forward(pat="...")
+rubric = {"type": "text", "content": "report exists"}
+model = {"id": "ultimate", "effort": "high"}
+dream = client.dreams.create(inputs=[{
+    "type": "identity_template", "identity_id": "idn_...", "template_id": "tmpl_...",
+}])  # model defaults to auto
+
+for mount in client.identities.memory_stores.list(
+    "tmpl_...", identity_id="idn_...", limit=20,
+):
+    print(mount.memory_store_id)
+```
+
+The async mount list returns an `AsyncPaginator`: use `async for` directly, or
+`await` it to obtain the first `AsyncPage`. Sync lists return `SyncPage`.
+Identity `tools=[]` replaces all tools with no tools; `tools=None` clears that
+override. Pass `managed_tool_config={"schedule": {"enabled": False}, "drive": None}`
+to disable Schedule tools and restore inherited Drive settings. Omitted values
+remain unchanged. Multiagent `agents` accepts Template ID strings and
+`{"type": "advisor", "model": "ultimate"}` objects.
+
+New Forward Dream calls require a PAT or an admin SAT; an Identity SAT is not
+supported. Inputs contain exactly one primary Memory Store or Identity/Template
+source, optionally plus Session sources. Pairing `update` changes an active
+binding; supply at least one nonempty Identity or Template ID. Use pairing
+`create` to complete a pending pairing. Pending records preserve empty
+`identity_id`, `template_id`, and `paired_at` strings.
+
+Identity `auto_memory_store=false` disables automatic default-store creation.
+Independent mounts now accept `access="read_write"`; omit access for a new
+read-only mount, or to preserve an existing mount's permission. Schedule
+`resources` accepts file entries and `[]` clears them; Run retrieval supports
+`include_initial_events=true` to return the saved input snapshot.
+
+Managed cloud Environment `config.storage.buckets` supports up to eight OSS
+mounts. When the resulting configuration has buckets, explicitly include beta
+`oss-bucket-2026-09-23` (`Betas` in Go, `betas` in Python/TS). Send credentials
+only when creating or replacing them; omit `credential` on an existing named
+bucket to keep it. Responses expose a read view without role ARN or AccessKey
+secret. `storage: {buckets: []}` clears mounts.
+
+Managed `OAuth.Start` (Go) / `oauth.start` (Python/TS) returns `authorization_url`,
+`state`, and `callback_origin`; the user completes authorization in a browser.
+Client secrets go in the POST body, never in a URL. This method does not open a
+browser or complete consent automatically.
+
+See the official [Outcome contract](https://docs.qoder.com/cloud-agents/api/forward/sessions/send-events),
+[Identity overrides](https://docs.qoder.com/cloud-agents/api/forward/identities/upsert-config),
+[Dream inputs](https://docs.qoder.com/cloud-agents/api/forward/dreams/create),
+[OSS storage](https://docs.qoder.com/cloud-agents/api/environments/storage-buckets),
+and [OAuth flow](https://docs.qoder.com/cloud-agents/api/vaults/start-oauth).

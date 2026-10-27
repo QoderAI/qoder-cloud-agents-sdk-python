@@ -9,6 +9,7 @@ __all__ = ["Identity"]
 
 
 class Identity(BaseModel):
+    auto_memory_store: Optional[bool] = None
     id: Optional[str] = None
     external_id: Optional[str] = None
     name: Optional[str] = None

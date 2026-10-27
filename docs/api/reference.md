@@ -2070,6 +2070,17 @@ class Forward(SyncAPIClient)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/_client.py)
 
+<a id="qca.forward._client.Forward.dreams"></a>
+
+#### dreams
+
+```python
+@cached_property
+def dreams() -> Dreams
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/_client.py)
+
 <a id="qca.forward._client.Forward.decisions"></a>
 
 #### decisions
@@ -2296,6 +2307,17 @@ def models() -> Models
 
 ```python
 class AsyncForward(AsyncAPIClient)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/_client.py)
+
+<a id="qca.forward._client.AsyncForward.dreams"></a>
+
+#### dreams
+
+```python
+@cached_property
+def dreams() -> AsyncDreams
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/_client.py)
@@ -2903,6 +2925,73 @@ class ChannelPairings(SyncAPIResource)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/channel_pairings.py)
 
+<a id="qca.forward.resources.channel_pairings.ChannelPairings.retrieve"></a>
+
+#### retrieve
+
+```python
+def retrieve(
+    pairing_id: str,
+    *,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> ChannelPairing
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/channel_pairings.py)
+
+GET /channel_pairings/{pairing_id}.
+
+<a id="qca.forward.resources.channel_pairings.ChannelPairings.update"></a>
+
+#### update
+
+```python
+def update(
+    pairing_id: str,
+    *,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
+    template_id: Union[str, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> ChannelPairing
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/channel_pairings.py)
+
+POST /channel_pairings/{pairing_id}. Provide at least one field; omitted fields retain their value.
+
+<a id="qca.forward.resources.channel_pairings.ChannelPairings.list"></a>
+
+#### list
+
+```python
+def list(
+    *,
+    channel_id: Union[str, NotGiven] = NOT_GIVEN,
+    target_external_id: Union[str, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
+    template_id: Union[str, NotGiven] = NOT_GIVEN,
+    after_id: Union[str, NotGiven] = NOT_GIVEN,
+    before_id: Union[str, NotGiven] = NOT_GIVEN,
+    status: Union[Literal["pairing", "active"], NotGiven] = NOT_GIVEN,
+    target_type: Union[Literal["user", "group"], NotGiven] = NOT_GIVEN,
+    limit: Union[int, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> SyncPage[ChannelPairing]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/channel_pairings.py)
+
+GET /channel_pairings.
+
 <a id="qca.forward.resources.channel_pairings.ChannelPairings.create"></a>
 
 #### create
@@ -2956,6 +3045,73 @@ class AsyncChannelPairings(AsyncAPIResource)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/channel_pairings.py)
+
+<a id="qca.forward.resources.channel_pairings.AsyncChannelPairings.retrieve"></a>
+
+#### retrieve
+
+```python
+async def retrieve(
+    pairing_id: str,
+    *,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> ChannelPairing
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/channel_pairings.py)
+
+GET /channel_pairings/{pairing_id}.
+
+<a id="qca.forward.resources.channel_pairings.AsyncChannelPairings.update"></a>
+
+#### update
+
+```python
+async def update(
+    pairing_id: str,
+    *,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
+    template_id: Union[str, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> ChannelPairing
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/channel_pairings.py)
+
+POST /channel_pairings/{pairing_id}. Provide at least one field; omitted fields retain their value.
+
+<a id="qca.forward.resources.channel_pairings.AsyncChannelPairings.list"></a>
+
+#### list
+
+```python
+def list(
+    *,
+    channel_id: Union[str, NotGiven] = NOT_GIVEN,
+    target_external_id: Union[str, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
+    template_id: Union[str, NotGiven] = NOT_GIVEN,
+    after_id: Union[str, NotGiven] = NOT_GIVEN,
+    before_id: Union[str, NotGiven] = NOT_GIVEN,
+    status: Union[Literal["pairing", "active"], NotGiven] = NOT_GIVEN,
+    target_type: Union[Literal["user", "group"], NotGiven] = NOT_GIVEN,
+    limit: Union[int, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> AsyncPaginator[ChannelPairing]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/channel_pairings.py)
+
+GET /channel_pairings.
 
 <a id="qca.forward.resources.channel_pairings.AsyncChannelPairings.create"></a>
 
@@ -3558,6 +3714,226 @@ GET /decisions.
 List in server order, optionally filtered by an accessible Session.
 Limit is 1-100 (default 20). after_id and before_id are mutually exclusive.
 Identity scope comes from authentication, not a query parameter.
+
+<a id="qca.forward.resources.dreams"></a>
+
+# qca.forward.resources.dreams
+
+<a id="qca.forward.resources.dreams.Dreams"></a>
+
+## Dreams
+
+```python
+class Dreams(SyncAPIResource)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/dreams.py)
+
+Forward memory consolidation; requires PAT or an admin SAT.
+
+<a id="qca.forward.resources.dreams.Dreams.create"></a>
+
+#### create
+
+```python
+def create(
+        *,
+        inputs: List[DreamInputParam],
+        model: Union[str, DreamModelConfigParam, None, NotGiven] = NOT_GIVEN,
+        instructions: Union[str, NotGiven] = NOT_GIVEN,
+        extra_headers: Dict[str, str] | None = None,
+        extra_query: Dict[str, Any] | None = None,
+        extra_body: Dict[str, Any] | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN) -> Dream
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/dreams.py)
+
+POST /dreams.
+
+<a id="qca.forward.resources.dreams.Dreams.list"></a>
+
+#### list
+
+```python
+def list(
+    *,
+    limit: Union[int, NotGiven] = NOT_GIVEN,
+    after_id: Union[str, NotGiven] = NOT_GIVEN,
+    before_id: Union[str, NotGiven] = NOT_GIVEN,
+    include_archived: Union[bool, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> SyncPage[Dream]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/dreams.py)
+
+GET /dreams.
+
+<a id="qca.forward.resources.dreams.Dreams.retrieve"></a>
+
+#### retrieve
+
+```python
+def retrieve(
+        dream_id: str,
+        *,
+        extra_headers: Dict[str, str] | None = None,
+        extra_query: Dict[str, Any] | None = None,
+        extra_body: Dict[str, Any] | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN) -> Dream
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/dreams.py)
+
+GET /dreams/{dream_id}.
+
+<a id="qca.forward.resources.dreams.Dreams.cancel"></a>
+
+#### cancel
+
+```python
+def cancel(
+        dream_id: str,
+        *,
+        extra_headers: Dict[str, str] | None = None,
+        extra_query: Dict[str, Any] | None = None,
+        extra_body: Dict[str, Any] | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN) -> Dream
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/dreams.py)
+
+POST /dreams/{dream_id}/cancel.
+
+<a id="qca.forward.resources.dreams.Dreams.archive"></a>
+
+#### archive
+
+```python
+def archive(
+        dream_id: str,
+        *,
+        extra_headers: Dict[str, str] | None = None,
+        extra_query: Dict[str, Any] | None = None,
+        extra_body: Dict[str, Any] | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN) -> Dream
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/dreams.py)
+
+POST /dreams/{dream_id}/archive.
+
+<a id="qca.forward.resources.dreams.AsyncDreams"></a>
+
+## AsyncDreams
+
+```python
+class AsyncDreams(AsyncAPIResource)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/dreams.py)
+
+Forward memory consolidation; requires PAT or an admin SAT.
+
+<a id="qca.forward.resources.dreams.AsyncDreams.create"></a>
+
+#### create
+
+```python
+async def create(
+        *,
+        inputs: List[DreamInputParam],
+        model: Union[str, DreamModelConfigParam, None, NotGiven] = NOT_GIVEN,
+        instructions: Union[str, NotGiven] = NOT_GIVEN,
+        extra_headers: Dict[str, str] | None = None,
+        extra_query: Dict[str, Any] | None = None,
+        extra_body: Dict[str, Any] | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN) -> Dream
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/dreams.py)
+
+POST /dreams.
+
+<a id="qca.forward.resources.dreams.AsyncDreams.list"></a>
+
+#### list
+
+```python
+def list(
+    *,
+    limit: Union[int, NotGiven] = NOT_GIVEN,
+    after_id: Union[str, NotGiven] = NOT_GIVEN,
+    before_id: Union[str, NotGiven] = NOT_GIVEN,
+    include_archived: Union[bool, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> AsyncPaginator[Dream]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/dreams.py)
+
+GET /dreams.
+
+<a id="qca.forward.resources.dreams.AsyncDreams.retrieve"></a>
+
+#### retrieve
+
+```python
+async def retrieve(
+        dream_id: str,
+        *,
+        extra_headers: Dict[str, str] | None = None,
+        extra_query: Dict[str, Any] | None = None,
+        extra_body: Dict[str, Any] | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN) -> Dream
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/dreams.py)
+
+GET /dreams/{dream_id}.
+
+<a id="qca.forward.resources.dreams.AsyncDreams.cancel"></a>
+
+#### cancel
+
+```python
+async def cancel(
+        dream_id: str,
+        *,
+        extra_headers: Dict[str, str] | None = None,
+        extra_query: Dict[str, Any] | None = None,
+        extra_body: Dict[str, Any] | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN) -> Dream
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/dreams.py)
+
+POST /dreams/{dream_id}/cancel.
+
+<a id="qca.forward.resources.dreams.AsyncDreams.archive"></a>
+
+#### archive
+
+```python
+async def archive(
+        dream_id: str,
+        *,
+        extra_headers: Dict[str, str] | None = None,
+        extra_query: Dict[str, Any] | None = None,
+        extra_body: Dict[str, Any] | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN) -> Dream
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/dreams.py)
+
+POST /dreams/{dream_id}/archive.
 
 <a id="qca.forward.resources.drives"></a>
 
@@ -4765,6 +5141,7 @@ def create(
         enabled: Union[bool, None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
+        auto_memory_store: Union[bool, None, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -4844,6 +5221,7 @@ def update(
         enabled: Union[bool, None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
+        auto_memory_store: Union[bool, None, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -5031,6 +5409,7 @@ async def create(
         enabled: Union[bool, None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
+        auto_memory_store: Union[bool, None, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -5110,6 +5489,7 @@ async def update(
         enabled: Union[bool, None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
+        auto_memory_store: Union[bool, None, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -5240,11 +5620,14 @@ def list(
     template_id: str,
     *,
     identity_id: str,
+    limit: Union[int, NotGiven] = NOT_GIVEN,
+    after_id: Union[str, NotGiven] = NOT_GIVEN,
+    before_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
     timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
-) -> IdentityMemoryStoreListResponse
+) -> SyncPage[MemoryStoreMount]
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/identities/memory_stores.py)
@@ -5261,6 +5644,7 @@ def mount(
     *,
     identity_id: str,
     memory_store_id: str,
+    access: Union[Literal["read_only", "read_write"], NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -5308,15 +5692,18 @@ class AsyncMemoryStores(AsyncAPIResource)
 #### list
 
 ```python
-async def list(
+def list(
     template_id: str,
     *,
     identity_id: str,
+    limit: Union[int, NotGiven] = NOT_GIVEN,
+    after_id: Union[str, NotGiven] = NOT_GIVEN,
+    before_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
     timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
-) -> IdentityMemoryStoreListResponse
+) -> AsyncPaginator[MemoryStoreMount]
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/identities/memory_stores.py)
@@ -5333,6 +5720,7 @@ async def mount(
     *,
     identity_id: str,
     memory_store_id: str,
+    access: Union[Literal["read_only", "read_write"], NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -7044,6 +7432,7 @@ def retrieve(
     run_id: str,
     *,
     identity_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    include_initial_events: Union[bool, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -7102,6 +7491,7 @@ async def retrieve(
     run_id: str,
     *,
     identity_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    include_initial_events: Union[bool, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -7172,6 +7562,8 @@ def create(
         sinks: Union[List[Dict[str, Any]], None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
+        resources: Union[List[ScheduleFileResourceParam], None,
+                         NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -7241,6 +7633,8 @@ def update(
         sinks: Union[List[Dict[str, Any]], None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
+        resources: Union[List[ScheduleFileResourceParam], None,
+                         NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -7387,6 +7781,8 @@ async def create(
         sinks: Union[List[Dict[str, Any]], None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
+        resources: Union[List[ScheduleFileResourceParam], None,
+                         NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -7456,6 +7852,8 @@ async def update(
         sinks: Union[List[Dict[str, Any]], None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
+        resources: Union[List[ScheduleFileResourceParam], None,
+                         NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
         extra_body: Dict[str, Any] | None = None,
@@ -11383,6 +11781,80 @@ Supply exactly one of code or channel_pairing_id.
 
 #### idempotency\_key
 
+<a id="qca.forward.types.channel_pairing_list_params"></a>
+
+# qca.forward.types.channel\_pairing\_list\_params
+
+<a id="qca.forward.types.channel_pairing_list_params.ChannelPairingListParams"></a>
+
+## ChannelPairingListParams
+
+```python
+class ChannelPairingListParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/channel_pairing_list_params.py)
+
+<a id="qca.forward.types.channel_pairing_list_params.ChannelPairingListParams.channel_id"></a>
+
+#### channel\_id
+
+<a id="qca.forward.types.channel_pairing_list_params.ChannelPairingListParams.status"></a>
+
+#### status
+
+<a id="qca.forward.types.channel_pairing_list_params.ChannelPairingListParams.target_type"></a>
+
+#### target\_type
+
+<a id="qca.forward.types.channel_pairing_list_params.ChannelPairingListParams.target_external_id"></a>
+
+#### target\_external\_id
+
+<a id="qca.forward.types.channel_pairing_list_params.ChannelPairingListParams.identity_id"></a>
+
+#### identity\_id
+
+<a id="qca.forward.types.channel_pairing_list_params.ChannelPairingListParams.template_id"></a>
+
+#### template\_id
+
+<a id="qca.forward.types.channel_pairing_list_params.ChannelPairingListParams.limit"></a>
+
+#### limit
+
+<a id="qca.forward.types.channel_pairing_list_params.ChannelPairingListParams.after_id"></a>
+
+#### after\_id
+
+<a id="qca.forward.types.channel_pairing_list_params.ChannelPairingListParams.before_id"></a>
+
+#### before\_id
+
+<a id="qca.forward.types.channel_pairing_update_params"></a>
+
+# qca.forward.types.channel\_pairing\_update\_params
+
+<a id="qca.forward.types.channel_pairing_update_params.ChannelPairingUpdateParams"></a>
+
+## ChannelPairingUpdateParams
+
+```python
+class ChannelPairingUpdateParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/channel_pairing_update_params.py)
+
+Provide at least one nonempty field; omitted fields retain their value.
+
+<a id="qca.forward.types.channel_pairing_update_params.ChannelPairingUpdateParams.identity_id"></a>
+
+#### identity\_id
+
+<a id="qca.forward.types.channel_pairing_update_params.ChannelPairingUpdateParams.template_id"></a>
+
+#### template\_id
+
 <a id="qca.forward.types.channel_qr_session"></a>
 
 # qca.forward.types.channel\_qr\_session
@@ -12059,6 +12531,322 @@ class DeletedSkillVersion(BaseModel)
 <a id="qca.forward.types.deleted_skill_version.DeletedSkillVersion.deleted"></a>
 
 #### deleted
+
+<a id="qca.forward.types.dream"></a>
+
+# qca.forward.types.dream
+
+<a id="qca.forward.types.dream.DreamMemoryStoreInputParam"></a>
+
+## DreamMemoryStoreInputParam
+
+```python
+class DreamMemoryStoreInputParam(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/dream.py)
+
+<a id="qca.forward.types.dream.DreamMemoryStoreInputParam.type"></a>
+
+#### type
+
+<a id="qca.forward.types.dream.DreamMemoryStoreInputParam.memory_store_id"></a>
+
+#### memory\_store\_id
+
+<a id="qca.forward.types.dream.DreamIdentityTemplateInputParam"></a>
+
+## DreamIdentityTemplateInputParam
+
+```python
+class DreamIdentityTemplateInputParam(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/dream.py)
+
+<a id="qca.forward.types.dream.DreamIdentityTemplateInputParam.type"></a>
+
+#### type
+
+<a id="qca.forward.types.dream.DreamIdentityTemplateInputParam.identity_id"></a>
+
+#### identity\_id
+
+<a id="qca.forward.types.dream.DreamIdentityTemplateInputParam.template_id"></a>
+
+#### template\_id
+
+<a id="qca.forward.types.dream.DreamSessionsInputParam"></a>
+
+## DreamSessionsInputParam
+
+```python
+class DreamSessionsInputParam(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/dream.py)
+
+<a id="qca.forward.types.dream.DreamSessionsInputParam.type"></a>
+
+#### type
+
+<a id="qca.forward.types.dream.DreamSessionsInputParam.session_ids"></a>
+
+#### session\_ids
+
+<a id="qca.forward.types.dream.DreamInputParam"></a>
+
+#### DreamInputParam
+
+<a id="qca.forward.types.dream.DreamModelConfigParam"></a>
+
+## DreamModelConfigParam
+
+```python
+class DreamModelConfigParam(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/dream.py)
+
+<a id="qca.forward.types.dream.DreamModelConfigParam.id"></a>
+
+#### id
+
+<a id="qca.forward.types.dream.DreamModelConfigParam.effort"></a>
+
+#### effort
+
+<a id="qca.forward.types.dream.DreamModelConfigParam.context_window"></a>
+
+#### context\_window
+
+<a id="qca.forward.types.dream.DreamCreateParams"></a>
+
+## DreamCreateParams
+
+```python
+class DreamCreateParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/dream.py)
+
+<a id="qca.forward.types.dream.DreamCreateParams.inputs"></a>
+
+#### inputs
+
+<a id="qca.forward.types.dream.DreamCreateParams.model"></a>
+
+#### model
+
+<a id="qca.forward.types.dream.DreamCreateParams.instructions"></a>
+
+#### instructions
+
+<a id="qca.forward.types.dream.DreamListParams"></a>
+
+## DreamListParams
+
+```python
+class DreamListParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/dream.py)
+
+<a id="qca.forward.types.dream.DreamListParams.limit"></a>
+
+#### limit
+
+<a id="qca.forward.types.dream.DreamListParams.after_id"></a>
+
+#### after\_id
+
+<a id="qca.forward.types.dream.DreamListParams.before_id"></a>
+
+#### before\_id
+
+<a id="qca.forward.types.dream.DreamListParams.include_archived"></a>
+
+#### include\_archived
+
+<a id="qca.forward.types.dream.DreamInput"></a>
+
+## DreamInput
+
+```python
+class DreamInput(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/dream.py)
+
+<a id="qca.forward.types.dream.DreamInput.type"></a>
+
+#### type
+
+<a id="qca.forward.types.dream.DreamInput.memory_store_id"></a>
+
+#### memory\_store\_id
+
+<a id="qca.forward.types.dream.DreamInput.identity_id"></a>
+
+#### identity\_id
+
+<a id="qca.forward.types.dream.DreamInput.template_id"></a>
+
+#### template\_id
+
+<a id="qca.forward.types.dream.DreamInput.session_ids"></a>
+
+#### session\_ids
+
+<a id="qca.forward.types.dream.DreamModelConfig"></a>
+
+## DreamModelConfig
+
+```python
+class DreamModelConfig(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/dream.py)
+
+<a id="qca.forward.types.dream.DreamModelConfig.id"></a>
+
+#### id
+
+<a id="qca.forward.types.dream.DreamModelConfig.effort"></a>
+
+#### effort
+
+<a id="qca.forward.types.dream.DreamModelConfig.context_window"></a>
+
+#### context\_window
+
+<a id="qca.forward.types.dream.DreamOutput"></a>
+
+## DreamOutput
+
+```python
+class DreamOutput(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/dream.py)
+
+<a id="qca.forward.types.dream.DreamOutput.type"></a>
+
+#### type
+
+<a id="qca.forward.types.dream.DreamOutput.memory_store_id"></a>
+
+#### memory\_store\_id
+
+<a id="qca.forward.types.dream.DreamOutput.files_touched"></a>
+
+#### files\_touched
+
+<a id="qca.forward.types.dream.DreamUsage"></a>
+
+## DreamUsage
+
+```python
+class DreamUsage(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/dream.py)
+
+<a id="qca.forward.types.dream.DreamUsage.input_tokens"></a>
+
+#### input\_tokens
+
+<a id="qca.forward.types.dream.DreamUsage.output_tokens"></a>
+
+#### output\_tokens
+
+<a id="qca.forward.types.dream.DreamUsage.cache_creation_input_tokens"></a>
+
+#### cache\_creation\_input\_tokens
+
+<a id="qca.forward.types.dream.DreamUsage.cache_read_input_tokens"></a>
+
+#### cache\_read\_input\_tokens
+
+<a id="qca.forward.types.dream.DreamError"></a>
+
+## DreamError
+
+```python
+class DreamError(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/dream.py)
+
+<a id="qca.forward.types.dream.DreamError.type"></a>
+
+#### type
+
+<a id="qca.forward.types.dream.DreamError.code"></a>
+
+#### code
+
+<a id="qca.forward.types.dream.DreamError.message"></a>
+
+#### message
+
+<a id="qca.forward.types.dream.Dream"></a>
+
+## Dream
+
+```python
+class Dream(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/dream.py)
+
+<a id="qca.forward.types.dream.Dream.id"></a>
+
+#### id
+
+<a id="qca.forward.types.dream.Dream.type"></a>
+
+#### type
+
+<a id="qca.forward.types.dream.Dream.status"></a>
+
+#### status
+
+<a id="qca.forward.types.dream.Dream.inputs"></a>
+
+#### inputs
+
+<a id="qca.forward.types.dream.Dream.outputs"></a>
+
+#### outputs
+
+<a id="qca.forward.types.dream.Dream.model"></a>
+
+#### model
+
+<a id="qca.forward.types.dream.Dream.instructions"></a>
+
+#### instructions
+
+<a id="qca.forward.types.dream.Dream.usage"></a>
+
+#### usage
+
+<a id="qca.forward.types.dream.Dream.error"></a>
+
+#### error
+
+<a id="qca.forward.types.dream.Dream.created_at"></a>
+
+#### created\_at
+
+<a id="qca.forward.types.dream.Dream.ended_at"></a>
+
+#### ended\_at
+
+<a id="qca.forward.types.dream.Dream.archived_at"></a>
+
+#### archived\_at
 
 <a id="qca.forward.types.drive"></a>
 
@@ -13110,6 +13898,10 @@ class Identity(BaseModel)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/identity.py)
 
+<a id="qca.forward.types.identity.Identity.auto_memory_store"></a>
+
+#### auto\_memory\_store
+
 <a id="qca.forward.types.identity.Identity.id"></a>
 
 #### id
@@ -13334,6 +14126,10 @@ class IdentityConfigSpec(BaseModel)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/identity_config_spec.py)
 
+<a id="qca.forward.types.identity_config_spec.IdentityConfigSpec.managed_tool_config"></a>
+
+#### managed\_tool\_config
+
 <a id="qca.forward.types.identity_config_spec.IdentityConfigSpec.system"></a>
 
 #### system
@@ -13391,6 +14187,10 @@ class IdentityConfigSpecParam(TypedDict)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/identity_config_spec_param.py)
+
+<a id="qca.forward.types.identity_config_spec_param.IdentityConfigSpecParam.managed_tool_config"></a>
+
+#### managed\_tool\_config
 
 <a id="qca.forward.types.identity_config_spec_param.IdentityConfigSpecParam.system"></a>
 
@@ -13480,6 +14280,10 @@ class IdentityCreateParams(TypedDict)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/identity_create_params.py)
 
+<a id="qca.forward.types.identity_create_params.IdentityCreateParams.auto_memory_store"></a>
+
+#### auto\_memory\_store
+
 <a id="qca.forward.types.identity_create_params.IdentityCreateParams.external_id"></a>
 
 #### external\_id
@@ -13560,6 +14364,36 @@ class IdentityListTemplatesResponse(BaseModel)
 
 #### data
 
+<a id="qca.forward.types.identity_memory_store_list_params"></a>
+
+# qca.forward.types.identity\_memory\_store\_list\_params
+
+<a id="qca.forward.types.identity_memory_store_list_params.IdentityMemoryStoreListParams"></a>
+
+## IdentityMemoryStoreListParams
+
+```python
+class IdentityMemoryStoreListParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/identity_memory_store_list_params.py)
+
+<a id="qca.forward.types.identity_memory_store_list_params.IdentityMemoryStoreListParams.identity_id"></a>
+
+#### identity\_id
+
+<a id="qca.forward.types.identity_memory_store_list_params.IdentityMemoryStoreListParams.limit"></a>
+
+#### limit
+
+<a id="qca.forward.types.identity_memory_store_list_params.IdentityMemoryStoreListParams.after_id"></a>
+
+#### after\_id
+
+<a id="qca.forward.types.identity_memory_store_list_params.IdentityMemoryStoreListParams.before_id"></a>
+
+#### before\_id
+
 <a id="qca.forward.types.identity_memory_store_list_response"></a>
 
 # qca.forward.types.identity\_memory\_store\_list\_response
@@ -13573,6 +14407,14 @@ class IdentityMemoryStoreListResponse(BaseModel)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/identity_memory_store_list_response.py)
+
+<a id="qca.forward.types.identity_memory_store_list_response.IdentityMemoryStoreListResponse.first_id"></a>
+
+#### first\_id
+
+<a id="qca.forward.types.identity_memory_store_list_response.IdentityMemoryStoreListResponse.last_id"></a>
+
+#### last\_id
 
 <a id="qca.forward.types.identity_memory_store_list_response.IdentityMemoryStoreListResponse.data"></a>
 
@@ -13595,6 +14437,10 @@ class IdentityMemoryStoreMountParams(TypedDict)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/identity_memory_store_mount_params.py)
+
+<a id="qca.forward.types.identity_memory_store_mount_params.IdentityMemoryStoreMountParams.access"></a>
+
+#### access
 
 <a id="qca.forward.types.identity_memory_store_mount_params.IdentityMemoryStoreMountParams.memory_store_id"></a>
 
@@ -13673,6 +14519,10 @@ class IdentityUpdateParams(TypedDict)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/identity_update_params.py)
+
+<a id="qca.forward.types.identity_update_params.IdentityUpdateParams.auto_memory_store"></a>
+
+#### auto\_memory\_store
 
 <a id="qca.forward.types.identity_update_params.IdentityUpdateParams.external_id"></a>
 
@@ -13761,6 +14611,38 @@ class ImageSourceParam(TypedDict)
 <a id="qca.forward.types.image_source_param.ImageSourceParam.file_id"></a>
 
 #### file\_id
+
+<a id="qca.forward.types.managed_capability_override"></a>
+
+# qca.forward.types.managed\_capability\_override
+
+<a id="qca.forward.types.managed_capability_override.ManagedCapabilityOverrideParam"></a>
+
+## ManagedCapabilityOverrideParam
+
+```python
+class ManagedCapabilityOverrideParam(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/managed_capability_override.py)
+
+<a id="qca.forward.types.managed_capability_override.ManagedCapabilityOverrideParam.enabled"></a>
+
+#### enabled
+
+<a id="qca.forward.types.managed_capability_override.ManagedCapabilityOverride"></a>
+
+## ManagedCapabilityOverride
+
+```python
+class ManagedCapabilityOverride(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/managed_capability_override.py)
+
+<a id="qca.forward.types.managed_capability_override.ManagedCapabilityOverride.enabled"></a>
+
+#### enabled
 
 <a id="qca.forward.types.managed_tool_config"></a>
 
@@ -14572,6 +15454,10 @@ class MultiagentEntry(BaseModel)
 
 #### type
 
+<a id="qca.forward.types.multiagent_entry.MultiagentEntry.model"></a>
+
+#### model
+
 <a id="qca.forward.types.multiagent_entry.MultiagentEntry.template_id"></a>
 
 #### template\_id
@@ -14598,6 +15484,10 @@ class MultiagentEntryParam(TypedDict)
 
 #### type
 
+<a id="qca.forward.types.multiagent_entry_param.MultiagentEntryParam.model"></a>
+
+#### model
+
 <a id="qca.forward.types.multiagent_entry_param.MultiagentEntryParam.template_id"></a>
 
 #### template\_id
@@ -14605,6 +15495,90 @@ class MultiagentEntryParam(TypedDict)
 <a id="qca.forward.types.multiagent_entry_param.MultiagentEntryParam.name"></a>
 
 #### name
+
+<a id="qca.forward.types.outcome_rubric"></a>
+
+# qca.forward.types.outcome\_rubric
+
+<a id="qca.forward.types.outcome_rubric.TextOutcomeRubricParam"></a>
+
+## TextOutcomeRubricParam
+
+```python
+class TextOutcomeRubricParam(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/outcome_rubric.py)
+
+<a id="qca.forward.types.outcome_rubric.TextOutcomeRubricParam.type"></a>
+
+#### type
+
+<a id="qca.forward.types.outcome_rubric.TextOutcomeRubricParam.content"></a>
+
+#### content
+
+<a id="qca.forward.types.outcome_rubric.FileOutcomeRubricParam"></a>
+
+## FileOutcomeRubricParam
+
+```python
+class FileOutcomeRubricParam(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/outcome_rubric.py)
+
+<a id="qca.forward.types.outcome_rubric.FileOutcomeRubricParam.type"></a>
+
+#### type
+
+<a id="qca.forward.types.outcome_rubric.FileOutcomeRubricParam.file_id"></a>
+
+#### file\_id
+
+<a id="qca.forward.types.outcome_rubric.OutcomeRubricParam"></a>
+
+#### OutcomeRubricParam
+
+<a id="qca.forward.types.outcome_rubric.TextOutcomeRubric"></a>
+
+## TextOutcomeRubric
+
+```python
+class TextOutcomeRubric(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/outcome_rubric.py)
+
+<a id="qca.forward.types.outcome_rubric.TextOutcomeRubric.type"></a>
+
+#### type
+
+<a id="qca.forward.types.outcome_rubric.TextOutcomeRubric.content"></a>
+
+#### content
+
+<a id="qca.forward.types.outcome_rubric.FileOutcomeRubric"></a>
+
+## FileOutcomeRubric
+
+```python
+class FileOutcomeRubric(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/outcome_rubric.py)
+
+<a id="qca.forward.types.outcome_rubric.FileOutcomeRubric.type"></a>
+
+#### type
+
+<a id="qca.forward.types.outcome_rubric.FileOutcomeRubric.file_id"></a>
+
+#### file\_id
+
+<a id="qca.forward.types.outcome_rubric.OutcomeRubric"></a>
+
+#### OutcomeRubric
 
 <a id="qca.forward.types.permission_policy"></a>
 
@@ -15364,6 +16338,10 @@ class Schedule(BaseModel)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/schedule.py)
 
+<a id="qca.forward.types.schedule.Schedule.resources"></a>
+
+#### resources
+
 <a id="qca.forward.types.schedule.Schedule.source"></a>
 
 #### source
@@ -15512,6 +16490,10 @@ class ScheduleCreateParams(TypedDict)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/schedule_create_params.py)
 
+<a id="qca.forward.types.schedule_create_params.ScheduleCreateParams.resources"></a>
+
+#### resources
+
 <a id="qca.forward.types.schedule_create_params.ScheduleCreateParams.identity_id"></a>
 
 #### identity\_id
@@ -15585,6 +16567,54 @@ class ScheduleExecution(BaseModel)
 <a id="qca.forward.types.schedule_execution.ScheduleExecution.timeout_ms"></a>
 
 #### timeout\_ms
+
+<a id="qca.forward.types.schedule_file_resource"></a>
+
+# qca.forward.types.schedule\_file\_resource
+
+<a id="qca.forward.types.schedule_file_resource.ScheduleFileResourceParam"></a>
+
+## ScheduleFileResourceParam
+
+```python
+class ScheduleFileResourceParam(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/schedule_file_resource.py)
+
+<a id="qca.forward.types.schedule_file_resource.ScheduleFileResourceParam.type"></a>
+
+#### type
+
+<a id="qca.forward.types.schedule_file_resource.ScheduleFileResourceParam.file_id"></a>
+
+#### file\_id
+
+<a id="qca.forward.types.schedule_file_resource.ScheduleFileResourceParam.mount_path"></a>
+
+#### mount\_path
+
+<a id="qca.forward.types.schedule_file_resource.ScheduleFileResource"></a>
+
+## ScheduleFileResource
+
+```python
+class ScheduleFileResource(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/schedule_file_resource.py)
+
+<a id="qca.forward.types.schedule_file_resource.ScheduleFileResource.type"></a>
+
+#### type
+
+<a id="qca.forward.types.schedule_file_resource.ScheduleFileResource.file_id"></a>
+
+#### file\_id
+
+<a id="qca.forward.types.schedule_file_resource.ScheduleFileResource.mount_path"></a>
+
+#### mount\_path
 
 <a id="qca.forward.types.schedule_initial_events_item"></a>
 
@@ -15707,6 +16737,10 @@ class ScheduleRun(BaseModel)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/schedule_run.py)
+
+<a id="qca.forward.types.schedule_run.ScheduleRun.initial_events"></a>
+
+#### initial\_events
 
 <a id="qca.forward.types.schedule_run.ScheduleRun.source"></a>
 
@@ -15882,6 +16916,10 @@ class ScheduleRunRetrieveParams(TypedDict)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/schedule_run_retrieve_params.py)
 
+<a id="qca.forward.types.schedule_run_retrieve_params.ScheduleRunRetrieveParams.include_initial_events"></a>
+
+#### include\_initial\_events
+
 <a id="qca.forward.types.schedule_run_retrieve_params.ScheduleRunRetrieveParams.identity_id"></a>
 
 #### identity\_id
@@ -16029,6 +17067,10 @@ class ScheduleUpdateParams(TypedDict)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/schedule_update_params.py)
+
+<a id="qca.forward.types.schedule_update_params.ScheduleUpdateParams.resources"></a>
+
+#### resources
 
 <a id="qca.forward.types.schedule_update_params.ScheduleUpdateParams.name"></a>
 
@@ -19171,6 +20213,17 @@ class Managed(SyncAPIClient)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/_client.py)
 
+<a id="qca.managed._client.Managed.oauth"></a>
+
+#### oauth
+
+```python
+@cached_property
+def oauth() -> OAuth
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/_client.py)
+
 <a id="qca.managed._client.Managed.agents"></a>
 
 #### agents
@@ -19298,6 +20351,17 @@ def models() -> Models
 
 ```python
 class AsyncManaged(AsyncAPIClient)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/_client.py)
+
+<a id="qca.managed._client.AsyncManaged.oauth"></a>
+
+#### oauth
+
+```python
+@cached_property
+def oauth() -> AsyncOAuth
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/_client.py)
@@ -20690,7 +21754,7 @@ def create(
         *,
         inputs: List[Union[DreamMemoryStoreInputParam,
                            DreamSessionsInputParam]],
-        model: Union[str, DreamModelConfigParam],
+        model: Union[str, DreamModelConfigParam, None, NotGiven] = NOT_GIVEN,
         instructions: Union[str, None, NotGiven] = NOT_GIVEN,
         workspace_id: Union[str, None, NotGiven] = NOT_GIVEN,
         output_behavior: Union[Union[OutputBehaviorCreateNewParam,
@@ -20813,7 +21877,7 @@ async def create(
         *,
         inputs: List[Union[DreamMemoryStoreInputParam,
                            DreamSessionsInputParam]],
-        model: Union[str, DreamModelConfigParam],
+        model: Union[str, DreamModelConfigParam, None, NotGiven] = NOT_GIVEN,
         instructions: Union[str, None, NotGiven] = NOT_GIVEN,
         workspace_id: Union[str, None, NotGiven] = NOT_GIVEN,
         output_behavior: Union[Union[OutputBehaviorCreateNewParam,
@@ -22424,6 +23488,8 @@ def list(
     page: Union[str, None, NotGiven] = NOT_GIVEN,
     workspace_id: Union[str, None, NotGiven] = NOT_GIVEN,
     betas: Union[List[str], None, NotGiven] = NOT_GIVEN,
+    after_id: Union[str, NotGiven] = NOT_GIVEN,
+    before_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -22622,6 +23688,8 @@ def list(
     page: Union[str, None, NotGiven] = NOT_GIVEN,
     workspace_id: Union[str, None, NotGiven] = NOT_GIVEN,
     betas: Union[List[str], None, NotGiven] = NOT_GIVEN,
+    after_id: Union[str, NotGiven] = NOT_GIVEN,
+    before_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
     extra_body: Dict[str, Any] | None = None,
@@ -22922,6 +23990,76 @@ def list(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/models.py)
 
 GET /models.
+
+<a id="qca.managed.resources.oauth"></a>
+
+# qca.managed.resources.oauth
+
+<a id="qca.managed.resources.oauth.OAuth"></a>
+
+## OAuth
+
+```python
+class OAuth(SyncAPIResource)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/oauth.py)
+
+<a id="qca.managed.resources.oauth.OAuth.start"></a>
+
+#### start
+
+```python
+def start(
+    *,
+    vault_id: str,
+    mcp_server_url: str,
+    client_id: Union[str, NotGiven] = NOT_GIVEN,
+    client_secret: Union[str, NotGiven] = NOT_GIVEN,
+    workspace_id: Union[str, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> OAuthStartResponse
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/oauth.py)
+
+POST /oauth/start. Returns a browser authorization URL; this call does not complete authorization.
+
+<a id="qca.managed.resources.oauth.AsyncOAuth"></a>
+
+## AsyncOAuth
+
+```python
+class AsyncOAuth(AsyncAPIResource)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/oauth.py)
+
+<a id="qca.managed.resources.oauth.AsyncOAuth.start"></a>
+
+#### start
+
+```python
+async def start(
+    *,
+    vault_id: str,
+    mcp_server_url: str,
+    client_id: Union[str, NotGiven] = NOT_GIVEN,
+    client_secret: Union[str, NotGiven] = NOT_GIVEN,
+    workspace_id: Union[str, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> OAuthStartResponse
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/oauth.py)
+
+POST /oauth/start. Returns a browser authorization URL; this call does not complete authorization.
 
 <a id="qca.managed.resources.sessions.events"></a>
 
@@ -26611,6 +27749,186 @@ class BranchCheckoutParam(TypedDict)
 
 #### type
 
+<a id="qca.managed.types.bucket_storage"></a>
+
+# qca.managed.types.bucket\_storage
+
+<a id="qca.managed.types.bucket_storage.OSSRAMRoleCredentialParam"></a>
+
+## OSSRAMRoleCredentialParam
+
+```python
+class OSSRAMRoleCredentialParam(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/bucket_storage.py)
+
+<a id="qca.managed.types.bucket_storage.OSSRAMRoleCredentialParam.type"></a>
+
+#### type
+
+<a id="qca.managed.types.bucket_storage.OSSRAMRoleCredentialParam.role_arn"></a>
+
+#### role\_arn
+
+<a id="qca.managed.types.bucket_storage.OSSAccessKeyCredentialParam"></a>
+
+## OSSAccessKeyCredentialParam
+
+```python
+class OSSAccessKeyCredentialParam(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/bucket_storage.py)
+
+<a id="qca.managed.types.bucket_storage.OSSAccessKeyCredentialParam.type"></a>
+
+#### type
+
+<a id="qca.managed.types.bucket_storage.OSSAccessKeyCredentialParam.access_key_id"></a>
+
+#### access\_key\_id
+
+<a id="qca.managed.types.bucket_storage.OSSAccessKeyCredentialParam.access_key_secret"></a>
+
+#### access\_key\_secret
+
+<a id="qca.managed.types.bucket_storage.OSSBucketCredentialParam"></a>
+
+#### OSSBucketCredentialParam
+
+<a id="qca.managed.types.bucket_storage.OSSBucketParam"></a>
+
+## OSSBucketParam
+
+```python
+class OSSBucketParam(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/bucket_storage.py)
+
+<a id="qca.managed.types.bucket_storage.OSSBucketParam.name"></a>
+
+#### name
+
+<a id="qca.managed.types.bucket_storage.OSSBucketParam.provider"></a>
+
+#### provider
+
+<a id="qca.managed.types.bucket_storage.OSSBucketParam.region"></a>
+
+#### region
+
+<a id="qca.managed.types.bucket_storage.OSSBucketParam.bucket"></a>
+
+#### bucket
+
+<a id="qca.managed.types.bucket_storage.OSSBucketParam.prefix"></a>
+
+#### prefix
+
+<a id="qca.managed.types.bucket_storage.OSSBucketParam.access"></a>
+
+#### access
+
+<a id="qca.managed.types.bucket_storage.OSSBucketParam.accelerator_endpoint"></a>
+
+#### accelerator\_endpoint
+
+<a id="qca.managed.types.bucket_storage.OSSBucketParam.credential"></a>
+
+#### credential
+
+<a id="qca.managed.types.bucket_storage.BucketStorageParam"></a>
+
+## BucketStorageParam
+
+```python
+class BucketStorageParam(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/bucket_storage.py)
+
+<a id="qca.managed.types.bucket_storage.BucketStorageParam.buckets"></a>
+
+#### buckets
+
+<a id="qca.managed.types.bucket_storage.OSSBucketCredential"></a>
+
+## OSSBucketCredential
+
+```python
+class OSSBucketCredential(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/bucket_storage.py)
+
+Read view; the API never returns role ARN or AccessKey secret.
+
+<a id="qca.managed.types.bucket_storage.OSSBucketCredential.type"></a>
+
+#### type
+
+<a id="qca.managed.types.bucket_storage.OSSBucketCredential.access_key_id"></a>
+
+#### access\_key\_id
+
+<a id="qca.managed.types.bucket_storage.OSSBucket"></a>
+
+## OSSBucket
+
+```python
+class OSSBucket(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/bucket_storage.py)
+
+<a id="qca.managed.types.bucket_storage.OSSBucket.name"></a>
+
+#### name
+
+<a id="qca.managed.types.bucket_storage.OSSBucket.provider"></a>
+
+#### provider
+
+<a id="qca.managed.types.bucket_storage.OSSBucket.region"></a>
+
+#### region
+
+<a id="qca.managed.types.bucket_storage.OSSBucket.bucket"></a>
+
+#### bucket
+
+<a id="qca.managed.types.bucket_storage.OSSBucket.prefix"></a>
+
+#### prefix
+
+<a id="qca.managed.types.bucket_storage.OSSBucket.access"></a>
+
+#### access
+
+<a id="qca.managed.types.bucket_storage.OSSBucket.accelerator_endpoint"></a>
+
+#### accelerator\_endpoint
+
+<a id="qca.managed.types.bucket_storage.OSSBucket.credential"></a>
+
+#### credential
+
+<a id="qca.managed.types.bucket_storage.BucketStorage"></a>
+
+## BucketStorage
+
+```python
+class BucketStorage(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/bucket_storage.py)
+
+<a id="qca.managed.types.bucket_storage.BucketStorage.buckets"></a>
+
+#### buckets
+
 <a id="qca.managed.types.budget_limit"></a>
 
 # qca.managed.types.budget\_limit
@@ -26738,6 +28056,10 @@ class CloudConfigParams(TypedDict)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/cloud_config_params.py)
+
+<a id="qca.managed.types.cloud_config_params.CloudConfigParams.storage"></a>
+
+#### storage
 
 <a id="qca.managed.types.cloud_config_params.CloudConfigParams.setup_script"></a>
 
@@ -28437,9 +29759,13 @@ class DreamModelConfig(BaseModel)
 
 #### id
 
-<a id="qca.managed.types.dream_model_config.DreamModelConfig.speed"></a>
+<a id="qca.managed.types.dream_model_config.DreamModelConfig.effort"></a>
 
-#### speed
+#### effort
+
+<a id="qca.managed.types.dream_model_config.DreamModelConfig.context_window"></a>
+
+#### context\_window
 
 <a id="qca.managed.types.dream_model_config_param"></a>
 
@@ -28459,9 +29785,13 @@ class DreamModelConfigParam(TypedDict)
 
 #### id
 
-<a id="qca.managed.types.dream_model_config_param.DreamModelConfigParam.speed"></a>
+<a id="qca.managed.types.dream_model_config_param.DreamModelConfigParam.effort"></a>
 
-#### speed
+#### effort
+
+<a id="qca.managed.types.dream_model_config_param.DreamModelConfigParam.context_window"></a>
+
+#### context\_window
 
 <a id="qca.managed.types.dream_output"></a>
 
@@ -28810,6 +30140,10 @@ class EnvironmentConfigUnion(BaseModel)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/environment_config_union.py)
+
+<a id="qca.managed.types.environment_config_union.EnvironmentConfigUnion.storage"></a>
+
+#### storage
 
 <a id="qca.managed.types.environment_config_union.EnvironmentConfigUnion.setup_script"></a>
 
@@ -30697,6 +32031,14 @@ class MemoryStoreListParams(TypedDict)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/memory_store_list_params.py)
 
+<a id="qca.managed.types.memory_store_list_params.MemoryStoreListParams.before_id"></a>
+
+#### before\_id
+
+<a id="qca.managed.types.memory_store_list_params.MemoryStoreListParams.after_id"></a>
+
+#### after\_id
+
 <a id="qca.managed.types.memory_store_list_params.MemoryStoreListParams.name"></a>
 
 #### name
@@ -31283,9 +32625,9 @@ class ModelConfig(BaseModel)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/model_config.py)
 
-<a id="qca.managed.types.model_config.ModelConfig.context_window"></a>
+<a id="qca.managed.types.model_config.ModelConfig.inference_geo"></a>
 
-#### context\_window
+#### inference\_geo
 
 <a id="qca.managed.types.model_config.ModelConfig.id"></a>
 
@@ -31295,13 +32637,13 @@ class ModelConfig(BaseModel)
 
 #### effort
 
-<a id="qca.managed.types.model_config.ModelConfig.inference_geo"></a>
+<a id="qca.managed.types.model_config.ModelConfig.context_window"></a>
 
-#### inference\_geo
+#### context\_window
 
-<a id="qca.managed.types.model_config.ModelConfig.speed"></a>
+<a id="qca.managed.types.model_config.ModelConfig.effective_context_window"></a>
 
-#### speed
+#### effective\_context\_window
 
 <a id="qca.managed.types.model_config_effort_union"></a>
 
@@ -31335,25 +32677,21 @@ class ModelConfigParams(TypedDict)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/model_config_params.py)
 
-<a id="qca.managed.types.model_config_params.ModelConfigParams.context_window"></a>
+<a id="qca.managed.types.model_config_params.ModelConfigParams.inference_geo"></a>
 
-#### context\_window
+#### inference\_geo
 
 <a id="qca.managed.types.model_config_params.ModelConfigParams.id"></a>
 
 #### id
 
-<a id="qca.managed.types.model_config_params.ModelConfigParams.inference_geo"></a>
-
-#### inference\_geo
-
 <a id="qca.managed.types.model_config_params.ModelConfigParams.effort"></a>
 
 #### effort
 
-<a id="qca.managed.types.model_config_params.ModelConfigParams.speed"></a>
+<a id="qca.managed.types.model_config_params.ModelConfigParams.context_window"></a>
 
-#### speed
+#### context\_window
 
 <a id="qca.managed.types.model_info"></a>
 
@@ -31602,6 +32940,66 @@ class MultiagentSelfParams(TypedDict)
 <a id="qca.managed.types.multiagent_self_params.MultiagentSelfParams.type"></a>
 
 #### type
+
+<a id="qca.managed.types.oauth_start_params"></a>
+
+# qca.managed.types.oauth\_start\_params
+
+<a id="qca.managed.types.oauth_start_params.OAuthStartParams"></a>
+
+## OAuthStartParams
+
+```python
+class OAuthStartParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/oauth_start_params.py)
+
+<a id="qca.managed.types.oauth_start_params.OAuthStartParams.vault_id"></a>
+
+#### vault\_id
+
+<a id="qca.managed.types.oauth_start_params.OAuthStartParams.mcp_server_url"></a>
+
+#### mcp\_server\_url
+
+<a id="qca.managed.types.oauth_start_params.OAuthStartParams.client_id"></a>
+
+#### client\_id
+
+<a id="qca.managed.types.oauth_start_params.OAuthStartParams.client_secret"></a>
+
+#### client\_secret
+
+<a id="qca.managed.types.oauth_start_params.OAuthStartParams.workspace_id"></a>
+
+#### workspace\_id
+
+<a id="qca.managed.types.oauth_start_response"></a>
+
+# qca.managed.types.oauth\_start\_response
+
+<a id="qca.managed.types.oauth_start_response.OAuthStartResponse"></a>
+
+## OAuthStartResponse
+
+```python
+class OAuthStartResponse(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/oauth_start_response.py)
+
+<a id="qca.managed.types.oauth_start_response.OAuthStartResponse.authorization_url"></a>
+
+#### authorization\_url
+
+<a id="qca.managed.types.oauth_start_response.OAuthStartResponse.state"></a>
+
+#### state
+
+<a id="qca.managed.types.oauth_start_response.OAuthStartResponse.callback_origin"></a>
+
+#### callback\_origin
 
 <a id="qca.managed.types.outcome_evaluation_resource"></a>
 

@@ -6,6 +6,7 @@ from typing_extensions import Required, TypedDict
 
 if TYPE_CHECKING:
     from .content_block_param import ContentBlockParam
+    from .outcome_rubric import OutcomeRubricParam
 
 __all__ = ["SessionEventParam"]
 
@@ -19,6 +20,6 @@ class SessionEventParam(TypedDict, total=False):
     deny_message: Optional[str]
     is_error: Optional[bool]
     description: Optional[str]
-    rubric: Optional[str]
+    rubric: Optional[OutcomeRubricParam]
     outcome_id: Optional[str]
     max_iterations: Optional[int]

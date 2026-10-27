@@ -24,7 +24,7 @@ class Dreams(SyncAPIResource):
         self,
         *,
         inputs: List[Union[DreamMemoryStoreInputParam, DreamSessionsInputParam]],
-        model: Union[str, DreamModelConfigParam],
+        model: Union[str, DreamModelConfigParam, None, NotGiven] = NOT_GIVEN,
         instructions: Union[str, None, NotGiven] = NOT_GIVEN,
         workspace_id: Union[str, None, NotGiven] = NOT_GIVEN,
         output_behavior: Union[
@@ -165,7 +165,7 @@ class AsyncDreams(AsyncAPIResource):
         self,
         *,
         inputs: List[Union[DreamMemoryStoreInputParam, DreamSessionsInputParam]],
-        model: Union[str, DreamModelConfigParam],
+        model: Union[str, DreamModelConfigParam, None, NotGiven] = NOT_GIVEN,
         instructions: Union[str, None, NotGiven] = NOT_GIVEN,
         workspace_id: Union[str, None, NotGiven] = NOT_GIVEN,
         output_behavior: Union[
