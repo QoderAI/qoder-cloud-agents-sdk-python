@@ -11387,10 +11387,6 @@ class DecisionAnswer(BaseModel)
 
 #### score
 
-<a id="qca.forward.types.decision.DecisionAnswer.refusal"></a>
-
-#### refusal
-
 <a id="qca.forward.types.decision.DecisionContext"></a>
 
 ## DecisionContext
@@ -11401,34 +11397,14 @@ class DecisionContext(BaseModel)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/decision.py)
 
-Server-selected input metadata. Estimates are not billed model usage.
+Input mode and the Session events used for evaluation.
 
-Session-only fields and preparation metadata may be absent, especially on
+Session-only fields may be absent, especially on
 running or failed records. Unknown fields remain accessible as model extras.
 
 <a id="qca.forward.types.decision.DecisionContext.mode"></a>
 
 #### mode
-
-<a id="qca.forward.types.decision.DecisionContext.policy_version"></a>
-
-#### policy\_version
-
-<a id="qca.forward.types.decision.DecisionContext.token_estimator"></a>
-
-#### token\_estimator
-
-<a id="qca.forward.types.decision.DecisionContext.estimated_input_tokens"></a>
-
-#### estimated\_input\_tokens
-
-<a id="qca.forward.types.decision.DecisionContext.max_input_tokens"></a>
-
-#### max\_input\_tokens
-
-<a id="qca.forward.types.decision.DecisionContext.snapshot_at"></a>
-
-#### snapshot\_at
 
 <a id="qca.forward.types.decision.DecisionContext.anchor_event_id"></a>
 
@@ -11449,18 +11425,6 @@ running or failed records. Unknown fields remain accessible as model extras.
 <a id="qca.forward.types.decision.DecisionContext.included_event_count"></a>
 
 #### included\_event\_count
-
-<a id="qca.forward.types.decision.DecisionContext.scan_limited"></a>
-
-#### scan\_limited
-
-<a id="qca.forward.types.decision.DecisionContext.truncated"></a>
-
-#### truncated
-
-<a id="qca.forward.types.decision.DecisionContext.truncation_reasons"></a>
-
-#### truncation\_reasons
 
 <a id="qca.forward.types.decision.DecisionError"></a>
 
@@ -11519,10 +11483,6 @@ A stored evaluation. Retrieval and listing also expose running/failed records.
 <a id="qca.forward.types.decision.Decision.context"></a>
 
 #### context
-
-<a id="qca.forward.types.decision.Decision.usage"></a>
-
-#### usage
 
 <a id="qca.forward.types.decision.Decision.error"></a>
 

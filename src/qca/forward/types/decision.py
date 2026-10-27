@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Any, Literal
+from typing import Literal
 
 from qca.common._models import BaseModel
 
@@ -26,34 +26,25 @@ class DecisionQuestion(BaseModel):
 
 
 class DecisionAnswer(BaseModel):
-    type: Literal["choice", "score", "refusal"]
+    type: Literal["choice", "score"]
     name: str | None = None
     value: str | bool | None = None
     score: float | None = None
-    refusal: str | None = None
 
 
 class DecisionContext(BaseModel):
-    """Server-selected input metadata. Estimates are not billed model usage.
+    """Input mode and the Session events used for evaluation.
 
-    Session-only fields and preparation metadata may be absent, especially on
+    Session-only fields may be absent, especially on
     running or failed records. Unknown fields remain accessible as model extras.
     """
 
     mode: Literal["state", "session"]
-    policy_version: str | None = None
-    token_estimator: str | None = None
-    estimated_input_tokens: int | None = None
-    max_input_tokens: int | None = None
-    snapshot_at: datetime | None = None
     anchor_event_id: str | None = None
     first_event_id: str | None = None
     last_event_id: str | None = None
     included_segment_count: int | None = None
     included_event_count: int | None = None
-    scan_limited: bool | None = None
-    truncated: bool | None = None
-    truncation_reasons: list[str] | None = None
 
 
 class DecisionError(BaseModel):
@@ -71,7 +62,6 @@ class Decision(BaseModel):
     questions: list[DecisionQuestion]
     answers: list[DecisionAnswer]
     context: DecisionContext
-    usage: dict[str, Any] | None
     error: DecisionError | None
     created_at: datetime
     completed_at: datetime | None

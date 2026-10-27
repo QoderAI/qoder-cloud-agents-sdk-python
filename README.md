@@ -644,11 +644,9 @@ For scores, use `{"type": "score", "instructions": "Rate risk", "levels":
 [{"label": "low", "score": 0}, {"label": "high", "score": 10}]}`.
 `AsyncForward` offers the same methods with `await` and asynchronous pagination.
 
-Session context is selected by the server. Inspect `context.truncated`,
-`context.truncation_reasons`, and the input-token estimate to understand the
-selected history. Explicit state and questions are never shortened; oversized
-input returns HTTP 422. Context estimates are separate from `usage`, which can
-be null. Answers can also have type `refusal`.
+Session context is selected by the server. `context.mode` identifies the input
+mode; Session results may include event IDs and counts describing the selected
+history. Answers have type `choice` or `score`. Oversized input returns HTTP 422.
 
 Reuse an idempotency key only for identical request bytes. A changed request or
 a still-running request with that key returns HTTP 409; the SDK does not retry
