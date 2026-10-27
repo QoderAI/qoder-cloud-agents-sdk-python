@@ -135,6 +135,11 @@ Before the first release, create the GitHub `release` Environment with required 
 
 3. After approval, the workflow creates or reuses the annotated `v<version>` tag, publishes the approved wheel and sdist with PyPI Trusted Publishing, verifies their public digests, and performs a no-cache installation of the exact version and its synchronous and asynchronous imports. After verification, it publishes the changelog entry as a GitHub Release.
 
+If the PyPI Simple index has not exposed the exact release yet, installation retries
+up to 21 times at 30-second intervals, with a 15-minute limit for the installation
+step. Other installation errors and version/import failures stop verification;
+the preceding approved-artifact digest checks remain required.
+
 PyPI versions are immutable. Never reuse or overwrite one: fix forward with a new release pull request and version, and yank an unusable version when necessary. A safe rerun must use the same SHA, version, and `batch_id`; it verifies the existing PyPI files without uploading them again.
 
 ## Pull requests

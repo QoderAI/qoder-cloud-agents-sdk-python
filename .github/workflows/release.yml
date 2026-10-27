@@ -488,13 +488,34 @@ jobs:
           [[ "$verified" == true ]]
 
       - name: Verify the installed public package
+        timeout-minutes: 15
         run: |
           set -euo pipefail
           venv_dir=$(mktemp -d)
           trap 'rm -rf "$venv_dir"' EXIT
           python -m venv "$venv_dir"
-          "$venv_dir/bin/python" -m pip install --disable-pip-version-check --no-cache-dir \
-            --index-url "$PYPI_INDEX_URL" "$PACKAGE_NAME==$RELEASE_VERSION"
+          install_log="$venv_dir/install.log"
+          for attempt in $(seq 1 21); do
+            echo "Installing $PACKAGE_NAME==$RELEASE_VERSION from PyPI (attempt $attempt/21)."
+            if "$venv_dir/bin/python" -m pip install --disable-pip-version-check --no-cache-dir \
+              --index-url "$PYPI_INDEX_URL" "$PACKAGE_NAME==$RELEASE_VERSION" >"$install_log" 2>&1; then
+              cat "$install_log"
+              break
+            else
+              install_status=$?
+              cat "$install_log" >&2
+            fi
+            # The Simple index can lag behind the already-verified JSON metadata.
+            if ! grep -Fxq "ERROR: No matching distribution found for $PACKAGE_NAME==$RELEASE_VERSION" "$install_log"; then
+              exit "$install_status"
+            fi
+            if [[ "$attempt" == 21 ]]; then
+              echo "$PACKAGE_NAME==$RELEASE_VERSION is still unavailable from the PyPI index after 21 attempts." >&2
+              exit "$install_status"
+            fi
+            echo "The release is not yet installable from the PyPI index; retrying in 30 seconds."
+            sleep 30
+          done
           "$venv_dir/bin/python" - <<'PY'
           import os
           from importlib.metadata import version
