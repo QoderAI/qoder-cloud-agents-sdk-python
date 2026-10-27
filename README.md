@@ -41,6 +41,32 @@ Under the hood these run `pydoc-markdown` via `uv` on a pinned Python 3.12:
 uv run --python 3.12 --extra dev --locked pydoc-markdown pydoc-markdown.yml
 ```
 
+## SDK-created Session metadata
+
+Direct Forward and Managed Session creation automatically adds these string-valued
+metadata fields (Python includes both sync and async clients):
+
+| Field | Value |
+| --- | --- |
+| `__qca_sdk_created` | `"true"` |
+| `__qca_sdk_language` | `"python"` |
+| `__qca_sdk_version` | The installed SDK's version |
+
+Reserve the `__qca_sdk_` prefix for SDK provenance. Business metadata is preserved,
+and the caller's metadata object is not mutated. Omitted or null metadata becomes
+an object containing the markers. Passing an existing marker with the exact same
+string value is accepted; a different value or type (including null) fails locally
+before any HTTP request. This also applies after `extra_body` overrides are merged.
+
+Session updates, reads and event operations do not inject or repair these fields.
+Sessions created indirectly through Schedules, Batches or Realtime are outside this
+behavior. These markers describe the creating SDK; they are client-supplied metadata,
+not an authentication or authorization mechanism.
+
+Migration: rename any business fields that already use these three keys before
+upgrading. Automatic markers count toward API metadata limits; the SDK never drops
+business fields to make room. No additional parameters or opt-in are required.
+
 ## Usage
 
 ```python

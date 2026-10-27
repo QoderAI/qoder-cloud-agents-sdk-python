@@ -1315,6 +1315,20 @@ async def __aexit__(*_: object) -> None
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/_resumable_streaming.py)
 
+<a id="qca.common._session_metadata"></a>
+
+# qca.common.\_session\_metadata
+
+<a id="qca.common._session_metadata.with_session_metadata"></a>
+
+#### with\_session\_metadata
+
+```python
+def with_session_metadata(body: Mapping[str, Any]) -> dict[str, Any]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/_session_metadata.py)
+
 <a id="qca.common._streaming"></a>
 
 # qca.common.\_streaming
@@ -8454,7 +8468,7 @@ def create(
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/sessions/sessions.py)
 
-POST /sessions.
+POST /sessions. Adds __qca_sdk_ metadata; conflicting reserved values raise ValueError.
 
 <a id="qca.forward.resources.sessions.sessions.Sessions.retrieve"></a>
 
@@ -8642,7 +8656,7 @@ async def create(
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/sessions/sessions.py)
 
-POST /sessions.
+POST /sessions. Adds __qca_sdk_ metadata; conflicting reserved values raise ValueError.
 
 <a id="qca.forward.resources.sessions.sessions.AsyncSessions.retrieve"></a>
 
@@ -24670,7 +24684,7 @@ def create(
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/sessions/sessions.py)
 
-POST /sessions.
+POST /sessions. Adds __qca_sdk_ metadata; conflicting reserved values raise ValueError.
 
 <a id="qca.managed.resources.sessions.sessions.Sessions.retrieve"></a>
 
@@ -24940,7 +24954,7 @@ async def create(
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/sessions/sessions.py)
 
-POST /sessions.
+POST /sessions. Adds __qca_sdk_ metadata; conflicting reserved values raise ValueError.
 
 <a id="qca.managed.resources.sessions.sessions.AsyncSessions.retrieve"></a>
 

@@ -7,6 +7,7 @@ from typing import Any, Dict, List, Union
 import httpx
 
 from qca.common._resource import AsyncAPIResource, SyncAPIResource
+from qca.common._session_metadata import with_session_metadata
 from qca.common._types import NOT_GIVEN, NotGiven
 from qca.common._utils import make_request_options, path_template
 from qca.common.pagination import AsyncPaginator, SyncPage
@@ -105,7 +106,7 @@ class Sessions(SyncAPIResource):
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> Session:
-        """POST /sessions."""
+        """POST /sessions. Adds __qca_sdk_ metadata; conflicting reserved values raise ValueError."""
         _path = path_template("/sessions")
         options = make_request_options(
             body={
@@ -123,6 +124,7 @@ class Sessions(SyncAPIResource):
             extra_body=extra_body,
             timeout=timeout,
         )
+        options["body"] = with_session_metadata(options["body"])
         return self._client.request("POST", _path, cast_to=Session, options=options)
 
     def retrieve(
@@ -306,7 +308,7 @@ class AsyncSessions(AsyncAPIResource):
         extra_body: Dict[str, Any] | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> Session:
-        """POST /sessions."""
+        """POST /sessions. Adds __qca_sdk_ metadata; conflicting reserved values raise ValueError."""
         _path = path_template("/sessions")
         options = make_request_options(
             body={
@@ -324,6 +326,7 @@ class AsyncSessions(AsyncAPIResource):
             extra_body=extra_body,
             timeout=timeout,
         )
+        options["body"] = with_session_metadata(options["body"])
         return await self._client.request("POST", _path, cast_to=Session, options=options)
 
     async def retrieve(
