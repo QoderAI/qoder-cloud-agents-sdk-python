@@ -78,11 +78,13 @@ from .environment_config import EnvironmentConfig as EnvironmentConfig
 from .environment_config_packages import EnvironmentConfigPackages as EnvironmentConfigPackages
 from .environment_create_params import EnvironmentCreateParams as EnvironmentCreateParams
 from .environment_list_params import EnvironmentListParams as EnvironmentListParams
+from .environment_search_params import EnvironmentSearchParams as EnvironmentSearchParams
 from .environment_update_params import EnvironmentUpdateParams as EnvironmentUpdateParams
 from .environment_variable_override import EnvironmentVariableOverride as EnvironmentVariableOverride
 from .environment_variable_override_param import EnvironmentVariableOverrideParam as EnvironmentVariableOverrideParam
 from .file_list_params import FileListParams as FileListParams
 from .file_metadata import FileMetadata as FileMetadata
+from .file_search_params import FileSearchParams as FileSearchParams
 from .file_upload_params import FileUploadParams as FileUploadParams
 from .git_hub_repository import GitHubRepository as GitHubRepository
 from .git_hub_repository_param import GitHubRepositoryParam as GitHubRepositoryParam
@@ -228,6 +230,7 @@ from .skill_list_params import SkillListParams as SkillListParams
 from .skill_override import SkillOverride as SkillOverride
 from .skill_override_param import SkillOverrideParam as SkillOverrideParam
 from .skill_retrieve_params import SkillRetrieveParams as SkillRetrieveParams
+from .skill_search_params import SkillSearchParams as SkillSearchParams
 from .skill_update_params import SkillUpdateParams as SkillUpdateParams
 from .skill_version import SkillVersion as SkillVersion
 from .skill_version_create_params import SkillVersionCreateParams as SkillVersionCreateParams
@@ -261,6 +264,7 @@ from .vault_credential_update_params import StaticBearerUpdate as StaticBearerUp
 from .vault_credential_update_params import VaultCredentialUpdateAuth as VaultCredentialUpdateAuth
 from .vault_credential_update_params import VaultCredentialUpdateParams as VaultCredentialUpdateParams
 from .vault_list_params import VaultListParams as VaultListParams
+from .vault_search_params import VaultSearchParams as VaultSearchParams
 from .webhook_endpoint import WebhookEndpoint as WebhookEndpoint
 from .webhook_endpoint import WebhookEndpointCreateResponse as WebhookEndpointCreateResponse
 from .webhook_endpoint import WebhookEndpointTestResponse as WebhookEndpointTestResponse

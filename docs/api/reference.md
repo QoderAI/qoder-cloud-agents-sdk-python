@@ -1700,6 +1700,10 @@ class BasePage(BaseModel, Generic[T])
 
 #### next\_page
 
+<a id="qca.common.pagination.BasePage.total"></a>
+
+#### total
+
 <a id="qca.common.pagination.BasePage.has_next_page"></a>
 
 #### has\_next\_page
@@ -3807,6 +3811,36 @@ class Environments(SyncAPIResource)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/environments.py)
 
+<a id="qca.forward.resources.environments.Environments.search"></a>
+
+#### search
+
+```python
+def search(
+    *,
+    metadata: Union[Dict[str, str], NotGiven] = NOT_GIVEN,
+    limit: Union[int, NotGiven] = NOT_GIVEN,
+    page: Union[str, NotGiven] = NOT_GIVEN,
+    name: Union[str, NotGiven] = NOT_GIVEN,
+    include_archived: Union[bool, NotGiven] = NOT_GIVEN,
+    created_at_gte: Union[datetime, str, NotGiven] = NOT_GIVEN,
+    created_at_lte: Union[datetime, str, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> SyncPage[Environment]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/environments.py)
+
+POST /environments/search.
+
+Search by metadata and resource filters; automatically enables the Search beta.
+Pagination replays next_page in the JSON body, preserving the filters.
+identity_id is a query selector for PAT callers; omit it with any SAT.
+
 <a id="qca.forward.resources.environments.Environments.list"></a>
 
 #### list
@@ -3958,6 +3992,36 @@ class AsyncEnvironments(AsyncAPIResource)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/environments.py)
+
+<a id="qca.forward.resources.environments.AsyncEnvironments.search"></a>
+
+#### search
+
+```python
+def search(
+    *,
+    metadata: Union[Dict[str, str], NotGiven] = NOT_GIVEN,
+    limit: Union[int, NotGiven] = NOT_GIVEN,
+    page: Union[str, NotGiven] = NOT_GIVEN,
+    name: Union[str, NotGiven] = NOT_GIVEN,
+    include_archived: Union[bool, NotGiven] = NOT_GIVEN,
+    created_at_gte: Union[datetime, str, NotGiven] = NOT_GIVEN,
+    created_at_lte: Union[datetime, str, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> AsyncPaginator[Environment]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/environments.py)
+
+POST /environments/search.
+
+Search by metadata and resource filters; automatically enables the Search beta.
+Pagination replays next_page in the JSON body, preserving the filters.
+identity_id is a query selector for PAT callers; omit it with any SAT.
 
 <a id="qca.forward.resources.environments.AsyncEnvironments.list"></a>
 
@@ -4115,6 +4179,34 @@ class Files(SyncAPIResource)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/files.py)
 
+<a id="qca.forward.resources.files.Files.search"></a>
+
+#### search
+
+```python
+def search(
+    *,
+    metadata: Union[Dict[str, str], NotGiven] = NOT_GIVEN,
+    limit: Union[int, NotGiven] = NOT_GIVEN,
+    page: Union[str, NotGiven] = NOT_GIVEN,
+    name: Union[str, NotGiven] = NOT_GIVEN,
+    scope_id: Union[str, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> SyncPage[FileMetadata]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/files.py)
+
+POST /files/search.
+
+Search by metadata and resource filters; automatically enables the Search beta.
+Pagination replays next_page in the JSON body, preserving the filters.
+identity_id is a query selector for PAT callers; omit it with any SAT.
+
 <a id="qca.forward.resources.files.Files.list"></a>
 
 #### list
@@ -4242,6 +4334,34 @@ class AsyncFiles(AsyncAPIResource)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/files.py)
+
+<a id="qca.forward.resources.files.AsyncFiles.search"></a>
+
+#### search
+
+```python
+def search(
+    *,
+    metadata: Union[Dict[str, str], NotGiven] = NOT_GIVEN,
+    limit: Union[int, NotGiven] = NOT_GIVEN,
+    page: Union[str, NotGiven] = NOT_GIVEN,
+    name: Union[str, NotGiven] = NOT_GIVEN,
+    scope_id: Union[str, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> AsyncPaginator[FileMetadata]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/files.py)
+
+POST /files/search.
+
+Search by metadata and resource filters; automatically enables the Search beta.
+Pagination replays next_page in the JSON body, preserving the filters.
+identity_id is a query selector for PAT callers; omit it with any SAT.
 
 <a id="qca.forward.resources.files.AsyncFiles.list"></a>
 
@@ -8518,6 +8638,34 @@ def versions() -> Versions
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/skills/skills.py)
 
+<a id="qca.forward.resources.skills.skills.Skills.search"></a>
+
+#### search
+
+```python
+def search(
+    *,
+    metadata: Union[Dict[str, str], NotGiven] = NOT_GIVEN,
+    limit: Union[int, NotGiven] = NOT_GIVEN,
+    page: Union[str, NotGiven] = NOT_GIVEN,
+    source: Union[Literal["custom", "qoder"], NotGiven] = NOT_GIVEN,
+    display_title: Union[str, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> SyncPage[Skill]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/skills/skills.py)
+
+POST /skills/search.
+
+Search by metadata and resource filters; automatically enables the Search beta.
+Pagination replays next_page in the JSON body, preserving the filters.
+identity_id is a query selector for PAT callers; omit it with any SAT.
+
 <a id="qca.forward.resources.skills.skills.Skills.list"></a>
 
 #### list
@@ -8664,6 +8812,34 @@ def versions() -> AsyncVersions
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/skills/skills.py)
+
+<a id="qca.forward.resources.skills.skills.AsyncSkills.search"></a>
+
+#### search
+
+```python
+def search(
+    *,
+    metadata: Union[Dict[str, str], NotGiven] = NOT_GIVEN,
+    limit: Union[int, NotGiven] = NOT_GIVEN,
+    page: Union[str, NotGiven] = NOT_GIVEN,
+    source: Union[Literal["custom", "qoder"], NotGiven] = NOT_GIVEN,
+    display_title: Union[str, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> AsyncPaginator[Skill]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/skills/skills.py)
+
+POST /skills/search.
+
+Search by metadata and resource filters; automatically enables the Search beta.
+Pagination replays next_page in the JSON body, preserving the filters.
+identity_id is a query selector for PAT callers; omit it with any SAT.
 
 <a id="qca.forward.resources.skills.skills.AsyncSkills.list"></a>
 
@@ -9838,6 +10014,34 @@ def credentials() -> Credentials
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/vaults/vaults.py)
 
+<a id="qca.forward.resources.vaults.vaults.Vaults.search"></a>
+
+#### search
+
+```python
+def search(
+    *,
+    metadata: Union[Dict[str, str], NotGiven] = NOT_GIVEN,
+    limit: Union[int, NotGiven] = NOT_GIVEN,
+    page: Union[str, NotGiven] = NOT_GIVEN,
+    include_archived: Union[bool, NotGiven] = NOT_GIVEN,
+    name: Union[str, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> SyncPage[Vault]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/vaults/vaults.py)
+
+POST /vaults/search.
+
+Search by metadata and resource filters; automatically enables the Search beta.
+Pagination replays next_page in the JSON body, preserving the filters.
+identity_id is a query selector for PAT callers; omit it with any SAT.
+
 <a id="qca.forward.resources.vaults.vaults.Vaults.list"></a>
 
 #### list
@@ -9949,6 +10153,34 @@ def credentials() -> AsyncCredentials
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/vaults/vaults.py)
+
+<a id="qca.forward.resources.vaults.vaults.AsyncVaults.search"></a>
+
+#### search
+
+```python
+def search(
+    *,
+    metadata: Union[Dict[str, str], NotGiven] = NOT_GIVEN,
+    limit: Union[int, NotGiven] = NOT_GIVEN,
+    page: Union[str, NotGiven] = NOT_GIVEN,
+    include_archived: Union[bool, NotGiven] = NOT_GIVEN,
+    name: Union[str, NotGiven] = NOT_GIVEN,
+    identity_id: Union[str, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> AsyncPaginator[Vault]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/vaults/vaults.py)
+
+POST /vaults/search.
+
+Search by metadata and resource filters; automatically enables the Search beta.
+Pagination replays next_page in the JSON body, preserving the filters.
+identity_id is a query selector for PAT callers; omit it with any SAT.
 
 <a id="qca.forward.resources.vaults.vaults.AsyncVaults.list"></a>
 
@@ -12502,6 +12734,52 @@ Select identity ownership with a PAT. Omit when using a SAT.
 
 #### before\_id
 
+<a id="qca.forward.types.environment_search_params"></a>
+
+# qca.forward.types.environment\_search\_params
+
+<a id="qca.forward.types.environment_search_params.EnvironmentSearchParams"></a>
+
+## EnvironmentSearchParams
+
+```python
+class EnvironmentSearchParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/environment_search_params.py)
+
+<a id="qca.forward.types.environment_search_params.EnvironmentSearchParams.metadata"></a>
+
+#### metadata
+
+<a id="qca.forward.types.environment_search_params.EnvironmentSearchParams.limit"></a>
+
+#### limit
+
+<a id="qca.forward.types.environment_search_params.EnvironmentSearchParams.page"></a>
+
+#### page
+
+<a id="qca.forward.types.environment_search_params.EnvironmentSearchParams.name"></a>
+
+#### name
+
+<a id="qca.forward.types.environment_search_params.EnvironmentSearchParams.include_archived"></a>
+
+#### include\_archived
+
+<a id="qca.forward.types.environment_search_params.EnvironmentSearchParams.created_at_gte"></a>
+
+#### created\_at\_gte
+
+<a id="qca.forward.types.environment_search_params.EnvironmentSearchParams.created_at_lte"></a>
+
+#### created\_at\_lte
+
+<a id="qca.forward.types.environment_search_params.EnvironmentSearchParams.identity_id"></a>
+
+#### identity\_id
+
 <a id="qca.forward.types.environment_update_params"></a>
 
 # qca.forward.types.environment\_update\_params
@@ -12681,6 +12959,44 @@ class FileMetadata(BaseModel)
 #### metadata
 
 <a id="qca.forward.types.file_metadata.FileMetadata.identity_id"></a>
+
+#### identity\_id
+
+<a id="qca.forward.types.file_search_params"></a>
+
+# qca.forward.types.file\_search\_params
+
+<a id="qca.forward.types.file_search_params.FileSearchParams"></a>
+
+## FileSearchParams
+
+```python
+class FileSearchParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/file_search_params.py)
+
+<a id="qca.forward.types.file_search_params.FileSearchParams.metadata"></a>
+
+#### metadata
+
+<a id="qca.forward.types.file_search_params.FileSearchParams.limit"></a>
+
+#### limit
+
+<a id="qca.forward.types.file_search_params.FileSearchParams.page"></a>
+
+#### page
+
+<a id="qca.forward.types.file_search_params.FileSearchParams.name"></a>
+
+#### name
+
+<a id="qca.forward.types.file_search_params.FileSearchParams.scope_id"></a>
+
+#### scope\_id
+
+<a id="qca.forward.types.file_search_params.FileSearchParams.identity_id"></a>
 
 #### identity\_id
 
@@ -17294,6 +17610,44 @@ Select identity ownership with a PAT. Omit when using a SAT.
 
 #### include\_content
 
+<a id="qca.forward.types.skill_search_params"></a>
+
+# qca.forward.types.skill\_search\_params
+
+<a id="qca.forward.types.skill_search_params.SkillSearchParams"></a>
+
+## SkillSearchParams
+
+```python
+class SkillSearchParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/skill_search_params.py)
+
+<a id="qca.forward.types.skill_search_params.SkillSearchParams.metadata"></a>
+
+#### metadata
+
+<a id="qca.forward.types.skill_search_params.SkillSearchParams.limit"></a>
+
+#### limit
+
+<a id="qca.forward.types.skill_search_params.SkillSearchParams.page"></a>
+
+#### page
+
+<a id="qca.forward.types.skill_search_params.SkillSearchParams.source"></a>
+
+#### source
+
+<a id="qca.forward.types.skill_search_params.SkillSearchParams.display_title"></a>
+
+#### display\_title
+
+<a id="qca.forward.types.skill_search_params.SkillSearchParams.identity_id"></a>
+
+#### identity\_id
+
 <a id="qca.forward.types.skill_update_params"></a>
 
 # qca.forward.types.skill\_update\_params
@@ -18496,6 +18850,44 @@ Select identity ownership with a PAT. Omit when using a SAT.
 
 #### name
 
+<a id="qca.forward.types.vault_search_params"></a>
+
+# qca.forward.types.vault\_search\_params
+
+<a id="qca.forward.types.vault_search_params.VaultSearchParams"></a>
+
+## VaultSearchParams
+
+```python
+class VaultSearchParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/vault_search_params.py)
+
+<a id="qca.forward.types.vault_search_params.VaultSearchParams.metadata"></a>
+
+#### metadata
+
+<a id="qca.forward.types.vault_search_params.VaultSearchParams.limit"></a>
+
+#### limit
+
+<a id="qca.forward.types.vault_search_params.VaultSearchParams.page"></a>
+
+#### page
+
+<a id="qca.forward.types.vault_search_params.VaultSearchParams.include_archived"></a>
+
+#### include\_archived
+
+<a id="qca.forward.types.vault_search_params.VaultSearchParams.name"></a>
+
+#### name
+
+<a id="qca.forward.types.vault_search_params.VaultSearchParams.identity_id"></a>
+
+#### identity\_id
+
 <a id="qca.forward.types.webhook_endpoint"></a>
 
 # qca.forward.types.webhook\_endpoint
@@ -19144,6 +19536,36 @@ def update(
 
 POST /agents/{agent_id}.
 
+<a id="qca.managed.resources.agents.agents.Agents.search"></a>
+
+#### search
+
+```python
+def search(
+    *,
+    metadata: Union[Dict[str, str], NotGiven] = NOT_GIVEN,
+    limit: Union[int, NotGiven] = NOT_GIVEN,
+    page: Union[str, NotGiven] = NOT_GIVEN,
+    name: Union[str, NotGiven] = NOT_GIVEN,
+    include_archived: Union[bool, NotGiven] = NOT_GIVEN,
+    created_at_gte: Union[datetime, str, NotGiven] = NOT_GIVEN,
+    created_at_lte: Union[datetime, str, NotGiven] = NOT_GIVEN,
+    workspace_id: Union[str, NotGiven] = NOT_GIVEN,
+    betas: Union[List[str], NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> SyncPage[Agent]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/agents/agents.py)
+
+POST /agents/search.
+
+Search by metadata and resource filters; automatically enables the Search beta.
+Pagination replays next_page in the JSON body, preserving the filters.
+
 <a id="qca.managed.resources.agents.agents.Agents.list"></a>
 
 #### list
@@ -19297,6 +19719,36 @@ async def update(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/agents/agents.py)
 
 POST /agents/{agent_id}.
+
+<a id="qca.managed.resources.agents.agents.AsyncAgents.search"></a>
+
+#### search
+
+```python
+def search(
+    *,
+    metadata: Union[Dict[str, str], NotGiven] = NOT_GIVEN,
+    limit: Union[int, NotGiven] = NOT_GIVEN,
+    page: Union[str, NotGiven] = NOT_GIVEN,
+    name: Union[str, NotGiven] = NOT_GIVEN,
+    include_archived: Union[bool, NotGiven] = NOT_GIVEN,
+    created_at_gte: Union[datetime, str, NotGiven] = NOT_GIVEN,
+    created_at_lte: Union[datetime, str, NotGiven] = NOT_GIVEN,
+    workspace_id: Union[str, NotGiven] = NOT_GIVEN,
+    betas: Union[List[str], NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> AsyncPaginator[Agent]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/agents/agents.py)
+
+POST /agents/search.
+
+Search by metadata and resource filters; automatically enables the Search beta.
+Pagination replays next_page in the JSON body, preserving the filters.
 
 <a id="qca.managed.resources.agents.agents.AsyncAgents.list"></a>
 
@@ -19797,6 +20249,38 @@ def update(
 
 POST /deployments/{deployment_id}.
 
+<a id="qca.managed.resources.deployments.Deployments.search"></a>
+
+#### search
+
+```python
+def search(
+    *,
+    metadata: Union[Dict[str, str], NotGiven] = NOT_GIVEN,
+    limit: Union[int, NotGiven] = NOT_GIVEN,
+    page: Union[str, NotGiven] = NOT_GIVEN,
+    name: Union[str, NotGiven] = NOT_GIVEN,
+    status: Union[Literal["active", "paused"], NotGiven] = NOT_GIVEN,
+    include_archived: Union[bool, NotGiven] = NOT_GIVEN,
+    agent_id: Union[str, NotGiven] = NOT_GIVEN,
+    created_at_gte: Union[datetime, str, NotGiven] = NOT_GIVEN,
+    created_at_lte: Union[datetime, str, NotGiven] = NOT_GIVEN,
+    workspace_id: Union[str, NotGiven] = NOT_GIVEN,
+    betas: Union[List[str], NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> SyncPage[Deployment]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/deployments.py)
+
+POST /deployments/search.
+
+Search by metadata and resource filters; automatically enables the Search beta.
+Pagination replays next_page in the JSON body, preserving the filters.
+
 <a id="qca.managed.resources.deployments.Deployments.list"></a>
 
 #### list
@@ -20037,6 +20521,38 @@ async def update(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/deployments.py)
 
 POST /deployments/{deployment_id}.
+
+<a id="qca.managed.resources.deployments.AsyncDeployments.search"></a>
+
+#### search
+
+```python
+def search(
+    *,
+    metadata: Union[Dict[str, str], NotGiven] = NOT_GIVEN,
+    limit: Union[int, NotGiven] = NOT_GIVEN,
+    page: Union[str, NotGiven] = NOT_GIVEN,
+    name: Union[str, NotGiven] = NOT_GIVEN,
+    status: Union[Literal["active", "paused"], NotGiven] = NOT_GIVEN,
+    include_archived: Union[bool, NotGiven] = NOT_GIVEN,
+    agent_id: Union[str, NotGiven] = NOT_GIVEN,
+    created_at_gte: Union[datetime, str, NotGiven] = NOT_GIVEN,
+    created_at_lte: Union[datetime, str, NotGiven] = NOT_GIVEN,
+    workspace_id: Union[str, NotGiven] = NOT_GIVEN,
+    betas: Union[List[str], NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> AsyncPaginator[Deployment]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/deployments.py)
+
+POST /deployments/search.
+
+Search by metadata and resource filters; automatically enables the Search beta.
+Pagination replays next_page in the JSON body, preserving the filters.
 
 <a id="qca.managed.resources.deployments.AsyncDeployments.list"></a>
 
@@ -20502,6 +21018,36 @@ def update(
 
 POST /environments/{environment_id}.
 
+<a id="qca.managed.resources.environments.environments.Environments.search"></a>
+
+#### search
+
+```python
+def search(
+    *,
+    metadata: Union[Dict[str, str], NotGiven] = NOT_GIVEN,
+    limit: Union[int, NotGiven] = NOT_GIVEN,
+    page: Union[str, NotGiven] = NOT_GIVEN,
+    name: Union[str, NotGiven] = NOT_GIVEN,
+    include_archived: Union[bool, NotGiven] = NOT_GIVEN,
+    created_at_gte: Union[datetime, str, NotGiven] = NOT_GIVEN,
+    created_at_lte: Union[datetime, str, NotGiven] = NOT_GIVEN,
+    workspace_id: Union[str, NotGiven] = NOT_GIVEN,
+    betas: Union[List[str], NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> SyncPage[Environment]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/environments/environments.py)
+
+POST /environments/search.
+
+Search by metadata and resource filters; automatically enables the Search beta.
+Pagination replays next_page in the JSON body, preserving the filters.
+
 <a id="qca.managed.resources.environments.environments.Environments.list"></a>
 
 #### list
@@ -20665,6 +21211,36 @@ async def update(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/environments/environments.py)
 
 POST /environments/{environment_id}.
+
+<a id="qca.managed.resources.environments.environments.AsyncEnvironments.search"></a>
+
+#### search
+
+```python
+def search(
+    *,
+    metadata: Union[Dict[str, str], NotGiven] = NOT_GIVEN,
+    limit: Union[int, NotGiven] = NOT_GIVEN,
+    page: Union[str, NotGiven] = NOT_GIVEN,
+    name: Union[str, NotGiven] = NOT_GIVEN,
+    include_archived: Union[bool, NotGiven] = NOT_GIVEN,
+    created_at_gte: Union[datetime, str, NotGiven] = NOT_GIVEN,
+    created_at_lte: Union[datetime, str, NotGiven] = NOT_GIVEN,
+    workspace_id: Union[str, NotGiven] = NOT_GIVEN,
+    betas: Union[List[str], NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> AsyncPaginator[Environment]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/environments/environments.py)
+
+POST /environments/search.
+
+Search by metadata and resource filters; automatically enables the Search beta.
+Pagination replays next_page in the JSON body, preserving the filters.
 
 <a id="qca.managed.resources.environments.environments.AsyncEnvironments.list"></a>
 
@@ -21131,6 +21707,34 @@ class Files(SyncAPIResource)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/files.py)
 
+<a id="qca.managed.resources.files.Files.search"></a>
+
+#### search
+
+```python
+def search(
+    *,
+    metadata: Union[Dict[str, str], NotGiven] = NOT_GIVEN,
+    limit: Union[int, NotGiven] = NOT_GIVEN,
+    page: Union[str, NotGiven] = NOT_GIVEN,
+    name: Union[str, NotGiven] = NOT_GIVEN,
+    scope_id: Union[str, NotGiven] = NOT_GIVEN,
+    workspace_id: Union[str, NotGiven] = NOT_GIVEN,
+    betas: Union[List[str], NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> SyncPage[FileMetadata]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/files.py)
+
+POST /files/search.
+
+Search by metadata and resource filters; automatically enables the Search beta.
+Pagination replays next_page in the JSON body, preserving the filters.
+
 <a id="qca.managed.resources.files.Files.list"></a>
 
 #### list
@@ -21254,6 +21858,34 @@ class AsyncFiles(AsyncAPIResource)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/files.py)
+
+<a id="qca.managed.resources.files.AsyncFiles.search"></a>
+
+#### search
+
+```python
+def search(
+    *,
+    metadata: Union[Dict[str, str], NotGiven] = NOT_GIVEN,
+    limit: Union[int, NotGiven] = NOT_GIVEN,
+    page: Union[str, NotGiven] = NOT_GIVEN,
+    name: Union[str, NotGiven] = NOT_GIVEN,
+    scope_id: Union[str, NotGiven] = NOT_GIVEN,
+    workspace_id: Union[str, NotGiven] = NOT_GIVEN,
+    betas: Union[List[str], NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> AsyncPaginator[FileMetadata]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/files.py)
+
+POST /files/search.
+
+Search by metadata and resource filters; automatically enables the Search beta.
+Pagination replays next_page in the JSON body, preserving the filters.
 
 <a id="qca.managed.resources.files.AsyncFiles.list"></a>
 
@@ -21747,6 +22379,36 @@ def update(
 
 POST /memory_stores/{memory_store_id}.
 
+<a id="qca.managed.resources.memory_stores.memory_stores.MemoryStores.search"></a>
+
+#### search
+
+```python
+def search(
+    *,
+    metadata: Union[Dict[str, str], NotGiven] = NOT_GIVEN,
+    limit: Union[int, NotGiven] = NOT_GIVEN,
+    page: Union[str, NotGiven] = NOT_GIVEN,
+    name: Union[str, NotGiven] = NOT_GIVEN,
+    include_archived: Union[bool, NotGiven] = NOT_GIVEN,
+    created_at_gte: Union[datetime, str, NotGiven] = NOT_GIVEN,
+    created_at_lte: Union[datetime, str, NotGiven] = NOT_GIVEN,
+    workspace_id: Union[str, NotGiven] = NOT_GIVEN,
+    betas: Union[List[str], NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> SyncPage[MemoryStore]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/memory_stores/memory_stores.py)
+
+POST /memory_stores/search.
+
+Search by metadata and resource filters; automatically enables the Search beta.
+Pagination replays next_page in the JSON body, preserving the filters.
+
 <a id="qca.managed.resources.memory_stores.memory_stores.MemoryStores.list"></a>
 
 #### list
@@ -21914,6 +22576,36 @@ async def update(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/memory_stores/memory_stores.py)
 
 POST /memory_stores/{memory_store_id}.
+
+<a id="qca.managed.resources.memory_stores.memory_stores.AsyncMemoryStores.search"></a>
+
+#### search
+
+```python
+def search(
+    *,
+    metadata: Union[Dict[str, str], NotGiven] = NOT_GIVEN,
+    limit: Union[int, NotGiven] = NOT_GIVEN,
+    page: Union[str, NotGiven] = NOT_GIVEN,
+    name: Union[str, NotGiven] = NOT_GIVEN,
+    include_archived: Union[bool, NotGiven] = NOT_GIVEN,
+    created_at_gte: Union[datetime, str, NotGiven] = NOT_GIVEN,
+    created_at_lte: Union[datetime, str, NotGiven] = NOT_GIVEN,
+    workspace_id: Union[str, NotGiven] = NOT_GIVEN,
+    betas: Union[List[str], NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> AsyncPaginator[MemoryStore]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/memory_stores/memory_stores.py)
+
+POST /memory_stores/search.
+
+Search by metadata and resource filters; automatically enables the Search beta.
+Pagination replays next_page in the JSON body, preserving the filters.
 
 <a id="qca.managed.resources.memory_stores.memory_stores.AsyncMemoryStores.list"></a>
 
@@ -22891,6 +23583,45 @@ def update(
 
 POST /sessions/{session_id}.
 
+<a id="qca.managed.resources.sessions.sessions.Sessions.search"></a>
+
+#### search
+
+```python
+def search(
+    *,
+    metadata: Union[Dict[str, str], NotGiven] = NOT_GIVEN,
+    limit: Union[int, NotGiven] = NOT_GIVEN,
+    page: Union[str, NotGiven] = NOT_GIVEN,
+    name: Union[str, NotGiven] = NOT_GIVEN,
+    order: Union[Literal["desc", "asc"], NotGiven] = NOT_GIVEN,
+    include_archived: Union[bool, NotGiven] = NOT_GIVEN,
+    statuses: Union[List[Literal["running", "idle", "rescheduling",
+                                 "terminated"]], NotGiven] = NOT_GIVEN,
+    agent_id: Union[str, NotGiven] = NOT_GIVEN,
+    agent_version: Union[int, NotGiven] = NOT_GIVEN,
+    deployment_id: Union[str, NotGiven] = NOT_GIVEN,
+    memory_store_id: Union[str, NotGiven] = NOT_GIVEN,
+    created_at_gt: Union[datetime, str, NotGiven] = NOT_GIVEN,
+    created_at_gte: Union[datetime, str, NotGiven] = NOT_GIVEN,
+    created_at_lt: Union[datetime, str, NotGiven] = NOT_GIVEN,
+    created_at_lte: Union[datetime, str, NotGiven] = NOT_GIVEN,
+    workspace_id: Union[str, NotGiven] = NOT_GIVEN,
+    betas: Union[List[str], NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> SyncPage[Session]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/sessions/sessions.py)
+
+POST /sessions/search.
+
+Search by metadata and resource filters; automatically enables the Search beta.
+Pagination replays next_page in the JSON body, preserving the filters.
+
 <a id="qca.managed.resources.sessions.sessions.Sessions.list"></a>
 
 #### list
@@ -23121,6 +23852,45 @@ async def update(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/sessions/sessions.py)
 
 POST /sessions/{session_id}.
+
+<a id="qca.managed.resources.sessions.sessions.AsyncSessions.search"></a>
+
+#### search
+
+```python
+def search(
+    *,
+    metadata: Union[Dict[str, str], NotGiven] = NOT_GIVEN,
+    limit: Union[int, NotGiven] = NOT_GIVEN,
+    page: Union[str, NotGiven] = NOT_GIVEN,
+    name: Union[str, NotGiven] = NOT_GIVEN,
+    order: Union[Literal["desc", "asc"], NotGiven] = NOT_GIVEN,
+    include_archived: Union[bool, NotGiven] = NOT_GIVEN,
+    statuses: Union[List[Literal["running", "idle", "rescheduling",
+                                 "terminated"]], NotGiven] = NOT_GIVEN,
+    agent_id: Union[str, NotGiven] = NOT_GIVEN,
+    agent_version: Union[int, NotGiven] = NOT_GIVEN,
+    deployment_id: Union[str, NotGiven] = NOT_GIVEN,
+    memory_store_id: Union[str, NotGiven] = NOT_GIVEN,
+    created_at_gt: Union[datetime, str, NotGiven] = NOT_GIVEN,
+    created_at_gte: Union[datetime, str, NotGiven] = NOT_GIVEN,
+    created_at_lt: Union[datetime, str, NotGiven] = NOT_GIVEN,
+    created_at_lte: Union[datetime, str, NotGiven] = NOT_GIVEN,
+    workspace_id: Union[str, NotGiven] = NOT_GIVEN,
+    betas: Union[List[str], NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> AsyncPaginator[Session]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/sessions/sessions.py)
+
+POST /sessions/search.
+
+Search by metadata and resource filters; automatically enables the Search beta.
+Pagination replays next_page in the JSON body, preserving the filters.
 
 <a id="qca.managed.resources.sessions.sessions.AsyncSessions.list"></a>
 
@@ -23568,6 +24338,35 @@ def retrieve(
 
 GET /skills/{skill_id}.
 
+<a id="qca.managed.resources.skills.skills.Skills.search"></a>
+
+#### search
+
+```python
+def search(
+    *,
+    metadata: Union[Dict[str, str], NotGiven] = NOT_GIVEN,
+    limit: Union[int, NotGiven] = NOT_GIVEN,
+    page: Union[str, NotGiven] = NOT_GIVEN,
+    source: Union[Literal["custom", "qoder"], NotGiven] = NOT_GIVEN,
+    display_title: Union[str, NotGiven] = NOT_GIVEN,
+    name: Union[str, NotGiven] = NOT_GIVEN,
+    workspace_id: Union[str, NotGiven] = NOT_GIVEN,
+    betas: Union[List[str], NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> SyncPage[Skill]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/skills/skills.py)
+
+POST /skills/search.
+
+Search by metadata and resource filters; automatically enables the Search beta.
+Pagination replays next_page in the JSON body, preserving the filters.
+
 <a id="qca.managed.resources.skills.skills.Skills.list"></a>
 
 #### list
@@ -23678,6 +24477,35 @@ async def retrieve(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/skills/skills.py)
 
 GET /skills/{skill_id}.
+
+<a id="qca.managed.resources.skills.skills.AsyncSkills.search"></a>
+
+#### search
+
+```python
+def search(
+    *,
+    metadata: Union[Dict[str, str], NotGiven] = NOT_GIVEN,
+    limit: Union[int, NotGiven] = NOT_GIVEN,
+    page: Union[str, NotGiven] = NOT_GIVEN,
+    source: Union[Literal["custom", "qoder"], NotGiven] = NOT_GIVEN,
+    display_title: Union[str, NotGiven] = NOT_GIVEN,
+    name: Union[str, NotGiven] = NOT_GIVEN,
+    workspace_id: Union[str, NotGiven] = NOT_GIVEN,
+    betas: Union[List[str], NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> AsyncPaginator[Skill]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/skills/skills.py)
+
+POST /skills/search.
+
+Search by metadata and resource filters; automatically enables the Search beta.
+Pagination replays next_page in the JSON body, preserving the filters.
 
 <a id="qca.managed.resources.skills.skills.AsyncSkills.list"></a>
 
@@ -24395,6 +25223,34 @@ def retrieve(
 
 GET /vaults/{vault_id}.
 
+<a id="qca.managed.resources.vaults.vaults.Vaults.search"></a>
+
+#### search
+
+```python
+def search(
+    *,
+    metadata: Union[Dict[str, str], NotGiven] = NOT_GIVEN,
+    limit: Union[int, NotGiven] = NOT_GIVEN,
+    page: Union[str, NotGiven] = NOT_GIVEN,
+    include_archived: Union[bool, NotGiven] = NOT_GIVEN,
+    name: Union[str, NotGiven] = NOT_GIVEN,
+    workspace_id: Union[str, NotGiven] = NOT_GIVEN,
+    betas: Union[List[str], NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> SyncPage[Vault]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/vaults/vaults.py)
+
+POST /vaults/search.
+
+Search by metadata and resource filters; automatically enables the Search beta.
+Pagination replays next_page in the JSON body, preserving the filters.
+
 <a id="qca.managed.resources.vaults.vaults.Vaults.list"></a>
 
 #### list
@@ -24523,6 +25379,34 @@ async def retrieve(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/vaults/vaults.py)
 
 GET /vaults/{vault_id}.
+
+<a id="qca.managed.resources.vaults.vaults.AsyncVaults.search"></a>
+
+#### search
+
+```python
+def search(
+    *,
+    metadata: Union[Dict[str, str], NotGiven] = NOT_GIVEN,
+    limit: Union[int, NotGiven] = NOT_GIVEN,
+    page: Union[str, NotGiven] = NOT_GIVEN,
+    include_archived: Union[bool, NotGiven] = NOT_GIVEN,
+    name: Union[str, NotGiven] = NOT_GIVEN,
+    workspace_id: Union[str, NotGiven] = NOT_GIVEN,
+    betas: Union[List[str], NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> AsyncPaginator[Vault]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/vaults/vaults.py)
+
+POST /vaults/search.
+
+Search by metadata and resource filters; automatically enables the Search beta.
+Pagination replays next_page in the JSON body, preserving the filters.
 
 <a id="qca.managed.resources.vaults.vaults.AsyncVaults.list"></a>
 
@@ -24982,6 +25866,56 @@ class AgentRetrieveParams(TypedDict)
 #### workspace\_id
 
 <a id="qca.managed.types.agent_retrieve_params.AgentRetrieveParams.betas"></a>
+
+#### betas
+
+<a id="qca.managed.types.agent_search_params"></a>
+
+# qca.managed.types.agent\_search\_params
+
+<a id="qca.managed.types.agent_search_params.AgentSearchParams"></a>
+
+## AgentSearchParams
+
+```python
+class AgentSearchParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/agent_search_params.py)
+
+<a id="qca.managed.types.agent_search_params.AgentSearchParams.metadata"></a>
+
+#### metadata
+
+<a id="qca.managed.types.agent_search_params.AgentSearchParams.limit"></a>
+
+#### limit
+
+<a id="qca.managed.types.agent_search_params.AgentSearchParams.page"></a>
+
+#### page
+
+<a id="qca.managed.types.agent_search_params.AgentSearchParams.name"></a>
+
+#### name
+
+<a id="qca.managed.types.agent_search_params.AgentSearchParams.include_archived"></a>
+
+#### include\_archived
+
+<a id="qca.managed.types.agent_search_params.AgentSearchParams.created_at_gte"></a>
+
+#### created\_at\_gte
+
+<a id="qca.managed.types.agent_search_params.AgentSearchParams.created_at_lte"></a>
+
+#### created\_at\_lte
+
+<a id="qca.managed.types.agent_search_params.AgentSearchParams.workspace_id"></a>
+
+#### workspace\_id
+
+<a id="qca.managed.types.agent_search_params.AgentSearchParams.betas"></a>
 
 #### betas
 
@@ -26947,6 +27881,64 @@ class DeploymentScopedRunRetrieveParams(TypedDict)
 
 #### betas
 
+<a id="qca.managed.types.deployment_search_params"></a>
+
+# qca.managed.types.deployment\_search\_params
+
+<a id="qca.managed.types.deployment_search_params.DeploymentSearchParams"></a>
+
+## DeploymentSearchParams
+
+```python
+class DeploymentSearchParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/deployment_search_params.py)
+
+<a id="qca.managed.types.deployment_search_params.DeploymentSearchParams.metadata"></a>
+
+#### metadata
+
+<a id="qca.managed.types.deployment_search_params.DeploymentSearchParams.limit"></a>
+
+#### limit
+
+<a id="qca.managed.types.deployment_search_params.DeploymentSearchParams.page"></a>
+
+#### page
+
+<a id="qca.managed.types.deployment_search_params.DeploymentSearchParams.name"></a>
+
+#### name
+
+<a id="qca.managed.types.deployment_search_params.DeploymentSearchParams.status"></a>
+
+#### status
+
+<a id="qca.managed.types.deployment_search_params.DeploymentSearchParams.include_archived"></a>
+
+#### include\_archived
+
+<a id="qca.managed.types.deployment_search_params.DeploymentSearchParams.agent_id"></a>
+
+#### agent\_id
+
+<a id="qca.managed.types.deployment_search_params.DeploymentSearchParams.created_at_gte"></a>
+
+#### created\_at\_gte
+
+<a id="qca.managed.types.deployment_search_params.DeploymentSearchParams.created_at_lte"></a>
+
+#### created\_at\_lte
+
+<a id="qca.managed.types.deployment_search_params.DeploymentSearchParams.workspace_id"></a>
+
+#### workspace\_id
+
+<a id="qca.managed.types.deployment_search_params.DeploymentSearchParams.betas"></a>
+
+#### betas
+
 <a id="qca.managed.types.deployment_unpause_params"></a>
 
 # qca.managed.types.deployment\_unpause\_params
@@ -27985,6 +28977,56 @@ class EnvironmentRetrieveParams(TypedDict)
 
 #### betas
 
+<a id="qca.managed.types.environment_search_params"></a>
+
+# qca.managed.types.environment\_search\_params
+
+<a id="qca.managed.types.environment_search_params.EnvironmentSearchParams"></a>
+
+## EnvironmentSearchParams
+
+```python
+class EnvironmentSearchParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/environment_search_params.py)
+
+<a id="qca.managed.types.environment_search_params.EnvironmentSearchParams.metadata"></a>
+
+#### metadata
+
+<a id="qca.managed.types.environment_search_params.EnvironmentSearchParams.limit"></a>
+
+#### limit
+
+<a id="qca.managed.types.environment_search_params.EnvironmentSearchParams.page"></a>
+
+#### page
+
+<a id="qca.managed.types.environment_search_params.EnvironmentSearchParams.name"></a>
+
+#### name
+
+<a id="qca.managed.types.environment_search_params.EnvironmentSearchParams.include_archived"></a>
+
+#### include\_archived
+
+<a id="qca.managed.types.environment_search_params.EnvironmentSearchParams.created_at_gte"></a>
+
+#### created\_at\_gte
+
+<a id="qca.managed.types.environment_search_params.EnvironmentSearchParams.created_at_lte"></a>
+
+#### created\_at\_lte
+
+<a id="qca.managed.types.environment_search_params.EnvironmentSearchParams.workspace_id"></a>
+
+#### workspace\_id
+
+<a id="qca.managed.types.environment_search_params.EnvironmentSearchParams.betas"></a>
+
+#### betas
+
 <a id="qca.managed.types.environment_update_params"></a>
 
 # qca.managed.types.environment\_update\_params
@@ -28642,6 +29684,48 @@ class FileScope(BaseModel)
 <a id="qca.managed.types.file_scope.FileScope.type"></a>
 
 #### type
+
+<a id="qca.managed.types.file_search_params"></a>
+
+# qca.managed.types.file\_search\_params
+
+<a id="qca.managed.types.file_search_params.FileSearchParams"></a>
+
+## FileSearchParams
+
+```python
+class FileSearchParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/file_search_params.py)
+
+<a id="qca.managed.types.file_search_params.FileSearchParams.metadata"></a>
+
+#### metadata
+
+<a id="qca.managed.types.file_search_params.FileSearchParams.limit"></a>
+
+#### limit
+
+<a id="qca.managed.types.file_search_params.FileSearchParams.page"></a>
+
+#### page
+
+<a id="qca.managed.types.file_search_params.FileSearchParams.name"></a>
+
+#### name
+
+<a id="qca.managed.types.file_search_params.FileSearchParams.scope_id"></a>
+
+#### scope\_id
+
+<a id="qca.managed.types.file_search_params.FileSearchParams.workspace_id"></a>
+
+#### workspace\_id
+
+<a id="qca.managed.types.file_search_params.FileSearchParams.betas"></a>
+
+#### betas
 
 <a id="qca.managed.types.file_upload_params"></a>
 
@@ -29982,6 +31066,56 @@ class MemoryStoreRetrieveParams(TypedDict)
 #### workspace\_id
 
 <a id="qca.managed.types.memory_store_retrieve_params.MemoryStoreRetrieveParams.betas"></a>
+
+#### betas
+
+<a id="qca.managed.types.memory_store_search_params"></a>
+
+# qca.managed.types.memory\_store\_search\_params
+
+<a id="qca.managed.types.memory_store_search_params.MemoryStoreSearchParams"></a>
+
+## MemoryStoreSearchParams
+
+```python
+class MemoryStoreSearchParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/memory_store_search_params.py)
+
+<a id="qca.managed.types.memory_store_search_params.MemoryStoreSearchParams.metadata"></a>
+
+#### metadata
+
+<a id="qca.managed.types.memory_store_search_params.MemoryStoreSearchParams.limit"></a>
+
+#### limit
+
+<a id="qca.managed.types.memory_store_search_params.MemoryStoreSearchParams.page"></a>
+
+#### page
+
+<a id="qca.managed.types.memory_store_search_params.MemoryStoreSearchParams.name"></a>
+
+#### name
+
+<a id="qca.managed.types.memory_store_search_params.MemoryStoreSearchParams.include_archived"></a>
+
+#### include\_archived
+
+<a id="qca.managed.types.memory_store_search_params.MemoryStoreSearchParams.created_at_gte"></a>
+
+#### created\_at\_gte
+
+<a id="qca.managed.types.memory_store_search_params.MemoryStoreSearchParams.created_at_lte"></a>
+
+#### created\_at\_lte
+
+<a id="qca.managed.types.memory_store_search_params.MemoryStoreSearchParams.workspace_id"></a>
+
+#### workspace\_id
+
+<a id="qca.managed.types.memory_store_search_params.MemoryStoreSearchParams.betas"></a>
 
 #### betas
 
@@ -32719,6 +33853,88 @@ class SessionRetrieveParams(TypedDict)
 
 #### betas
 
+<a id="qca.managed.types.session_search_params"></a>
+
+# qca.managed.types.session\_search\_params
+
+<a id="qca.managed.types.session_search_params.SessionSearchParams"></a>
+
+## SessionSearchParams
+
+```python
+class SessionSearchParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/session_search_params.py)
+
+<a id="qca.managed.types.session_search_params.SessionSearchParams.metadata"></a>
+
+#### metadata
+
+<a id="qca.managed.types.session_search_params.SessionSearchParams.limit"></a>
+
+#### limit
+
+<a id="qca.managed.types.session_search_params.SessionSearchParams.page"></a>
+
+#### page
+
+<a id="qca.managed.types.session_search_params.SessionSearchParams.name"></a>
+
+#### name
+
+<a id="qca.managed.types.session_search_params.SessionSearchParams.order"></a>
+
+#### order
+
+<a id="qca.managed.types.session_search_params.SessionSearchParams.include_archived"></a>
+
+#### include\_archived
+
+<a id="qca.managed.types.session_search_params.SessionSearchParams.statuses"></a>
+
+#### statuses
+
+<a id="qca.managed.types.session_search_params.SessionSearchParams.agent_id"></a>
+
+#### agent\_id
+
+<a id="qca.managed.types.session_search_params.SessionSearchParams.agent_version"></a>
+
+#### agent\_version
+
+<a id="qca.managed.types.session_search_params.SessionSearchParams.deployment_id"></a>
+
+#### deployment\_id
+
+<a id="qca.managed.types.session_search_params.SessionSearchParams.memory_store_id"></a>
+
+#### memory\_store\_id
+
+<a id="qca.managed.types.session_search_params.SessionSearchParams.created_at_gt"></a>
+
+#### created\_at\_gt
+
+<a id="qca.managed.types.session_search_params.SessionSearchParams.created_at_gte"></a>
+
+#### created\_at\_gte
+
+<a id="qca.managed.types.session_search_params.SessionSearchParams.created_at_lt"></a>
+
+#### created\_at\_lt
+
+<a id="qca.managed.types.session_search_params.SessionSearchParams.created_at_lte"></a>
+
+#### created\_at\_lte
+
+<a id="qca.managed.types.session_search_params.SessionSearchParams.workspace_id"></a>
+
+#### workspace\_id
+
+<a id="qca.managed.types.session_search_params.SessionSearchParams.betas"></a>
+
+#### betas
+
 <a id="qca.managed.types.session_stats"></a>
 
 # qca.managed.types.session\_stats
@@ -33742,6 +34958,52 @@ class SkillRetrieveParams(TypedDict)
 #### workspace\_id
 
 <a id="qca.managed.types.skill_retrieve_params.SkillRetrieveParams.betas"></a>
+
+#### betas
+
+<a id="qca.managed.types.skill_search_params"></a>
+
+# qca.managed.types.skill\_search\_params
+
+<a id="qca.managed.types.skill_search_params.SkillSearchParams"></a>
+
+## SkillSearchParams
+
+```python
+class SkillSearchParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/skill_search_params.py)
+
+<a id="qca.managed.types.skill_search_params.SkillSearchParams.metadata"></a>
+
+#### metadata
+
+<a id="qca.managed.types.skill_search_params.SkillSearchParams.limit"></a>
+
+#### limit
+
+<a id="qca.managed.types.skill_search_params.SkillSearchParams.page"></a>
+
+#### page
+
+<a id="qca.managed.types.skill_search_params.SkillSearchParams.source"></a>
+
+#### source
+
+<a id="qca.managed.types.skill_search_params.SkillSearchParams.display_title"></a>
+
+#### display\_title
+
+<a id="qca.managed.types.skill_search_params.SkillSearchParams.name"></a>
+
+#### name
+
+<a id="qca.managed.types.skill_search_params.SkillSearchParams.workspace_id"></a>
+
+#### workspace\_id
+
+<a id="qca.managed.types.skill_search_params.SkillSearchParams.betas"></a>
 
 #### betas
 
@@ -35512,6 +36774,48 @@ class VaultRetrieveParams(TypedDict)
 #### workspace\_id
 
 <a id="qca.managed.types.vault_retrieve_params.VaultRetrieveParams.betas"></a>
+
+#### betas
+
+<a id="qca.managed.types.vault_search_params"></a>
+
+# qca.managed.types.vault\_search\_params
+
+<a id="qca.managed.types.vault_search_params.VaultSearchParams"></a>
+
+## VaultSearchParams
+
+```python
+class VaultSearchParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/vault_search_params.py)
+
+<a id="qca.managed.types.vault_search_params.VaultSearchParams.metadata"></a>
+
+#### metadata
+
+<a id="qca.managed.types.vault_search_params.VaultSearchParams.limit"></a>
+
+#### limit
+
+<a id="qca.managed.types.vault_search_params.VaultSearchParams.page"></a>
+
+#### page
+
+<a id="qca.managed.types.vault_search_params.VaultSearchParams.include_archived"></a>
+
+#### include\_archived
+
+<a id="qca.managed.types.vault_search_params.VaultSearchParams.name"></a>
+
+#### name
+
+<a id="qca.managed.types.vault_search_params.VaultSearchParams.workspace_id"></a>
+
+#### workspace\_id
+
+<a id="qca.managed.types.vault_search_params.VaultSearchParams.betas"></a>
 
 #### betas
 

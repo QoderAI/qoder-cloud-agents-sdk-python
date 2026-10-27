@@ -257,7 +257,6 @@ async def test_usage_supports_comma_separated_ids_and_rejects_legacy_keywords(as
         )
         with pytest.raises(TypeError):
             client.usage.list_identities(start_time=123, end_time=456)
-        assert not hasattr(client.vaults, "search")
     finally:
         await result(client.close())
         await result(http.aclose() if async_ else http.close())

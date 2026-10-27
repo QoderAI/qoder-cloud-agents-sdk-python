@@ -172,6 +172,11 @@ class BaseClient:
         for source in (self.default_headers, options.get("headers", {})):
             for key, value in source.items():
                 headers[key] = ",".join(str(v) for v in value) if isinstance(value, (list, tuple)) else str(value)
+        if required_beta := options.get("required_beta"):
+            betas = [value.strip() for value in headers.get("x-qoder-beta", "").split(",") if value.strip()]
+            if required_beta not in betas:
+                betas.append(required_beta)
+            headers["x-qoder-beta"] = ",".join(betas)
         self._validate_headers(headers)
         return headers
 
@@ -271,10 +276,15 @@ class BaseClient:
         page_cls = AsyncPage if self._is_async else SyncPage
         page = parse_response(page_cls[cast_to], data, response, strict=self._strict_response_validation)
         page._style = page_style
-        page._query = {**self.default_query, **options.get("query", {})}
+        page_field = "body" if page_style == "BodyPageCursor" else "query"
+        page._query = (
+            dict(options.get("body", {}))
+            if page_field == "body"
+            else {**self.default_query, **options.get("query", {})}
+        )
         client = self._copy() if self._raw_response else self
         page._fetch = lambda query: getattr(client, "request")(
-            method, path, cast_to=cast_to, options={**options, "query": query}, page_style=page_style
+            method, path, cast_to=cast_to, options={**options, page_field: query}, page_style=page_style
         )
         return page
 
