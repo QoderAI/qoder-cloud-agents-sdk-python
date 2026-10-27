@@ -16,6 +16,7 @@ class BasePage(BaseModel, Generic[T]):
     first_id: str | None = None
     last_id: str | None = None
     next_page: str | None = None
+    total: int | None = None
     _query: dict[str, Any] = PrivateAttr(default_factory=dict)
     _style: str = PrivateAttr(default="Page")
     _fetch: Any = PrivateAttr(default=None)
@@ -24,7 +25,7 @@ class BasePage(BaseModel, Generic[T]):
         if self.has_more is False:
             return None
         query = dict(self._query)
-        if self._style in ("PageCursor", "BidirectionalPageCursor", "TokenPage"):
+        if self._style in ("PageCursor", "BodyPageCursor", "BidirectionalPageCursor", "TokenPage"):
             key = "page_token" if self._style == "TokenPage" else "page"
             cursor = self.next_page
         else:
@@ -38,7 +39,10 @@ class BasePage(BaseModel, Generic[T]):
             raise RuntimeError("Pagination cursor did not advance")
         for other in ("after_id", "before_id", "page", "page_token"):
             if other != key:
-                query[other] = None
+                if self._style == "BodyPageCursor":
+                    query.pop(other, None)
+                else:
+                    query[other] = None
         query[key] = cursor
         return query
 

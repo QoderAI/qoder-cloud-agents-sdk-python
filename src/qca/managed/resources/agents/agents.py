@@ -145,6 +145,50 @@ class Agents(SyncAPIResource):
         )
         return self._client.request("POST", _path, cast_to=Agent, options=options)
 
+    def search(
+        self,
+        *,
+        metadata: Union[Dict[str, str], NotGiven] = NOT_GIVEN,
+        limit: Union[int, NotGiven] = NOT_GIVEN,
+        page: Union[str, NotGiven] = NOT_GIVEN,
+        name: Union[str, NotGiven] = NOT_GIVEN,
+        include_archived: Union[bool, NotGiven] = NOT_GIVEN,
+        created_at_gte: Union[datetime, str, NotGiven] = NOT_GIVEN,
+        created_at_lte: Union[datetime, str, NotGiven] = NOT_GIVEN,
+        workspace_id: Union[str, NotGiven] = NOT_GIVEN,
+        betas: Union[List[str], NotGiven] = NOT_GIVEN,
+        extra_headers: Dict[str, str] | None = None,
+        extra_query: Dict[str, Any] | None = None,
+        extra_body: Dict[str, Any] | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
+    ) -> SyncPage[Agent]:
+        """POST /agents/search.
+
+        Search by metadata and resource filters; automatically enables the Search beta.
+        Pagination replays next_page in the JSON body, preserving the filters.
+        """
+        options = make_request_options(
+            body={
+                "metadata": metadata,
+                "limit": limit,
+                "page": page,
+                "name": name,
+                "include_archived": include_archived,
+                "created_at[gte]": created_at_gte,
+                "created_at[lte]": created_at_lte,
+            },
+            query={},
+            headers={"qoder-workspace-id": workspace_id, "x-qoder-beta": betas},
+            extra_headers=extra_headers,
+            extra_query=extra_query,
+            extra_body=extra_body,
+            timeout=timeout,
+        )
+        options["required_beta"] = "search-2026-08-31"
+        return self._client.request(
+            "POST", "/agents/search", cast_to=Agent, options=options, page_style="BodyPageCursor"
+        )
+
     def list(
         self,
         *,
@@ -324,6 +368,52 @@ class AsyncAgents(AsyncAPIResource):
             timeout=timeout,
         )
         return await self._client.request("POST", _path, cast_to=Agent, options=options)
+
+    def search(
+        self,
+        *,
+        metadata: Union[Dict[str, str], NotGiven] = NOT_GIVEN,
+        limit: Union[int, NotGiven] = NOT_GIVEN,
+        page: Union[str, NotGiven] = NOT_GIVEN,
+        name: Union[str, NotGiven] = NOT_GIVEN,
+        include_archived: Union[bool, NotGiven] = NOT_GIVEN,
+        created_at_gte: Union[datetime, str, NotGiven] = NOT_GIVEN,
+        created_at_lte: Union[datetime, str, NotGiven] = NOT_GIVEN,
+        workspace_id: Union[str, NotGiven] = NOT_GIVEN,
+        betas: Union[List[str], NotGiven] = NOT_GIVEN,
+        extra_headers: Dict[str, str] | None = None,
+        extra_query: Dict[str, Any] | None = None,
+        extra_body: Dict[str, Any] | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
+    ) -> AsyncPaginator[Agent]:
+        """POST /agents/search.
+
+        Search by metadata and resource filters; automatically enables the Search beta.
+        Pagination replays next_page in the JSON body, preserving the filters.
+        """
+        options = make_request_options(
+            body={
+                "metadata": metadata,
+                "limit": limit,
+                "page": page,
+                "name": name,
+                "include_archived": include_archived,
+                "created_at[gte]": created_at_gte,
+                "created_at[lte]": created_at_lte,
+            },
+            query={},
+            headers={"qoder-workspace-id": workspace_id, "x-qoder-beta": betas},
+            extra_headers=extra_headers,
+            extra_query=extra_query,
+            extra_body=extra_body,
+            timeout=timeout,
+        )
+        options["required_beta"] = "search-2026-08-31"
+        return AsyncPaginator(
+            lambda: self._client.request(
+                "POST", "/agents/search", cast_to=Agent, options=options, page_style="BodyPageCursor"
+            )
+        )
 
     def list(
         self,

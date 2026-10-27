@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from functools import cached_property
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Literal, Union
 
 import httpx
 
@@ -19,6 +19,46 @@ class Skills(SyncAPIResource):
     @cached_property
     def versions(self) -> Versions:
         return Versions(self._client)
+
+    def search(
+        self,
+        *,
+        metadata: Union[Dict[str, str], NotGiven] = NOT_GIVEN,
+        limit: Union[int, NotGiven] = NOT_GIVEN,
+        page: Union[str, NotGiven] = NOT_GIVEN,
+        source: Union[Literal["custom", "qoder"], NotGiven] = NOT_GIVEN,
+        display_title: Union[str, NotGiven] = NOT_GIVEN,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
+        extra_headers: Dict[str, str] | None = None,
+        extra_query: Dict[str, Any] | None = None,
+        extra_body: Dict[str, Any] | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
+    ) -> SyncPage[Skill]:
+        """POST /skills/search.
+
+        Search by metadata and resource filters; automatically enables the Search beta.
+        Pagination replays next_page in the JSON body, preserving the filters.
+        identity_id is a query selector for PAT callers; omit it with any SAT.
+        """
+        options = make_request_options(
+            body={
+                "metadata": metadata,
+                "limit": limit,
+                "page": page,
+                "source": source,
+                "display_title": display_title,
+            },
+            query={"identity_id": identity_id},
+            headers={},
+            extra_headers=extra_headers,
+            extra_query=extra_query,
+            extra_body=extra_body,
+            timeout=timeout,
+        )
+        options["required_beta"] = "search-2026-08-31"
+        return self._client.request(
+            "POST", "/skills/search", cast_to=Skill, options=options, page_style="BodyPageCursor"
+        )
 
     def list(
         self,
@@ -199,6 +239,48 @@ class AsyncSkills(AsyncAPIResource):
     @cached_property
     def versions(self) -> AsyncVersions:
         return AsyncVersions(self._client)
+
+    def search(
+        self,
+        *,
+        metadata: Union[Dict[str, str], NotGiven] = NOT_GIVEN,
+        limit: Union[int, NotGiven] = NOT_GIVEN,
+        page: Union[str, NotGiven] = NOT_GIVEN,
+        source: Union[Literal["custom", "qoder"], NotGiven] = NOT_GIVEN,
+        display_title: Union[str, NotGiven] = NOT_GIVEN,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
+        extra_headers: Dict[str, str] | None = None,
+        extra_query: Dict[str, Any] | None = None,
+        extra_body: Dict[str, Any] | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
+    ) -> AsyncPaginator[Skill]:
+        """POST /skills/search.
+
+        Search by metadata and resource filters; automatically enables the Search beta.
+        Pagination replays next_page in the JSON body, preserving the filters.
+        identity_id is a query selector for PAT callers; omit it with any SAT.
+        """
+        options = make_request_options(
+            body={
+                "metadata": metadata,
+                "limit": limit,
+                "page": page,
+                "source": source,
+                "display_title": display_title,
+            },
+            query={"identity_id": identity_id},
+            headers={},
+            extra_headers=extra_headers,
+            extra_query=extra_query,
+            extra_body=extra_body,
+            timeout=timeout,
+        )
+        options["required_beta"] = "search-2026-08-31"
+        return AsyncPaginator(
+            lambda: self._client.request(
+                "POST", "/skills/search", cast_to=Skill, options=options, page_style="BodyPageCursor"
+            )
+        )
 
     def list(
         self,
