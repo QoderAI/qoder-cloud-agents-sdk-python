@@ -1409,6 +1409,46 @@ def last_event_id() -> str | None
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/_streaming.py)
 
+<a id="qca.common._streaming._InterruptibleSyncBody"></a>
+
+## \_InterruptibleSyncBody
+
+```python
+class _InterruptibleSyncBody(httpx.SyncByteStream)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/_streaming.py)
+
+<a id="qca.common._streaming._InterruptibleSyncBody.__init__"></a>
+
+#### \_\_init\_\_
+
+```python
+def __init__(body: httpx.SyncByteStream, connection: socket.socket) -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/_streaming.py)
+
+<a id="qca.common._streaming._InterruptibleSyncBody.__iter__"></a>
+
+#### \_\_iter\_\_
+
+```python
+def __iter__() -> Iterator[bytes]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/_streaming.py)
+
+<a id="qca.common._streaming._InterruptibleSyncBody.close"></a>
+
+#### close
+
+```python
+def close() -> None
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/_streaming.py)
+
 <a id="qca.common._streaming.Stream"></a>
 
 ## Stream

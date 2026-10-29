@@ -549,6 +549,12 @@ async with client.sessions.events.resumable_stream(session_id) as stream:
 
 The helper retries until closed, cancelled, or it receives `session.status_terminated` / `session.deleted`. It uses jittered exponential backoff and the same HTTP retry classification as the client (in particular, `409` is not retried). It does not query event history, discard an invalid cursor, or deduplicate event IDs because multiple preview deltas may share one ID.
 
+With the default synchronous HTTP/1.x transport, `close()` also wakes a body read
+blocked in another thread, including over HTTPS. HTTP/2 connections are shared,
+so their sockets are not interrupted; HTTP/2 and custom transports without an
+exposed socket retain their transport's close behavior. Async callers can cancel
+the consuming task or await `close()` to interrupt an active read.
+
 Events are also readable after the fact through `client.sessions.events.list(session_id)`, which paginates like any other list method.
 
 ## Handling errors

@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+import socket
+import threading
 from collections.abc import AsyncIterator, Iterator
 from typing import Any, Generic, TypeVar
 
@@ -72,9 +74,52 @@ class BaseStream(Generic[T]):
         return result
 
 
+class _InterruptibleSyncBody(httpx.SyncByteStream):
+    def __init__(self, body: httpx.SyncByteStream, connection: socket.socket) -> None:
+        self._body = body
+        self._connection = connection
+        self._lock = threading.Lock()
+        self._reading = False
+        self._closed = False
+
+    def __iter__(self) -> Iterator[bytes]:
+        with self._lock:
+            if self._closed:
+                return
+            self._reading = True
+        try:
+            yield from self._body
+        finally:
+            with self._lock:
+                self._reading = False
+
+    def close(self) -> None:
+        # Interrupt before releasing the response to the pool; a later shutdown
+        # could otherwise affect a different request reusing the connection.
+        with self._lock:
+            if self._closed:
+                return
+            self._closed = True
+            if self._reading:
+                try:
+                    self._connection.shutdown(socket.SHUT_RDWR)
+                except OSError:
+                    pass
+            self._body.close()
+
+
 class Stream(BaseStream[T], Iterator[T]):
     def __init__(self, response: httpx.Response, cast_to: Any, *, strict: bool = False) -> None:
         super().__init__(response, cast_to, strict=strict)
+        if not response.is_closed and response.extensions.get("http_version") in (b"HTTP/1.0", b"HTTP/1.1"):
+            network_stream = response.extensions.get("network_stream")
+            get_extra_info = getattr(network_stream, "get_extra_info", None)
+            try:
+                connection = get_extra_info("socket") if callable(get_extra_info) else None
+            except (OSError, NotImplementedError):
+                connection = None
+            if isinstance(connection, socket.socket) and isinstance(response.stream, httpx.SyncByteStream):
+                response.stream = _InterruptibleSyncBody(response.stream, connection)
         self._iterator = self._iter_events()
 
     def __next__(self) -> T:
