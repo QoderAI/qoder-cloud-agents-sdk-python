@@ -10,6 +10,10 @@ existing `0.1.0` release; earlier development prereleases are not listed.
 - Add automatic Thread SSE resumption for Forward and Managed, preserving the latest event cursor and request options across retryable disconnects; thread termination stops the subscription while idle events keep it open.
 - Add a typed `Last-Event-ID` parameter to Managed Thread streams.
 
+### Fixed
+
+- Closing a synchronous Session or Thread SSE subscription from another thread now wakes a blocked HTTP/1.x socket read, including HTTPS, instead of waiting for more data or a read timeout. Fully consumed connections remain reusable; HTTP/2 and transports without an exposed socket retain their own close behavior.
+
 ## [0.13.0]
 
 ### Added
