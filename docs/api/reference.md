@@ -1186,8 +1186,12 @@ class ResumableStream(Generic[T], Iterator[T])
 #### \_\_init\_\_
 
 ```python
-def __init__(*, open_stream: Callable[[str | None], Stream[T]],
-             retryable: Retryable, last_event_id: str | None) -> None
+def __init__(
+        *,
+        open_stream: Callable[[str | None], Stream[T]],
+        retryable: Retryable,
+        last_event_id: str | None,
+        is_terminal: Callable[[object], bool] = _is_terminal_event) -> None
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/_resumable_streaming.py)
@@ -1258,8 +1262,12 @@ class AsyncResumableStream(Generic[T], AsyncIterator[T])
 #### \_\_init\_\_
 
 ```python
-def __init__(*, open_stream: Callable[[str | None], Awaitable[AsyncStream[T]]],
-             retryable: Retryable, last_event_id: str | None) -> None
+def __init__(
+        *,
+        open_stream: Callable[[str | None], Awaitable[AsyncStream[T]]],
+        retryable: Retryable,
+        last_event_id: str | None,
+        is_terminal: Callable[[object], bool] = _is_terminal_event) -> None
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/common/_resumable_streaming.py)
@@ -8799,6 +8807,27 @@ def stream(
 
 GET /sessions/{session_id}/threads/{thread_id}/stream.
 
+<a id="qca.forward.resources.sessions.threads.events.Events.resumable_stream"></a>
+
+#### resumable\_stream
+
+```python
+def resumable_stream(
+    thread_id: str,
+    *,
+    session_id: str,
+    last_event_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> ResumableStream[SessionEvent]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/sessions/threads/events.py)
+
+Continuously reconnect GET /sessions/{session_id}/threads/{thread_id}/stream.
+
 <a id="qca.forward.resources.sessions.threads.events.AsyncEvents"></a>
 
 ## AsyncEvents
@@ -8852,6 +8881,27 @@ async def stream(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/sessions/threads/events.py)
 
 GET /sessions/{session_id}/threads/{thread_id}/stream.
+
+<a id="qca.forward.resources.sessions.threads.events.AsyncEvents.resumable_stream"></a>
+
+#### resumable\_stream
+
+```python
+def resumable_stream(
+    thread_id: str,
+    *,
+    session_id: str,
+    last_event_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> AsyncResumableStream[SessionEvent]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/sessions/threads/events.py)
+
+Continuously reconnect GET /sessions/{session_id}/threads/{thread_id}/stream.
 
 <a id="qca.forward.resources.sessions.threads.threads"></a>
 
@@ -25171,6 +25221,7 @@ def stream(
     workspace_id: Union[str, None, NotGiven] = NOT_GIVEN,
     event_deltas: Union[List[Literal["agent.message", "agent.thinking"]], None,
                         NotGiven] = NOT_GIVEN,
+    last_event_id: Union[str, None, NotGiven] = NOT_GIVEN,
     betas: Union[List[str], None, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
@@ -25182,6 +25233,31 @@ def stream(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/sessions/threads/events.py)
 
 GET /sessions/{session_id}/threads/{thread_id}/stream.
+
+<a id="qca.managed.resources.sessions.threads.events.Events.resumable_stream"></a>
+
+#### resumable\_stream
+
+```python
+def resumable_stream(
+    thread_id: str,
+    *,
+    session_id: str,
+    workspace_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    event_deltas: Union[List[Literal["agent.message", "agent.thinking"]], None,
+                        NotGiven] = NOT_GIVEN,
+    betas: Union[List[str], None, NotGiven] = NOT_GIVEN,
+    last_event_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> ResumableStream[StreamSessionThreadEventsUnion]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/sessions/threads/events.py)
+
+Continuously reconnect GET /sessions/{session_id}/threads/{thread_id}/stream.
 
 <a id="qca.managed.resources.sessions.threads.events.AsyncEvents"></a>
 
@@ -25231,6 +25307,7 @@ async def stream(
     workspace_id: Union[str, None, NotGiven] = NOT_GIVEN,
     event_deltas: Union[List[Literal["agent.message", "agent.thinking"]], None,
                         NotGiven] = NOT_GIVEN,
+    last_event_id: Union[str, None, NotGiven] = NOT_GIVEN,
     betas: Union[List[str], None, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
     extra_query: Dict[str, Any] | None = None,
@@ -25242,6 +25319,31 @@ async def stream(
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/sessions/threads/events.py)
 
 GET /sessions/{session_id}/threads/{thread_id}/stream.
+
+<a id="qca.managed.resources.sessions.threads.events.AsyncEvents.resumable_stream"></a>
+
+#### resumable\_stream
+
+```python
+def resumable_stream(
+    thread_id: str,
+    *,
+    session_id: str,
+    workspace_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    event_deltas: Union[List[Literal["agent.message", "agent.thinking"]], None,
+                        NotGiven] = NOT_GIVEN,
+    betas: Union[List[str], None, NotGiven] = NOT_GIVEN,
+    last_event_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    extra_headers: Dict[str, str] | None = None,
+    extra_query: Dict[str, Any] | None = None,
+    extra_body: Dict[str, Any] | None = None,
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> AsyncResumableStream[StreamSessionThreadEventsUnion]
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/resources/sessions/threads/events.py)
+
+Continuously reconnect GET /sessions/{session_id}/threads/{thread_id}/stream.
 
 <a id="qca.managed.resources.sessions.threads.threads"></a>
 
@@ -35944,6 +36046,10 @@ class SessionThreadEventStreamParams(TypedDict)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/session_thread_event_stream_params.py)
+
+<a id="qca.managed.types.session_thread_event_stream_params.SessionThreadEventStreamParams.last_event_id"></a>
+
+#### last\_event\_id
 
 <a id="qca.managed.types.session_thread_event_stream_params.SessionThreadEventStreamParams.workspace_id"></a>
 

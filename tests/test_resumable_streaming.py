@@ -92,6 +92,12 @@ def make_client(mode: str, async_: bool, handler: Any):
     )
 
 
+def open_resumable(client, scope, **kwargs):
+    if scope == "thread":
+        return client.sessions.threads.events.resumable_stream("thread", session_id="session", **kwargs)
+    return client.sessions.events.resumable_stream("session", **kwargs)
+
+
 async def close_client(client: Any, async_: bool) -> None:
     if async_:
         await client.close()
@@ -101,7 +107,8 @@ async def close_client(client: Any, async_: bool) -> None:
 
 @pytest.mark.parametrize("mode", ["forward", "managed"])
 @pytest.mark.parametrize("async_", [False, True], ids=["sync", "async"])
-async def test_resumable_stream_reconnects_over_real_http(monkeypatch, mode, async_):
+@pytest.mark.parametrize("scope", ["session", "thread"])
+async def test_resumable_stream_reconnects_over_real_http(monkeypatch, mode, async_, scope):
     monkeypatch.setattr("qca.common._resumable_streaming.random.uniform", lambda *_: 0)
     prefix = "forward" if mode == "forward" else "cloud"
 
@@ -113,7 +120,7 @@ async def test_resumable_stream_reconnects_over_real_http(monkeypatch, mode, asy
             max_retries=0,
             http_client=http_client,
         )
-        stream = client.sessions.events.resumable_stream("session")
+        stream = open_resumable(client, scope)
         try:
             if async_:
                 events = [await anext(stream), await anext(stream)]
@@ -127,7 +134,8 @@ async def test_resumable_stream_reconnects_over_real_http(monkeypatch, mode, asy
             assert [event.id for event in events] == ["evt-1", "evt-2"]
             assert [event.type for event in events] == ["event_delta", "session.status_terminated"]
             assert stream.last_event_id == "evt-2"
-            path = f"/api/v1/{prefix}/sessions/session/events/stream"
+            suffix = "threads/thread/stream" if scope == "thread" else "events/stream"
+            path = f"/api/v1/{prefix}/sessions/session/{suffix}"
             assert requests == [
                 {"path": path, "last_event_id": None},
                 {"path": path, "last_event_id": "evt-1"},
@@ -276,7 +284,8 @@ async def test_resumable_stream_keeps_checkpoint_across_idless_event(
 
 @pytest.mark.parametrize("mode", ["forward", "managed"])
 @pytest.mark.parametrize("async_", [False, True], ids=["sync", "async"])
-async def test_resumable_stream_does_not_retry_409(mode, async_):
+@pytest.mark.parametrize("scope", ["session", "thread"])
+async def test_resumable_stream_does_not_retry_409(mode, async_, scope):
     requests = []
 
     def handle(request):
@@ -288,7 +297,7 @@ async def test_resumable_stream_does_not_retry_409(mode, async_):
         )
 
     client = make_client(mode, async_, handle)
-    stream = client.sessions.events.resumable_stream("session", last_event_id="invalid")
+    stream = open_resumable(client, scope, last_event_id="invalid")
     try:
         with pytest.raises(ConflictError):
             if async_:
@@ -305,7 +314,8 @@ async def test_resumable_stream_does_not_retry_409(mode, async_):
 
 
 @pytest.mark.parametrize("mode", ["forward", "managed"])
-def test_sync_resumable_stream_close_interrupts_active_read(mode):
+@pytest.mark.parametrize("scope", ["session", "thread"])
+def test_sync_resumable_stream_close_interrupts_active_read(mode, scope):
     class HangingBody(httpx.SyncByteStream):
         def __init__(self) -> None:
             self.started = threading.Event()
@@ -324,7 +334,7 @@ def test_sync_resumable_stream_close_interrupts_active_read(mode):
 
     body = HangingBody()
     client = make_client(mode, False, lambda _: httpx.Response(200, stream=body))
-    stream = client.sessions.events.resumable_stream("session")
+    stream = open_resumable(client, scope)
     try:
         with ThreadPoolExecutor(max_workers=1) as executor:
             pending = executor.submit(next, stream)
@@ -338,7 +348,8 @@ def test_sync_resumable_stream_close_interrupts_active_read(mode):
 
 
 @pytest.mark.parametrize("mode", ["forward", "managed"])
-async def test_async_resumable_stream_close_interrupts_active_read_and_is_idempotent(mode):
+@pytest.mark.parametrize("scope", ["session", "thread"])
+async def test_async_resumable_stream_close_interrupts_active_read_and_is_idempotent(mode, scope):
     class HangingBody(httpx.AsyncByteStream):
         def __init__(self) -> None:
             self.started = asyncio.Event()
@@ -357,7 +368,7 @@ async def test_async_resumable_stream_close_interrupts_active_read_and_is_idempo
 
     body = HangingBody()
     client = make_client(mode, True, lambda _: httpx.Response(200, stream=body))
-    stream = client.sessions.events.resumable_stream("session")
+    stream = open_resumable(client, scope)
     pending = asyncio.create_task(anext(stream))
     try:
         await asyncio.wait_for(body.started.wait(), timeout=1)
@@ -372,7 +383,8 @@ async def test_async_resumable_stream_close_interrupts_active_read_and_is_idempo
 
 
 @pytest.mark.parametrize("mode", ["forward", "managed"])
-async def test_async_resumable_stream_cancellation_closes_active_read(mode):
+@pytest.mark.parametrize("scope", ["session", "thread"])
+async def test_async_resumable_stream_cancellation_closes_active_read(mode, scope):
     class HangingBody(httpx.AsyncByteStream):
         def __init__(self) -> None:
             self.started = asyncio.Event()
@@ -388,7 +400,7 @@ async def test_async_resumable_stream_cancellation_closes_active_read(mode):
 
     body = HangingBody()
     client = make_client(mode, True, lambda _: httpx.Response(200, stream=body))
-    stream = client.sessions.events.resumable_stream("session")
+    stream = open_resumable(client, scope)
     pending = asyncio.create_task(anext(stream))
     try:
         await asyncio.wait_for(body.started.wait(), timeout=1)
@@ -404,7 +416,8 @@ async def test_async_resumable_stream_cancellation_closes_active_read(mode):
 @pytest.mark.parametrize("mode", ["forward", "managed"])
 @pytest.mark.parametrize("async_", [False, True], ids=["sync", "async"])
 @pytest.mark.parametrize("terminal_type", ["session.status_terminated", "session.deleted"])
-async def test_terminal_event_stops_reconnection(mode, async_, terminal_type):
+@pytest.mark.parametrize("scope", ["session", "thread"])
+async def test_terminal_event_stops_reconnection(mode, async_, terminal_type, scope):
     requests = []
 
     def handle(request):
@@ -413,7 +426,7 @@ async def test_terminal_event_stops_reconnection(mode, async_, terminal_type):
         return httpx.Response(200, content=body, headers={"content-type": "text/event-stream"})
 
     client = make_client(mode, async_, handle)
-    stream = client.sessions.events.resumable_stream("session")
+    stream = open_resumable(client, scope)
     try:
         if async_:
             event = await anext(stream)
@@ -570,3 +583,112 @@ async def test_async_resumable_stream_resets_backoff_only_after_healthy_connecti
     with pytest.raises(StopAsyncIteration):
         await anext(stream)
     assert backoffs == expected_backoffs
+
+
+@pytest.mark.parametrize("mode", ["forward", "managed"])
+@pytest.mark.parametrize("async_", [False, True], ids=["sync", "async"])
+@pytest.mark.parametrize("ending", ["eof", "transport"])
+async def test_thread_resumption_keeps_cursor_options_and_stops_at_termination(monkeypatch, mode, async_, ending):
+    monkeypatch.setattr("qca.common._resumable_streaming.random.uniform", lambda *_: 0)
+    requests = []
+    bodies = []
+
+    def handle(request):
+        requests.append(request)
+        assert request.url.path.endswith("/sessions/session/threads/thread/stream")
+        assert not request.url.query
+        assert request.headers["last-event-id"] == ("override" if len(requests) == 1 else "checkpoint")
+        assert request.headers["x-test"] == "kept"
+        assert request.extensions["timeout"]["read"] == 7
+        if mode == "managed":
+            assert request.headers["qoder-workspace-id"] == "workspace"
+            assert request.headers["x-qoder-beta"] == "beta-one"
+        first = b'id: checkpoint\nevent: session.thread_status_idle\ndata: {"id":"payload-id","type":"session.thread_status_idle"}\n\nid: partial\ndata: {"id":"not-yielded"}'
+        last = b'id: terminal\nevent: session.thread_status_terminated\ndata: {"type":"session.thread_status_terminated"}\n\n'
+        body = ScriptedBody(
+            first if len(requests) == 1 else last, disconnect=len(requests) == 1 and ending == "transport"
+        )
+        bodies.append(body)
+        return httpx.Response(200, stream=body, headers={"content-type": "text/event-stream"})
+
+    client = make_client(mode, async_, handle)
+    headers = {"last-event-id": "override", "x-test": "kept"}
+    betas = ["beta-one"]
+    kwargs = {"workspace_id": "workspace", "betas": betas} if mode == "managed" else {}
+    stream = open_resumable(client, "thread", last_event_id="initial", extra_headers=headers, timeout=7, **kwargs)
+    headers["x-test"] = "changed"
+    betas.append("changed")
+    try:
+        events = [event async for event in stream] if async_ else list(stream)
+        assert [event.type for event in events] == ["session.thread_status_idle", "session.thread_status_terminated"]
+        assert stream.last_event_id == "terminal"
+        assert len(requests) == 2
+        assert all(body.closed for body in bodies)
+    finally:
+        if async_:
+            await stream.close()
+        else:
+            stream.close()
+        await close_client(client, async_)
+
+
+@pytest.mark.parametrize("mode", ["forward", "managed"])
+@pytest.mark.parametrize("async_", [False, True], ids=["sync", "async"])
+@pytest.mark.parametrize("status", [400, 401, 403, 404, 429, 503])
+async def test_thread_resumption_http_policy(monkeypatch, mode, async_, status):
+    from qca import APIStatusError
+
+    monkeypatch.setattr("qca.common._resumable_streaming.random.uniform", lambda *_: 0)
+    calls = []
+
+    def handle(request):
+        calls.append(request)
+        assert request.headers["last-event-id"] == "initial"
+        if len(calls) == 1:
+            return httpx.Response(status, json={"error": {"message": "test failure"}})
+        return httpx.Response(
+            200,
+            content=b'event: session.thread_status_terminated\ndata: {"type":"session.thread_status_terminated"}\n\n',
+        )
+
+    client = make_client(mode, async_, handle)
+    stream = open_resumable(client, "thread", last_event_id="initial")
+    try:
+        if status in (429, 503):
+            events = [event async for event in stream] if async_ else list(stream)
+            assert len(events) == 1
+            assert len(calls) == 2
+        else:
+            with pytest.raises(APIStatusError) as exc:
+                if async_:
+                    await anext(stream)
+                else:
+                    next(stream)
+            assert exc.value.status_code == status
+            assert len(calls) == 1
+    finally:
+        if async_:
+            await stream.close()
+        else:
+            stream.close()
+        await close_client(client, async_)
+
+
+@pytest.mark.parametrize("mode", ["forward", "managed"])
+@pytest.mark.parametrize("async_", [False, True], ids=["sync", "async"])
+async def test_child_termination_does_not_stop_session_stream(mode, async_):
+    content = (
+        b'event: session.thread_status_terminated\ndata: {"type":"session.thread_status_terminated"}\n\n'
+        b'event: session.deleted\ndata: {"type":"session.deleted"}\n\n'
+    )
+    client = make_client(mode, async_, lambda _: httpx.Response(200, content=content))
+    stream = open_resumable(client, "session")
+    try:
+        events = [event async for event in stream] if async_ else list(stream)
+        assert [event.type for event in events] == ["session.thread_status_terminated", "session.deleted"]
+    finally:
+        if async_:
+            await stream.close()
+        else:
+            stream.close()
+        await close_client(client, async_)

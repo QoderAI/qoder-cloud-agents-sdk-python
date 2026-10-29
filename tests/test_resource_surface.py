@@ -125,7 +125,9 @@ async def test_sync_and_async_clients_expose_the_same_methods(mode):
     try:
         assert method_names(client) == method_names(async_client)
         assert {e.attribute for e in ENDPOINTS if e.mode == mode} | (
-            HANDWRITTEN_RESOURCE_METHODS if mode == "forward" else {"sessions.events.resumable_stream"}
+            HANDWRITTEN_RESOURCE_METHODS
+            if mode == "forward"
+            else {"sessions.events.resumable_stream", "sessions.threads.events.resumable_stream"}
         ) == method_names(client)
     finally:
         await close_client(client, False)

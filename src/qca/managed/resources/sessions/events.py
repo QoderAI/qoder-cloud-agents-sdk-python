@@ -6,7 +6,7 @@ from typing import Any, Dict, List, Literal, Union
 import httpx
 
 from qca.common._resource import AsyncAPIResource, SyncAPIResource
-from qca.common._resumable_streaming import AsyncResumableStream, ResumableStream
+from qca.common._resumable_streaming import AsyncResumableStream, ResumableStream, _resumable_options
 from qca.common._streaming import AsyncStream, Stream
 from qca.common._types import NOT_GIVEN, NotGiven
 from qca.common._utils import make_request_options, path_template
@@ -23,17 +23,6 @@ from qca.managed.types.user_tool_confirmation_event_params import UserToolConfir
 from qca.managed.types.user_tool_result_event_params import UserToolResultEventParams
 
 __all__ = ["Events", "AsyncEvents"]
-
-
-def _resumable_options(
-    last_event_id: Union[str, None, NotGiven], extra_headers: Dict[str, str] | None
-) -> tuple[str | None, Dict[str, str]]:
-    cursor = None if isinstance(last_event_id, NotGiven) else last_event_id
-    headers = dict(extra_headers or {})
-    for name in tuple(headers):
-        if name.lower() == "last-event-id":
-            cursor = headers.pop(name)
-    return cursor, headers
 
 
 class Events(SyncAPIResource):
