@@ -8,6 +8,7 @@ __all__ = ["SessionThreadEventStreamParams"]
 
 
 class SessionThreadEventStreamParams(TypedDict, total=False):
+    last_event_id: Optional[str]
     workspace_id: Optional[str]
     event_deltas: List[Literal["agent.message", "agent.thinking"]]
     betas: List[str]

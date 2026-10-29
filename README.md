@@ -492,6 +492,38 @@ with client.sessions.events.stream(
 
 Reuse one `session_id` for the whole conversation, and reuse one idempotency key across HTTP retries of the same logical message. `event_deltas` opts into incremental events for the listed types; those previews are not deduplicated, and the final event repeats the complete content, so render deltas but treat the final event as the source of truth. An idle status does not by itself mean success — the session may be waiting for a confirmation or have reached its budget, so check `stop_reason` and the final reply.
 
+
+### Thread event resumption
+
+Forward and Managed also support automatic resumption for a single Thread. Use the
+same retry and cancellation behavior as Session streams, with a thread-scoped
+`Last-Event-ID` cursor:
+
+```python
+# Forward and Managed use the same call shape.
+with client.sessions.threads.events.resumable_stream(
+    thread_id, session_id=session_id, last_event_id=after_id,
+) as stream:
+    for event in stream:
+        print(event.type)
+
+# AsyncForward / AsyncManaged
+async with async_client.sessions.threads.events.resumable_stream(
+    thread_id, session_id=session_id, last_event_id=after_id,
+) as stream:
+    async for event in stream:
+        print(event.type)
+```
+
+`session.thread_status_idle` ends only the current turn, so the subscription stays
+open. `session.thread_status_terminated`, `session.status_terminated`, or
+`session.deleted` ends it normally. A non-retryable error (including an invalid
+cursor or missing thread) is returned to the caller; the SDK never clears the
+cursor to silently start over. The existing one-shot Thread stream remains
+available. See the [Forward Thread stream](https://docs.qoder.com/cloud-agents/api/forward/sessions/stream-thread-events)
+and [Managed Thread stream](https://docs.qoder.com/cloud-agents/api/sessions/threads/events/stream)
+contracts for cursor validity.
+
 ## Resuming a stream
 
 The low-level `stream()` method exposes `stream.last_event_id` but does not reconnect. Use the handwritten `resumable_stream()` helper to reconnect automatically after EOF, timeouts, transient transport failures, and retryable HTTP statuses. It checkpoints only complete events and sends the latest checkpoint as `Last-Event-ID`; close it with a context manager when finished.

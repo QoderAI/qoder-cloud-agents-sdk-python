@@ -11,6 +11,7 @@ import httpx
 
 from ._exceptions import APIConnectionError, APIStatusError
 from ._streaming import AsyncStream, Stream
+from ._types import NotGiven
 
 T = TypeVar("T")
 
@@ -26,6 +27,21 @@ def _is_terminal_event(event: object) -> bool:
     return getattr(event, "type", None) in _TERMINAL_EVENT_TYPES
 
 
+def _resumable_options(
+    last_event_id: str | None | NotGiven, extra_headers: dict[str, str] | None
+) -> tuple[str | None, dict[str, str]]:
+    cursor = None if isinstance(last_event_id, NotGiven) else last_event_id
+    headers = dict(extra_headers or {})
+    for name in tuple(headers):
+        if name.lower() == "last-event-id":
+            cursor = headers.pop(name)
+    return cursor, headers
+
+
+def _is_terminal_thread_event(event: object) -> bool:
+    return _is_terminal_event(event) or getattr(event, "type", None) == "session.thread_status_terminated"
+
+
 class ResumableStream(Generic[T], Iterator[T]):
     def __init__(
         self,
@@ -33,7 +49,9 @@ class ResumableStream(Generic[T], Iterator[T]):
         open_stream: Callable[[str | None], Stream[T]],
         retryable: Retryable,
         last_event_id: str | None,
+        is_terminal: Callable[[object], bool] = _is_terminal_event,
     ) -> None:
+        self._is_terminal = is_terminal
         self._open_stream = open_stream
         self._retryable = retryable
         self._last_event_id = last_event_id
@@ -65,7 +83,7 @@ class ResumableStream(Generic[T], Iterator[T]):
                         return
                     if stream.last_event_id:
                         self._last_event_id = stream.last_event_id
-                    terminal = _is_terminal_event(event)
+                    terminal = self._is_terminal(event)
                     yield event
                     if terminal:
                         return
@@ -114,7 +132,9 @@ class AsyncResumableStream(Generic[T], AsyncIterator[T]):
         open_stream: Callable[[str | None], Awaitable[AsyncStream[T]]],
         retryable: Retryable,
         last_event_id: str | None,
+        is_terminal: Callable[[object], bool] = _is_terminal_event,
     ) -> None:
+        self._is_terminal = is_terminal
         self._open_stream = open_stream
         self._retryable = retryable
         self._last_event_id = last_event_id
@@ -190,7 +210,7 @@ class AsyncResumableStream(Generic[T], AsyncIterator[T]):
                         raise RuntimeError("stream read was interrupted without closing")
                     if stream.last_event_id:
                         self._last_event_id = stream.last_event_id
-                    terminal = _is_terminal_event(event)
+                    terminal = self._is_terminal(event)
                     yield event
                     if terminal:
                         return
