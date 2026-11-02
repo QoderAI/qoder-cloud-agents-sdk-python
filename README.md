@@ -159,7 +159,7 @@ Every method shown in this document has an async counterpart with the same name 
 
 ## Streaming
 
-Streaming responses are consumed incrementally. Close the stream when finished and handle interruption explicitly; closing a local stream does not cancel server-side work. See the [usage guide](docs/usage-guide.md) for runnable patterns and reconnection behavior.
+Streaming responses are consumed incrementally. Close the stream when finished and handle interruption explicitly; closing a local stream does not cancel server-side work.
 
 ## Handling errors
 
@@ -350,7 +350,6 @@ print(qca.__version__)
 
 ## Documentation and examples
 
-- [Usage guide](docs/usage-guide.md)
 - [API reference](docs/api/reference.md)
 - [Runnable examples](examples/)
 - [Contribution guide](CONTRIBUTING.md)
