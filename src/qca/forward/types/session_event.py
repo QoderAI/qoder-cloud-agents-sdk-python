@@ -5,12 +5,24 @@ from typing import Any, Dict, Optional, Union
 
 from qca.common._models import BaseModel
 
+from .budget_limit import BudgetLimit
 from .outcome_rubric import OutcomeRubric
+from .tool_approval_evaluation import ToolApprovalEvaluation
 
 __all__ = ["SessionEvent"]
 
 
 class SessionEvent(BaseModel):
+    evaluation: Optional[ToolApprovalEvaluation] = None
+    budget: Optional[BudgetLimit] = None
+    reason: Optional[str] = None
+    iteration: Optional[int] = None
+    explanation: Optional[str] = None
+    outcome_evaluation_start_id: Optional[str] = None
+    # Cumulative Credits: replace with the latest values, never sum successive events.
+    model_credits: Optional[float] = None
+    sandbox_runtime_credits: Optional[float] = None
+    total_credits: Optional[float] = None
     id: Optional[str] = None
     type: Optional[str] = None
     session_id: Optional[str] = None

@@ -12,6 +12,7 @@ __all__ = ["MemoryVersion"]
 
 
 class MemoryVersion(BaseModel):
+    redacted: Optional[bool] = None
     id: Optional[str] = None
     created_at: Optional[datetime] = None
     memory_id: Optional[str] = None

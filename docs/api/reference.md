@@ -8500,6 +8500,7 @@ def create(
         *,
         identity_id: str,
         template_id: str,
+        budget: Union[BudgetLimitParam, None, NotGiven] = NOT_GIVEN,
         title: Union[str, None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         config: Union[SessionCreateParamsConfigParam, None,
@@ -8545,6 +8546,7 @@ GET /sessions/{session_id}.
 def update(
         session_id: str,
         *,
+        budget: Union[BudgetLimitParam, None, NotGiven] = NOT_GIVEN,
         title: Union[str, None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         config: Union[SessionUpdateParamsConfigParam, None,
@@ -8688,6 +8690,7 @@ async def create(
         *,
         identity_id: str,
         template_id: str,
+        budget: Union[BudgetLimitParam, None, NotGiven] = NOT_GIVEN,
         title: Union[str, None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         config: Union[SessionCreateParamsConfigParam, None,
@@ -8733,6 +8736,7 @@ GET /sessions/{session_id}.
 async def update(
         session_id: str,
         *,
+        budget: Union[BudgetLimitParam, None, NotGiven] = NOT_GIVEN,
         title: Union[str, None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         config: Union[SessionUpdateParamsConfigParam, None,
@@ -11575,6 +11579,50 @@ class BatchUsage(BaseModel)
 
 #### total\_credits
 
+<a id="qca.forward.types.budget_limit"></a>
+
+# qca.forward.types.budget\_limit
+
+<a id="qca.forward.types.budget_limit.BudgetLimit"></a>
+
+## BudgetLimit
+
+```python
+class BudgetLimit(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/budget_limit.py)
+
+<a id="qca.forward.types.budget_limit.BudgetLimit.max_credit_cost"></a>
+
+#### max\_credit\_cost
+
+<a id="qca.forward.types.budget_limit.BudgetLimit.type"></a>
+
+#### type
+
+<a id="qca.forward.types.budget_limit_param"></a>
+
+# qca.forward.types.budget\_limit\_param
+
+<a id="qca.forward.types.budget_limit_param.BudgetLimitParam"></a>
+
+## BudgetLimitParam
+
+```python
+class BudgetLimitParam(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/budget_limit_param.py)
+
+<a id="qca.forward.types.budget_limit_param.BudgetLimitParam.max_credit_cost"></a>
+
+#### max\_credit\_cost
+
+<a id="qca.forward.types.budget_limit_param.BudgetLimitParam.type"></a>
+
+#### type
+
 <a id="qca.forward.types.channel"></a>
 
 # qca.forward.types.channel
@@ -13495,6 +13543,10 @@ class EnvironmentConfig(BaseModel)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/environment_config.py)
+
+<a id="qca.forward.types.environment_config.EnvironmentConfig.startup_script"></a>
+
+#### startup\_script
 
 <a id="qca.forward.types.environment_config.EnvironmentConfig.setup_script"></a>
 
@@ -15444,6 +15496,10 @@ class ModelConfig(BaseModel)
 
 #### effort
 
+<a id="qca.forward.types.model_config.ModelConfig.speed"></a>
+
+#### speed
+
 <a id="qca.forward.types.model_config.ModelConfig.context_window"></a>
 
 #### context\_window
@@ -15469,6 +15525,10 @@ class ModelConfigParam(TypedDict)
 <a id="qca.forward.types.model_config_param.ModelConfigParam.effort"></a>
 
 #### effort
+
+<a id="qca.forward.types.model_config_param.ModelConfigParam.speed"></a>
+
+#### speed
 
 <a id="qca.forward.types.model_config_param.ModelConfigParam.context_window"></a>
 
@@ -17360,6 +17420,10 @@ class Session(BaseModel)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/session.py)
 
+<a id="qca.forward.types.session.Session.budget"></a>
+
+#### budget
+
 <a id="qca.forward.types.session.Session.outcome_evaluations"></a>
 
 #### outcome\_evaluations
@@ -17474,6 +17538,10 @@ class SessionConfig(BaseModel)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/session_config.py)
 
+<a id="qca.forward.types.session_config.SessionConfig.model"></a>
+
+#### model
+
 <a id="qca.forward.types.session_config.SessionConfig.environment_variables"></a>
 
 #### environment\_variables
@@ -17491,6 +17559,10 @@ class SessionCreateParams(TypedDict)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/session_create_params.py)
+
+<a id="qca.forward.types.session_create_params.SessionCreateParams.budget"></a>
+
+#### budget
 
 <a id="qca.forward.types.session_create_params.SessionCreateParams.identity_id"></a>
 
@@ -17534,6 +17606,10 @@ class SessionCreateParamsConfigParam(TypedDict)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/session_create_params_config_param.py)
 
+<a id="qca.forward.types.session_create_params_config_param.SessionCreateParamsConfigParam.model"></a>
+
+#### model
+
 <a id="qca.forward.types.session_create_params_config_param.SessionCreateParamsConfigParam.environment_variables"></a>
 
 #### environment\_variables
@@ -17551,6 +17627,42 @@ class SessionEvent(BaseModel)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/session_event.py)
+
+<a id="qca.forward.types.session_event.SessionEvent.evaluation"></a>
+
+#### evaluation
+
+<a id="qca.forward.types.session_event.SessionEvent.budget"></a>
+
+#### budget
+
+<a id="qca.forward.types.session_event.SessionEvent.reason"></a>
+
+#### reason
+
+<a id="qca.forward.types.session_event.SessionEvent.iteration"></a>
+
+#### iteration
+
+<a id="qca.forward.types.session_event.SessionEvent.explanation"></a>
+
+#### explanation
+
+<a id="qca.forward.types.session_event.SessionEvent.outcome_evaluation_start_id"></a>
+
+#### outcome\_evaluation\_start\_id
+
+<a id="qca.forward.types.session_event.SessionEvent.model_credits"></a>
+
+#### model\_credits
+
+<a id="qca.forward.types.session_event.SessionEvent.sandbox_runtime_credits"></a>
+
+#### sandbox\_runtime\_credits
+
+<a id="qca.forward.types.session_event.SessionEvent.total_credits"></a>
+
+#### total\_credits
 
 <a id="qca.forward.types.session_event.SessionEvent.id"></a>
 
@@ -18398,6 +18510,10 @@ class SessionUpdateParams(TypedDict)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/session_update_params.py)
 
+<a id="qca.forward.types.session_update_params.SessionUpdateParams.budget"></a>
+
+#### budget
+
 <a id="qca.forward.types.session_update_params.SessionUpdateParams.title"></a>
 
 #### title
@@ -18427,6 +18543,10 @@ class SessionUpdateParamsConfigParam(TypedDict)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/session_update_params_config_param.py)
+
+<a id="qca.forward.types.session_update_params_config_param.SessionUpdateParamsConfigParam.model"></a>
+
+#### model
 
 <a id="qca.forward.types.session_update_params_config_param.SessionUpdateParamsConfigParam.environment_variables"></a>
 
@@ -19419,6 +19539,50 @@ class Tool(BaseModel)
 <a id="qca.forward.types.tool.Tool.input_schema"></a>
 
 #### input\_schema
+
+<a id="qca.forward.types.tool_approval_evaluation"></a>
+
+# qca.forward.types.tool\_approval\_evaluation
+
+<a id="qca.forward.types.tool_approval_evaluation.ToolApprovalDecision"></a>
+
+## ToolApprovalDecision
+
+```python
+class ToolApprovalDecision(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/tool_approval_evaluation.py)
+
+Automatic decision; reason_code may be indeterminate or high_risk.
+
+<a id="qca.forward.types.tool_approval_evaluation.ToolApprovalDecision.type"></a>
+
+#### type
+
+<a id="qca.forward.types.tool_approval_evaluation.ToolApprovalDecision.reason_code"></a>
+
+#### reason\_code
+
+<a id="qca.forward.types.tool_approval_evaluation.ToolApprovalEvaluation"></a>
+
+## ToolApprovalEvaluation
+
+```python
+class ToolApprovalEvaluation(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/tool_approval_evaluation.py)
+
+Policy source (always_allow, always_ask, auto) and optional automatic decision.
+
+<a id="qca.forward.types.tool_approval_evaluation.ToolApprovalEvaluation.type"></a>
+
+#### type
+
+<a id="qca.forward.types.tool_approval_evaluation.ToolApprovalEvaluation.evaluated_permission"></a>
+
+#### evaluated\_permission
 
 <a id="qca.forward.types.tool_config"></a>
 
@@ -28217,6 +28381,10 @@ class CloudConfigParams(TypedDict)
 
 #### storage
 
+<a id="qca.managed.types.cloud_config_params.CloudConfigParams.startup_script"></a>
+
+#### startup\_script
+
 <a id="qca.managed.types.cloud_config_params.CloudConfigParams.setup_script"></a>
 
 #### setup\_script
@@ -30301,6 +30469,10 @@ class EnvironmentConfigUnion(BaseModel)
 
 #### storage
 
+<a id="qca.managed.types.environment_config_union.EnvironmentConfigUnion.startup_script"></a>
+
+#### startup\_script
+
 <a id="qca.managed.types.environment_config_union.EnvironmentConfigUnion.setup_script"></a>
 
 #### setup\_script
@@ -31939,6 +32111,10 @@ class Memory(BaseModel)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/memory.py)
 
+<a id="qca.managed.types.memory.Memory.version"></a>
+
+#### version
+
 <a id="qca.managed.types.memory.Memory.metadata"></a>
 
 #### metadata
@@ -31996,6 +32172,14 @@ class MemoryListItemUnion(BaseModel)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/memory_list_item_union.py)
+
+<a id="qca.managed.types.memory_list_item_union.MemoryListItemUnion.metadata"></a>
+
+#### metadata
+
+<a id="qca.managed.types.memory_list_item_union.MemoryListItemUnion.version"></a>
+
+#### version
 
 <a id="qca.managed.types.memory_list_item_union.MemoryListItemUnion.id"></a>
 
@@ -32664,6 +32848,10 @@ class MemoryVersion(BaseModel)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/memory_version.py)
+
+<a id="qca.managed.types.memory_version.MemoryVersion.redacted"></a>
+
+#### redacted
 
 <a id="qca.managed.types.memory_version.MemoryVersion.id"></a>
 
@@ -33706,6 +33894,10 @@ class SelfHostedConfigParams(TypedDict)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/self_hosted_config_params.py)
+
+<a id="qca.managed.types.self_hosted_config_params.SelfHostedConfigParams.startup_script"></a>
+
+#### startup\_script
 
 <a id="qca.managed.types.self_hosted_config_params.SelfHostedConfigParams.setup_script"></a>
 
@@ -36195,6 +36387,8 @@ class SessionThreadUsage(BaseModel)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/session_thread_usage.py)
 
+Deprecated legacy Token/list-cost usage; current Thread responses omit it.
+
 <a id="qca.managed.types.session_thread_usage.SessionThreadUsage.active_seconds"></a>
 
 #### active\_seconds
@@ -37966,6 +38160,10 @@ class Vault(BaseModel)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/vault.py)
+
+<a id="qca.managed.types.vault.Vault.credentials"></a>
+
+#### credentials
 
 <a id="qca.managed.types.vault.Vault.id"></a>
 

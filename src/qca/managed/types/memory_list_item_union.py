@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Optional
+from typing import Dict, Optional
 
 from qca.common._models import BaseModel
 
@@ -9,6 +9,8 @@ __all__ = ["MemoryListItemUnion"]
 
 
 class MemoryListItemUnion(BaseModel):
+    metadata: Optional[Dict[str, str]] = None
+    version: Optional[int] = None
     id: Optional[str] = None
     content_sha256: Optional[str] = None
     content_size_bytes: Optional[int] = None

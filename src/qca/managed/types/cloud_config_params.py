@@ -15,6 +15,8 @@ __all__ = ["CloudConfigParams"]
 
 class CloudConfigParams(TypedDict, total=False):
     storage: BucketStorageParam
+    # Runs on start/resume; self-hosted execution depends on the worker.
+    startup_script: Optional[str]
     setup_script: Optional[str]
     networking: Union[UnrestrictedNetworkParam, LimitedNetworkParams]
     packages: PackagesParams

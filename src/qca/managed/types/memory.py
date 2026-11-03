@@ -9,6 +9,7 @@ __all__ = ["Memory"]
 
 
 class Memory(BaseModel):
+    version: Optional[int] = None
     metadata: Optional[Dict[str, str]] = None
     id: Optional[str] = None
     content_sha256: Optional[str] = None

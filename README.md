@@ -157,6 +157,22 @@ asyncio.run(main())
 
 Every method shown in this document has an async counterpart with the same name and signature. Async streams are opened with `async with await client.sessions.events.stream(...)`.
 
+## Environment startup scripts
+
+Both Forward and Managed accept `config.startup_script`. For cloud environments,
+it runs after `setup_script` on the first sandbox start and again on every resume,
+before the first tool call. The server enforces a 64 KB limit and a 5-minute
+timeout. Scripts must exit; start long-lived services in the background and wait
+for readiness when needed.
+
+Failure emits a `session.error` event whose `error.type` is
+`environment_startup_failed_error`; the session and sandbox remain usable.
+The script is not retried during the same start. For self-hosted environments,
+the API stores and returns the script; execution depends on the external worker.
+See the official [Forward](https://docs.qoder.com/cloud-agents/api/forward/environments/schemas#environment-startup-script)
+and [Managed](https://docs.qoder.com/cloud-agents/api/environments/schemas#environment-startup-script)
+contracts.
+
 ## Streaming
 
 Streaming responses are consumed incrementally. Close the stream when finished and handle interruption explicitly; closing a local stream does not cancel server-side work.

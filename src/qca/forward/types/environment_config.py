@@ -11,6 +11,8 @@ __all__ = ["EnvironmentConfig"]
 
 
 class EnvironmentConfig(BaseModel):
+    # Runs on start/resume; self-hosted execution depends on the worker.
+    startup_script: Optional[str] = None
     setup_script: Optional[str] = None
     type: Optional[str] = None
     packages: Optional[EnvironmentConfigPackages] = None
