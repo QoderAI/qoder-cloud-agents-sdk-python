@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, Any, Dict, List, Optional
 from qca.common._models import BaseModel
 
 if TYPE_CHECKING:
+    from .budget_limit import BudgetLimit
     from .session_config import SessionConfig
     from .session_outcome_evaluation import SessionOutcomeEvaluation
     from .session_resource import SessionResource
@@ -17,6 +18,7 @@ __all__ = ["Session"]
 
 
 class Session(BaseModel):
+    budget: Optional[BudgetLimit] = None
     outcome_evaluations: Optional[List[SessionOutcomeEvaluation]] = None
     id: Optional[str] = None
     type: Optional[str] = None

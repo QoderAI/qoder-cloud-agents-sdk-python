@@ -14,6 +14,7 @@ from qca.common.pagination import AsyncPaginator, SyncPage
 from qca.forward.resources.sessions.events import AsyncEvents, Events
 from qca.forward.resources.sessions.resources import AsyncResources, Resources
 from qca.forward.resources.sessions.threads.threads import AsyncThreads, Threads
+from qca.forward.types.budget_limit_param import BudgetLimitParam
 from qca.forward.types.session import Session
 from qca.forward.types.session_create_params_config_param import SessionCreateParamsConfigParam
 from qca.forward.types.session_resource_spec_param import SessionResourceSpecParam
@@ -96,6 +97,7 @@ class Sessions(SyncAPIResource):
         *,
         identity_id: str,
         template_id: str,
+        budget: Union[BudgetLimitParam, None, NotGiven] = NOT_GIVEN,
         title: Union[str, None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         config: Union[SessionCreateParamsConfigParam, None, NotGiven] = NOT_GIVEN,
@@ -110,6 +112,7 @@ class Sessions(SyncAPIResource):
         _path = path_template("/sessions")
         options = make_request_options(
             body={
+                "budget": budget,
                 "identity_id": identity_id,
                 "template_id": template_id,
                 "title": title,
@@ -153,6 +156,7 @@ class Sessions(SyncAPIResource):
         self,
         session_id: str,
         *,
+        budget: Union[BudgetLimitParam, None, NotGiven] = NOT_GIVEN,
         title: Union[str, None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         config: Union[SessionUpdateParamsConfigParam, None, NotGiven] = NOT_GIVEN,
@@ -165,7 +169,7 @@ class Sessions(SyncAPIResource):
         """POST /sessions/{session_id}."""
         _path = path_template("/sessions/{session_id}", session_id=session_id)
         options = make_request_options(
-            body={"title": title, "metadata": metadata, "config": config},
+            body={"budget": budget, "title": title, "metadata": metadata, "config": config},
             query={},
             headers={"Idempotency-Key": idempotency_key},
             extra_headers=extra_headers,
@@ -298,6 +302,7 @@ class AsyncSessions(AsyncAPIResource):
         *,
         identity_id: str,
         template_id: str,
+        budget: Union[BudgetLimitParam, None, NotGiven] = NOT_GIVEN,
         title: Union[str, None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         config: Union[SessionCreateParamsConfigParam, None, NotGiven] = NOT_GIVEN,
@@ -312,6 +317,7 @@ class AsyncSessions(AsyncAPIResource):
         _path = path_template("/sessions")
         options = make_request_options(
             body={
+                "budget": budget,
                 "identity_id": identity_id,
                 "template_id": template_id,
                 "title": title,
@@ -355,6 +361,7 @@ class AsyncSessions(AsyncAPIResource):
         self,
         session_id: str,
         *,
+        budget: Union[BudgetLimitParam, None, NotGiven] = NOT_GIVEN,
         title: Union[str, None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         config: Union[SessionUpdateParamsConfigParam, None, NotGiven] = NOT_GIVEN,
@@ -367,7 +374,7 @@ class AsyncSessions(AsyncAPIResource):
         """POST /sessions/{session_id}."""
         _path = path_template("/sessions/{session_id}", session_id=session_id)
         options = make_request_options(
-            body={"title": title, "metadata": metadata, "config": config},
+            body={"budget": budget, "title": title, "metadata": metadata, "config": config},
             query={},
             headers={"Idempotency-Key": idempotency_key},
             extra_headers=extra_headers,

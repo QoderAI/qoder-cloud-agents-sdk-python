@@ -16,6 +16,8 @@ from .batch_task_error import BatchTaskError as BatchTaskError
 from .batch_task_list_params import BatchTaskListParams as BatchTaskListParams
 from .batch_task_usage import BatchTaskUsage as BatchTaskUsage
 from .batch_usage import BatchUsage as BatchUsage
+from .budget_limit import BudgetLimit as BudgetLimit
+from .budget_limit_param import BudgetLimitParam as BudgetLimitParam
 from .channel import Channel as Channel
 from .channel_channel_config import ChannelChannelConfig as ChannelChannelConfig
 from .channel_channel_config_response_options import (
@@ -271,6 +273,8 @@ from .template_list_params import TemplateListParams as TemplateListParams
 from .template_update_params import TemplateUpdateParams as TemplateUpdateParams
 from .template_usage import TemplateUsage as TemplateUsage
 from .tool import Tool as Tool
+from .tool_approval_evaluation import ToolApprovalDecision as ToolApprovalDecision
+from .tool_approval_evaluation import ToolApprovalEvaluation as ToolApprovalEvaluation
 from .tool_config import ToolConfig as ToolConfig
 from .tool_config_param import ToolConfigParam as ToolConfigParam
 from .tool_override import ToolOverride as ToolOverride

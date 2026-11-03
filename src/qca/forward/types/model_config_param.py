@@ -10,4 +10,5 @@ __all__ = ["ModelConfigParam"]
 class ModelConfigParam(TypedDict, total=False):
     id: Required[str]
     effort: Optional[str]
+    speed: Optional[str]
     context_window: Optional[int]

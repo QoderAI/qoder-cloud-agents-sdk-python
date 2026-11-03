@@ -5,6 +5,23 @@ existing `0.1.0` release; earlier development prereleases are not listed.
 
 ## [Unreleased]
 
+### Added
+
+- Add typed Forward Session budgets across create/update responses and events, including omission, explicit null clearing and decimal-string limits.
+- Add Forward Session `config.model` overrides and model `speed` configuration, plus optional approval evaluation details, Outcome/status event fields and cumulative top-level Credits on `session.usage`.
+- Add `startup_script` to Forward/Managed Environment models and Managed cloud/self-hosted parameters. It runs on sandbox start/resume; the external worker controls self-hosted execution.
+- Add Managed Memory `version`, version `redacted`, and Vault creation-response `credentials` fields. Vault creation still does not accept credentials in its request.
+
+### Fixed
+
+- Declare Managed Memory list-item metadata/version fields so strict response parsing provides typed access instead of unknown attributes.
+
+### Migration
+
+- Forward `sessions.create()` and `sessions.update()` accept `budget=` directly. Omit it to keep the default/current limit, or pass `None` to clear it.
+- Omit `config.model` on create to inherit; `{"model": None}` restores inheritance on update. Optional approval details are under `event.evaluation.evaluated_permission`; the top-level approval result remains a string, with legacy object parsing retained for compatibility.
+- Managed Thread `usage` is deprecated because current responses omit it; read Session Credits instead. Treat `session.usage` as cumulative snapshots rather than adding successive events.
+
 ### Changed
 
 - Remove resource-specific sections and inventories from the README to keep it focused on SDK setup and shared client behavior.

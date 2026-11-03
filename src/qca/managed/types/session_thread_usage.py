@@ -13,6 +13,8 @@ __all__ = ["SessionThreadUsage"]
 
 
 class SessionThreadUsage(BaseModel):
+    """Deprecated legacy Token/list-cost usage; current Thread responses omit it."""
+
     active_seconds: Optional[float] = None
     cache_creation: Optional[CacheCreationUsage] = None
     cache_read_input_tokens: Optional[int] = None

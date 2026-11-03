@@ -3,6 +3,8 @@ from __future__ import annotations
 from datetime import datetime
 from typing import TYPE_CHECKING, Optional
 
+from pydantic import Field
+
 from qca.common._models import BaseModel
 
 if TYPE_CHECKING:
@@ -24,4 +26,6 @@ class SessionThread(BaseModel):
     status: Optional[str] = None
     type: Optional[str] = None
     updated_at: Optional[datetime] = None
-    usage: Optional[SessionThreadUsage] = None
+    usage: Optional[SessionThreadUsage] = Field(
+        default=None, deprecated="Current Thread responses omit usage; read Session Credits instead."
+    )
