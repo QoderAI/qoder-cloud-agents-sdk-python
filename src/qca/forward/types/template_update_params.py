@@ -29,6 +29,7 @@ class TemplateUpdateParams(TypedDict, total=False):
     skills: List[SkillBindingParam]
     multiagent: MultiagentConfigParam
     environment_id: Optional[str]
+    tunnel_id: Optional[str]
     vaults: Dict[str, ResourceBindingParam]
     files: Dict[str, ResourceBindingParam]
     github_repositories: Dict[str, GitHubRepositoryParam]

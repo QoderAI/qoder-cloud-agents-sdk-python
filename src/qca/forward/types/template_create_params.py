@@ -23,6 +23,7 @@ class TemplateCreateParams(TypedDict, total=False):
     name: Required[str]
     model: Required[Union[str, ModelConfigParam]]
     environment_id: Required[str]
+    tunnel_id: str
     description: Optional[str]
     system: Optional[str]
     tools: List[ToolParam]

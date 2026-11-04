@@ -23,6 +23,7 @@ class DeploymentUpdateParams(TypedDict, total=False):
     environment_variables: Optional[str]
     description: Optional[str]
     environment_id: Optional[str]
+    tunnel_id: Optional[str]
     name: Optional[str]
     workspace_id: Optional[str]
     metadata: Dict[str, Any]
