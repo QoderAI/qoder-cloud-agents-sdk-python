@@ -23,6 +23,7 @@ class DeploymentCreateParams(TypedDict, total=False):
     environment_variables: Optional[str]
     agent: Required[Union[str, AgentParams]]
     environment_id: Required[str]
+    tunnel_id: str
     initial_events: Required[
         List[Union[UserMessageEventParams, UserDefineOutcomeEventParams, SystemMessageEventParams]]
     ]

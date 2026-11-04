@@ -9775,6 +9775,7 @@ def create(
         name: str,
         model: Union[str, ModelConfigParam],
         environment_id: str,
+        tunnel_id: Union[str, NotGiven] = NOT_GIVEN,
         description: Union[str, None, NotGiven] = NOT_GIVEN,
         system: Union[str, None, NotGiven] = NOT_GIVEN,
         tools: Union[List[ToolParam], None, NotGiven] = NOT_GIVEN,
@@ -9845,6 +9846,7 @@ def update(
         managed_tool_config: Union[ManagedToolConfigParam, None,
                                    NotGiven] = NOT_GIVEN,
         environment_id: Union[str, None, NotGiven] = NOT_GIVEN,
+        tunnel_id: Union[str, None, NotGiven] = NOT_GIVEN,
         vaults: Union[Dict[str, ResourceBindingParam], None,
                       NotGiven] = NOT_GIVEN,
         files: Union[Dict[str, ResourceBindingParam], None,
@@ -9951,6 +9953,7 @@ async def create(
         name: str,
         model: Union[str, ModelConfigParam],
         environment_id: str,
+        tunnel_id: Union[str, NotGiven] = NOT_GIVEN,
         description: Union[str, None, NotGiven] = NOT_GIVEN,
         system: Union[str, None, NotGiven] = NOT_GIVEN,
         tools: Union[List[ToolParam], None, NotGiven] = NOT_GIVEN,
@@ -10021,6 +10024,7 @@ async def update(
         managed_tool_config: Union[ManagedToolConfigParam, None,
                                    NotGiven] = NOT_GIVEN,
         environment_id: Union[str, None, NotGiven] = NOT_GIVEN,
+        tunnel_id: Union[str, None, NotGiven] = NOT_GIVEN,
         vaults: Union[Dict[str, ResourceBindingParam], None,
                       NotGiven] = NOT_GIVEN,
         files: Union[Dict[str, ResourceBindingParam], None,
@@ -19174,6 +19178,10 @@ class Template(BaseModel)
 
 #### environment\_id
 
+<a id="qca.forward.types.template.Template.tunnel_id"></a>
+
+#### tunnel\_id
+
 <a id="qca.forward.types.template.Template.vaults"></a>
 
 #### vaults
@@ -19287,6 +19295,10 @@ class TemplateCreateParams(TypedDict)
 <a id="qca.forward.types.template_create_params.TemplateCreateParams.environment_id"></a>
 
 #### environment\_id
+
+<a id="qca.forward.types.template_create_params.TemplateCreateParams.tunnel_id"></a>
+
+#### tunnel\_id
 
 <a id="qca.forward.types.template_create_params.TemplateCreateParams.description"></a>
 
@@ -19427,6 +19439,10 @@ class TemplateUpdateParams(TypedDict)
 <a id="qca.forward.types.template_update_params.TemplateUpdateParams.environment_id"></a>
 
 #### environment\_id
+
+<a id="qca.forward.types.template_update_params.TemplateUpdateParams.tunnel_id"></a>
+
+#### tunnel\_id
 
 <a id="qca.forward.types.template_update_params.TemplateUpdateParams.vaults"></a>
 
@@ -21483,6 +21499,7 @@ def create(
     *,
     agent: Union[str, AgentParams],
     environment_id: str,
+    tunnel_id: Union[str, NotGiven] = NOT_GIVEN,
     initial_events: List[Union[UserMessageEventParams,
                                UserDefineOutcomeEventParams,
                                SystemMessageEventParams]],
@@ -21548,6 +21565,7 @@ def update(
     environment_variables: Union[str, None, NotGiven] = NOT_GIVEN,
     description: Union[str, None, NotGiven] = NOT_GIVEN,
     environment_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    tunnel_id: Union[str, None, NotGiven] = NOT_GIVEN,
     name: Union[str, None, NotGiven] = NOT_GIVEN,
     workspace_id: Union[str, None, NotGiven] = NOT_GIVEN,
     metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
@@ -21756,6 +21774,7 @@ async def create(
     *,
     agent: Union[str, AgentParams],
     environment_id: str,
+    tunnel_id: Union[str, NotGiven] = NOT_GIVEN,
     initial_events: List[Union[UserMessageEventParams,
                                UserDefineOutcomeEventParams,
                                SystemMessageEventParams]],
@@ -21821,6 +21840,7 @@ async def update(
     environment_variables: Union[str, None, NotGiven] = NOT_GIVEN,
     description: Union[str, None, NotGiven] = NOT_GIVEN,
     environment_id: Union[str, None, NotGiven] = NOT_GIVEN,
+    tunnel_id: Union[str, None, NotGiven] = NOT_GIVEN,
     name: Union[str, None, NotGiven] = NOT_GIVEN,
     workspace_id: Union[str, None, NotGiven] = NOT_GIVEN,
     metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
@@ -24908,6 +24928,7 @@ def create(
         *,
         agent: Union[str, AgentParams, AgentWithOverridesParams],
         environment_id: str,
+        tunnel_id: Union[str, NotGiven] = NOT_GIVEN,
         environment_variables: Union[Dict[str, str], None,
                                      NotGiven] = NOT_GIVEN,
         title: Union[str, None, NotGiven] = NOT_GIVEN,
@@ -25178,6 +25199,7 @@ async def create(
         *,
         agent: Union[str, AgentParams, AgentWithOverridesParams],
         environment_id: str,
+        tunnel_id: Union[str, NotGiven] = NOT_GIVEN,
         environment_variables: Union[Dict[str, str], None,
                                      NotGiven] = NOT_GIVEN,
         title: Union[str, None, NotGiven] = NOT_GIVEN,
@@ -28965,6 +28987,10 @@ class Deployment(BaseModel)
 
 #### environment\_id
 
+<a id="qca.managed.types.deployment.Deployment.tunnel_id"></a>
+
+#### tunnel\_id
+
 <a id="qca.managed.types.deployment.Deployment.initial_events"></a>
 
 #### initial\_events
@@ -29056,6 +29082,10 @@ class DeploymentCreateParams(TypedDict)
 <a id="qca.managed.types.deployment_create_params.DeploymentCreateParams.environment_id"></a>
 
 #### environment\_id
+
+<a id="qca.managed.types.deployment_create_params.DeploymentCreateParams.tunnel_id"></a>
+
+#### tunnel\_id
 
 <a id="qca.managed.types.deployment_create_params.DeploymentCreateParams.initial_events"></a>
 
@@ -29632,6 +29662,10 @@ class DeploymentUpdateParams(TypedDict)
 <a id="qca.managed.types.deployment_update_params.DeploymentUpdateParams.environment_id"></a>
 
 #### environment\_id
+
+<a id="qca.managed.types.deployment_update_params.DeploymentUpdateParams.tunnel_id"></a>
+
+#### tunnel\_id
 
 <a id="qca.managed.types.deployment_update_params.DeploymentUpdateParams.name"></a>
 
@@ -34540,6 +34574,10 @@ class SessionCreateParams(TypedDict)
 <a id="qca.managed.types.session_create_params.SessionCreateParams.environment_id"></a>
 
 #### environment\_id
+
+<a id="qca.managed.types.session_create_params.SessionCreateParams.tunnel_id"></a>
+
+#### tunnel\_id
 
 <a id="qca.managed.types.session_create_params.SessionCreateParams.title"></a>
 
