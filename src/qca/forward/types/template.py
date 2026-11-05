@@ -31,6 +31,7 @@ class Template(BaseModel):
     model: Optional[Union[str, ModelConfig]] = None
     multiagent: Optional[MultiagentConfig] = None
     environment_id: Optional[str] = None
+    tunnel_id: Optional[str] = None
     vaults: Optional[Dict[str, ResourceBinding]] = None
     files: Optional[Dict[str, ResourceBinding]] = None
     github_repositories: Optional[Dict[str, GitHubRepository]] = None

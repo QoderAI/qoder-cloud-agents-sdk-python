@@ -22,6 +22,7 @@ class SessionCreateParams(TypedDict, total=False):
     environment_variables: Dict[str, str]
     agent: Required[Union[str, AgentParams, AgentWithOverridesParams]]
     environment_id: Required[str]
+    tunnel_id: str
     title: Optional[str]
     workspace_id: Optional[str]
     budget: BudgetLimitParam

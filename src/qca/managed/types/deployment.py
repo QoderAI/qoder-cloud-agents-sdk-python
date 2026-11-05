@@ -24,6 +24,7 @@ class Deployment(BaseModel):
     created_at: Optional[datetime] = None
     description: Optional[str] = None
     environment_id: Optional[str] = None
+    tunnel_id: Optional[str] = None
     initial_events: Optional[List[DeploymentInitialEventUnion]] = None
     metadata: Optional[Dict[str, str]] = None
     name: Optional[str] = None
