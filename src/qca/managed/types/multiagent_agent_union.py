@@ -13,5 +13,6 @@ __all__ = ["MultiagentAgentUnion"]
 class MultiagentAgentUnion(BaseModel):
     id: Optional[str] = None
     type: Optional[str] = None
-    version: Optional[int] = None
+    # A saved child Agent version: a concrete version or "latest".
+    version: Optional[Union[int, str]] = None
     model: Optional[Union[str, ModelConfig]] = None

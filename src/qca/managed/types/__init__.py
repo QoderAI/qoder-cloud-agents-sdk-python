@@ -241,6 +241,7 @@ from .model_list_params import ModelListParams as ModelListParams
 from .monetary_amount import MonetaryAmount as MonetaryAmount
 from .monetary_amount_param import MonetaryAmountParam as MonetaryAmountParam
 from .multiagent import Multiagent as Multiagent
+from .multiagent_agent_params import MultiagentAgentParams as MultiagentAgentParams
 from .multiagent_agent_union import MultiagentAgentUnion as MultiagentAgentUnion
 from .multiagent_params import MultiagentParams as MultiagentParams
 from .multiagent_self_params import MultiagentSelfParams as MultiagentSelfParams

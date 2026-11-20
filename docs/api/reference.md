@@ -33249,6 +33249,32 @@ class Multiagent(BaseModel)
 
 #### type
 
+<a id="qca.managed.types.multiagent_agent_params"></a>
+
+# qca.managed.types.multiagent\_agent\_params
+
+<a id="qca.managed.types.multiagent_agent_params.MultiagentAgentParams"></a>
+
+## MultiagentAgentParams
+
+```python
+class MultiagentAgentParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/multiagent_agent_params.py)
+
+<a id="qca.managed.types.multiagent_agent_params.MultiagentAgentParams.id"></a>
+
+#### id
+
+<a id="qca.managed.types.multiagent_agent_params.MultiagentAgentParams.type"></a>
+
+#### type
+
+<a id="qca.managed.types.multiagent_agent_params.MultiagentAgentParams.version"></a>
+
+#### version
+
 <a id="qca.managed.types.multiagent_agent_union"></a>
 
 # qca.managed.types.multiagent\_agent\_union

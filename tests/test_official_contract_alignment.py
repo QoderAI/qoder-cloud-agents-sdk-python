@@ -282,3 +282,36 @@ async def test_oss_storage_write_read_and_clear(mock_sdk, async_):
         assert credential.to_dict() == {"type": "access_key", "access_key_id": "test****"}
         assert not hasattr(credential, "access_key_secret")
     assert not expected
+
+
+# Official Agent schema retrieved 2026-11-20: roster child versions accept "latest".
+@pytest.mark.parametrize("async_", [False, True])
+async def test_managed_agent_roster_latest_version(async_):
+    roster = {
+        "type": "coordinator",
+        "agents": [
+            {"type": "agent", "id": "agent_latest", "version": "latest"},
+            {"type": "agent", "id": "agent_text", "version": "3"},
+            {"type": "agent", "id": "agent_pinned", "version": 3},
+        ],
+    }
+    saved = {
+        "type": "coordinator",
+        "agents": [
+            {"type": "agent", "id": "agent_latest", "version": "latest"},
+            {"type": "agent", "id": "agent_text", "version": 3},
+            {"type": "advisor", "model": "ultimate"},
+        ],
+    }
+
+    def handle(req):
+        assert json.loads(req.content)["multiagent"] == roster
+        return httpx.Response(200, json={"id": "agent_parent", "multiagent": saved})
+
+    http = (httpx.AsyncClient if async_ else httpx.Client)(transport=httpx.MockTransport(handle))
+    client = (AsyncManaged if async_ else Managed)(pat="test", http_client=http, _strict_response_validation=True)
+    try:
+        agent = await resolve(client.agents.create(name="coordinator", model="auto", multiagent=roster))
+        assert [entry.version for entry in agent.multiagent.agents] == ["latest", 3, None]
+    finally:
+        await resolve(client.close())

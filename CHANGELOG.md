@@ -5,6 +5,10 @@ existing `0.1.0` release; earlier development prereleases are not listed.
 
 ## [Unreleased]
 
+### Fixed
+
+- Accept `"latest"` and positive integer strings for child Agent `version` in Managed Agent multiagent rosters through the new `MultiagentAgentParams` type, and parse saved `"latest"` versions in Agent responses, including with `_strict_response_validation=True`. `MultiagentAgentUnion.version` is now typed `int | str`; Session and Deployment Agent references keep numeric versions.
+
 ## [0.15.0]
 
 ### Added
