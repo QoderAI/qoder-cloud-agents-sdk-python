@@ -67,6 +67,64 @@ def test_sse_multiline_utf8_comments_deltas_and_checkpoint():
     assert chunks.closed
 
 
+@pytest.mark.parametrize("separator", ["\u2028", "\u2029", "\x85"])
+def test_sse_preserves_unicode_line_separators_inside_json_payloads(separator):
+    body = (
+        "\ufeff"
+        ": comment\x0bwith\x0ccontrols\r\n"
+        f'id: sep-1\r\nevent: agent.message\r\ndata: {{"content":[{{"type":"text","text":"before{separator}after"}}]}}\r\n\r\n'
+        'id: sep-2\revent: agent.message\rdata: {"content":[{"type":"text","text":"cr-only"}]}\r\r'
+    ).encode("utf-8")
+    chunks = Chunks(body)
+
+    with Forward(
+        pat="test",
+        http_client=httpx.Client(
+            transport=httpx.MockTransport(
+                lambda _: httpx.Response(200, stream=chunks, headers={"content-type": "text/event-stream"})
+            )
+        ),
+    ) as client:
+        with client.sessions.events.stream("session") as stream:
+            events = list(stream)
+            assert [event.id for event in events] == ["sep-1", "sep-2"]
+            assert events[0].content[0]["text"] == f"before{separator}after"
+            assert events[1].content[0]["text"] == "cr-only"
+    assert chunks.closed
+
+
+async def test_async_sse_preserves_unicode_line_separators_and_split_crlf():
+    class SplitChunks(httpx.AsyncByteStream):
+        closed = False
+
+        async def __aiter__(self):
+            payload = 'id: a1\r\nevent: agent.message\r\ndata: {"content":[{"type":"text","text":"line\u2028break"}]}\r\n\r\n'.encode(
+                "utf-8"
+            )
+            # Deliver one byte at a time so CRLF and multi-byte UTF-8 cross chunk boundaries.
+            for index in range(len(payload)):
+                yield payload[index : index + 1]
+
+        async def aclose(self):
+            self.closed = True
+
+    chunks = SplitChunks()
+    async with AsyncManaged(
+        pat="test",
+        http_client=httpx.AsyncClient(
+            transport=httpx.MockTransport(
+                lambda _: httpx.Response(200, stream=chunks, headers={"content-type": "text/event-stream"})
+            )
+        ),
+    ) as client:
+        async with await client.sessions.events.stream("session") as stream:
+            events = [event async for event in stream]
+            assert len(events) == 1
+            assert events[0].id == "a1"
+            assert events[0].content[0].text == "line\u2028break"
+    assert chunks.closed
+
+
 @pytest.mark.parametrize(
     "body,error",
     [

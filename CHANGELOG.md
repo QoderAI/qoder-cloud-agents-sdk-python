@@ -15,6 +15,7 @@ existing `0.1.0` release; earlier development prereleases are not listed.
 
 ### Fixed
 
+- Decode SSE streams over raw byte chunks using WHATWG CR/LF/CRLF line splitting instead of `httpx`'s `iter_lines()`, preventing Unicode line separators (`\u2028`, `\u2029`, `\x85`) inside JSON payloads from splitting frames and failing with `APIResponseValidationError`.
 - Preserve historical string `configs[].permission_policy` values when leniently parsing Managed Agent, Session and Thread tool snapshots. Tools and configs retain model attribute access instead of becoming Browser models or raw dictionaries; known Browser/media variants keep their concrete types and strict validation still rejects invalid payloads.
 - Expose Managed MCP toolsets' top-level `permission_policy` in requests and Agent/Session/Thread responses, including `always_deny` without `configs`. Set server-wide defaults here: nested `default_config.permission_policy` is retained unchanged for compatibility but does not set the MCP default; omitting the top-level policy defaults to allow.
 - Accept `"latest"` and positive integer strings for child Agent `version` in Managed Agent multiagent rosters through the new `MultiagentAgentParams` type, and parse saved `"latest"` versions in Agent responses, including with `_strict_response_validation=True`. `MultiagentAgentUnion.version` is now typed `int | str`; Session and Deployment Agent references keep numeric versions.
