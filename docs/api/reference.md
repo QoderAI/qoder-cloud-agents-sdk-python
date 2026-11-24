@@ -4313,7 +4313,8 @@ def create(
     *,
     name: str,
     description: Union[str, None, NotGiven] = NOT_GIVEN,
-    config: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
+    config: Union[EnvironmentConfigParam, Dict[str, Any], None,
+                  NotGiven] = NOT_GIVEN,
     metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
     idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
     identity_id: Union[str, NotGiven] = NOT_GIVEN,
@@ -4362,7 +4363,8 @@ def update(
     *,
     name: Union[str, None, NotGiven] = NOT_GIVEN,
     description: Union[str, None, NotGiven] = NOT_GIVEN,
-    config: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
+    config: Union[EnvironmentConfigParam, Dict[str, Any], None,
+                  NotGiven] = NOT_GIVEN,
     metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
     identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
@@ -4495,7 +4497,8 @@ async def create(
     *,
     name: str,
     description: Union[str, None, NotGiven] = NOT_GIVEN,
-    config: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
+    config: Union[EnvironmentConfigParam, Dict[str, Any], None,
+                  NotGiven] = NOT_GIVEN,
     metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
     idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
     identity_id: Union[str, NotGiven] = NOT_GIVEN,
@@ -4544,7 +4547,8 @@ async def update(
     *,
     name: Union[str, None, NotGiven] = NOT_GIVEN,
     description: Union[str, None, NotGiven] = NOT_GIVEN,
-    config: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
+    config: Union[EnvironmentConfigParam, Dict[str, Any], None,
+                  NotGiven] = NOT_GIVEN,
     metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
     identity_id: Union[str, NotGiven] = NOT_GIVEN,
     extra_headers: Dict[str, str] | None = None,
@@ -8501,6 +8505,7 @@ def create(
         identity_id: str,
         template_id: str,
         budget: Union[BudgetLimitParam, None, NotGiven] = NOT_GIVEN,
+        auto_title: Union[bool, NotGiven] = NOT_GIVEN,
         title: Union[str, None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         config: Union[SessionCreateParamsConfigParam, None,
@@ -8691,6 +8696,7 @@ async def create(
         identity_id: str,
         template_id: str,
         budget: Union[BudgetLimitParam, None, NotGiven] = NOT_GIVEN,
+        auto_title: Union[bool, NotGiven] = NOT_GIVEN,
         title: Union[str, None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         config: Union[SessionCreateParamsConfigParam, None,
@@ -9782,6 +9788,7 @@ def create(
         mcp_servers: Union[List[MCPServerParam], None, NotGiven] = NOT_GIVEN,
         skills: Union[List[SkillBindingParam], None, NotGiven] = NOT_GIVEN,
         multiagent: Union[MultiagentConfigParam, None, NotGiven] = NOT_GIVEN,
+        a2a: Union[A2AConfigParam, None, NotGiven] = NOT_GIVEN,
         max_tool_rounds: Union[int, None, NotGiven] = NOT_GIVEN,
         managed_tool_config: Union[ManagedToolConfigParam, None,
                                    NotGiven] = NOT_GIVEN,
@@ -9826,6 +9833,27 @@ def retrieve(
 
 GET /templates/{template_id}.
 
+<a id="qca.forward.resources.templates.Templates.retrieve_agent_card"></a>
+
+#### retrieve\_agent\_card
+
+```python
+def retrieve_agent_card(
+        template_id: str,
+        *,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
+        a2a_version: Union[Literal["0.3", "1.0"], NotGiven] = NOT_GIVEN,
+        extra_headers: Dict[str, str] | None = None,
+        extra_query: Dict[str, Any] | None = None,
+        extra_body: Dict[str, Any] | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> AgentCard
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/templates.py)
+
+GET /templates/{template_id}/a2a/agent-card.json. Omit identity_id with SAT; version defaults to 0.3.
+
 <a id="qca.forward.resources.templates.Templates.update"></a>
 
 #### update
@@ -9842,6 +9870,7 @@ def update(
         mcp_servers: Union[List[MCPServerParam], None, NotGiven] = NOT_GIVEN,
         skills: Union[List[SkillBindingParam], None, NotGiven] = NOT_GIVEN,
         multiagent: Union[MultiagentConfigParam, None, NotGiven] = NOT_GIVEN,
+        a2a: Union[A2AConfigParam, None, NotGiven] = NOT_GIVEN,
         max_tool_rounds: Union[int, None, NotGiven] = NOT_GIVEN,
         managed_tool_config: Union[ManagedToolConfigParam, None,
                                    NotGiven] = NOT_GIVEN,
@@ -9960,6 +9989,7 @@ async def create(
         mcp_servers: Union[List[MCPServerParam], None, NotGiven] = NOT_GIVEN,
         skills: Union[List[SkillBindingParam], None, NotGiven] = NOT_GIVEN,
         multiagent: Union[MultiagentConfigParam, None, NotGiven] = NOT_GIVEN,
+        a2a: Union[A2AConfigParam, None, NotGiven] = NOT_GIVEN,
         max_tool_rounds: Union[int, None, NotGiven] = NOT_GIVEN,
         managed_tool_config: Union[ManagedToolConfigParam, None,
                                    NotGiven] = NOT_GIVEN,
@@ -10004,6 +10034,27 @@ async def retrieve(
 
 GET /templates/{template_id}.
 
+<a id="qca.forward.resources.templates.AsyncTemplates.retrieve_agent_card"></a>
+
+#### retrieve\_agent\_card
+
+```python
+async def retrieve_agent_card(
+        template_id: str,
+        *,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
+        a2a_version: Union[Literal["0.3", "1.0"], NotGiven] = NOT_GIVEN,
+        extra_headers: Dict[str, str] | None = None,
+        extra_query: Dict[str, Any] | None = None,
+        extra_body: Dict[str, Any] | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
+) -> AgentCard
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/resources/templates.py)
+
+GET /templates/{template_id}/a2a/agent-card.json. Omit identity_id with SAT; version defaults to 0.3.
+
 <a id="qca.forward.resources.templates.AsyncTemplates.update"></a>
 
 #### update
@@ -10020,6 +10071,7 @@ async def update(
         mcp_servers: Union[List[MCPServerParam], None, NotGiven] = NOT_GIVEN,
         skills: Union[List[SkillBindingParam], None, NotGiven] = NOT_GIVEN,
         multiagent: Union[MultiagentConfigParam, None, NotGiven] = NOT_GIVEN,
+        a2a: Union[A2AConfigParam, None, NotGiven] = NOT_GIVEN,
         max_tool_rounds: Union[int, None, NotGiven] = NOT_GIVEN,
         managed_tool_config: Union[ManagedToolConfigParam, None,
                                    NotGiven] = NOT_GIVEN,
@@ -11171,6 +11223,195 @@ async def test(
 
 POST /webhook/endpoints/{endpoint_id}/test. Queues a test event; 202 does not confirm delivery.
 
+<a id="qca.forward.types.a2a_config"></a>
+
+# qca.forward.types.a2a\_config
+
+<a id="qca.forward.types.a2a_config.A2ASkill"></a>
+
+## A2ASkill
+
+```python
+class A2ASkill(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/a2a_config.py)
+
+<a id="qca.forward.types.a2a_config.A2ASkill.id"></a>
+
+#### id
+
+<a id="qca.forward.types.a2a_config.A2ASkill.name"></a>
+
+#### name
+
+<a id="qca.forward.types.a2a_config.A2ASkill.description"></a>
+
+#### description
+
+<a id="qca.forward.types.a2a_config.A2ASkill.tags"></a>
+
+#### tags
+
+<a id="qca.forward.types.a2a_config.A2ASkill.examples"></a>
+
+#### examples
+
+<a id="qca.forward.types.a2a_config.A2AConfig"></a>
+
+## A2AConfig
+
+```python
+class A2AConfig(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/a2a_config.py)
+
+Saved publication settings may be sparse; missing enabled means false.
+
+<a id="qca.forward.types.a2a_config.A2AConfig.enabled"></a>
+
+#### enabled
+
+<a id="qca.forward.types.a2a_config.A2AConfig.description"></a>
+
+#### description
+
+<a id="qca.forward.types.a2a_config.A2AConfig.skills"></a>
+
+#### skills
+
+<a id="qca.forward.types.a2a_config_param"></a>
+
+# qca.forward.types.a2a\_config\_param
+
+<a id="qca.forward.types.a2a_config_param.A2ASkillParam"></a>
+
+## A2ASkillParam
+
+```python
+class A2ASkillParam(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/a2a_config_param.py)
+
+<a id="qca.forward.types.a2a_config_param.A2ASkillParam.id"></a>
+
+#### id
+
+<a id="qca.forward.types.a2a_config_param.A2ASkillParam.name"></a>
+
+#### name
+
+<a id="qca.forward.types.a2a_config_param.A2ASkillParam.description"></a>
+
+#### description
+
+<a id="qca.forward.types.a2a_config_param.A2ASkillParam.tags"></a>
+
+#### tags
+
+<a id="qca.forward.types.a2a_config_param.A2ASkillParam.examples"></a>
+
+#### examples
+
+<a id="qca.forward.types.a2a_config_param.A2AConfigParam"></a>
+
+## A2AConfigParam
+
+```python
+class A2AConfigParam(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/a2a_config_param.py)
+
+Publication settings, not a multiagent roster. Members cannot be null.
+
+On update, omitted members and {} preserve existing settings; skills=[]
+clears advertised skills. Set the whole a2a field to None to disable/clear.
+
+<a id="qca.forward.types.a2a_config_param.A2AConfigParam.enabled"></a>
+
+#### enabled
+
+<a id="qca.forward.types.a2a_config_param.A2AConfigParam.description"></a>
+
+#### description
+
+<a id="qca.forward.types.a2a_config_param.A2AConfigParam.skills"></a>
+
+#### skills
+
+<a id="qca.forward.types.agent_card"></a>
+
+# qca.forward.types.agent\_card
+
+<a id="qca.forward.types.agent_card.AgentCardInterface"></a>
+
+## AgentCardInterface
+
+```python
+class AgentCardInterface(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/agent_card.py)
+
+<a id="qca.forward.types.agent_card.AgentCardInterface.url"></a>
+
+#### url
+
+<a id="qca.forward.types.agent_card.AgentCardInterface.protocol_binding"></a>
+
+#### protocol\_binding
+
+<a id="qca.forward.types.agent_card.AgentCardInterface.protocol_version"></a>
+
+#### protocol\_version
+
+<a id="qca.forward.types.agent_card.AgentCard"></a>
+
+## AgentCard
+
+```python
+class AgentCard(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/agent_card.py)
+
+A2A 0.3/1.0 discovery document; unknown protocol fields are retained.
+
+<a id="qca.forward.types.agent_card.AgentCard.name"></a>
+
+#### name
+
+<a id="qca.forward.types.agent_card.AgentCard.description"></a>
+
+#### description
+
+<a id="qca.forward.types.agent_card.AgentCard.version"></a>
+
+#### version
+
+<a id="qca.forward.types.agent_card.AgentCard.skills"></a>
+
+#### skills
+
+<a id="qca.forward.types.agent_card.AgentCard.default_input_modes"></a>
+
+#### default\_input\_modes
+
+<a id="qca.forward.types.agent_card.AgentCard.default_output_modes"></a>
+
+#### default\_output\_modes
+
+<a id="qca.forward.types.agent_card.AgentCard.url"></a>
+
+#### url
+
+<a id="qca.forward.types.agent_card.AgentCard.supported_interfaces"></a>
+
+#### supported\_interfaces
+
 <a id="qca.forward.types.batch"></a>
 
 # qca.forward.types.batch
@@ -11582,6 +11823,188 @@ class BatchUsage(BaseModel)
 <a id="qca.forward.types.batch_usage.BatchUsage.total_credits"></a>
 
 #### total\_credits
+
+<a id="qca.forward.types.bucket_storage"></a>
+
+# qca.forward.types.bucket\_storage
+
+<a id="qca.forward.types.bucket_storage.OSSRAMRoleCredentialParam"></a>
+
+## OSSRAMRoleCredentialParam
+
+```python
+class OSSRAMRoleCredentialParam(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/bucket_storage.py)
+
+<a id="qca.forward.types.bucket_storage.OSSRAMRoleCredentialParam.type"></a>
+
+#### type
+
+<a id="qca.forward.types.bucket_storage.OSSRAMRoleCredentialParam.role_arn"></a>
+
+#### role\_arn
+
+<a id="qca.forward.types.bucket_storage.OSSAccessKeyCredentialParam"></a>
+
+## OSSAccessKeyCredentialParam
+
+```python
+class OSSAccessKeyCredentialParam(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/bucket_storage.py)
+
+<a id="qca.forward.types.bucket_storage.OSSAccessKeyCredentialParam.type"></a>
+
+#### type
+
+<a id="qca.forward.types.bucket_storage.OSSAccessKeyCredentialParam.access_key_id"></a>
+
+#### access\_key\_id
+
+<a id="qca.forward.types.bucket_storage.OSSAccessKeyCredentialParam.access_key_secret"></a>
+
+#### access\_key\_secret
+
+<a id="qca.forward.types.bucket_storage.OSSBucketCredentialParam"></a>
+
+#### OSSBucketCredentialParam
+
+<a id="qca.forward.types.bucket_storage.OSSBucketParam"></a>
+
+## OSSBucketParam
+
+```python
+class OSSBucketParam(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/bucket_storage.py)
+
+<a id="qca.forward.types.bucket_storage.OSSBucketParam.name"></a>
+
+#### name
+
+<a id="qca.forward.types.bucket_storage.OSSBucketParam.provider"></a>
+
+#### provider
+
+<a id="qca.forward.types.bucket_storage.OSSBucketParam.region"></a>
+
+#### region
+
+<a id="qca.forward.types.bucket_storage.OSSBucketParam.bucket"></a>
+
+#### bucket
+
+<a id="qca.forward.types.bucket_storage.OSSBucketParam.prefix"></a>
+
+#### prefix
+
+<a id="qca.forward.types.bucket_storage.OSSBucketParam.access"></a>
+
+#### access
+
+<a id="qca.forward.types.bucket_storage.OSSBucketParam.accelerator_endpoint"></a>
+
+#### accelerator\_endpoint
+
+<a id="qca.forward.types.bucket_storage.OSSBucketParam.credential"></a>
+
+#### credential
+
+Required for a new mount; omit on update to retain stored credentials.
+
+<a id="qca.forward.types.bucket_storage.BucketStorageParam"></a>
+
+## BucketStorageParam
+
+```python
+class BucketStorageParam(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/bucket_storage.py)
+
+<a id="qca.forward.types.bucket_storage.BucketStorageParam.buckets"></a>
+
+#### buckets
+
+<a id="qca.forward.types.bucket_storage.OSSBucketCredential"></a>
+
+## OSSBucketCredential
+
+```python
+class OSSBucketCredential(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/bucket_storage.py)
+
+Read view: the service returns no role ARN or AccessKey secret.
+
+<a id="qca.forward.types.bucket_storage.OSSBucketCredential.type"></a>
+
+#### type
+
+<a id="qca.forward.types.bucket_storage.OSSBucketCredential.access_key_id"></a>
+
+#### access\_key\_id
+
+<a id="qca.forward.types.bucket_storage.OSSBucket"></a>
+
+## OSSBucket
+
+```python
+class OSSBucket(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/bucket_storage.py)
+
+<a id="qca.forward.types.bucket_storage.OSSBucket.name"></a>
+
+#### name
+
+<a id="qca.forward.types.bucket_storage.OSSBucket.provider"></a>
+
+#### provider
+
+<a id="qca.forward.types.bucket_storage.OSSBucket.region"></a>
+
+#### region
+
+<a id="qca.forward.types.bucket_storage.OSSBucket.bucket"></a>
+
+#### bucket
+
+<a id="qca.forward.types.bucket_storage.OSSBucket.prefix"></a>
+
+#### prefix
+
+<a id="qca.forward.types.bucket_storage.OSSBucket.access"></a>
+
+#### access
+
+<a id="qca.forward.types.bucket_storage.OSSBucket.accelerator_endpoint"></a>
+
+#### accelerator\_endpoint
+
+<a id="qca.forward.types.bucket_storage.OSSBucket.credential"></a>
+
+#### credential
+
+<a id="qca.forward.types.bucket_storage.BucketStorage"></a>
+
+## BucketStorage
+
+```python
+class BucketStorage(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/bucket_storage.py)
+
+<a id="qca.forward.types.bucket_storage.BucketStorage.buckets"></a>
+
+#### buckets
 
 <a id="qca.forward.types.budget_limit"></a>
 
@@ -13564,6 +13987,10 @@ class EnvironmentConfig(BaseModel)
 
 #### packages
 
+<a id="qca.forward.types.environment_config.EnvironmentConfig.storage"></a>
+
+#### storage
+
 <a id="qca.forward.types.environment_config_packages"></a>
 
 # qca.forward.types.environment\_config\_packages
@@ -13605,6 +14032,79 @@ class EnvironmentConfigPackages(BaseModel)
 <a id="qca.forward.types.environment_config_packages.EnvironmentConfigPackages.pip"></a>
 
 #### pip
+
+<a id="qca.forward.types.environment_config_param"></a>
+
+# qca.forward.types.environment\_config\_param
+
+<a id="qca.forward.types.environment_config_param.EnvironmentConfigPackagesParam"></a>
+
+## EnvironmentConfigPackagesParam
+
+```python
+class EnvironmentConfigPackagesParam(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/environment_config_param.py)
+
+<a id="qca.forward.types.environment_config_param.EnvironmentConfigPackagesParam.apt"></a>
+
+#### apt
+
+<a id="qca.forward.types.environment_config_param.EnvironmentConfigPackagesParam.cargo"></a>
+
+#### cargo
+
+<a id="qca.forward.types.environment_config_param.EnvironmentConfigPackagesParam.gem"></a>
+
+#### gem
+
+<a id="qca.forward.types.environment_config_param.EnvironmentConfigPackagesParam.go"></a>
+
+#### go
+
+<a id="qca.forward.types.environment_config_param.EnvironmentConfigPackagesParam.npm"></a>
+
+#### npm
+
+<a id="qca.forward.types.environment_config_param.EnvironmentConfigPackagesParam.pip"></a>
+
+#### pip
+
+<a id="qca.forward.types.environment_config_param.EnvironmentConfigParam"></a>
+
+## EnvironmentConfigParam
+
+```python
+class EnvironmentConfigParam(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/environment_config_param.py)
+
+The entire config replaces the previous config on update.
+
+Cloud storage supports up to seven mounts, gated by oss-bucket-2026-09-23.
+buckets=[] removes mounts for future Sessions, not existing snapshots.
+
+<a id="qca.forward.types.environment_config_param.EnvironmentConfigParam.type"></a>
+
+#### type
+
+<a id="qca.forward.types.environment_config_param.EnvironmentConfigParam.setup_script"></a>
+
+#### setup\_script
+
+<a id="qca.forward.types.environment_config_param.EnvironmentConfigParam.startup_script"></a>
+
+#### startup\_script
+
+<a id="qca.forward.types.environment_config_param.EnvironmentConfigParam.packages"></a>
+
+#### packages
+
+<a id="qca.forward.types.environment_config_param.EnvironmentConfigParam.storage"></a>
+
+#### storage
 
 <a id="qca.forward.types.environment_create_params"></a>
 
@@ -15618,6 +16118,10 @@ class MultiagentEntry(BaseModel)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/multiagent_entry.py)
 
+<a id="qca.forward.types.multiagent_entry.MultiagentEntry.id"></a>
+
+#### id
+
 <a id="qca.forward.types.multiagent_entry.MultiagentEntry.type"></a>
 
 #### type
@@ -15647,6 +16151,10 @@ class MultiagentEntryParam(TypedDict)
 ```
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/multiagent_entry_param.py)
+
+<a id="qca.forward.types.multiagent_entry_param.MultiagentEntryParam.id"></a>
+
+#### id
 
 <a id="qca.forward.types.multiagent_entry_param.MultiagentEntryParam.type"></a>
 
@@ -17550,6 +18058,10 @@ class SessionConfig(BaseModel)
 
 #### environment\_variables
 
+<a id="qca.forward.types.session_config.SessionConfig.multiagent"></a>
+
+#### multiagent
+
 <a id="qca.forward.types.session_create_params"></a>
 
 # qca.forward.types.session\_create\_params
@@ -17575,6 +18087,12 @@ class SessionCreateParams(TypedDict)
 <a id="qca.forward.types.session_create_params.SessionCreateParams.template_id"></a>
 
 #### template\_id
+
+<a id="qca.forward.types.session_create_params.SessionCreateParams.auto_title"></a>
+
+#### auto\_title
+
+Omit for false. When true, do not supply title (including null).
 
 <a id="qca.forward.types.session_create_params.SessionCreateParams.title"></a>
 
@@ -18556,6 +19074,12 @@ class SessionUpdateParamsConfigParam(TypedDict)
 
 #### environment\_variables
 
+<a id="qca.forward.types.session_update_params_config_param.SessionUpdateParamsConfigParam.multiagent"></a>
+
+#### multiagent
+
+Omit to keep the roster; None clears it without restoring inheritance.
+
 <a id="qca.forward.types.session_usage"></a>
 
 # qca.forward.types.session\_usage
@@ -19174,6 +19698,10 @@ class Template(BaseModel)
 
 #### multiagent
 
+<a id="qca.forward.types.template.Template.a2a"></a>
+
+#### a2a
+
 <a id="qca.forward.types.template.Template.environment_id"></a>
 
 #### environment\_id
@@ -19324,6 +19852,10 @@ class TemplateCreateParams(TypedDict)
 
 #### multiagent
 
+<a id="qca.forward.types.template_create_params.TemplateCreateParams.a2a"></a>
+
+#### a2a
+
 <a id="qca.forward.types.template_create_params.TemplateCreateParams.vaults"></a>
 
 #### vaults
@@ -19382,6 +19914,32 @@ class TemplateListParams(TypedDict)
 
 #### before\_id
 
+<a id="qca.forward.types.template_retrieve_agent_card_params"></a>
+
+# qca.forward.types.template\_retrieve\_agent\_card\_params
+
+<a id="qca.forward.types.template_retrieve_agent_card_params.TemplateRetrieveAgentCardParams"></a>
+
+## TemplateRetrieveAgentCardParams
+
+```python
+class TemplateRetrieveAgentCardParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/forward/types/template_retrieve_agent_card_params.py)
+
+<a id="qca.forward.types.template_retrieve_agent_card_params.TemplateRetrieveAgentCardParams.identity_id"></a>
+
+#### identity\_id
+
+Runtime identity selector for PAT authentication. Omit with SAT.
+
+<a id="qca.forward.types.template_retrieve_agent_card_params.TemplateRetrieveAgentCardParams.a2a_version"></a>
+
+#### a2a\_version
+
+Sent as A2A-Version; omission uses the server's 0.3 default.
+
 <a id="qca.forward.types.template_update_params"></a>
 
 # qca.forward.types.template\_update\_params
@@ -19435,6 +19993,10 @@ class TemplateUpdateParams(TypedDict)
 <a id="qca.forward.types.template_update_params.TemplateUpdateParams.multiagent"></a>
 
 #### multiagent
+
+<a id="qca.forward.types.template_update_params.TemplateUpdateParams.a2a"></a>
+
+#### a2a
 
 <a id="qca.forward.types.template_update_params.TemplateUpdateParams.environment_id"></a>
 
@@ -20814,9 +21376,13 @@ def create(
         multiagent: Union[MultiagentParams, None, NotGiven] = NOT_GIVEN,
         skills: Union[List[Union[QoderSkillParams, CustomSkillParams]], None,
                       NotGiven] = NOT_GIVEN,
-        tools: Union[List[Union[AgentToolset20260401Params, MCPToolsetParams,
-                                CustomToolParams]], None,
-                     NotGiven] = NOT_GIVEN,
+        tools: Union[
+            List[Union[AgentToolset20260401Params,
+                       BrowserToolset20260714Params, MCPToolsetParams,
+                       CustomToolParams]],
+            None,
+            NotGiven,
+        ] = NOT_GIVEN,
         betas: Union[List[str], None, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
@@ -20867,9 +21433,13 @@ def update(
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         skills: Union[List[Union[QoderSkillParams, CustomSkillParams]], None,
                       NotGiven] = NOT_GIVEN,
-        tools: Union[List[Union[AgentToolset20260401Params, MCPToolsetParams,
-                                CustomToolParams]], None,
-                     NotGiven] = NOT_GIVEN,
+        tools: Union[
+            List[Union[AgentToolset20260401Params,
+                       BrowserToolset20260714Params, MCPToolsetParams,
+                       CustomToolParams]],
+            None,
+            NotGiven,
+        ] = NOT_GIVEN,
         model: Union[Union[str, ModelConfigParams], None,
                      NotGiven] = NOT_GIVEN,
         multiagent: Union[MultiagentParams, None, NotGiven] = NOT_GIVEN,
@@ -20998,9 +21568,13 @@ async def create(
         multiagent: Union[MultiagentParams, None, NotGiven] = NOT_GIVEN,
         skills: Union[List[Union[QoderSkillParams, CustomSkillParams]], None,
                       NotGiven] = NOT_GIVEN,
-        tools: Union[List[Union[AgentToolset20260401Params, MCPToolsetParams,
-                                CustomToolParams]], None,
-                     NotGiven] = NOT_GIVEN,
+        tools: Union[
+            List[Union[AgentToolset20260401Params,
+                       BrowserToolset20260714Params, MCPToolsetParams,
+                       CustomToolParams]],
+            None,
+            NotGiven,
+        ] = NOT_GIVEN,
         betas: Union[List[str], None, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
         extra_query: Dict[str, Any] | None = None,
@@ -21051,9 +21625,13 @@ async def update(
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         skills: Union[List[Union[QoderSkillParams, CustomSkillParams]], None,
                       NotGiven] = NOT_GIVEN,
-        tools: Union[List[Union[AgentToolset20260401Params, MCPToolsetParams,
-                                CustomToolParams]], None,
-                     NotGiven] = NOT_GIVEN,
+        tools: Union[
+            List[Union[AgentToolset20260401Params,
+                       BrowserToolset20260714Params, MCPToolsetParams,
+                       CustomToolParams]],
+            None,
+            NotGiven,
+        ] = NOT_GIVEN,
         model: Union[Union[str, ModelConfigParams], None,
                      NotGiven] = NOT_GIVEN,
         multiagent: Union[MultiagentParams, None, NotGiven] = NOT_GIVEN,
@@ -27705,6 +28283,12 @@ class AgentToolUnion(BaseModel)
 
 #### mcp\_server\_name
 
+<a id="qca.managed.types.agent_tool_union.AgentToolUnion.permission_policy"></a>
+
+#### permission\_policy
+
+For MCP, the server-wide default is read from this top-level field, not default_config.
+
 <a id="qca.managed.types.agent_tool_union.AgentToolUnion.description"></a>
 
 #### description
@@ -27987,6 +28571,42 @@ class AlwaysAskPolicyParam(TypedDict)
 
 #### type
 
+<a id="qca.managed.types.always_deny_policy"></a>
+
+# qca.managed.types.always\_deny\_policy
+
+<a id="qca.managed.types.always_deny_policy.AlwaysDenyPolicy"></a>
+
+## AlwaysDenyPolicy
+
+```python
+class AlwaysDenyPolicy(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/always_deny_policy.py)
+
+<a id="qca.managed.types.always_deny_policy.AlwaysDenyPolicy.type"></a>
+
+#### type
+
+<a id="qca.managed.types.always_deny_policy_param"></a>
+
+# qca.managed.types.always\_deny\_policy\_param
+
+<a id="qca.managed.types.always_deny_policy_param.AlwaysDenyPolicyParam"></a>
+
+## AlwaysDenyPolicyParam
+
+```python
+class AlwaysDenyPolicyParam(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/always_deny_policy_param.py)
+
+<a id="qca.managed.types.always_deny_policy_param.AlwaysDenyPolicyParam.type"></a>
+
+#### type
+
 <a id="qca.managed.types.base64_document_source_param"></a>
 
 # qca.managed.types.base64\_document\_source\_param
@@ -28088,6 +28708,46 @@ class BranchCheckoutParam(TypedDict)
 #### name
 
 <a id="qca.managed.types.branch_checkout_param.BranchCheckoutParam.type"></a>
+
+#### type
+
+<a id="qca.managed.types.browser_toolset20260714"></a>
+
+# qca.managed.types.browser\_toolset20260714
+
+<a id="qca.managed.types.browser_toolset20260714.BrowserToolset20260714"></a>
+
+## BrowserToolset20260714
+
+```python
+class BrowserToolset20260714(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/browser_toolset20260714.py)
+
+Browser snapshot; future response fields remain available as extras.
+
+<a id="qca.managed.types.browser_toolset20260714.BrowserToolset20260714.type"></a>
+
+#### type
+
+<a id="qca.managed.types.browser_toolset20260714_params"></a>
+
+# qca.managed.types.browser\_toolset20260714\_params
+
+<a id="qca.managed.types.browser_toolset20260714_params.BrowserToolset20260714Params"></a>
+
+## BrowserToolset20260714Params
+
+```python
+class BrowserToolset20260714Params(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/browser_toolset20260714_params.py)
+
+Type-only toolset, gated by the browser-use-2026-07-14 beta header.
+
+<a id="qca.managed.types.browser_toolset20260714_params.BrowserToolset20260714Params.type"></a>
 
 #### type
 
@@ -28918,6 +29578,58 @@ class DeletedVault(BaseModel)
 <a id="qca.managed.types.deleted_vault.DeletedVault.type"></a>
 
 #### type
+
+<a id="qca.managed.types.deliver_artifacts_tool_config"></a>
+
+# qca.managed.types.deliver\_artifacts\_tool\_config
+
+<a id="qca.managed.types.deliver_artifacts_tool_config.DeliverArtifactsToolConfig"></a>
+
+## DeliverArtifactsToolConfig
+
+```python
+class DeliverArtifactsToolConfig(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/deliver_artifacts_tool_config.py)
+
+<a id="qca.managed.types.deliver_artifacts_tool_config.DeliverArtifactsToolConfig.name"></a>
+
+#### name
+
+<a id="qca.managed.types.deliver_artifacts_tool_config.DeliverArtifactsToolConfig.enabled"></a>
+
+#### enabled
+
+<a id="qca.managed.types.deliver_artifacts_tool_config.DeliverArtifactsToolConfig.permission_policy"></a>
+
+#### permission\_policy
+
+<a id="qca.managed.types.deliver_artifacts_tool_config_params"></a>
+
+# qca.managed.types.deliver\_artifacts\_tool\_config\_params
+
+<a id="qca.managed.types.deliver_artifacts_tool_config_params.DeliverArtifactsToolConfigParams"></a>
+
+## DeliverArtifactsToolConfigParams
+
+```python
+class DeliverArtifactsToolConfigParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/deliver_artifacts_tool_config_params.py)
+
+<a id="qca.managed.types.deliver_artifacts_tool_config_params.DeliverArtifactsToolConfigParams.name"></a>
+
+#### name
+
+<a id="qca.managed.types.deliver_artifacts_tool_config_params.DeliverArtifactsToolConfigParams.enabled"></a>
+
+#### enabled
+
+<a id="qca.managed.types.deliver_artifacts_tool_config_params.DeliverArtifactsToolConfigParams.permission_policy"></a>
+
+#### permission\_policy
 
 <a id="qca.managed.types.delta_content"></a>
 
@@ -31663,6 +32375,110 @@ class ImageBlockParam(TypedDict)
 
 #### type
 
+<a id="qca.managed.types.image_gen_tool_config"></a>
+
+# qca.managed.types.image\_gen\_tool\_config
+
+<a id="qca.managed.types.image_gen_tool_config.ImageGenToolConfig"></a>
+
+## ImageGenToolConfig
+
+```python
+class ImageGenToolConfig(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/image_gen_tool_config.py)
+
+<a id="qca.managed.types.image_gen_tool_config.ImageGenToolConfig.name"></a>
+
+#### name
+
+<a id="qca.managed.types.image_gen_tool_config.ImageGenToolConfig.enabled"></a>
+
+#### enabled
+
+<a id="qca.managed.types.image_gen_tool_config.ImageGenToolConfig.permission_policy"></a>
+
+#### permission\_policy
+
+<a id="qca.managed.types.image_gen_tool_config_params"></a>
+
+# qca.managed.types.image\_gen\_tool\_config\_params
+
+<a id="qca.managed.types.image_gen_tool_config_params.ImageGenToolConfigParams"></a>
+
+## ImageGenToolConfigParams
+
+```python
+class ImageGenToolConfigParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/image_gen_tool_config_params.py)
+
+<a id="qca.managed.types.image_gen_tool_config_params.ImageGenToolConfigParams.name"></a>
+
+#### name
+
+<a id="qca.managed.types.image_gen_tool_config_params.ImageGenToolConfigParams.enabled"></a>
+
+#### enabled
+
+<a id="qca.managed.types.image_gen_tool_config_params.ImageGenToolConfigParams.permission_policy"></a>
+
+#### permission\_policy
+
+<a id="qca.managed.types.image_search_tool_config"></a>
+
+# qca.managed.types.image\_search\_tool\_config
+
+<a id="qca.managed.types.image_search_tool_config.ImageSearchToolConfig"></a>
+
+## ImageSearchToolConfig
+
+```python
+class ImageSearchToolConfig(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/image_search_tool_config.py)
+
+<a id="qca.managed.types.image_search_tool_config.ImageSearchToolConfig.name"></a>
+
+#### name
+
+<a id="qca.managed.types.image_search_tool_config.ImageSearchToolConfig.enabled"></a>
+
+#### enabled
+
+<a id="qca.managed.types.image_search_tool_config.ImageSearchToolConfig.permission_policy"></a>
+
+#### permission\_policy
+
+<a id="qca.managed.types.image_search_tool_config_params"></a>
+
+# qca.managed.types.image\_search\_tool\_config\_params
+
+<a id="qca.managed.types.image_search_tool_config_params.ImageSearchToolConfigParams"></a>
+
+## ImageSearchToolConfigParams
+
+```python
+class ImageSearchToolConfigParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/image_search_tool_config_params.py)
+
+<a id="qca.managed.types.image_search_tool_config_params.ImageSearchToolConfigParams.name"></a>
+
+#### name
+
+<a id="qca.managed.types.image_search_tool_config_params.ImageSearchToolConfigParams.enabled"></a>
+
+#### enabled
+
+<a id="qca.managed.types.image_search_tool_config_params.ImageSearchToolConfigParams.permission_policy"></a>
+
+#### permission\_policy
+
 <a id="qca.managed.types.injection_location_params"></a>
 
 # qca.managed.types.injection\_location\_params
@@ -31913,6 +32729,8 @@ class MCPToolsetDefaultConfigParams(TypedDict)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/mcp_toolset_default_config_params.py)
 
+Legacy payload compatibility; MCP defaults use the toolset's top-level permission_policy.
+
 <a id="qca.managed.types.mcp_toolset_default_config_params.MCPToolsetDefaultConfigParams.enabled"></a>
 
 #### enabled
@@ -31920,6 +32738,8 @@ class MCPToolsetDefaultConfigParams(TypedDict)
 <a id="qca.managed.types.mcp_toolset_default_config_params.MCPToolsetDefaultConfigParams.permission_policy"></a>
 
 #### permission\_policy
+
+Retained as-is; this nested field does not set the MCP server-wide policy.
 
 <a id="qca.managed.types.mcp_toolset_params"></a>
 
@@ -31935,6 +32755,8 @@ class MCPToolsetParams(TypedDict)
 
 [[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/mcp_toolset_params.py)
 
+MCP governance reads the server-wide policy from top-level permission_policy.
+
 <a id="qca.managed.types.mcp_toolset_params.MCPToolsetParams.mcp_server_name"></a>
 
 #### mcp\_server\_name
@@ -31943,6 +32765,12 @@ class MCPToolsetParams(TypedDict)
 
 #### type
 
+<a id="qca.managed.types.mcp_toolset_params.MCPToolsetParams.permission_policy"></a>
+
+#### permission\_policy
+
+Server-wide default: always_allow, always_ask or always_deny; omission defaults to allow.
+
 <a id="qca.managed.types.mcp_toolset_params.MCPToolsetParams.configs"></a>
 
 #### configs
@@ -31950,6 +32778,8 @@ class MCPToolsetParams(TypedDict)
 <a id="qca.managed.types.mcp_toolset_params.MCPToolsetParams.default_config"></a>
 
 #### default\_config
+
+Legacy payload compatibility only; nested permission_policy does not set the MCP default.
 
 <a id="qca.managed.types.mcpo_auth_create_params"></a>
 
@@ -34419,6 +35249,12 @@ class SessionAgentToolUnion(BaseModel)
 
 #### mcp\_server\_name
 
+<a id="qca.managed.types.session_agent_tool_union.SessionAgentToolUnion.permission_policy"></a>
+
+#### permission\_policy
+
+For MCP, the server-wide default is read from this top-level field, not default_config.
+
 <a id="qca.managed.types.session_agent_tool_union.SessionAgentToolUnion.description"></a>
 
 #### description
@@ -36162,6 +36998,12 @@ class SessionThreadAgentToolUnion(BaseModel)
 <a id="qca.managed.types.session_thread_agent_tool_union.SessionThreadAgentToolUnion.mcp_server_name"></a>
 
 #### mcp\_server\_name
+
+<a id="qca.managed.types.session_thread_agent_tool_union.SessionThreadAgentToolUnion.permission_policy"></a>
+
+#### permission\_policy
+
+For MCP, the server-wide default is read from this top-level field, not default_config.
 
 <a id="qca.managed.types.session_thread_agent_tool_union.SessionThreadAgentToolUnion.description"></a>
 
@@ -38638,6 +39480,58 @@ class VaultSearchParams(TypedDict)
 <a id="qca.managed.types.vault_search_params.VaultSearchParams.betas"></a>
 
 #### betas
+
+<a id="qca.managed.types.video_gen_tool_config"></a>
+
+# qca.managed.types.video\_gen\_tool\_config
+
+<a id="qca.managed.types.video_gen_tool_config.VideoGenToolConfig"></a>
+
+## VideoGenToolConfig
+
+```python
+class VideoGenToolConfig(BaseModel)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/video_gen_tool_config.py)
+
+<a id="qca.managed.types.video_gen_tool_config.VideoGenToolConfig.name"></a>
+
+#### name
+
+<a id="qca.managed.types.video_gen_tool_config.VideoGenToolConfig.enabled"></a>
+
+#### enabled
+
+<a id="qca.managed.types.video_gen_tool_config.VideoGenToolConfig.permission_policy"></a>
+
+#### permission\_policy
+
+<a id="qca.managed.types.video_gen_tool_config_params"></a>
+
+# qca.managed.types.video\_gen\_tool\_config\_params
+
+<a id="qca.managed.types.video_gen_tool_config_params.VideoGenToolConfigParams"></a>
+
+## VideoGenToolConfigParams
+
+```python
+class VideoGenToolConfigParams(TypedDict)
+```
+
+[[view_source]](https://github.com/QoderAI/qoder-cloud-agents-sdk-python/blob/main/src/qca/managed/types/video_gen_tool_config_params.py)
+
+<a id="qca.managed.types.video_gen_tool_config_params.VideoGenToolConfigParams.name"></a>
+
+#### name
+
+<a id="qca.managed.types.video_gen_tool_config_params.VideoGenToolConfigParams.enabled"></a>
+
+#### enabled
+
+<a id="qca.managed.types.video_gen_tool_config_params.VideoGenToolConfigParams.permission_policy"></a>
+
+#### permission\_policy
 
 <a id="qca.managed.types.web_fetch_tool_config_params"></a>
 

@@ -7,6 +7,7 @@ from typing_extensions import Required, TypedDict
 if TYPE_CHECKING:
     from .always_allow_policy_param import AlwaysAllowPolicyParam
     from .always_ask_policy_param import AlwaysAskPolicyParam
+    from .always_deny_policy_param import AlwaysDenyPolicyParam
 
 __all__ = ["MCPToolConfigParams"]
 
@@ -14,4 +15,4 @@ __all__ = ["MCPToolConfigParams"]
 class MCPToolConfigParams(TypedDict, total=False):
     name: Required[str]
     enabled: Optional[bool]
-    permission_policy: Union[AlwaysAllowPolicyParam, AlwaysAskPolicyParam]
+    permission_policy: Union[AlwaysAllowPolicyParam, AlwaysAskPolicyParam, AlwaysDenyPolicyParam]

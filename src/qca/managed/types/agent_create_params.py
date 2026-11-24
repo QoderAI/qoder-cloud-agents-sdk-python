@@ -6,6 +6,7 @@ from typing_extensions import Required, TypedDict
 
 if TYPE_CHECKING:
     from .agent_toolset20260401_params import AgentToolset20260401Params
+    from .browser_toolset20260714_params import BrowserToolset20260714Params
     from .custom_skill_params import CustomSkillParams
     from .custom_tool_params import CustomToolParams
     from .mcp_toolset_params import MCPToolsetParams
@@ -27,5 +28,5 @@ class AgentCreateParams(TypedDict, total=False):
     metadata: Dict[str, str]
     multiagent: MultiagentParams
     skills: List[Union[QoderSkillParams, CustomSkillParams]]
-    tools: List[Union[AgentToolset20260401Params, MCPToolsetParams, CustomToolParams]]
+    tools: List[Union[AgentToolset20260401Params, BrowserToolset20260714Params, MCPToolsetParams, CustomToolParams]]
     betas: List[str]

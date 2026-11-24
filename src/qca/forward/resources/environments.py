@@ -10,6 +10,7 @@ from qca.common._types import NOT_GIVEN, NotGiven
 from qca.common._utils import make_request_options, path_template
 from qca.common.pagination import AsyncPaginator, SyncPage
 from qca.forward.types.environment import Environment
+from qca.forward.types.environment_config_param import EnvironmentConfigParam
 
 __all__ = ["Environments", "AsyncEnvironments"]
 
@@ -99,7 +100,7 @@ class Environments(SyncAPIResource):
         *,
         name: str,
         description: Union[str, None, NotGiven] = NOT_GIVEN,
-        config: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
+        config: Union[EnvironmentConfigParam, Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
         identity_id: Union[str, NotGiven] = NOT_GIVEN,
@@ -156,7 +157,7 @@ class Environments(SyncAPIResource):
         *,
         name: Union[str, None, NotGiven] = NOT_GIVEN,
         description: Union[str, None, NotGiven] = NOT_GIVEN,
-        config: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
+        config: Union[EnvironmentConfigParam, Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
@@ -322,7 +323,7 @@ class AsyncEnvironments(AsyncAPIResource):
         *,
         name: str,
         description: Union[str, None, NotGiven] = NOT_GIVEN,
-        config: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
+        config: Union[EnvironmentConfigParam, Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         idempotency_key: Union[str, None, NotGiven] = NOT_GIVEN,
         identity_id: Union[str, NotGiven] = NOT_GIVEN,
@@ -379,7 +380,7 @@ class AsyncEnvironments(AsyncAPIResource):
         *,
         name: Union[str, None, NotGiven] = NOT_GIVEN,
         description: Union[str, None, NotGiven] = NOT_GIVEN,
-        config: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
+        config: Union[EnvironmentConfigParam, Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         identity_id: Union[str, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,

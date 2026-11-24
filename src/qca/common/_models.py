@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import date, datetime
 from types import UnionType
-from typing import Annotated, Any, Union, get_args, get_origin
+from typing import Annotated, Any, Literal, Union, get_args, get_origin
 
 from pydantic import BaseModel as PydanticBaseModel
 from pydantic import ConfigDict, PrivateAttr, TypeAdapter, ValidationError
@@ -33,6 +33,35 @@ def _construct_response(cast_to: Any, data: Any) -> Any:
         try:
             return TypeAdapter(cast_to).validate_python(data)
         except (ValidationError, ValueError):
+            if isinstance(data, dict):
+                fallback = None
+                has_discriminator = False
+                for candidate in args:
+                    model = get_args(candidate)[0] if get_origin(candidate) is Annotated else candidate
+                    if not isinstance(model, type) or not issubclass(model, BaseModel):
+                        continue
+                    model.model_rebuild()
+                    discriminators = []
+                    for name, field in model.model_fields.items():
+                        if name not in ("type", "name") and field.alias not in ("type", "name"):
+                            continue
+                        annotation = field.annotation
+                        if get_origin(annotation) in (Union, UnionType):
+                            non_null = [arg for arg in get_args(annotation) if arg is not type(None)]
+                            if len(non_null) != 1:
+                                continue
+                            annotation = non_null[0]
+                        if get_origin(annotation) is Literal:
+                            key = field.alias if field.alias in data else name
+                            discriminators.append((key, get_args(annotation)))
+                    if discriminators:
+                        has_discriminator = True
+                        if all(key in data and data[key] in values for key, values in discriminators):
+                            return _construct_response(candidate, data)
+                    elif fallback is None:
+                        fallback = candidate
+                if has_discriminator and fallback is not None:
+                    return _construct_response(fallback, data)
             return _construct_response(args[0], data)
     if origin is dict and isinstance(data, dict):
         return {key: _construct_response(args[1] if args else Any, value) for key, value in data.items()}

@@ -13,6 +13,7 @@ from qca.common.pagination import AsyncPaginator, SyncPage
 from qca.managed.resources.agents.versions import AsyncVersions, Versions
 from qca.managed.types.agent import Agent
 from qca.managed.types.agent_toolset20260401_params import AgentToolset20260401Params
+from qca.managed.types.browser_toolset20260714_params import BrowserToolset20260714Params
 from qca.managed.types.custom_skill_params import CustomSkillParams
 from qca.managed.types.custom_tool_params import CustomToolParams
 from qca.managed.types.mcp_toolset_params import MCPToolsetParams
@@ -42,7 +43,9 @@ class Agents(SyncAPIResource):
         multiagent: Union[MultiagentParams, None, NotGiven] = NOT_GIVEN,
         skills: Union[List[Union[QoderSkillParams, CustomSkillParams]], None, NotGiven] = NOT_GIVEN,
         tools: Union[
-            List[Union[AgentToolset20260401Params, MCPToolsetParams, CustomToolParams]], None, NotGiven
+            List[Union[AgentToolset20260401Params, BrowserToolset20260714Params, MCPToolsetParams, CustomToolParams]],
+            None,
+            NotGiven,
         ] = NOT_GIVEN,
         betas: Union[List[str], None, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
@@ -111,7 +114,9 @@ class Agents(SyncAPIResource):
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         skills: Union[List[Union[QoderSkillParams, CustomSkillParams]], None, NotGiven] = NOT_GIVEN,
         tools: Union[
-            List[Union[AgentToolset20260401Params, MCPToolsetParams, CustomToolParams]], None, NotGiven
+            List[Union[AgentToolset20260401Params, BrowserToolset20260714Params, MCPToolsetParams, CustomToolParams]],
+            None,
+            NotGiven,
         ] = NOT_GIVEN,
         model: Union[Union[str, ModelConfigParams], None, NotGiven] = NOT_GIVEN,
         multiagent: Union[MultiagentParams, None, NotGiven] = NOT_GIVEN,
@@ -266,7 +271,9 @@ class AsyncAgents(AsyncAPIResource):
         multiagent: Union[MultiagentParams, None, NotGiven] = NOT_GIVEN,
         skills: Union[List[Union[QoderSkillParams, CustomSkillParams]], None, NotGiven] = NOT_GIVEN,
         tools: Union[
-            List[Union[AgentToolset20260401Params, MCPToolsetParams, CustomToolParams]], None, NotGiven
+            List[Union[AgentToolset20260401Params, BrowserToolset20260714Params, MCPToolsetParams, CustomToolParams]],
+            None,
+            NotGiven,
         ] = NOT_GIVEN,
         betas: Union[List[str], None, NotGiven] = NOT_GIVEN,
         extra_headers: Dict[str, str] | None = None,
@@ -335,7 +342,9 @@ class AsyncAgents(AsyncAPIResource):
         metadata: Union[Dict[str, Any], None, NotGiven] = NOT_GIVEN,
         skills: Union[List[Union[QoderSkillParams, CustomSkillParams]], None, NotGiven] = NOT_GIVEN,
         tools: Union[
-            List[Union[AgentToolset20260401Params, MCPToolsetParams, CustomToolParams]], None, NotGiven
+            List[Union[AgentToolset20260401Params, BrowserToolset20260714Params, MCPToolsetParams, CustomToolParams]],
+            None,
+            NotGiven,
         ] = NOT_GIVEN,
         model: Union[Union[str, ModelConfigParams], None, NotGiven] = NOT_GIVEN,
         multiagent: Union[MultiagentParams, None, NotGiven] = NOT_GIVEN,

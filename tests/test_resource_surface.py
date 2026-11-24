@@ -39,7 +39,12 @@ def test_contract_fixture_has_pinned_provenance():
         "commit": "bc5bc655d70b67fcd88623320ac01896a7360d8a",
         "captured_at": "2026-09-22",
     }
-    assert len(CONTRACT_FIXTURE["contracts"]) == 253
+    assert len(CONTRACT_FIXTURE["contracts"]) == 254
+    card = next(row for row in CONTRACT_FIXTURE["contracts"] if row["id"] == "forward.templates.retrieve_agent_card")
+    assert card["source"] == {
+        "documentation": "https://docs.qoder.com/cloud-agents/a2a-integration",
+        "service_test": "forward-current/internal/handler/a2a/handler_test.go:288-315",
+    }
 
 
 @pytest.mark.parametrize("endpoint", ENDPOINTS, ids=endpoint_id)

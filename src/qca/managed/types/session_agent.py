@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING, List, Optional, Union
 from qca.common._models import BaseModel
 
 if TYPE_CHECKING:
+    from .browser_toolset20260714 import BrowserToolset20260714
     from .mcp_server_url_definition import MCPServerURLDefinition
     from .model_config import ModelConfig
     from .session_agent_skill_union import SessionAgentSkillUnion
@@ -23,6 +24,6 @@ class SessionAgent(BaseModel):
     name: Optional[str] = None
     skills: Optional[List[SessionAgentSkillUnion]] = None
     system: Optional[str] = None
-    tools: Optional[List[SessionAgentToolUnion]] = None
+    tools: Optional[List[Union[BrowserToolset20260714, SessionAgentToolUnion]]] = None
     type: Optional[str] = None
     version: Optional[int] = None

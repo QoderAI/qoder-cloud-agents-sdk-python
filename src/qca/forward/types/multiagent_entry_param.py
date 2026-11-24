@@ -8,6 +8,7 @@ __all__ = ["MultiagentEntryParam"]
 
 
 class MultiagentEntryParam(TypedDict, total=False):
+    id: Optional[str]
     type: Required[str]
     model: str
     template_id: Optional[str]
