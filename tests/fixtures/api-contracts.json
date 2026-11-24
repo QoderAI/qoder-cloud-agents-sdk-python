@@ -924,6 +924,19 @@
       "kind": "model"
     },
     {
+      "id": "forward.templates.retrieve_agent_card",
+      "method": "GET",
+      "path": "/templates/{template_id}/a2a/agent-card.json",
+      "required": [
+        "template_id"
+      ],
+      "kind": "model",
+      "source": {
+        "documentation": "https://docs.qoder.com/cloud-agents/a2a-integration",
+        "service_test": "forward-current/internal/handler/a2a/handler_test.go:288-315"
+      }
+    },
+    {
       "id": "forward.templates.update",
       "method": "POST",
       "path": "/templates/{template_id}",

@@ -8,6 +8,7 @@ from qca.common._models import BaseModel
 if TYPE_CHECKING:
     from .agent_skill_union import AgentSkillUnion
     from .agent_tool_union import AgentToolUnion
+    from .browser_toolset20260714 import BrowserToolset20260714
     from .mcp_server_url_definition import MCPServerURLDefinition
     from .model_config import ModelConfig
     from .multiagent import Multiagent
@@ -27,7 +28,7 @@ class Agent(BaseModel):
     name: Optional[str] = None
     skills: Optional[List[AgentSkillUnion]] = None
     system: Optional[str] = None
-    tools: Optional[List[AgentToolUnion]] = None
+    tools: Optional[List[Union[BrowserToolset20260714, AgentToolUnion]]] = None
     type: Optional[str] = None
     updated_at: Optional[datetime] = None
     version: Optional[int] = None

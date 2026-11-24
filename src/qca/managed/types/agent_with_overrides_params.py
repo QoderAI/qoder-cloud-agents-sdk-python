@@ -6,6 +6,7 @@ from typing_extensions import Required, TypedDict
 
 if TYPE_CHECKING:
     from .agent_toolset20260401_params import AgentToolset20260401Params
+    from .browser_toolset20260714_params import BrowserToolset20260714Params
     from .custom_skill_params import CustomSkillParams
     from .custom_tool_params import CustomToolParams
     from .mcp_toolset_params import MCPToolsetParams
@@ -24,4 +25,4 @@ class AgentWithOverridesParams(TypedDict, total=False):
     mcp_servers: List[URLMCPServerParams]
     model: Union[str, ModelConfigParams]
     skills: List[Union[QoderSkillParams, CustomSkillParams]]
-    tools: List[Union[AgentToolset20260401Params, MCPToolsetParams, CustomToolParams]]
+    tools: List[Union[AgentToolset20260401Params, BrowserToolset20260714Params, MCPToolsetParams, CustomToolParams]]

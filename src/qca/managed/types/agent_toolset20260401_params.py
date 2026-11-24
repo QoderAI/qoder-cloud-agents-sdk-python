@@ -7,10 +7,14 @@ from typing_extensions import Required, TypedDict
 if TYPE_CHECKING:
     from .agent_toolset_default_config_params import AgentToolsetDefaultConfigParams
     from .bash_tool_config_params import BashToolConfigParams
+    from .deliver_artifacts_tool_config_params import DeliverArtifactsToolConfigParams
     from .edit_tool_config_params import EditToolConfigParams
     from .glob_tool_config_params import GlobToolConfigParams
     from .grep_tool_config_params import GrepToolConfigParams
+    from .image_gen_tool_config_params import ImageGenToolConfigParams
+    from .image_search_tool_config_params import ImageSearchToolConfigParams
     from .read_tool_config_params import ReadToolConfigParams
+    from .video_gen_tool_config_params import VideoGenToolConfigParams
     from .web_fetch_tool_config_params import WebFetchToolConfigParams
     from .web_search_tool_config_params import WebSearchToolConfigParams
     from .write_tool_config_params import WriteToolConfigParams
@@ -32,6 +36,10 @@ class AgentToolset20260401Params(TypedDict, total=False):
             GrepToolConfigParams,
             WebFetchToolConfigParams,
             WebSearchToolConfigParams,
+            ImageGenToolConfigParams,
+            ImageSearchToolConfigParams,
+            VideoGenToolConfigParams,
+            DeliverArtifactsToolConfigParams,
         ]
     ]
     default_config: AgentToolsetDefaultConfigParams

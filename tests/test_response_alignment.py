@@ -3,6 +3,7 @@ from __future__ import annotations
 import inspect
 from datetime import date, datetime, timezone
 from email.utils import formatdate
+from typing import Literal, Optional, Union
 
 import httpx
 import pytest
@@ -307,3 +308,70 @@ def test_lenient_construction_preserves_invalid_container_and_date_fields():
     assert result.by_name == []
     assert result.created_at == "not-a-date"
     assert result.day == "not-a-day"
+
+
+class TaggedChild(Child):
+    type: Optional[Literal["tagged"]] = None
+
+
+class NamedChild(Child):
+    name: Literal["named"] | None = None
+
+
+class AliasedChild(Child):
+    kind: Optional[Literal["tagged"]] = Field(default=None, alias="type")
+
+
+@pytest.mark.parametrize("cast_to", [TaggedChild | NamedChild | Child, NamedChild | TaggedChild | Child])
+@pytest.mark.parametrize(
+    "discriminator,expected",
+    [
+        ({"type": "tagged"}, TaggedChild),
+        ({"name": "named"}, NamedChild),
+        ({"type": "future"}, Child),
+        ({"name": "future"}, Child),
+        ({}, Child),
+        ({"type": None, "name": None}, Child),
+    ],
+)
+def test_lenient_union_uses_optional_literal_discriminators(cast_to, discriminator, expected):
+    payload = {"count": "future-count", **discriminator}
+    result = parse_response(cast_to, payload, httpx.Response(200))
+    assert type(result) is expected
+    assert result.count == "future-count"
+    for key, value in discriminator.items():
+        assert getattr(result, key) == value
+
+
+@pytest.mark.parametrize("value,expected", [("tagged", AliasedChild), ("future", Child), (None, Child)])
+def test_lenient_union_uses_aliased_literal_discriminator(value, expected):
+    result = parse_response(AliasedChild | Child, {"type": value, "count": "future-count"}, httpx.Response(200))
+    assert type(result) is expected
+    assert result.count == "future-count"
+    assert (result.kind if isinstance(result, AliasedChild) else result.type) == value
+
+
+@pytest.mark.parametrize("cast_to", [Union[int, str], int | str])
+@pytest.mark.parametrize(
+    "value,expected",
+    [(1, 1), ("2", "2"), (True, 1), (2.0, 2), (2.5, 2.5), (["new"], ["new"]), ({"new": True}, {"new": True})],
+)
+def test_lenient_scalar_union_keeps_validation_and_fallback_behavior(cast_to, value, expected):
+    result = parse_response(cast_to, value, httpx.Response(200))
+    assert result == expected
+    assert type(result) is type(expected)
+
+
+@pytest.mark.parametrize("cast_to", [Union[str, Child], str | Child])
+def test_lenient_untagged_scalar_model_union_keeps_first_branch_fallback(cast_to):
+    payload = {"count": "future-count"}
+    result = parse_response(cast_to, payload, httpx.Response(200))
+    assert result is payload
+
+
+@pytest.mark.parametrize("cast_to", [list[Child] | str, Child | str])
+def test_lenient_union_list_fallback_still_recurses(cast_to):
+    result = parse_response(cast_to, [{"count": "future-count"}, "new", 123], httpx.Response(200))
+    assert isinstance(result[0], Child)
+    assert result[0].count == "future-count"
+    assert result[1:] == ["new", 123]

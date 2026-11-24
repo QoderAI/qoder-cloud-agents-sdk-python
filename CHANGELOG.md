@@ -5,9 +5,37 @@ existing `0.1.0` release; earlier development prereleases are not listed.
 
 ## [Unreleased]
 
+### Added
+
+- Add Forward Session `auto_title` on creation and nullable `config.multiagent` on update. Omit `auto_title` for the server's false default; when true, omit `title` entirely. Clearing a roster with `None` does not restore Template inheritance, and create config still does not accept a roster.
+- Add independent Forward Template A2A publication settings and synchronous/asynchronous `templates.retrieve_agent_card()` discovery for A2A 0.3 and 1.0, with typed protocol fields and unknown-field preservation. PAT callers can select a runtime Identity; SAT callers omit it. No task invocation client is included.
+- Add typed Forward Environment config, packages and OSS bucket storage with separate write credentials and safe read models. Updates replace the whole config; omit a bucket credential to retain it, or use `buckets=[]` to remove future mounts without changing existing Sessions. Forward supports up to seven buckets through the existing `oss-bucket-2026-09-23` beta header.
+- Add Managed `AlwaysDenyPolicy`/`AlwaysDenyPolicyParam` and `always_deny` to all built-in and MCP request policy unions, including defaults.
+- Add Managed ImageGen, ImageSearch, VideoGen and DeliverArtifacts config types with required canonical or supported snake-case names. Add type-only BrowserToolset20260714 request/response types across Agent and Session snapshots; use the existing `betas=["browser-use-2026-07-14"]` option when configuring Browser Use.
+
 ### Fixed
 
+- Preserve historical string `configs[].permission_policy` values when leniently parsing Managed Agent, Session and Thread tool snapshots. Tools and configs retain model attribute access instead of becoming Browser models or raw dictionaries; known Browser/media variants keep their concrete types and strict validation still rejects invalid payloads.
+- Expose Managed MCP toolsets' top-level `permission_policy` in requests and Agent/Session/Thread responses, including `always_deny` without `configs`. Set server-wide defaults here: nested `default_config.permission_policy` is retained unchanged for compatibility but does not set the MCP default; omitting the top-level policy defaults to allow.
 - Accept `"latest"` and positive integer strings for child Agent `version` in Managed Agent multiagent rosters through the new `MultiagentAgentParams` type, and parse saved `"latest"` versions in Agent responses, including with `_strict_response_validation=True`. `MultiagentAgentUnion.version` is now typed `int | str`; Session and Deployment Agent references keep numeric versions.
+
+### Breaking changes
+
+- Managed Agent, Session and Thread tool snapshots now return `BrowserToolset20260714` for Browser entries instead of a generic tool model. Browser supports only `type`, so attributes such as `configs` and `mcp_server_name` are not available on that variant.
+
+### Migration
+
+- Check each tool's variant before reading toolset-specific fields. The same branching applies to Agent, Session and Thread snapshots in synchronous and asynchronous clients:
+
+```python
+from qca.managed.types import BrowserToolset20260714
+
+for tool in agent.tools or []:
+    if isinstance(tool, BrowserToolset20260714):
+        continue
+    for config in tool.configs or []:
+        print(config.name)
+```
 
 ## [0.15.0]
 

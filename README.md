@@ -173,6 +173,114 @@ See the official [Forward](https://docs.qoder.com/cloud-agents/api/forward/envir
 and [Managed](https://docs.qoder.com/cloud-agents/api/environments/schemas#environment-startup-script)
 contracts.
 
+## Capability configuration
+
+These functions are runnable with an authenticated client and accessible resource
+IDs. All calls also have async counterparts. The SDK leaves service validation
+and merge semantics to the API; no model execution is needed for Card discovery.
+
+```python
+from qca import Forward
+from qca.forward.types import A2AConfigParam
+
+
+def configure_forward(client: Forward, template_id: str, identity_id: str) -> None:
+    publication: A2AConfigParam = {
+        "enabled": True,
+        "description": "Summarize supplied text",
+        "skills": [{"id": "summary", "name": "Summarize", "description": "Summarize text"}],
+    }
+    client.templates.update(template_id, a2a=publication)
+    card = client.templates.retrieve_agent_card(
+        template_id, identity_id=identity_id, a2a_version="1.0"
+    )
+    print(card.name, card.default_input_modes, card.supported_interfaces)
+    session = client.sessions.create(
+        template_id=template_id, identity_id=identity_id, auto_title=True
+    )  # Do not supply title, even None, when auto_title is true.
+    client.sessions.update(session.id, config={"multiagent": None})
+```
+
+Omitting `auto_title` uses the server's false default. Session update roster
+omission keeps the current roster; `None` clears it without restoring inheritance.
+Do not put `multiagent` in Session create config. Template `a2a` is independent
+of `multiagent`: omitted members or `{}` keep saved A2A settings, `skills=[]`
+clears advertised skills, and `a2a=None` clears/disables publication. Individual
+A2A members cannot be null. Card fields use Python snake-case attributes with
+wire aliases (`defaultInputModes`, `supportedInterfaces`); unknown fields are
+retained. With SAT, omit `identity_id` from Card retrieval. The SDK does not
+invoke A2A tasks or follow URLs from Cards.
+
+```python
+from qca import Forward
+from qca.forward.types import EnvironmentConfigParam
+
+
+def mount_oss(client: Forward, environment_id: str, bucket: str, role_arn: str) -> None:
+    config: EnvironmentConfigParam = {
+        "type": "cloud",
+        "storage": {"buckets": [{
+            "name": "datasets", "provider": "aliyun-oss", "region": "cn-hangzhou",
+            "bucket": bucket, "access": "read_only",
+            "credential": {"type": "ram_role", "role_arn": role_arn},
+        }]},
+    }
+    env = client.environments.update(
+        environment_id, config=config,
+        extra_headers={"X-Qoder-Beta": "oss-bucket-2026-09-23"},
+    )
+    print(env.config.storage.buckets[0].credential.type)
+```
+
+Forward supports up to seven cloud bucket mounts. Config updates replace the
+whole config, so retain any packages/scripts you still need. New buckets require
+credentials; updates may omit `credential` to keep stored credentials. Responses
+expose only credential type and an optional masked AccessKey ID, never a secret
+or role ARN. `storage={"buckets": []}` removes mounts for future Sessions;
+existing Session snapshots are unchanged.
+
+```python
+from qca import Managed
+from qca.managed.types import AgentToolset20260401Params, BrowserToolset20260714Params, MCPToolsetParams
+
+
+def configure_tools(client: Managed, agent_id: str) -> None:
+    builtins: AgentToolset20260401Params = {
+        "type": "agent_toolset_20260401",
+        "enabled_tools": ["ImageGen", "ImageSearch", "DeliverArtifacts"],
+        "default_config": {"permission_policy": {"type": "always_deny"}},
+        "configs": [
+            {"name": "ImageGen", "permission_policy": {"type": "always_ask"}},
+            {"name": "ImageSearch", "permission_policy": {"type": "always_allow"}},
+            {"name": "VideoGen", "enabled": False},
+            {"name": "DeliverArtifacts", "permission_policy": {"type": "always_ask"}},
+        ],
+    }
+    mcp: MCPToolsetParams = {
+        "type": "mcp_toolset",
+        "mcp_server_name": "weather",
+        "permission_policy": {"type": "always_deny"},
+    }
+    browser: BrowserToolset20260714Params = {"type": "browser_toolset_20260714"}
+    client.agents.update(
+        agent_id, tools=[builtins, mcp, browser], betas=["browser-use-2026-07-14"]
+    )
+```
+
+Media config entries require `name` (canonical name or supported snake-case
+alias); generation prompts and media parameters belong in Session messages, not
+tool config. Browser request entries contain only `type`, not `enabled` or
+`configs`. Agent updates do not require `version` and affect future Session
+snapshots, not existing ones.
+
+For MCP, set the server-wide default in the toolset's **top-level**
+`permission_policy`: `always_allow`, `always_ask`, or `always_deny`, even without
+`configs`. Use `configs[].permission_policy` for per-tool policies. Omitting the
+top-level policy defaults to allow, not the built-in tool default.
+`default_config` remains available for raw payload compatibility, but its nested
+`permission_policy` does not set the MCP server-wide default. The example assumes
+`weather` is already configured in the Agent's `mcp_servers`.
+
 ## Streaming
 
 Streaming responses are consumed incrementally. Close the stream when finished and handle interruption explicitly; closing a local stream does not cancel server-side work.
@@ -215,6 +323,12 @@ except APIStatusError as exc:
 ## Response validation
 
 By default, responses are constructed into models without requiring every field to match the declared schema, matching Anthropic's Python SDK. Nested objects are still converted to models and unknown fields are retained. Unexpected field values may keep their original type, so type annotations describe the expected API schema rather than guaranteeing the runtime value.
+
+Managed Agent, Session and Thread snapshots with historical string
+`configs[].permission_policy` values keep tool/config model attribute access and
+preserve those strings unchanged. Known Browser and media variants retain their
+concrete response classes; unknown tools use the generic model. This compatibility
+does not relax strict response validation.
 
 To require Pydantic response validation and raise `APIResponseValidationError` on a schema mismatch, enable the constructor option:
 

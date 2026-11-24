@@ -17,6 +17,8 @@ class SessionCreateParams(TypedDict, total=False):
     budget: Optional[BudgetLimitParam]
     identity_id: Required[str]
     template_id: Required[str]
+    auto_title: bool
+    """Omit for false. When true, do not supply title (including null)."""
     title: Optional[str]
     metadata: Dict[str, Any]
     config: SessionCreateParamsConfigParam

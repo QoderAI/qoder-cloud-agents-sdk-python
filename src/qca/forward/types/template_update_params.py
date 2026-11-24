@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 from typing_extensions import TypedDict
 
 if TYPE_CHECKING:
+    from .a2a_config_param import A2AConfigParam
     from .git_hub_repository_param import GitHubRepositoryParam
     from .managed_tool_config_param import ManagedToolConfigParam
     from .mcp_server_param import MCPServerParam
@@ -28,6 +29,7 @@ class TemplateUpdateParams(TypedDict, total=False):
     mcp_servers: List[MCPServerParam]
     skills: List[SkillBindingParam]
     multiagent: MultiagentConfigParam
+    a2a: Optional[A2AConfigParam]
     environment_id: Optional[str]
     tunnel_id: Optional[str]
     vaults: Dict[str, ResourceBindingParam]

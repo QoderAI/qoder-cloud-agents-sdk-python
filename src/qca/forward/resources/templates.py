@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Literal, Union
 
 import httpx
 
@@ -8,6 +8,8 @@ from qca.common._resource import AsyncAPIResource, SyncAPIResource
 from qca.common._types import NOT_GIVEN, NotGiven
 from qca.common._utils import make_request_options, path_template
 from qca.common.pagination import AsyncPaginator, SyncPage
+from qca.forward.types.a2a_config_param import A2AConfigParam
+from qca.forward.types.agent_card import AgentCard
 from qca.forward.types.git_hub_repository_param import GitHubRepositoryParam
 from qca.forward.types.managed_tool_config_param import ManagedToolConfigParam
 from qca.forward.types.mcp_server_param import MCPServerParam
@@ -60,6 +62,7 @@ class Templates(SyncAPIResource):
         mcp_servers: Union[List[MCPServerParam], None, NotGiven] = NOT_GIVEN,
         skills: Union[List[SkillBindingParam], None, NotGiven] = NOT_GIVEN,
         multiagent: Union[MultiagentConfigParam, None, NotGiven] = NOT_GIVEN,
+        a2a: Union[A2AConfigParam, None, NotGiven] = NOT_GIVEN,
         max_tool_rounds: Union[int, None, NotGiven] = NOT_GIVEN,
         managed_tool_config: Union[ManagedToolConfigParam, None, NotGiven] = NOT_GIVEN,
         vaults: Union[Dict[str, ResourceBindingParam], None, NotGiven] = NOT_GIVEN,
@@ -88,6 +91,7 @@ class Templates(SyncAPIResource):
                 "mcp_servers": mcp_servers,
                 "skills": skills,
                 "multiagent": multiagent,
+                "a2a": a2a,
                 "max_tool_rounds": max_tool_rounds,
                 "managed_tool_config": managed_tool_config,
                 "vaults": vaults,
@@ -127,6 +131,30 @@ class Templates(SyncAPIResource):
         )
         return self._client.request("GET", _path, cast_to=Template, options=options)
 
+    def retrieve_agent_card(
+        self,
+        template_id: str,
+        *,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
+        a2a_version: Union[Literal["0.3", "1.0"], NotGiven] = NOT_GIVEN,
+        extra_headers: Dict[str, str] | None = None,
+        extra_query: Dict[str, Any] | None = None,
+        extra_body: Dict[str, Any] | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
+    ) -> AgentCard:
+        """GET /templates/{template_id}/a2a/agent-card.json. Omit identity_id with SAT; version defaults to 0.3."""
+        _path = path_template("/templates/{template_id}/a2a/agent-card.json", template_id=template_id)
+        options = make_request_options(
+            body={},
+            query={"identity_id": identity_id},
+            headers={"A2A-Version": a2a_version},
+            extra_headers=extra_headers,
+            extra_query=extra_query,
+            extra_body=extra_body,
+            timeout=timeout,
+        )
+        return self._client.request("GET", _path, cast_to=AgentCard, options=options)
+
     def update(
         self,
         template_id: str,
@@ -139,6 +167,7 @@ class Templates(SyncAPIResource):
         mcp_servers: Union[List[MCPServerParam], None, NotGiven] = NOT_GIVEN,
         skills: Union[List[SkillBindingParam], None, NotGiven] = NOT_GIVEN,
         multiagent: Union[MultiagentConfigParam, None, NotGiven] = NOT_GIVEN,
+        a2a: Union[A2AConfigParam, None, NotGiven] = NOT_GIVEN,
         max_tool_rounds: Union[int, None, NotGiven] = NOT_GIVEN,
         managed_tool_config: Union[ManagedToolConfigParam, None, NotGiven] = NOT_GIVEN,
         environment_id: Union[str, None, NotGiven] = NOT_GIVEN,
@@ -167,6 +196,7 @@ class Templates(SyncAPIResource):
                 "mcp_servers": mcp_servers,
                 "skills": skills,
                 "multiagent": multiagent,
+                "a2a": a2a,
                 "max_tool_rounds": max_tool_rounds,
                 "managed_tool_config": managed_tool_config,
                 "environment_id": environment_id,
@@ -276,6 +306,7 @@ class AsyncTemplates(AsyncAPIResource):
         mcp_servers: Union[List[MCPServerParam], None, NotGiven] = NOT_GIVEN,
         skills: Union[List[SkillBindingParam], None, NotGiven] = NOT_GIVEN,
         multiagent: Union[MultiagentConfigParam, None, NotGiven] = NOT_GIVEN,
+        a2a: Union[A2AConfigParam, None, NotGiven] = NOT_GIVEN,
         max_tool_rounds: Union[int, None, NotGiven] = NOT_GIVEN,
         managed_tool_config: Union[ManagedToolConfigParam, None, NotGiven] = NOT_GIVEN,
         vaults: Union[Dict[str, ResourceBindingParam], None, NotGiven] = NOT_GIVEN,
@@ -304,6 +335,7 @@ class AsyncTemplates(AsyncAPIResource):
                 "mcp_servers": mcp_servers,
                 "skills": skills,
                 "multiagent": multiagent,
+                "a2a": a2a,
                 "max_tool_rounds": max_tool_rounds,
                 "managed_tool_config": managed_tool_config,
                 "vaults": vaults,
@@ -343,6 +375,30 @@ class AsyncTemplates(AsyncAPIResource):
         )
         return await self._client.request("GET", _path, cast_to=Template, options=options)
 
+    async def retrieve_agent_card(
+        self,
+        template_id: str,
+        *,
+        identity_id: Union[str, NotGiven] = NOT_GIVEN,
+        a2a_version: Union[Literal["0.3", "1.0"], NotGiven] = NOT_GIVEN,
+        extra_headers: Dict[str, str] | None = None,
+        extra_query: Dict[str, Any] | None = None,
+        extra_body: Dict[str, Any] | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
+    ) -> AgentCard:
+        """GET /templates/{template_id}/a2a/agent-card.json. Omit identity_id with SAT; version defaults to 0.3."""
+        _path = path_template("/templates/{template_id}/a2a/agent-card.json", template_id=template_id)
+        options = make_request_options(
+            body={},
+            query={"identity_id": identity_id},
+            headers={"A2A-Version": a2a_version},
+            extra_headers=extra_headers,
+            extra_query=extra_query,
+            extra_body=extra_body,
+            timeout=timeout,
+        )
+        return await self._client.request("GET", _path, cast_to=AgentCard, options=options)
+
     async def update(
         self,
         template_id: str,
@@ -355,6 +411,7 @@ class AsyncTemplates(AsyncAPIResource):
         mcp_servers: Union[List[MCPServerParam], None, NotGiven] = NOT_GIVEN,
         skills: Union[List[SkillBindingParam], None, NotGiven] = NOT_GIVEN,
         multiagent: Union[MultiagentConfigParam, None, NotGiven] = NOT_GIVEN,
+        a2a: Union[A2AConfigParam, None, NotGiven] = NOT_GIVEN,
         max_tool_rounds: Union[int, None, NotGiven] = NOT_GIVEN,
         managed_tool_config: Union[ManagedToolConfigParam, None, NotGiven] = NOT_GIVEN,
         environment_id: Union[str, None, NotGiven] = NOT_GIVEN,
@@ -383,6 +440,7 @@ class AsyncTemplates(AsyncAPIResource):
                 "mcp_servers": mcp_servers,
                 "skills": skills,
                 "multiagent": multiagent,
+                "a2a": a2a,
                 "max_tool_rounds": max_tool_rounds,
                 "managed_tool_config": managed_tool_config,
                 "environment_id": environment_id,

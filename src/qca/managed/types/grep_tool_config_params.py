@@ -7,12 +7,13 @@ from typing_extensions import TypedDict
 if TYPE_CHECKING:
     from .always_allow_policy_param import AlwaysAllowPolicyParam
     from .always_ask_policy_param import AlwaysAskPolicyParam
+    from .always_deny_policy_param import AlwaysDenyPolicyParam
 
 __all__ = ["GrepToolConfigParams"]
 
 
 class GrepToolConfigParams(TypedDict, total=False):
     enabled: Optional[bool]
-    permission_policy: Union[AlwaysAllowPolicyParam, AlwaysAskPolicyParam]
+    permission_policy: Union[AlwaysAllowPolicyParam, AlwaysAskPolicyParam, AlwaysDenyPolicyParam]
     type: Literal["grep"]
     name: Literal["grep"]

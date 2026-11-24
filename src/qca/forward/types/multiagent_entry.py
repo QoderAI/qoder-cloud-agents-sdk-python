@@ -8,6 +8,7 @@ __all__ = ["MultiagentEntry"]
 
 
 class MultiagentEntry(BaseModel):
+    id: Optional[str] = None
     type: Optional[str] = None
     model: Optional[str] = None
     template_id: Optional[str] = None

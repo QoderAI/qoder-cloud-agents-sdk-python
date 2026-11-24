@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 from qca.common._models import BaseModel
 
 if TYPE_CHECKING:
+    from .a2a_config import A2AConfig
     from .git_hub_repository import GitHubRepository
     from .managed_tool_config import ManagedToolConfig
     from .mcp_server import MCPServer
@@ -30,6 +31,7 @@ class Template(BaseModel):
     updated_at: Optional[datetime] = None
     model: Optional[Union[str, ModelConfig]] = None
     multiagent: Optional[MultiagentConfig] = None
+    a2a: Optional[A2AConfig] = None
     environment_id: Optional[str] = None
     tunnel_id: Optional[str] = None
     vaults: Optional[Dict[str, ResourceBinding]] = None
