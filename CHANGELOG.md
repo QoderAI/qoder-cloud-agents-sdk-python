@@ -5,6 +5,8 @@ existing `0.1.0` release; earlier development prereleases are not listed.
 
 ## [Unreleased]
 
+## [0.16.0]
+
 ### Added
 
 - Add Forward Session `auto_title` on creation and nullable `config.multiagent` on update. Omit `auto_title` for the server's false default; when true, omit `title` entirely. Clearing a roster with `None` does not restore Template inheritance, and create config still does not accept a roster.
