@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import codecs
 import json
+import re
 import socket
 import threading
 from collections.abc import AsyncIterator, Iterator
@@ -12,6 +14,8 @@ from ._exceptions import APIConnectionError, APIError, APIResponseValidationErro
 from ._models import parse_response
 
 T = TypeVar("T")
+
+_SSE_NEWLINE_RE = re.compile(r"\r\n|\r|\n")
 
 
 class SSEDecoder:
@@ -47,6 +51,50 @@ class BaseStream(Generic[T]):
         self._strict = strict
         self._decoder = SSEDecoder()
         self._last_event_id: str | None = None
+        self._byte_decoder = codecs.getincrementaldecoder(response.encoding or "utf-8")(errors="replace")
+        self._line_buffer = ""
+        self._trailing_cr = False
+        self._seen_text = False
+
+    def _decode_chunk(self, chunk: bytes) -> list[str]:
+        if not chunk:
+            return []
+        text = self._byte_decoder.decode(chunk, final=False)
+        return self._feed_text(text) if text else []
+
+    def _flush_lines(self) -> list[str]:
+        text = self._byte_decoder.decode(b"", final=True)
+        lines = self._feed_text(text) if text else []
+        if self._line_buffer:
+            lines.append(self._line_buffer)
+            self._line_buffer = ""
+        self._trailing_cr = False
+        return lines
+
+    def _feed_text(self, text: str) -> list[str]:
+        if not self._seen_text:
+            self._seen_text = True
+            if text.startswith("\ufeff"):
+                text = text[1:]
+                if not text:
+                    return []
+        if self._trailing_cr:
+            self._trailing_cr = False
+            if text.startswith("\n"):
+                text = text[1:]
+                if not text:
+                    return []
+        data = self._line_buffer + text
+        lines: list[str] = []
+        start = 0
+        length = len(data)
+        for match in _SSE_NEWLINE_RE.finditer(data):
+            lines.append(data[start : match.start()])
+            start = match.end()
+            if match.group(0) == "\r" and start == length:
+                self._trailing_cr = True
+        self._line_buffer = data[start:]
+        return lines
 
     @property
     def last_event_id(self) -> str | None:
@@ -127,7 +175,17 @@ class Stream(BaseStream[T], Iterator[T]):
 
     def _iter_events(self) -> Iterator[T]:
         try:
-            for line in self.response.iter_lines():
+            for chunk in self.response.iter_bytes():
+                for line in self._decode_chunk(chunk):
+                    frame = self._decoder.decode(line)
+                    if frame is None:
+                        continue
+                    if frame[0] == "ping":
+                        continue
+                    if frame[1] == "[DONE]":
+                        return
+                    yield self._parse(frame)
+            for line in self._flush_lines():
                 frame = self._decoder.decode(line)
                 if frame is None:
                     continue
@@ -163,7 +221,17 @@ class AsyncStream(BaseStream[T], AsyncIterator[T]):
 
     async def _iter_events(self) -> AsyncIterator[T]:
         try:
-            async for line in self.response.aiter_lines():
+            async for chunk in self.response.aiter_bytes():
+                for line in self._decode_chunk(chunk):
+                    frame = self._decoder.decode(line)
+                    if frame is None:
+                        continue
+                    if frame[0] == "ping":
+                        continue
+                    if frame[1] == "[DONE]":
+                        return
+                    yield self._parse(frame)
+            for line in self._flush_lines():
                 frame = self._decoder.decode(line)
                 if frame is None:
                     continue
